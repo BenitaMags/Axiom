@@ -1,0 +1,14 @@
+{
+  "role": "synchronous HTTP client (GET/POST with JSON, headers, timeout)",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 0.997,
+    "memory": 1.0,
+    "availability": 1.0,
+    "api_match": 0.9,
+    "total": 0.984
+  },
+  "rationale": "'requests' wins 'synchronous HTTP client (GET/POST with JSON, headers, timeout)' role. Confidence: MEDIUM. Total: 0.984 (speed=0.997, mem=1.0, api=0.9). Migration note: requests uses module-level functions (requests.get/post) while httpx encourages a Client instance; migrating requires wrapping calls in a Client context manager or using httpx.get/httpx.post top-level aliases",
+  "confidence": "MEDIUM"
+}

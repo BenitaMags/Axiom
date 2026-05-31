@@ -1,0 +1,14 @@
+{
+  "role": "sync HTTP client (GET, POST, PATCH, DELETE with JSON, headers, timeout)",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 0.99,
+    "memory": 1.0,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "total": 0.995
+  },
+  "rationale": "'requests' wins 'sync HTTP client (GET, POST, PATCH, DELETE with JSON, headers, timeout)' role. Confidence: MEDIUM. Total: 0.995 (speed=0.99, mem=1.0, api=1.0). Migration note: httpx.get/post etc. are synchronous by default only when called directly \u2014 if the codebase later introduces httpx.AsyncClient, the async context must be managed explicitly with 'async with'",
+  "confidence": "MEDIUM"
+}

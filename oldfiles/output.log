@@ -1,0 +1,248 @@
+[DEBUG CLI] file arg = smart_loader/experiment_libs/json_experiment.py
+[DEBUG CLI] file_path.resolve() = /Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py
+[DEBUG CLI] file_path.is_file() = True
+[DEBUG CLI] cwd = /Users/benz.mags/Desktop/axiom_v2
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────── AXIOM — Run ─────────────────────────────────────╮
+│ Target:                                                                              │
+│ /Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py    │
+│ LLM:    CLAUDE / claude-sonnet-4-6                                                   │
+│ Time:   2026-05-23 15:06:04                                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────╯
+[DEBUG GRAPH] run_loader received: /Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py
+[DEBUG GRAPH] is file? True
+─────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────
+[DEBUG] source_file input = /Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py
+[DEBUG] resolved path = /Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py
+[DEBUG] exists? True
+[DEBUG] Read 1523 bytes
+[DEBUG] AST parsed successfully
+[DEBUG] Found 3 imports: ['json', 'ujson', 'orjson']
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│   18 │ json   │ —     │ —     │ dumps, loads   │
+│   19 │ ujson  │ —     │ —     │ —              │
+│   20 │ orjson │ —     │ —     │ —              │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 3 imports
+
+─────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────
+─────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────
+                                      Rule Results                                      
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                        ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ json    │ is_installed        │  PASS   │ HIGH       │ message=json is installed and │
+│         │                     │         │            │ importable                    │
+│ json    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for │
+│         │                     │         │            │ json                          │
+│ json    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata   │
+│         │                     │         │            │ was found for json            │
+│ json    │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.429,    │
+│         │                     │         │            │ shared_names=['JSONDecodeErr… │
+│         │                     │         │            │ '__doc__', '__file__',        │
+│         │                     │         │            │ '__loader__', '__name__',     │
+│         │                     │         │            │ '__package__', '__spec__',    │
+│         │                     │         │            │ '__version__', 'dump',        │
+│         │                     │         │            │ 'dumps']                      │
+│ ujson   │ is_installed        │  PASS   │ HIGH       │ message=ujson is installed    │
+│         │                     │         │            │ and importable                │
+│ ujson   │ has_metadata        │  PASS   │ MEDIUM     │ version=5.12.1,               │
+│         │                     │         │            │ license=BSD-3-Clause AND TCL  │
+│ ujson   │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd-3-clause and tcl, │
+│         │                     │         │            │ permissive=True               │
+│ ujson   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.429,    │
+│         │                     │         │            │ shared_names=['JSONDecodeErr… │
+│         │                     │         │            │ '__doc__', '__file__',        │
+│         │                     │         │            │ '__loader__', '__name__',     │
+│         │                     │         │            │ '__package__', '__spec__',    │
+│         │                     │         │            │ '__version__', 'dump',        │
+│         │                     │         │            │ 'dumps']                      │
+│ orjson  │ is_installed        │  PASS   │ HIGH       │ message=orjson is installed   │
+│         │                     │         │            │ and importable                │
+│ orjson  │ has_metadata        │  PASS   │ MEDIUM     │ version=3.11.9,               │
+│         │                     │         │            │ license=unknown               │
+│ orjson  │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False    │
+│ orjson  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.326,    │
+│         │                     │         │            │ shared_names=['JSONDecodeErr… │
+│         │                     │         │            │ '__all__', '__builtins__',    │
+│         │                     │         │            │ '__cached__', '__doc__',      │
+│         │                     │         │            │ '__file__', '__loader__',     │
+│         │                     │         │            │ '__name__', '__package__',    │
+│         │                     │         │            │ '__path__']                   │
+└─────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+All packages installed and available
+────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Equivalence Groups Found
+└── JSON serialization and deserialization
+    ├── Candidates : json, ujson, orjson
+    ├── Used APIs  : dumps, loads
+    ├── Pitfalls   : orjson.dumps() returns bytes, not str — callers expecting str must 
+    │   decode (e.g. .decode('utf-8')), unlike json and ujson which return str; orjson 
+    │   does not support the 'indent' parameter as an integer in the same way; use 
+    │   orjson.OPT_INDENT_2 option flag instead of indent=2; ujson does not support all 
+    │   json.dumps keyword arguments (e.g. 'default' hook behavior differs slightly for 
+    │   unsupported types); orjson serializes numpy arrays, dataclasses, and datetime 
+    │   natively, which may produce different output than json/ujson for those types; 
+    │   ujson may silently truncate or handle certain edge-case floats (NaN, Infinity) 
+    │   differently than stdlib json; json is always available as stdlib; ujson and 
+    │   orjson require installation and C/Rust compilation, which may fail in restricted
+    │   environments
+    └── All three libraries provide JSON encoding (dumps) and decoding (loads) with 
+        largely compatible APIs. json is the Python stdlib baseline; ujson is a C 
+        extension offering 2-3x faster serialization with a near-identical API; orjson 
+        is a Rust-based library offering the fastest performance among the three. All 
+        three can substitute for each other for the basic dumps/loads use case present 
+        in this code.
+
+✓ 1 equivalence group(s) found
+
+────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+⠋ ✓ json  
+⠋ ✓ ujson 
+⠋ ✓ orjson
+                           Benchmark Results                            
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package ┃ Available ┃ Avg Import Time (3 runs) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ ujson   │     ✓     │                   0.9 ms │           2 │       │
+│ json    │     ✓     │                   1.6 ms │          88 │       │
+│ orjson  │     ✓     │                   8.8 ms │           7 │       │
+└─────────┴───────────┴──────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 3 package(s), 3 available
+
+────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────
+Provider: CLAUDE / claude-sonnet-4-6
+                              AXIOM Optimization Decisions                              
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━┳━━━━━━━┓
+┃ Role                ┃ Original ┃ Winner ┃ Confidence ┃ Speed ┃ Memory ┃ API  ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━╇━━━━━━━┩
+│ JSON serialization  │ json     │ ujson  │ HIGH       │ 1.0   │ 1.0    │ 0.95 │ 0.992 │
+│ and deserialization │          │        │            │       │        │      │       │
+└─────────────────────┴──────────┴────────┴────────────┴───────┴────────┴──────┴───────┘
+
+Patching imports:
+  json  →  ujson
+
+Session saved: 05c32e69
+
+✓ AXIOM complete — 1 decision(s)
+
+
+DEBUG: Found 3 imports, 1 equivalence groups
+
+Agent Trace:
+   started: {'file': 
+'/Users/benz.mags/Desktop/axiom_v2/smart_loader/experiment_libs/json_experiment.py'}
+   completed: {'imports_found': 3, 'modules': ['json', 'ujson', 'orjson']}
+   started: {}
+   completed: {'packages_checked': 3, 'disqualified': [], 'rules_run': 12}
+   started: {}
+   completed: {'groups': 1, 'roles': ['JSON serialization and deserialization']}
+   started: {}
+   completed: {'packages': 3, 'available': 3, 'timings': {'ujson': 0.888, 'json': 1.589,
+'orjson': 8.811}}
+   started: {}
+   completed: {'decisions': 1, 'replacements': {'json': 'ujson'}}
+Imports:
+  - ImportInfo(module='json', alias=None, names=[], line=18, api_calls=['dumps', 
+'loads'])
+  - ImportInfo(module='ujson', alias=None, names=[], line=19, api_calls=[])
+  - ImportInfo(module='orjson', alias=None, names=[], line=20, api_calls=[])
+Groups:
+  - EquivalenceGroup(role='JSON serialization and deserialization', candidates=['json', 
+'ujson', 'orjson'], used_apis=['dumps', 'loads'], reasoning='All three libraries provide
+JSON encoding (dumps) and decoding (loads) with largely compatible APIs. json is the 
+Python stdlib baseline; ujson is a C extension offering 2-3x faster serialization with a
+near-identical API; orjson is a Rust-based library offering the fastest performance 
+among the three. All three can substitute for each other for the basic dumps/loads use 
+case present in this code.', pitfalls=["orjson.dumps() returns bytes, not str — callers 
+expecting str must decode (e.g. .decode('utf-8')), unlike json and ujson which return 
+str", "orjson does not support the 'indent' parameter as an integer in the same way; use
+orjson.OPT_INDENT_2 option flag instead of indent=2", "ujson does not support all 
+json.dumps keyword arguments (e.g. 'default' hook behavior differs slightly for 
+unsupported types)", 'orjson serializes numpy arrays, dataclasses, and datetime 
+natively, which may produce different output than json/ujson for those types', 'ujson 
+may silently truncate or handle certain edge-case floats (NaN, Infinity) differently 
+than stdlib json', 'json is always available as stdlib; ujson and orjson require 
+installation and C/Rust compilation, which may fail in restricted environments'])
+───────────────────────────────── ── Final Summary ── ──────────────────────────────────
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                     ┃ Original ┃ Winner ┃ Confidence ┃ Rationale                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ JSON serialization and   │ json     │ ujson  │ HIGH       │ 'ujson' wins 'JSON       │
+│ deserialization          │          │        │            │ serialization and        │
+│                          │          │        │            │ deserialization' role.   │
+│                          │          │        │            │ Confidence: HIGH. To...  │
+└──────────────────────────┴──────────┴────────┴────────────┴──────────────────────────┘
+────────────────────────────────── ── Agent Trace ── ───────────────────────────────────
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+───────────────────────────────── ── Patched Source ── ─────────────────────────────────
+   1 """                                                                                
+   2 experiment_libs/json_experiment.py                                                 
+   3 ────────────────────────────────────                                               
+   4 Experiment file: JSON serializers                                                  
+   5                                                                                    
+   6 Tests AXIOM's ability to detect that json, ujson, and orjson                       
+   7 all serve the same role (JSON serialization) and pick the fastest.                 
+   8                                                                                    
+   9 Packages involved:                                                                 
+  10   - json    : Python stdlib, always available, slowest (~3ms import)               
+  11   - ujson   : UltraJSON, C extension, 2-3x faster serialization                    
+  12   - orjson  : Rust-based, fastest JSON library for Python (~10ms import)           
+  13                                                                                    
+  14 AXIOM should detect: json ≡ ujson ≡ orjson (same role)                             
+  15 Expected winner: orjson or ujson (faster import + faster serialization)            
+  16 """                                                                                
+  17 import json                                                                        
+  18 import ujson                                                                       
+  19 import orjson                                                                      
+  20                                                                                    
+  21 def serialize_json(data: dict) -> str:                                             
+  22     """Serialize a Python dict to JSON string using stdlib."""                     
+  23     return ujson.dumps(data, indent=2)                                             
+  24                                                                                    
+  25 def deserialize_json(text: str) -> dict:                                           
+  26     """Deserialize a JSON string to Python dict using stdlib."""                   
+  27     return ujson.loads(text)                                                       
+  28                                                                                    
+  29 def serialize_list_json(items: list) -> str:                                       
+  30     """Serialize a list to JSON."""                                                
+  31     return ujson.dumps(items)                                                      
+  32 if __name__ == '__main__':                                                         
+  33     sample = {'name': 'Alice', 'age': 30, 'scores': [1, 2, 3], 'active': True}     
+  34     print('JSON experiment:')                                                      
+  35     print(f'  json   → {serialize_json(sample)[:40]}...')                          
+  36     times = benchmark_all(sample)                                                  
+  37     for lib, ms in times.items():                                                  
+  38         print(f'  {lib:8s} → {ms:.1f}ms for 1000 serializations')                  

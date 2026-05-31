@@ -1,0 +1,265 @@
+# AXIOM v2 — Adaptive eXecution & Import Optimization Module
+
+> Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude · Inspired by CodeAugur
+
+---
+
+## What Is AXIOM?
+
+AXIOM is a multi-agent system that simulates the behavior of an **OS-level loader** — but for Python source files instead of binary executables.
+
+When an OS loader runs a binary, it:
+1. Reads the dependency manifest
+2. Runs deterministic checks on available libraries
+3. Resolves which shared libraries serve the same purpose
+4. Measures load costs
+5. Selects the optimal library and patches the binary
+
+AXIOM does the exact same thing for Python files:
+
+| OS Loader Phase              | AXIOM Agent          | Method              |
+|------------------------------|----------------------|---------------------|
+| Read ELF header              | `parser_agent`       | Python `ast` module |
+| Deterministic library checks | `rules_agent`        | importlib + metadata|
+| Symbol resolution            | `resolver_agent`     | LLM reasoning       |
+| Library load cost profiling  | `profiler_agent`     | subprocess timing   |
+| GOT patching / relocation    | `axiom_agent`        | AST rewriting       |
+
+---
+
+## Inspiration: CodeAugur
+
+AXIOM v2 is directly inspired by **CodeAugur** — a binary code similarity agent built by Professor Ioannis Agadakos. The following architectural decisions are borrowed and adapted:
+
+| CodeAugur Feature              | AXIOM Equivalent                             |
+|-------------------------------|----------------------------------------------|
+| 3-stage LLM pipeline           | 5-node LangGraph pipeline                    |
+| Rules engine before LLM        | `rules_agent` (Node 2) before any LLM call  |
+| `return_register_delta` rule   | `is_installed` rule                          |
+| `jaccard_opcode` metric        | `api_surface_overlap` rule                   |
+| YES/NO/UNCERTAIN verdict       | LoadDecision with HIGH/MEDIUM/LOW confidence |
+| Lean log + content-addressed store | `telemetry.py` session + detail files   |
+| `/sessions/{id}/verify`        | `axiom verify <session_id>` CLI command      |
+| ISA knowledge pitfall lists    | `EquivalenceGroup.pitfalls` field            |
+
+---
+
+## Project Structure
+
+```
+axiom_v2/
+├── pyproject.toml                    ← pip install → registers `axiom` command
+└── smart_loader/
+    ├── __init__.py
+    ├── __main__.py                   ← python -m smart_loader
+    ├── cli.py                        ← Typer CLI: run, verify, experiment, visualize
+    │
+    ├── core/
+    │   ├── state.py                  ← Shared LangGraph state (all dataclasses)
+    │   ├── graph.py                  ← StateGraph: wires all 5 nodes + conditional edges
+    │   ├── rules_engine.py           ← Deterministic rule registry + runner
+    │   └── telemetry.py              ← Session logs + integrity hashing
+    │
+    ├── agents/
+    │   ├── parser_agent.py           ← Node 1: AST import extraction
+    │   ├── rules_agent.py            ← Node 2: deterministic checks (no LLM)
+    │   ├── resolver_agent.py         ← Node 3: LLM equivalence clustering
+    │   ├── profiler_agent.py         ← Node 4: subprocess benchmarking
+    │   └── axiom_agent.py            ← Node 5: scoring + decision + AST rewrite
+    │
+    └── experiment_libs/
+        ├── http_experiment.py        ← requests vs httpx vs urllib3
+        ├── json_experiment.py        ← json vs ujson vs orjson
+        ├── dataframe_experiment.py   ← pandas vs polars
+        └── mixed_experiment.py       ← all categories combined (main test file)
+```
+
+---
+
+## Pipeline Graph
+
+```
+  [parser_agent]           Node 1 — reads .py, extracts imports via AST
+        │
+        ├── (no imports or error) ──► END
+        │
+  [rules_agent]            Node 2 — deterministic checks, no LLM
+        │                           is_installed, has_metadata,
+        │                           license_permissive, api_surface_overlap
+        │
+  [resolver_agent]         Node 3 — LLM: groups packages by functional role
+        │                           detects equivalence + migration pitfalls
+        │
+        ├── (no groups found) ──► END
+        │
+  [profiler_agent]         Node 4 — subprocess benchmarking
+        │                           import time (ms) + memory (KB)
+        │
+  [axiom_agent]            Node 5 — weighted scoring + confidence verdict
+        │                           AST rewrite + telemetry session saved
+        │
+       END
+```
+
+---
+
+## State Flow
+
+Every agent reads from and writes to a single shared `LoaderState` dict:
+
+```
+source_file         → (input)
+source_code         ← parser fills
+imports             ← parser fills       list[ImportInfo]
+rule_results        ← rules fills        list[RuleResult]
+equivalence_groups  ← resolver fills     list[EquivalenceGroup]
+benchmarks          ← profiler fills     dict[str, BenchmarkResult]
+decisions           ← axiom fills        list[LoadDecision]
+patched_code        ← axiom fills        str
+agent_trace         ← all agents fill    list[AgentEvent]  (telemetry)
+```
+
+---
+
+## Rules Engine
+
+Runs **before** any LLM call. Four built-in rules:
+
+| Rule                  | What it checks                              | Confidence |
+|-----------------------|---------------------------------------------|------------|
+| `is_installed`        | Is the package importable on this machine?  | HIGH       |
+| `has_metadata`        | Does it have version + license metadata?    | MEDIUM     |
+| `license_permissive`  | Is the license MIT/Apache/BSD?              | MEDIUM     |
+| `api_surface_overlap` | Jaccard overlap of public API names         | MEDIUM     |
+
+Any package that **FAILs** `is_installed` is disqualified and excluded from LLM analysis.
+
+Add a custom rule:
+```python
+from smart_loader.core.rules_engine import rule
+
+@rule("my_rule", confidence="HIGH")
+def _my_rule(package: str) -> tuple[str, dict]:
+    # return ("PASS" | "FAIL" | "UNKNOWN", detail_dict)
+    ...
+```
+
+---
+
+## Scoring Formula (AXIOM Agent)
+
+Every candidate package in an equivalence group gets a weighted score:
+
+| Signal          | Weight | Source                    | Analog in CodeAugur     |
+|-----------------|--------|---------------------------|--------------------------|
+| Import speed    | 45%    | Profiler (ms)             | `energy_difference`      |
+| Memory footprint| 15%    | Profiler (KB)             | `register_delta`         |
+| Availability    | 25%    | Rules engine              | Hard requirement         |
+| API match       | 15%    | LLM compatibility score   | `reasoning_chain_similarity` |
+
+**Confidence:**
+- `HIGH` — winner leads by > 0.15 total score gap
+- `MEDIUM` — winner leads but margin is close
+- `LOW` — only one available candidate
+
+---
+
+## Telemetry & Audit
+
+Every run saves two files (inspired by CodeAugur's audit system):
+
+```
+axiom_logs/
+├── sessions/{session_id}.json        ← lean log: events + hashes + verdict
+└── details/sha256_{hash}.json        ← full decision content per group
+```
+
+The session's `integrity` field is a SHA-256 over all detail hashes.
+Recomputing it detects any post-hoc tampering.
+
+Verify a session:
+```bash
+axiom verify <session_id>
+```
+
+---
+
+## Installation
+
+```bash
+cd axiom_v2
+pip install .
+```
+
+Requires Ollama running locally:
+```bash
+# Install from https://ollama.com
+ollama pull qwen3-coder-next   # or any model you have
+```
+
+---
+
+## Usage
+
+```bash
+# Analyze any Python file
+axiom run path/to/script.py --llm ollama --model qwen3-coder-next
+
+# Save the optimized file
+axiom run path/to/script.py --llm ollama --model qwen3-coder-next --save
+
+# Run all experiment files as a batch
+axiom experiment --llm ollama --model qwen3-coder-next
+
+# View the pipeline topology
+axiom visualize
+
+# Verify a session's integrity
+axiom verify <session_id>
+
+# Use Claude instead of Ollama
+axiom run script.py --llm claude --api-key sk-ant-...
+```
+
+---
+
+## Experiment Files
+
+Four pre-built Python files with intentional overlapping dependencies:
+
+| File                      | Equivalence Groups Expected                      |
+|---------------------------|--------------------------------------------------|
+| `http_experiment.py`      | requests ≡ httpx (HTTP client)                  |
+| `json_experiment.py`      | json ≡ ujson ≡ orjson (JSON serializer)         |
+| `dataframe_experiment.py` | pandas ≡ polars (DataFrame library)             |
+| `mixed_experiment.py`     | All of the above combined (main test file)      |
+
+Run AXIOM against the main experiment file:
+```bash
+axiom run smart_loader/experiment_libs/mixed_experiment.py \
+    --llm ollama --model qwen3-coder-next --save
+```
+
+---
+
+## LLM Providers
+
+| Provider           | Config                          | Cost        |
+|--------------------|---------------------------------|-------------|
+| Ollama (default)   | `--llm ollama --model <name>`   | Free, local |
+| Claude (Anthropic) | `--llm claude --api-key sk-...` | Paid API    |
+
+Only two agents use the LLM: `resolver_agent` and `axiom_agent`.
+`parser_agent`, `rules_agent`, and `profiler_agent` are fully deterministic.
+
+---
+
+## Related Research
+
+| Paper                       | Relation to AXIOM                                        |
+|-----------------------------|----------------------------------------------------------|
+| CodeAugur (Agadakos)        | Direct architectural inspiration                         |
+| PLLM (arXiv:2501.16191)     | LLM dependency resolution — AXIOM optimizes, PLLM fixes |
+| SMT-LLM (arXiv:2605.11772)  | AST-based Python analysis, same approach                 |
+| MemRes (arXiv:2604.16941)   | Skips LLM for known packages — AXIOM does same in rules  |
+| COMPILOT (arXiv:2511.00592) | LLM + feedback loop optimization — same pattern          |
