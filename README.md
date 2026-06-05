@@ -165,12 +165,10 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 Or pass it directly: `axiom run file.py --llm claude --api-key sk-ant-...`
 
-### 6. Install dashboard dependencies
-
-The token dashboard requires FastAPI and Uvicorn:
+### 6. Install dependencies
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requirements.txt
 ```
 
 ---
@@ -196,6 +194,9 @@ axiom run path/to/script.py --save-connectors --connector-dir ./my_connectors
 # Show the dashboard URL after the run
 axiom run path/to/script.py --dashboard
 
+# Or use this command to see the dashboard after the run
+axiom dashboard
+
 # Disable security scan (faster, skips OSV/PyPI network calls)
 axiom run path/to/script.py --no-security
 
@@ -204,13 +205,6 @@ axiom run path/to/script.py --no-connector
 
 # Use Claude instead of Ollama
 axiom run path/to/script.py --llm claude --model claude-sonnet-4-20250514
-```
-
-### Run the experiment batch
-
-```bash
-axiom experiment
-axiom experiment --llm claude --model claude-sonnet-4-20250514
 ```
 
 ### One-off security scan
