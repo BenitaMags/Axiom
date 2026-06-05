@@ -271,43 +271,6 @@ All package scans run in parallel. Results are factored into the scoring formula
 
 ---
 
-## Adapter Shims (Connector Agent)
-
-When AXIOM replaces `requests` with `httpx`, your existing code still calls `requests.get(...)`. The connector agent generates a thin adapter module that wraps the new package to match the original's exact call signatures — so no manual refactoring is needed.
-
-**Example generated connector** (`axiom_requests_compat.py`):
-
-```python
-"""AXIOM connector: requests → httpx"""
-import httpx as _httpx
-
-def get(url, **kwargs):
-    timeout = kwargs.pop("timeout", 10)
-    with _httpx.Client(timeout=timeout) as client:
-        return client.get(url, **kwargs)
-
-def post(url, **kwargs):
-    timeout = kwargs.pop("timeout", 10)
-    with _httpx.Client(timeout=timeout) as client:
-        return client.post(url, **kwargs)
-```
-
-Your existing code is rewritten to import `axiom_requests_compat as requests` — call sites are untouched.
-
----
-
-## Token Dashboard
-
-AXIOM logs every LLM call to `axiom_logs/token_usage.jsonl`. The dashboard visualizes this in real time:
-
-```bash
-axiom dashboard    # http://localhost:7788
-```
-
-Charts available: token usage timeline, input/output by agent, token distribution, calls per agent, tokens per session, input/output ratio.
-
----
-
 ## Telemetry & Audit
 
 Every run saves two artefacts:
@@ -324,23 +287,6 @@ The `integrity` field in the session log is a SHA-256 computed over all detail h
 
 ```bash
 axiom verify <session_id>
-```
-
----
-
-## Experiment Files
-
-Four pre-built test files with intentional overlapping dependencies:
-
-| File                        | Equivalence Groups                              |
-|-----------------------------|--------------------------------------------------|
-| `http_experiment.py`        | requests ≡ httpx (HTTP client)                  |
-| `json_experiment.py`        | json ≡ ujson ≡ orjson (JSON serializer)         |
-| `dataframe_experiment.py`   | pandas ≡ polars (DataFrame library)             |
-| `mixed_experiment.py`       | All of the above combined                       |
-
-```bash
-axiom run smart_loader/experiment_libs/mixed_experiment.py --save --dashboard
 ```
 
 ---
