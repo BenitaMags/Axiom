@@ -8,12 +8,6 @@ differ in subtle ways. The Connector Agent generates a thin adapter/bridge
 module that makes the replacement package work with the existing code's
 call patterns — zero manual refactoring needed.
 
-INSPIRED BY CodeAugur's ISA normalization_rules:
-  CodeAugur's ISA knowledge files list normalization_rules that tell the
-  analyst how to handle calling-convention differences between architectures.
-  We apply the same idea at the Python level: when the winning package has
-  a different API surface, we generate a compatibility shim.
-
 Examples:
   requests → httpx   : httpx.Client() context manager wrapping, same method names
   pandas   → polars  : .groupby() → .group_by(), .sort_values() → .sort()
