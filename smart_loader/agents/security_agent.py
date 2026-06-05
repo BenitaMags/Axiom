@@ -8,11 +8,6 @@ Checks each package for known vulnerabilities using:
   2. PyPI JSON API — checks release dates, yanked versions
   3. LLM analysis — evaluates whether detected CVEs affect the code's usage patterns
 
-INSPIRED BY CodeAugur's multi-signal evidence pipeline:
-  CodeAugur combines static assembly + dynamic traces + deterministic rules
-  before any LLM reasoning. We add a fourth signal: security posture.
-  A fast package that is CVE-riddled is NOT the optimal choice.
-
 Security scoring (0.0 = dangerous, 1.0 = clean):
   - vuln_score     : based on CVSS severity of known CVEs
   - freshness_score: how recently the package was updated
