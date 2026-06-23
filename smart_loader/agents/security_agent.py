@@ -335,3 +335,74 @@ def security_agent(state: dict) -> dict:
                     + (", ".join(high_risk) or "none")
         )],
     }
+
+
+def _scan_packages(packages: list[str], label: str) -> dict[str, SecurityResult]:
+    """Scan a list of packages and return SecurityResult dict."""
+    results: dict[str, SecurityResult] = {}
+    if not packages:
+        return results
+
+    console.print(f"[dim]{label} {len(packages)} package(s) via OSV + PyPI...[/dim]\n")
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(_compute_security_result, pkg): pkg for pkg in packages}
+        for future in as_completed(futures):
+            pkg = futures[future]
+            try:
+                results[pkg] = future.result()
+            except Exception as e:
+                results[pkg] = SecurityResult(
+                    package=pkg, version="unknown", error=str(e),
+                    risk_level="UNKNOWN", overall_score=0.5,
+                )
+    return results
+
+
+def candidate_security_agent(state: dict) -> dict:
+    """
+    LangGraph node: scan equivalence-group candidate packages not yet in security_results.
+    Runs AFTER resolver, BEFORE profiler.
+    """
+    from smart_loader.core.state import AgentEvent
+
+    console.rule("[bold red]🔒 Security Agent — Candidates")
+
+    groups = state.get("equivalence_groups", [])
+    existing: dict = dict(state.get("security_results", {}))
+    trace = list(state.get("agent_trace", []))
+    trace.append(AgentEvent(stage="candidate_security", event="started"))
+
+    candidates = list({pkg for g in groups for pkg in g.candidates})
+    to_scan = [p for p in candidates if p not in existing]
+
+    if not to_scan:
+        console.print("[dim]All candidate packages already scanned.[/dim]\n")
+        trace.append(AgentEvent(stage="candidate_security", event="completed", detail={"scanned": 0}))
+        return {"security_results": existing, "agent_trace": trace, "messages": []}
+
+    new_results = _scan_packages(to_scan, "Scanning candidate")
+    merged = {**existing, **new_results}
+
+    table = Table(title="Candidate Security Scan", header_style="bold red")
+    table.add_column("Package")
+    table.add_column("Version")
+    table.add_column("Risk", justify="center")
+    table.add_column("Overall", justify="right")
+    risk_color = {"CRITICAL": "red", "HIGH": "red", "MEDIUM": "yellow", "LOW": "green", "UNKNOWN": "dim"}
+    for pkg in to_scan:
+        res = new_results[pkg]
+        color = risk_color.get(res.risk_level, "white")
+        table.add_row(pkg, res.version, f"[{color}]{res.risk_level}[/{color}]", f"{res.overall_score:.2f}")
+    console.print(table)
+    console.print(f"\n[green]✓ Scanned {len(to_scan)} candidate package(s)[/green]\n")
+
+    trace.append(AgentEvent(
+        stage="candidate_security", event="completed",
+        detail={"scanned": len(to_scan), "packages": to_scan},
+    ))
+
+    return {
+        "security_results": merged,
+        "agent_trace": trace,
+        "messages": [AIMessage(content=f"Candidate security: scanned {len(to_scan)} package(s)")],
+    }

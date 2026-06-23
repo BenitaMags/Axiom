@@ -25,8 +25,6 @@ DIRECTLY INSPIRED BY CodeAugur's Rules Engine:
 from __future__ import annotations
 import importlib
 import importlib.metadata
-import subprocess
-import sys
 from typing import Callable
 from rich.console import Console
 from rich.table import Table

@@ -57,7 +57,7 @@ def run(
     model:            str  = typer.Option("qwen3-coder-next", "--model","-m",  help="Model name"),
     api_key:          str  = typer.Option("",     "--api-key",  envvar="ANTHROPIC_API_KEY"),
     security:         bool = typer.Option(True,   "--security/--no-security",  help="Run OSV+PyPI security scan"),
-    connector:        bool = typer.Option(False,   "--connector/--no-connector",help="Generate API adapter shims"),
+    connector:        bool = typer.Option(True,   "--connector/--no-connector",help="Generate API adapter shims"),
     save_connectors:  bool = typer.Option(False,  "--save-connectors",         help="Write connector .py files to disk"),
     connector_dir:    str  = typer.Option("./axiom_connectors", "--connector-dir", help="Directory for connector files"),
     show_dashboard:   bool = typer.Option(False,  "--dashboard",               help="Print the dashboard URL after the run"),

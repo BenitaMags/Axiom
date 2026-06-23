@@ -9,24 +9,19 @@ Same as before, plus:
 from __future__ import annotations
 import json
 import time
+import os
 from rich.console import Console
 from rich.tree import Tree
-from langchain_anthropic import ChatAnthropic
-from langchain_ollama import ChatOllama
+from smart_loader.core.llm_factory import _get_llm
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
+from smart_loader.core.constraints import infer_group_flags
 from smart_loader.core.state import ImportInfo, RuleResult, EquivalenceGroup, AgentEvent, LoaderState
 
 console = Console()
 
 
-def _get_llm(provider: str, model: str):
-    if provider == "claude":
-        return ChatAnthropic(
-            model=model if "claude" in model else "claude-sonnet-4-20250514",
-            max_tokens=2000, temperature=0,
-        )
-    return ChatOllama(model=model, temperature=0)
+
 
 
 SYSTEM_PROMPT = """You are an expert Python dependency analyst acting as a smart OS loader.
@@ -58,7 +53,9 @@ Respond ONLY with a valid JSON array. No markdown, no preamble:
     "used_apis": ["method1", "method2"],
     "reasoning": "why these are equivalent",
     "pitfalls": ["known migration issue 1", "known migration issue 2"],
-    "security_notes": ["CVE concerns if any"]
+    "security_notes": ["CVE concerns if any"],
+    "crypto_required": false,
+    "requires_connector": false
   }
 ]
 
@@ -80,6 +77,44 @@ SOURCE CODE (first 100 lines for context):
 {code_snippet}
 """
 
+# Add this helper function after the HUMAN_TEMPLATE
+def _parse_llm_json(raw: str, fallback: list = None) -> list:
+    """Safely parse LLM JSON response with fallback."""
+    if fallback is None:
+        fallback = []
+    
+    raw = raw.strip()
+    if not raw:
+        console.print("[yellow]⚠️  LLM returned empty response, using fallback[/yellow]")
+        return fallback
+    
+    try:
+        # Try direct parse
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        pass
+    
+    try:
+        # Try markdown code block
+        if "```" in raw:
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+            return json.loads(raw.strip())
+    except:
+        pass
+
+    try:
+        # Try finding the first '[' and last ']'
+        start = raw.find("[")
+        end = raw.rfind("]")
+        if start != -1 and end != -1 and end > start:
+            return json.loads(raw[start:end+1])
+    except:
+        pass
+    
+    console.print("[yellow]⚠️  Failed to parse LLM JSON, using fallback[/yellow]")
+    return fallback
 
 def resolver_agent(state: LoaderState) -> dict:
     console.rule("[bold yellow]🔗 Resolver Agent")
@@ -168,29 +203,28 @@ def resolver_agent(state: LoaderState) -> dict:
     raw = response.content.strip()
 
     try:
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
-        groups_data: list[dict] = json.loads(raw)
-    except json.JSONDecodeError as e:
+        groups_data = _parse_llm_json(raw, fallback=[])
+        if not groups_data and raw:  # If parsing failed and there was content
+            console.print(f"[yellow]⚠️  LLM response: {raw[:100]}...[/yellow]")
+    except Exception as e:
         console.print(f"[red]JSON parse error: {e}[/red]")
-        return {
-            "equivalence_groups": [],
-            "agent_trace": trace,
-            "messages": [AIMessage(content=f"Resolver: JSON parse failed. {e}")],
-        }
+        groups_data = []
 
     groups: list[EquivalenceGroup] = []
     for g in groups_data:
         candidates = [c for c in g.get("candidates", []) if c not in disqualified]
         if len(candidates) >= 2:
-            groups.append(EquivalenceGroup(
+            group = EquivalenceGroup(
                 role=g.get("role", "unknown"),
                 candidates=candidates,
                 used_apis=g.get("used_apis", []),
                 reasoning=g.get("reasoning", ""),
                 pitfalls=g.get("pitfalls", []),
+            )
+            groups.append(infer_group_flags(
+                group,
+                llm_crypto=g.get("crypto_required"),
+                llm_connector=g.get("requires_connector"),
             ))
 
     if groups:
@@ -201,6 +235,13 @@ def resolver_agent(state: LoaderState) -> dict:
             branch.add(f"Used APIs  : {', '.join(g.used_apis) or 'none detected'}")
             if g.pitfalls:
                 branch.add(f"[red]Pitfalls   : {'; '.join(g.pitfalls)}[/red]")
+            flags = []
+            if g.crypto_required:
+                flags.append("crypto_required")
+            if g.requires_connector:
+                flags.append("requires_connector")
+            if flags:
+                branch.add(f"[yellow]Constraints: {', '.join(flags)}[/yellow]")
             branch.add(f"[dim]{g.reasoning}[/dim]")
         console.print(tree)
     else:

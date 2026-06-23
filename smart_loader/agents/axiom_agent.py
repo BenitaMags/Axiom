@@ -12,15 +12,15 @@ Same decision logic as before, with two additions:
 """
 
 from __future__ import annotations
-import ast
 import json
 import time
 from rich.console import Console
 from rich.table import Table
-from langchain_anthropic import ChatAnthropic
-from langchain_ollama import ChatOllama
+from smart_loader.core.llm_factory import _get_llm
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
+from smart_loader.core.ast_rewrite import apply_import_replacements
+from smart_loader.core.constraints import filter_crypto_candidates
 from smart_loader.core.state import (
     EquivalenceGroup, BenchmarkResult, RuleResult,
     LoadDecision, AgentEvent, LoaderState,
@@ -28,15 +28,6 @@ from smart_loader.core.state import (
 from smart_loader.core.telemetry import save_session
 
 console = Console()
-
-
-def _get_llm(provider: str, model: str):
-    if provider == "claude":
-        return ChatAnthropic(
-            model=model if "claude" in model else "claude-sonnet-4-20250514",
-            max_tokens=500, temperature=0,
-        )
-    return ChatOllama(model=model, temperature=0)
 
 
 # ── Scoring weights ────────────────────────────────────────────────────────────
@@ -48,10 +39,18 @@ W_API_MATCH    = 0.15   # LLM compat
 W_SECURITY     = 0.20   # NEW: OSV security score (1.0 = clean, 0.0 = critical CVEs)
 
 
-_COMPAT_PROMPT = """You are a Python API compatibility expert.
-Rate each package's drop-in compatibility for the specific methods listed.
-Return ONLY a JSON object: {"package_name": 0.0_to_1.0}
-1.0 = perfect drop-in, 0.5 = minor adaptation needed, 0.0 = incompatible.
+_COMPAT_PROMPT = """You are a Python API compatibility and performance expert.
+Rate each package's drop-in compatibility and estimated runtime execution speed compared to the original package for the specific methods listed under the given role.
+
+Return ONLY a JSON object:
+{
+  "compatibility": {
+    "package_name": <float 0.0_to_1.0>  # 1.0 = perfect drop-in, 0.5 = minor adaptation needed, 0.0 = incompatible
+  },
+  "runtime_speed_factor": {
+    "package_name": <float 1.0_to_20.0>  # Estimated runtime execution speed factor (1.0 = baseline/slowest in the group, e.g. orjson is 5.0 compared to json's 1.0 for loads/dumps)
+  }
+}
 No markdown, no explanation."""
 
 
@@ -63,9 +62,9 @@ def _score_api_compat(
     model:      str,
     session_id: str = "unknown",
     source_file: str = "",
-) -> dict[str, float]:
+) -> tuple[dict[str, float], dict[str, float]]:
     if not used_apis:
-        return {c: 0.8 for c in candidates}
+        return {c: 0.8 for c in candidates}, {c: 1.0 for c in candidates}
     llm = _get_llm(provider, model)
     t0  = time.time()
     resp = llm.invoke([
@@ -95,13 +94,57 @@ def _score_api_compat(
         pass
 
     raw = resp.content.strip()
+    data = None
     try:
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"): raw = raw[4:]
-        return json.loads(raw)
+        data = json.loads(raw)
     except Exception:
-        return {c: 0.8 for c in candidates}
+        try:
+            start = raw.find("{")
+            end = raw.rfind("}")
+            if start != -1 and end != -1 and end > start:
+                data = json.loads(raw[start:end+1])
+        except Exception:
+            pass
+
+    if isinstance(data, dict):
+        compat = data.get("compatibility", {})
+        speed = data.get("runtime_speed_factor", {})
+        compat_out = {c: float(compat.get(c, 0.8)) for c in candidates}
+        speed_out = {c: float(speed.get(c, 1.0)) for c in candidates}
+        return compat_out, speed_out
+
+    return {c: 0.8 for c in candidates}, {c: 1.0 for c in candidates}
+
+
+def _primary_api_token(used_apis: list[str]) -> str:
+    if not used_apis:
+        return ""
+    return used_apis[0].split(".")[-1].lower()
+
+
+def _measured_runtime_scores(
+    available: list[str],
+    benchmarks: dict[str, BenchmarkResult],
+    api_token: str,
+) -> dict[str, float] | None:
+    """Return normalized runtime scores when profiler measured the primary API."""
+    if not api_token:
+        return None
+    times: dict[str, float] = {}
+    for c in available:
+        bm = benchmarks.get(c)
+        if not bm or not bm.available:
+            continue
+        rt = bm.api_runtimes.get(api_token)
+        if rt and rt > 0:
+            times[c] = rt
+    if len(times) < 2:
+        return None
+    min_time = min(times.values()) or 0.001
+    return {c: min_time / t for c, t in times.items()}
 
 
 def _compute_scores(
@@ -116,13 +159,42 @@ def _compute_scores(
     available = [c for c in group.candidates
                  if benchmarks.get(c) and benchmarks[c].available]
 
+    available = filter_crypto_candidates(group, available)
+    if group.crypto_required:
+        vetoed = [c for c in group.candidates
+                  if c not in available and benchmarks.get(c) and benchmarks[c].available]
+        if vetoed:
+            console.print(
+                f"[yellow]  Crypto veto: excluded {', '.join(vetoed)} "
+                f"from '{group.role}'[/yellow]"
+            )
+
     if not available:
         return group.candidates[0], "LOW", {}
 
-    # Speed score
+    api_token = _primary_api_token(group.used_apis)
+
+    # Import speed score
     times    = {c: benchmarks[c].import_time_ms for c in available}
     min_time = min(times.values()) or 0.001
-    speed_s  = {c: min_time / t for c, t in times.items()}
+    import_s = {c: min_time / t for c, t in times.items()}
+
+    measured_runtime = _measured_runtime_scores(available, benchmarks, api_token)
+
+    api_s, runtimes = _score_api_compat(
+        available, group.used_apis, group.role,
+        provider, model, session_id, source_file,
+    )
+
+    if measured_runtime:
+        runtime_s = measured_runtime
+    else:
+        max_runtime = max(runtimes.values()) if runtimes else 1.0
+        if max_runtime <= 0.0:
+            max_runtime = 1.0
+        runtime_s = {c: runtimes.get(c, 1.0) / max_runtime for c in available}
+
+    speed_s = {c: 0.2 * import_s[c] + 0.8 * runtime_s[c] for c in available}
 
     # Memory score
     mems     = {c: benchmarks[c].memory_kb for c in available}
@@ -137,12 +209,6 @@ def _compute_scores(
             sec_s[c] = sec.overall_score
         else:
             sec_s[c] = 0.8   # assume moderate if no scan data
-
-    # API compat score
-    api_s = _score_api_compat(
-        available, group.used_apis, group.role,
-        provider, model, session_id, source_file,
-    )
 
     # Weighted total (now includes security)
     scores = {}
@@ -176,54 +242,6 @@ def _compute_scores(
         confidence = "HIGH" if gap > 0.15 else "MEDIUM"
 
     return winner, confidence, scores
-
-
-class ImportRewriter(ast.NodeTransformer):
-    def __init__(self, replacements: dict[str, str]):
-        self.replacements = replacements
-        self.seen_imports = set()  # Track seen imports to avoid duplicates
-
-    def visit_Import(self, node):
-        """Rewrite: import json → import ujson (deduplicate)"""
-        new_names = []
-        for alias in node.names:
-            new_name = self.replacements.get(alias.name, alias.name)
-            
-            # Create a unique key for this import
-            import_key = (new_name, alias.asname)
-            
-            # Skip if we've already seen this exact import
-            if import_key not in self.seen_imports:
-                self.seen_imports.add(import_key)
-                new_names.append(ast.alias(name=new_name, asname=alias.asname))
-        
-        # If all names were duplicates, remove this import statement entirely
-        if not new_names:
-            return None
-        
-        node.names = new_names
-        return node
-
-    def visit_ImportFrom(self, node):
-        """Rewrite: from json import → from ujson import (deduplicate)"""
-        if node.module in self.replacements:
-            node.module = self.replacements[node.module]
-        return node
-
-    def visit_Attribute(self, node):
-        """✨ Rewrite usage like json.dumps → ujson.dumps"""
-        self.generic_visit(node)
-        
-        # Check if this is a module.function call (e.g., json.dumps)
-        if isinstance(node.value, ast.Name):
-            old_module = node.value.id
-            new_module = self.replacements.get(old_module)
-            
-            if new_module:
-                # Replace the module name
-                node.value.id = new_module
-        
-        return node
 
 
 def axiom_agent(state: LoaderState) -> dict:
@@ -317,6 +335,7 @@ def axiom_agent(state: LoaderState) -> dict:
         )
         # Stash used_apis on the object so connector_agent can access them
         decision.__dict__["used_apis"] = group.used_apis
+        decision.__dict__["requires_connector"] = group.requires_connector
 
         decisions.append(decision)
 
@@ -340,22 +359,36 @@ def axiom_agent(state: LoaderState) -> dict:
 
     console.print(table)
 
-    # ── AST rewrite ────────────────────────────────────────────────────────────
-    if replacements:
-        console.print("\n[bold]Patching imports:[/bold]")
-        for orig, repl in replacements.items():
+    # Decisions only — connector patches source; drop-in rewrites happen when connector is skipped.
+    patched_code = source_code
+    drop_in_replacements: dict[str, str] = {}
+    for d in decisions:
+        if d.winner == d.original:
+            continue
+        group = next((g for g in groups if g.role == d.role), None)
+        api_match = d.score.get("api_match", 0.0) if d.score else 0.0
+        needs_connector = bool(getattr(d, "requires_connector", False) or (group and group.requires_connector))
+        if api_match >= 0.95 and not needs_connector:
+            drop_in_replacements[d.original] = d.winner
+
+    if drop_in_replacements:
+        console.print("\n[bold]Drop-in import patches (no connector needed):[/bold]")
+        for orig, repl in drop_in_replacements.items():
             console.print(f"  [red]{orig}[/red]  →  [green]{repl}[/green]")
         try:
-            tree     = ast.parse(source_code)
-            new_tree = ImportRewriter(replacements).visit(tree)
-            ast.fix_missing_locations(new_tree)
-            patched_code = ast.unparse(new_tree)
+            patched_code = apply_import_replacements(source_code, drop_in_replacements)
         except Exception as e:
             console.print(f"[red]AST rewrite failed: {e}[/red]")
             patched_code = source_code
+    elif replacements:
+        console.print(
+            "\n[dim]Replacements deferred to connector agent "
+            "(preserving original call sites for analysis).[/dim]"
+        )
+        for orig, repl in replacements.items():
+            console.print(f"  [red]{orig}[/red]  →  [green]{repl}[/green]  [dim](pending)[/dim]")
     else:
         console.print("\n[green]All imports already optimal — no changes needed.[/green]")
-        patched_code = source_code
 
     # ── Save telemetry session ─────────────────────────────────────────────────
     trace.append(AgentEvent(
@@ -364,15 +397,32 @@ def axiom_agent(state: LoaderState) -> dict:
     ))
 
     try:
-        saved_id = save_session(
-            source_file=source_file,
-            decisions=decisions,
-            agent_trace=trace,
-            patched_code=patched_code,
-            llm_provider=provider,
-            model=model,
-        )
-        console.print(f"\n[dim]Session saved: {saved_id}[/dim]")
+        groups_by_role = {g.role: g for g in groups}
+        needs_connector = False
+        for d in decisions:
+            if d.winner == d.original:
+                continue
+            group = groups_by_role.get(d.role)
+            api_match = (d.score or {}).get("api_match", 1.0)
+            if (
+                getattr(d, "requires_connector", False)
+                or (group and group.requires_connector)
+                or api_match < 0.95
+            ):
+                needs_connector = True
+                break
+        if not needs_connector:
+            saved_id = save_session(
+                source_file=source_file,
+                decisions=decisions,
+                agent_trace=trace,
+                patched_code=patched_code,
+                llm_provider=provider,
+                model=model,
+            )
+            console.print(f"\n[dim]Session saved: {saved_id}[/dim]")
+        else:
+            console.print("\n[dim]Session save deferred to connector agent.[/dim]")
     except Exception as e:
         console.print(f"[yellow]Telemetry save failed: {e}[/yellow]")
 

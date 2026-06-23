@@ -3,53 +3,52 @@ core/graph.py
 ──────────────
 Builds the LangGraph StateGraph for AXIOM.
 
-INSPIRED BY CodeAugur's pipeline architecture:
-  CodeAugur has a multi-stage pipeline where deterministic checks run
-  BEFORE the expensive LLM stages. We mirror this exactly:
+PIPELINE:
 
-  CodeAugur:              AXIOM:
-  ─────────────────       ──────────────────────
-  [Emulator/Disasm]   →   [Parser Agent]
-  [Rules Engine]      →   [Rules Agent]       ← NEW (inspired by CodeAugur)
-  [Stage 1: tool_caller]→ [Resolver Agent]
-  [Stage 2: analyst]  →   [Profiler Agent]
-  [Stage 3: verdict]  →   [AXIOM Agent]
-
-  Conditional edges short-circuit the pipeline when possible:
-  - No imports found      → END immediately (parser)
-  - No equivalence groups → END after resolver (nothing to optimize)
+  CodeAugur analog        AXIOM node
+  ─────────────────────   ─────────────────────────────────────
+  [Emulator/Disasm]    →  [parser_agent]      deterministic AST walk
+  [Rules Engine]       →  [rules_agent]       is_installed, api_overlap, license
+                          [security_agent]    OSV CVE scan + PyPI freshness
+  [Stage 1 tool_caller]→  [resolver_agent]    LLM equivalence clustering
+  [Stage 2 analyst]    →  [profiler_agent]    subprocess import benchmarks
+  [Stage 3 verdict]    →  [axiom_agent]       weighted scoring + AST rewrite
+                          [connector_agent]   API adapter shim generation
 
 Graph topology:
 
-  [parser_agent]
-       │
-       ▼
-  [rules_agent]          ← deterministic, no LLM, filters unavailable packages
-       │
-       ▼
-  [resolver_agent]       ← LLM: semantic equivalence clustering
-       │
-       ├──(no groups)──► [END]
-       │
-       ▼
-  [profiler_agent]       ← subprocess benchmarking
-       │
-       ▼
-  [AXIOM agent]          ← LLM scoring + AST rewrite + telemetry
-       │
-       ▼
-      [END]
+  [parser]
+     │
+  [rules]      ← deterministic, no LLM
+     │
+  [security]   ← OSV + PyPI scan (parallel HTTP, no LLM)
+     │
+  [resolver]   ← LLM #1: semantic equivalence clustering
+     │
+     ├──(no groups)──► [END]
+     │
+  [profiler]   ← subprocess benchmarking
+     │
+  [axiom]      ← LLM #2: weighted scoring + AST rewrite
+     │
+  [connector]  ← LLM #3: generate API adapter shims (only when APIs are incompatible)
+     │
+    [END]
 """
 
 from __future__ import annotations
+import dataclasses
+import uuid
 from langgraph.graph import StateGraph, END
 
 from smart_loader.core.state import LoaderState
-from smart_loader.agents.parser_agent   import parser_agent
-from smart_loader.agents.rules_agent    import rules_agent
-from smart_loader.agents.resolver_agent import resolver_agent
-from smart_loader.agents.profiler_agent import profiler_agent
-from smart_loader.agents.axiom_agent    import axiom_agent
+from smart_loader.agents.parser_agent    import parser_agent
+from smart_loader.agents.rules_agent     import rules_agent
+from smart_loader.agents.resolver_agent  import resolver_agent
+from smart_loader.agents.profiler_agent  import profiler_agent
+from smart_loader.agents.axiom_agent     import axiom_agent
+from smart_loader.agents.security_agent  import security_agent
+from smart_loader.agents.connector_agent import connector_agent
 
 
 # ── Conditional edges ──────────────────────────────────────────────────────────
@@ -69,40 +68,145 @@ def _after_resolver(state: LoaderState) -> str:
         return "end"
     return "continue"
 
+def _after_axiom(state: LoaderState) -> str:
+    """Route to connector only when a replacement has genuinely incompatible APIs."""
+    from smart_loader.core.state import LoadDecision, EquivalenceGroup
+    
+    decisions: list[LoadDecision] = state.get("decisions", [])
+    equivalence_groups: list[EquivalenceGroup] = state.get("equivalence_groups", [])
+    
+    if not decisions:
+        return "end"
+    
+    # ✅ STRICT check: only connector if APIs are genuinely incompatible
+    for decision in decisions:
+        if decision.winner == decision.original:
+            continue  # No actual replacement
+        
+        # Find the corresponding group
+        group = None
+        for g in equivalence_groups:
+            if g.role == decision.role:
+                group = g
+                break
+        
+        if not group or not group.pitfalls:
+            continue
+        
+        # ✅ Check for GENUINE incompatibility (not just minor notes)
+        pitfalls_text = "\n".join(group.pitfalls).lower()
+        
+        # GENUINE incompatibilities that require adapters
+        genuine_incompatibilities = [
+            "returns bytes",          # orjson.dumps() returns bytes, not str
+            "return type",            # Different return type
+            "raises",                 # Different exceptions thrown
+            "not supported",          # Method doesn't exist
+            "does not have",          # Missing attribute
+            "does not support",       # Doesn't support keyword
+            "incompatible",           # Explicitly incompatible
+            "different signature",    # Function signature differs
+            "different parameters",   # Parameters differ
+            "keyword arguments",      # Keyword args not supported
+            "optional",               # Optional behavior differs
+        ]
+        
+        needs_connector = any(keyword in pitfalls_text for keyword in genuine_incompatibilities)
+        
+        if needs_connector:
+            return "connector"
+    
+    # No genuine incompatibilities — skip connector
+    return "end"
+
+
+# ── Security-aware resolver ────────────────────────────────────────────────────
+
+def _security_aware_resolver(state: dict) -> dict:
+    """
+    Wrapper around resolver_agent that annotates high-risk imports with their
+    CVE summary so the LLM can factor security posture into equivalence grouping.
+    Produces new ImportInfo copies — does not mutate shared state objects.
+    """
+    security_results = state.get("security_results", {})
+    if not security_results:
+        return resolver_agent(state)
+
+    annotated = []
+    for imp in state.get("imports", []):
+        pkg = imp.module.split(".")[0]
+        sec = security_results.get(pkg)
+        if sec and sec.risk_level in ("CRITICAL", "HIGH"):
+            cve_ids = [v.id for v in sec.vulnerabilities[:2]]
+            note    = f"[SECURITY:{sec.risk_level} CVEs:{','.join(cve_ids) or 'none'}]"
+            imp = dataclasses.replace(imp, api_calls=list(imp.api_calls) + [note])
+        annotated.append(imp)
+
+    return resolver_agent({**state, "imports": annotated})
+
 
 # ── Graph factory ──────────────────────────────────────────────────────────────
 
-def build_graph():
-    graph = StateGraph(dict)
+def build_graph(
+    enable_security:  bool = True,
+    enable_connector: bool = True,
+) -> object:
+    """
+    Build the AXIOM LangGraph pipeline.
 
-    # Register all 5 nodes
+    Parameters
+    ----------
+    enable_security  : include the OSV/PyPI security scan node
+    enable_connector : include the API adapter code-generation node
+    """
+    graph = StateGraph(LoaderState)
+
+    # ── Core nodes ─────────────────────────────────────────────────────────────
     graph.add_node("parser",   parser_agent)
     graph.add_node("rules",    rules_agent)
-    graph.add_node("resolver", resolver_agent)
     graph.add_node("profiler", profiler_agent)
     graph.add_node("axiom",    axiom_agent)
 
-    # Entry point
+    # ── Security node (optional) ───────────────────────────────────────────────
+    if enable_security:
+        graph.add_node("security", security_agent)
+        graph.add_node("resolver", _security_aware_resolver)
+    else:
+        graph.add_node("resolver", resolver_agent)
+
+    # ── Connector node (optional) ──────────────────────────────────────────────
+    if enable_connector:
+        graph.add_node("connector", connector_agent)
+
+    # ── Entry point ────────────────────────────────────────────────────────────
     graph.set_entry_point("parser")
 
-    # Parser → Rules OR END
     graph.add_conditional_edges(
         "parser", _after_parser,
-        {"continue": "rules", "end": END}
+        {"continue": "rules", "end": END},
     )
 
-    # Rules → Resolver (always — rules inform but don't stop the pipeline)
-    graph.add_edge("rules", "resolver")
+    if enable_security:
+        graph.add_edge("rules",    "security")
+        graph.add_edge("security", "resolver")
+    else:
+        graph.add_edge("rules", "resolver")
 
-    # Resolver → Profiler OR END
     graph.add_conditional_edges(
         "resolver", _after_resolver,
-        {"continue": "profiler", "end": END}
+        {"continue": "profiler", "end": END},
     )
 
-    # Profiler → AXIOM → END
     graph.add_edge("profiler", "axiom")
-    graph.add_edge("axiom",    END)
+
+    if enable_connector:
+        graph.add_conditional_edges(
+            "axiom", _after_axiom,
+            {"connector": "connector", "end": END},
+        )
+        graph.add_edge("connector", END)
+    else:
+        graph.add_edge("axiom", END)
 
     return graph.compile()
 
@@ -110,24 +214,43 @@ def build_graph():
 # ── Public runner ──────────────────────────────────────────────────────────────
 
 def run_loader(
-    source_file:  str,
-    llm_provider: str = "ollama",
-    model:        str = "qwen3-coder-next",
+    source_file:      str,
+    llm_provider:     str  = "ollama",
+    model:            str  = "qwen3-coder-next",
+    enable_security:  bool = True,
+    enable_connector: bool = True,
 ) -> dict:
-    graph = build_graph()
+    """
+    Run the full AXIOM pipeline on a Python source file.
+
+    Returns the final LangGraph state dict, which includes:
+      - imports, rule_results, security_results
+      - equivalence_groups, benchmarks
+      - decisions, patched_code, connectors
+      - agent_trace, messages
+    """
+    graph      = build_graph(
+        enable_security=enable_security,
+        enable_connector=enable_connector,
+    )
+    session_id = uuid.uuid4().hex[:8]
+
     return graph.invoke({
-        "source_file":       source_file,
-        "llm_provider":      llm_provider,
-        "model":             model,
-        "source_code":       "",
-        "imports":           [],
-        "rule_results":      [],
-        "equivalence_groups":[],
-        "benchmarks":        {},
-        "decisions":         [],
-        "patched_code":      "",
-        "agent_trace":       [],
-        "messages":          [],
-        "error":             None,
-        "done":              False,
+        "source_file":        source_file,
+        "llm_provider":       llm_provider,
+        "model":              model,
+        "_session_id":        session_id,
+        "source_code":        "",
+        "imports":            [],
+        "rule_results":       [],
+        "security_results":   {},
+        "equivalence_groups": [],
+        "benchmarks":         {},
+        "decisions":          [],
+        "patched_code":       "",
+        "connectors":         {},
+        "agent_trace":        [],
+        "messages":           [],
+        "error":              None,
+        "done":               False,
     })

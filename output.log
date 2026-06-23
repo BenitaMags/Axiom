@@ -10,221 +10,1524 @@
   Adaptive eXecution & Import Optimization Module
   Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
 
-╭───────────────────────────────────────── AXIOM — Run ─────────────────────────────────────────╮
-│ Target:    experiment_libs/json_experiment.py                                                 │
-│ LLM:       CLAUDE / claude-sonnet-4-6                                                         │
-│ Security:  ON                                                                                 │
-│ Connector: OFF                                                                                │
-│ Time:      2026-05-31 18:03:44                                                                │
-╰───────────────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────
-[DEBUG] source_file input = experiment_libs/json_experiment.py
-[DEBUG] resolved path = /Users/benz.mags/Desktop/axiom_v2/experiment_libs/json_experiment.py
-[DEBUG] exists? True
-[DEBUG] Read 1523 bytes
-[DEBUG] AST parsed successfully
-[DEBUG] Found 3 imports: ['json', 'ujson', 'orjson']
-                Discovered Imports                
-┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
-┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
-┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
-│   18 │ json   │ —     │ —     │ dumps, loads   │
-│   19 │ ujson  │ —     │ —     │ —              │
-│   20 │ orjson │ —     │ —     │ —              │
-└──────┴────────┴───────┴───────┴────────────────┘
+╭─────────────────────────────────────────────────────────────────── AXIOM — Multi-File Project Scan ───────────────────────────────────────────────────────────────────╮
+│ Project:   multiple_experiment                                                                                                                                        │
+│ Files:     5 matched                                                                                                                                                  │
+│ LLM:       CLAUDE / claude-sonnet-4-6                                                                                                                                 │
+│ Security:  ON                                                                                                                                                         │
+│ Connector: ON                                                                                                                                                         │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 
-✓ Found 3 imports
+→ api/main.py
+──────────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/api/main.py
+                                                Discovered Imports                                                
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                                                  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    8 │ time                  │ —     │ —                                                      │ —              │
+│    9 │ logging               │ —     │ —                                                      │ —              │
+│   10 │ json                  │ —     │ —                                                      │ —              │
+│   12 │ fastapi               │ —     │ —                                                      │ —              │
+│   13 │ fastapi               │ —     │ FastAPI, HTTPException, Depends                        │ —              │
+│   14 │ uvicorn               │ —     │ —                                                      │ run            │
+│   17 │ models.data_models    │ —     │ UserRecord, EventRecord, serialize_orjson, fingerprint │ —              │
+│   18 │ services.http_service │ —     │ HttpService                                            │ —              │
+│   19 │ utils.crypto_utils    │ —     │ sha256_digest, xxhash_fast, secure_token               │ —              │
+│   20 │ config.settings       │ —     │ get_all_settings                                       │ —              │
+│   23 │ structlog             │ —     │ —                                                      │ get_logger     │
+│   24 │ loguru                │ —     │ —                                                      │ —              │
+└──────┴───────────────────────┴───────┴────────────────────────────────────────────────────────┴────────────────┘
 
-──────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────
-─────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────
-                                          Rule Results                                           
-┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                 ┃
-┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ json    │ is_installed        │  PASS   │ HIGH       │ message=json is installed and          │
-│         │                     │         │            │ importable                             │
-│ json    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json     │
-│ json    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
-│         │                     │         │            │ for json                               │
-│ json    │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.429,             │
-│         │                     │         │            │ shared_names=['JSONDecodeError',       │
-│         │                     │         │            │ '__doc__', '__file__', '__loader__',   │
-│         │                     │         │            │ '__name__', '__package__', '__spec__', │
-│         │                     │         │            │ '__version__', 'dump', 'dumps']        │
-│ ujson   │ is_installed        │  PASS   │ HIGH       │ message=ujson is installed and         │
-│         │                     │         │            │ importable                             │
-│ ujson   │ has_metadata        │  PASS   │ MEDIUM     │ version=5.12.1, license=BSD-3-Clause   │
-│         │                     │         │            │ AND TCL                                │
-│ ujson   │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd-3-clause and tcl,          │
-│         │                     │         │            │ permissive=True                        │
-│ ujson   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.429,             │
-│         │                     │         │            │ shared_names=['JSONDecodeError',       │
-│         │                     │         │            │ '__doc__', '__file__', '__loader__',   │
-│         │                     │         │            │ '__name__', '__package__', '__spec__', │
-│         │                     │         │            │ '__version__', 'dump', 'dumps']        │
-│ orjson  │ is_installed        │  PASS   │ HIGH       │ message=orjson is installed and        │
-│         │                     │         │            │ importable                             │
-│ orjson  │ has_metadata        │  PASS   │ MEDIUM     │ version=3.11.9, license=unknown        │
-│ orjson  │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False             │
-│ orjson  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.326,             │
-│         │                     │         │            │ shared_names=['JSONDecodeError',       │
-│         │                     │         │            │ '__all__', '__builtins__',             │
-│         │                     │         │            │ '__cached__', '__doc__', '__file__',   │
-│         │                     │         │            │ '__loader__', '__name__',              │
-│         │                     │         │            │ '__package__', '__path__']             │
-└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────┘
+✓ Found 12 imports
 
-✓ Rules engine: 12 checks across 3 packages
+──────────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────────────────────────────────────
+                                                                              Rule Results                                                                               
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                                       ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ fastapi   │ is_installed        │  PASS   │ HIGH       │ message=fastapi is installed and importable                                                                  │
+│ fastapi   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.136.1, license=unknown                                                                             │
+│ fastapi   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                                   │
+│ fastapi   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'structlog'                                                                          │
+│ structlog │ is_installed        │  FAIL   │ HIGH       │ message=structlog is not installed                                                                           │
+│ structlog │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for structlog                                                                      │
+│ structlog │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for structlog                                                          │
+│ structlog │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'structlog'                                                                          │
+│ models    │ is_installed        │  FAIL   │ HIGH       │ message=models is not installed                                                                              │
+│ models    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for models                                                                         │
+│ models    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for models                                                             │
+│ models    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'models'                                                                             │
+│ config    │ is_installed        │  FAIL   │ HIGH       │ message=config is not installed                                                                              │
+│ config    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for config                                                                         │
+│ config    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for config                                                             │
+│ config    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                                                                             │
+│ uvicorn   │ is_installed        │  PASS   │ HIGH       │ message=uvicorn is installed and importable                                                                  │
+│ uvicorn   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.47.0, license=unknown                                                                              │
+│ uvicorn   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                                   │
+│ uvicorn   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.188, shared_names=['__builtins__', '__cached__', '__doc__', '__file__', '__loader__',  │
+│           │                     │         │            │ '__name__', '__package__', '__path__', '__spec__', '__version__']                                            │
+│ utils     │ is_installed        │  FAIL   │ HIGH       │ message=utils is not installed                                                                               │
+│ utils     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for utils                                                                          │
+│ utils     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for utils                                                              │
+│ utils     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                                                                              │
+│ loguru    │ is_installed        │  FAIL   │ HIGH       │ message=loguru is not installed                                                                              │
+│ loguru    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for loguru                                                                         │
+│ loguru    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for loguru                                                             │
+│ loguru    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'loguru'                                                                             │
+│ logging   │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable                                                                  │
+│ logging   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging                                                                        │
+│ logging   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging                                                            │
+│ logging   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.065, shared_names=['__builtins__', '__cached__', '__doc__', '__file__', '__loader__',  │
+│           │                     │         │            │ '__name__', '__package__', '__path__', '__spec__', '__version__']                                            │
+│ json      │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                                     │
+│ json      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                                           │
+│ json      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                                               │
+│ json      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.147, shared_names=['__builtins__', '__cached__', '__doc__', '__file__', '__loader__',  │
+│           │                     │         │            │ '__name__', '__package__', '__path__', '__spec__', '__version__']                                            │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable                                                                     │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                                                                           │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time                                                               │
+│ time      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.056, shared_names=['__doc__', '__loader__', '__name__', '__package__', '__spec__']     │
+│ services  │ is_installed        │  FAIL   │ HIGH       │ message=services is not installed                                                                            │
+│ services  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for services                                                                       │
+│ services  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for services                                                           │
+│ services  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'services'                                                                           │
+└───────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-All packages installed and available
-─────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────
-Scanning 3 package(s) via OSV + PyPI...
+✓ Rules engine: 44 checks across 11 packages
 
-                                      Security Scan Results                                      
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                    ┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ujson   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y    │
-│         │         │      │      │            │           │         │ 4mo                      │
-│ json    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y    │
-│         │         │      │      │            │           │         │ 4mo                      │
-│ orjson  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y    │
-│         │         │      │      │            │           │         │ 4mo                      │
-└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴──────────────────────────┘
+Disqualified (not installed): structlog, models, config, utils, loguru, services
+─────────────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────────────
+Scanning 11 package(s) via OSV + PyPI...
+
+                                       Security Scan Results                                        
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ config    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ structlog │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ uvicorn   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
 
 ✓ No critical vulnerabilities found
-─────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────────────
 Querying CLAUDE / claude-sonnet-4-6...
-Tokens — input: 1,104  output: 459  latency: 10497ms
+Tokens — input: 1,486  output: 4  latency: 1130ms
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+
+→ config/settings.py
+──────────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/config/settings.py
+                    Discovered Imports                    
+┏━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module       ┃ Alias   ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    7 │ os           │ —       │ —     │ getenv         │
+│    8 │ json         │ —       │ —     │ —              │
+│    9 │ configparser │ —       │ —     │ ConfigParser   │
+│   13 │ tomllib      │ —       │ —     │ load           │
+│   15 │ tomli        │ tomllib │ —     │ load           │
+│   18 │ dotenv       │ —       │ —     │ load_dotenv    │
+│   24 │ yaml         │ —       │ —     │ safe_load      │
+└──────┴──────────────┴─────────┴───────┴────────────────┘
+
+✓ Found 7 imports
+
+──────────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────────────────────────────────────
+                                                                              Rule Results                                                                               
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                                    ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ tomllib      │ is_installed        │  PASS   │ HIGH       │ message=tomllib is installed and importable                                                               │
+│ tomllib      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tomllib                                                                     │
+│ tomllib      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tomllib                                                         │
+│ tomllib      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.345, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',  │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__']                                          │
+│ dotenv       │ is_installed        │  PASS   │ HIGH       │ message=dotenv is installed and importable                                                                │
+│ dotenv       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for dotenv                                                                      │
+│ dotenv       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for dotenv                                                          │
+│ dotenv       │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.345, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',  │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__']                                          │
+│ json         │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                                  │
+│ json         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                                        │
+│ json         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                                            │
+│ json         │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.4, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',    │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__']                                          │
+│ os           │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                                                    │
+│ os           │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                                                          │
+│ os           │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                                              │
+│ os           │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.025, shared_names=['__all__', '__builtins__', '__doc__', '__file__', '__loader__',  │
+│              │                     │         │            │ '__name__', '__package__', '__spec__']                                                                    │
+│ configparser │ is_installed        │  PASS   │ HIGH       │ message=configparser is installed and importable                                                          │
+│ configparser │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for configparser                                                                │
+│ configparser │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for configparser                                                    │
+│ configparser │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.188, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',  │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                                      │
+│ yaml         │ is_installed        │  PASS   │ HIGH       │ message=yaml is installed and importable                                                                  │
+│ yaml         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for yaml                                                                        │
+│ yaml         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for yaml                                                            │
+│ yaml         │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.082, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',             │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__', 'load']                                  │
+│ tomli        │ is_installed        │  FAIL   │ HIGH       │ message=tomli is not installed                                                                            │
+│ tomli        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tomli                                                                       │
+│ tomli        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tomli                                                           │
+│ tomli        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                                                                           │
+└──────────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 28 checks across 7 packages
+
+Disqualified (not installed): tomli
+─────────────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────────────
+Scanning 7 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                         
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ dotenv       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ yaml         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tomllib      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ os           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tomli        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ configparser │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└──────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Tokens — input: 1,252  output: 904  latency: 17567ms
 Equivalence Groups Found
-└── JSON serialization and deserialization
-    ├── Candidates : json, ujson, orjson
-    ├── Used APIs  : dumps, loads
-    ├── Pitfalls   : orjson.dumps() returns bytes, not str — callers expecting str must decode: 
-    │   orjson.dumps(obj).decode(); orjson does not support the 'indent' keyword argument in the 
-    │   same way; use orjson.OPT_INDENT_2 option flag instead: orjson.dumps(obj, 
-    │   option=orjson.OPT_INDENT_2); ujson silently drops some edge cases differently than stdlib
-    │   json (e.g. NaN/Infinity handling differs); orjson is stricter about types — it rejects 
-    │   non-serializable types that json would handle via default= hooks; ujson's dumps() does 
-    │   not support all keyword arguments of stdlib json.dumps() (e.g. 'separators', 'sort_keys' 
-    │   behavior may differ); orjson.loads() accepts bytes, bytearray, memoryview, or str; stdlib
-    │   json.loads() accepts str or bytes — generally compatible but worth verifying input types;
-    │   Switching from json to orjson/ujson may affect float precision representation in edge 
-    │   cases
-    └── All three libraries provide JSON encoding (dumps) and decoding (loads) with largely 
-        compatible interfaces. json is the Python stdlib baseline; ujson is a C extension 
-        offering 2-3x faster serialization; orjson is Rust-based and typically the fastest of the
-        three. All three can substitute for each other for the basic dumps/loads use case 
-        demonstrated in this code.
+└── Environment variable / .env file loader
+    ├── Candidates : dotenv, os
+    ├── Used APIs  : load_dotenv, getenv
+    ├── Pitfalls   : os.getenv alone cannot read .env files — removing dotenv means .env values must be exported in the shell environment manually; dotenv.load_dotenv() 
+    │   silently does nothing if .env file is absent; os.getenv fallback defaults must be maintained; python-dotenv package is imported as 'dotenv' but installed as 
+    │   'python-dotenv' — pip install name differs from import name; Variable precedence: load_dotenv() by default does NOT override already-set environment variables; 
+    │   use override=True if needed
+    └── dotenv.load_dotenv() populates os.environ from a .env file, after which os.getenv() reads those values. Together they form a complementary pair for 
+        environment-based configuration. While not direct substitutes (dotenv handles file parsing, os handles runtime env access), they serve the same overall role of 
+        supplying runtime configuration via environment variables and are always used together in this pattern.
 
 ✓ 1 equivalence group(s) found
 
-─────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────
-Probing 3 package(s) across 1 group(s)...
+──────────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────────────────────────
+All candidate packages already scanned.
 
-⠋ ✓ json  
-⠋ ✓ ujson 
-⠋ ✓ orjson
-                           Benchmark Results                            
-┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
-┃ Package ┃ Available ┃ Avg Import Time (3 runs) ┃ Memory (KB) ┃ Notes ┃
-┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
-│ ujson   │     ✓     │                   1.0 ms │           2 │       │
-│ json    │     ✓     │                   1.8 ms │          88 │       │
-│ orjson  │     ✓     │                   9.2 ms │           7 │       │
-└─────────┴───────────┴──────────────────────────┴─────────────┴───────┘
+─────────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
 
-✓ Profiled 3 package(s), 3 available
+⠙ ✓ os    
+⠙ ✓ dotenv
+                              Benchmark Results                              
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ os      │     ✓     │          0.4 ms │           — │          31 │       │
+│ dotenv  │     ✓     │         11.6 ms │           — │          96 │       │
+└─────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
 
-────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────
-Provider: CLAUDE / claude-sonnet-4-6  |  Session: 3dbf2766
-  API compat tokens — input: 131  output: 30  latency: 1397ms
-                                  AXIOM Optimization Decisions                                   
-┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
-┃ Role                    ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
-│ JSON serialization and  │ json     │ ujson  │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.9 │ 0.937 │
-│ deserialization         │          │        │       │       │        │          │     │       │
-└─────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
 
-Patching imports:
-  json  →  ujson
+────────────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: bfb6529a
+  API compat tokens — input: 245  output: 68  latency: 1633ms
+                                          AXIOM Optimization Decisions                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                                    ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ Environment variable / .env file loader │ dotenv   │ os     │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.5 │ 0.877 │
+└─────────────────────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
 
-Session saved: 78f21745
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  dotenv  →  os  (pending)
+
+Session save deferred to connector agent.
 
 ✓ AXIOM complete — 1 decision(s)
 
-──────────────────────────────────── ── Security Summary ── ─────────────────────────────────────
-┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Package ┃ Version ┃ Risk ┃ CVEs ┃ Score ┃ Notes                     ┃
-┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ujson   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
-│ json    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
-│ orjson  │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
-└─────────┴─────────┴──────┴──────┴───────┴───────────────────────────┘
-───────────────────────────────── ── Optimization Decisions ── ──────────────────────────────────
-┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Role                    ┃ Original ┃ Winner ┃ Confidence ┃ Security ┃ Rationale               ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ JSON serialization and  │ json     │ ujson  │ HIGH       │ 0.76     │ 'ujson' wins 'JSON      │
-│ deserialization         │          │        │            │          │ serialization and       │
-│                         │          │        │            │          │ deserialization'.       │
-│                         │          │        │            │          │ Confidence: HIG...      │
-└─────────────────────────┴──────────┴────────┴────────────┴──────────┴─────────────────────────┘
-───────────────────────────────────── ── Patched Source ── ──────────────────────────────────────
-   1 """                                                                                         
-   2 experiment_libs/json_experiment.py                                                          
-   3 ────────────────────────────────────                                                        
-   4 Experiment file: JSON serializers                                                           
-   5                                                                                             
-   6 Tests AXIOM's ability to detect that json, ujson, and orjson                                
-   7 all serve the same role (JSON serialization) and pick the fastest.                          
-   8                                                                                             
-   9 Packages involved:                                                                          
-  10   - json    : Python stdlib, always available, slowest (~3ms import)                        
-  11   - ujson   : UltraJSON, C extension, 2-3x faster serialization                             
-  12   - orjson  : Rust-based, fastest JSON library for Python (~10ms import)                    
-  13                                                                                             
-  14 AXIOM should detect: json ≡ ujson ≡ orjson (same role)                                      
-  15 Expected winner: orjson or ujson (faster import + faster serialization)                     
-  16 """                                                                                         
-  17 import ujson                                                                                
-  18 import orjson                                                                               
-  19                                                                                             
-  20 def serialize_json(data: dict) -> str:                                                      
-  21     """Serialize a Python dict to JSON string using stdlib."""                              
-  22     return ujson.dumps(data, indent=2)                                                      
-  23                                                                                             
-  24 def deserialize_json(text: str) -> dict:                                                    
-  25     """Deserialize a JSON string to Python dict using stdlib."""                            
-  26     return ujson.loads(text)                                                                
-  27                                                                                             
-  28 def serialize_list_json(items: list) -> str:                                                
-  29     """Serialize a list to JSON."""                                                         
-  30     return ujson.dumps(items)                                                               
-  31 if __name__ == '__main__':                                                                  
-  32     sample = {'name': 'Alice', 'age': 30, 'scores': [1, 2, 3], 'active': True}              
-  33     print('JSON experiment:')                                                               
-  34     print(f'  json   → {serialize_json(sample)[:40]}...')                                   
-  35     times = benchmark_all(sample)                                                           
-  36     for lib, ms in times.items():                                                           
-  37         print(f'  {lib:8s} → {ms:.1f}ms for 1000 serializations')                           
-───────────────────────────────── ── Token Usage (this run) ── ──────────────────────────────────
-  resolver                   in= 6,624  out=2,948  calls=6
-  axiom                      in=   786  out=  180  calls=6
-  connector                  in= 3,555  out=7,040  calls=4
-  connector_transform        in= 2,693  out=1,830  calls=4
-  TOTAL                      in=13,658  out=11,998
-─────────────────────────────────────── ── Agent Trace ── ───────────────────────────────────────
-   started
-   completed
-   started
-   completed
-   started
-   completed
-   started
-   completed
-   started
-   completed
-   started
-   completed
+────────────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ──────────────────────────────────────────────────────────────
+
+Analyzing: dotenv → os
+  Found 1 call site(s):
+    L19: dotenv.load_dotenv()
+  Tokens — in:1,094 out:1,123 latency:19002ms
+
+  Compatibility analysis:
+    ✗ L19: dotenv.load_dotenv()  — os has no equivalent of load_dotenv(). dotenv.load_dotenv() reads a .env file fr
+
+  Generated 1 wrapper(s):
+    _load_dotenv_wrapper  replaces: dotenv.load_dotenv()
+╭──────────────────────────────────────────────────────────────────────── _load_dotenv_wrapper ─────────────────────────────────────────────────────────────────────────╮
+│    1 def _load_dotenv_wrapper(dotenv_path: str = ".env", override: bool = False) -> bool:                                                                             │
+│    2     """                                                                                                                                                          │
+│    3     Drop-in stdlib replacement for dotenv.load_dotenv().                                                                                                         │
+│    4                                                                                                                                                                  │
+│    5     Original package (python-dotenv)                                                                                                                             │
+│    6     --------------------------------                                                                                                                             │
+│    7     dotenv.load_dotenv() parsed a .env file (defaulting to the nearest .env                                                                                      │
+│    8     file walking up from the current working directory), then injected every                                                                                     │
+│    9     KEY=VALUE pair it found into os.environ.  By default it did NOT override                                                                                     │
+│   10     variables that were already set in the environment (override=False).                                                                                         │
+│   11     It returned True if a .env file was found and parsed, False otherwise,                                                                                       │
+│   12     and silently did nothing when the file was absent.                                                                                                           │
+│   13                                                                                                                                                                  │
+│   14     New package (os — stdlib only)                                                                                                                               │
+│   15     ------------------------------                                                                                                                               │
+│   16     os has no file-parsing capability for .env files.  This wrapper replicates                                                                                   │
+│   17     the essential behaviour using only stdlib:                                                                                                                   │
+│   18       1. Attempts to open `dotenv_path` (default: ".env" in the current working                                                                                  │
+│   19          directory, matching python-dotenv's most common usage).                                                                                                 │
+│   20       2. Skips blank lines and comment lines (starting with '#').                                                                                                │
+│   21       3. Strips an optional leading 'export ' keyword.                                                                                                           │
+│   22       4. Splits each line on the first '=' to obtain KEY and VALUE.                                                                                              │
+│   23       5. Strips surrounding whitespace and matched quote characters from VALUE.                                                                                  │
+│   24       6. Calls os.environ.setdefault(key, value) when override=False (preserves                                                                                  │
+│   25          existing env vars, matching python-dotenv's default behaviour), or                                                                                      │
+│   26          os.environ[key] = value when override=True.                                                                                                             │
+│   27       7. Returns True if the file was found and processed, False if absent —                                                                                     │
+│   28          matching python-dotenv's return value contract.                                                                                                         │
+│   29                                                                                                                                                                  │
+│   30     Transformation applied                                                                                                                                       │
+│   31     ----------------------                                                                                                                                       │
+│   32     No external dependency is required.  The .env file must still exist on                                                                                       │
+│   33     disk (or be exported in the shell) — this wrapper cannot conjure values                                                                                      │
+│   34     from nowhere.  Complex python-dotenv features (variable interpolation,                                                                                       │
+│   35     multi-line values, POSIX quoting edge-cases) are NOT replicated; for                                                                                         │
+│   36     production use consider keeping python-dotenv installed.                                                                                                     │
+│   37     """                                                                                                                                                          │
+│   38     import os                                                                                                                                                    │
+│   39                                                                                                                                                                  │
+│   40     try:                                                                                                                                                         │
+│   41         with open(dotenv_path) as _fh:                                                                                                                           │
+│   42             lines = _fh.readlines()                                                                                                                              │
+│   43     except FileNotFoundError:                                                                                                                                    │
+│   44         return False                                                                                                                                             │
+│   45                                                                                                                                                                  │
+│   46     for raw_line in lines:                                                                                                                                       │
+│   47         line = raw_line.strip()                                                                                                                                  │
+│   48                                                                                                                                                                  │
+│   49         # Skip blank lines and comments                                                                                                                          │
+│   50         if not line or line.startswith("#"):                                                                                                                     │
+│   51             continue                                                                                                                                             │
+│   52                                                                                                                                                                  │
+│   53         # Strip optional leading 'export '                                                                                                                       │
+│   54         if line.startswith("export "):                                                                                                                           │
+│   55             line = line[len("export "):].strip()                                                                                                                 │
+│   56                                                                                                                                                                  │
+│   57         # Must contain '=' to be a valid assignment                                                                                                              │
+│   58         if "=" not in line:                                                                                                                                      │
+│   59             continue                                                                                                                                             │
+│   60                                                                                                                                                                  │
+│   61         key, _, value = line.partition("=")                                                                                                                      │
+│   62         key = key.strip()                                                                                                                                        │
+│   63         value = value.strip()                                                                                                                                    │
+│   64                                                                                                                                                                  │
+│   65         # Strip matching surrounding quotes (' or ")                                                                                                             │
+│   66         if len(value) >= 2 and value[0] in ('"', "'") and value[-1] == value[0]:                                                                                 │
+│   67             value = value[1:-1]                                                                                                                                  │
+│   68                                                                                                                                                                  │
+│   69         if not key:                                                                                                                                              │
+│   70             continue                                                                                                                                             │
+│   71                                                                                                                                                                  │
+│   72         if override:                                                                                                                                             │
+│   73             os.environ[key] = value                                                                                                                              │
+│   74         else:                                                                                                                                                    │
+│   75             os.environ.setdefault(key, value)                                                                                                                    │
+│   76                                                                                                                                                                  │
+│   77     return True                                                                                                                                                  │
+│   78                                                                                                                                                                  │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  Applying AST-based inline replacement...
+  ✓ AST-based replacement applied (1 matches)
+
+Session saved: bfb6529a
+╭──────────────────────────────────────────────────────────────── Patched Source (with inline adapters) ────────────────────────────────────────────────────────────────╮
+│     1 """                                                                                                                                                             │
+│     2 config/settings.py                                                                                                                                              │
+│     3 ───────────────────                                                                                                                                             │
+│     4 Application configuration loader.                                                                                                                               │
+│     5 Uses multiple config-parsing libraries — AXIOM target: tomllib vs toml vs configparser                                                                          │
+│     6 """                                                                                                                                                             │
+│     7 import os                                                                                                                                                       │
+│     8 import json                                                                                                                                                     │
+│     9 import configparser                                                                                                                                             │
+│    10                                                                                                                                                                 │
+│    11 # Third-party config parsers — all doing the same job                                                                                                           │
+│    12 try:                                                                                                                                                            │
+│    13     import tomllib          # stdlib Python 3.11+                                                                                                               │
+│    14 except ImportError:                                                                                                                                             │
+│    15     import tomli as tomllib  # backport                                                                                                                         │
+│    16                                                                                                                                                                 │
+│    17 try:                                                                                                                                                            │
+│    18     import dotenv                                                                                                                                               │
+│    19     _load_dotenv_wrapper()                                                                                                                                      │
+│    20 except ImportError:                                                                                                                                             │
+│    21     pass                                                                                                                                                        │
+│    22                                                                                                                                                                 │
+│    23 # YAML config — PyYAML vs ruamel.yaml                                                                                                                           │
+│    24 import yaml                                                                                                                                                     │
+│    25                                                                                                                                                                 │
+│    26                                                                                                                                                                 │
+│    27 # ──────────────────────────────────────────────────────────────────────                                                                                        │
+│    28 # AXIOM CONNECTOR: dotenv → os                                                                                                                                  │
+│    29 # The following functions bridge API incompatibilities between                                                                                                  │
+│    30 # dotenv and os. They are injected by the AXIOM                                                                                                                 │
+│    31 # connector agent and called in place of the original API.                                                                                                      │
+│    32 # ──────────────────────────────────────────────────────────────────────                                                                                        │
+│    33 def _load_dotenv_wrapper(dotenv_path: str = ".env", override: bool = False) -> bool:                                                                            │
+│    34     """                                                                                                                                                         │
+│    35     Drop-in stdlib replacement for dotenv.load_dotenv().                                                                                                        │
+│    36                                                                                                                                                                 │
+│    37     Original package (python-dotenv)                                                                                                                            │
+│    38     --------------------------------                                                                                                                            │
+│    39     dotenv.load_dotenv() parsed a .env file (defaulting to the nearest .env                                                                                     │
+│    40     file walking up from the current working directory), then injected every                                                                                    │
+│    41     KEY=VALUE pair it found into os.environ.  By default it did NOT override                                                                                    │
+│    42     variables that were already set in the environment (override=False).                                                                                        │
+│    43     It returned True if a .env file was found and parsed, False otherwise,                                                                                      │
+│    44     and silently did nothing when the file was absent.                                                                                                          │
+│    45                                                                                                                                                                 │
+│    46     New package (os — stdlib only)                                                                                                                              │
+│    47     ------------------------------                                                                                                                              │
+│    48     os has no file-parsing capability for .env files.  This wrapper replicates                                                                                  │
+│    49     the essential behaviour using only stdlib:                                                                                                                  │
+│    50       1. Attempts to open `dotenv_path` (default: ".env" in the current working                                                                                 │
+│    51          directory, matching python-dotenv's most common usage).                                                                                                │
+│    52       2. Skips blank lines and comment lines (starting with '#').                                                                                               │
+│    53       3. Strips an optional leading 'export ' keyword.                                                                                                          │
+│    54       4. Splits each line on the first '=' to obtain KEY and VALUE.                                                                                             │
+│    55       5. Strips surrounding whitespace and matched quote characters from VALUE.                                                                                 │
+│    56       6. Calls os.environ.setdefault(key, value) when override=False (preserves                                                                                 │
+│    57          existing env vars, matching python-dotenv's default behaviour), or                                                                                     │
+│    58          os.environ[key] = value when override=True.                                                                                                            │
+│    59       7. Returns True if the file was found and processed, False if absent —                                                                                    │
+│    60          matching python-dotenv's return value contract.                                                                                                        │
+│    61                                                                                                                                                                 │
+│    62     Transformation applied                                                                                                                                      │
+│    63     ----------------------                                                                                                                                      │
+│    64     No external dependency is required.  The .env file must still exist on                                                                                      │
+│    65     disk (or be exported in the shell) — this wrapper cannot conjure values                                                                                     │
+│    66     from nowhere.  Complex python-dotenv features (variable interpolation,                                                                                      │
+│    67     multi-line values, POSIX quoting edge-cases) are NOT replicated; for                                                                                        │
+│    68     production use consider keeping python-dotenv installed.                                                                                                    │
+│    69     """                                                                                                                                                         │
+│    70     import os                                                                                                                                                   │
+│    71                                                                                                                                                                 │
+│    72     try:                                                                                                                                                        │
+│    73         with open(dotenv_path) as _fh:                                                                                                                          │
+│    74             lines = _fh.readlines()                                                                                                                             │
+│    75     except FileNotFoundError:                                                                                                                                   │
+│    76         return False                                                                                                                                            │
+│    77                                                                                                                                                                 │
+│    78     for raw_line in lines:                                                                                                                                      │
+│    79         line = raw_line.strip()                                                                                                                                 │
+│    80                                                                                                                                                                 │
+│    81         # Skip blank lines and comments                                                                                                                         │
+│    82         if not line or line.startswith("#"):                                                                                                                    │
+│    83             continue                                                                                                                                            │
+│    84                                                                                                                                                                 │
+│    85         # Strip optional leading 'export '                                                                                                                      │
+│    86         if line.startswith("export "):                                                                                                                          │
+│    87             line = line[len("export "):].strip()                                                                                                                │
+│    88                                                                                                                                                                 │
+│    89         # Must contain '=' to be a valid assignment                                                                                                             │
+│    90         if "=" not in line:                                                                                                                                     │
+│    91             continue                                                                                                                                            │
+│    92                                                                                                                                                                 │
+│    93         key, _, value = line.partition("=")                                                                                                                     │
+│    94         key = key.strip()                                                                                                                                       │
+│    95         value = value.strip()                                                                                                                                   │
+│    96                                                                                                                                                                 │
+│    97         # Strip matching surrounding quotes (' or ")                                                                                                            │
+│    98         if len(value) >= 2 and value[0] in ('"', "'") and value[-1] == value[0]:                                                                                │
+│    99             value = value[1:-1]                                                                                                                                 │
+│   100                                                                                                                                                                 │
+│   101         if not key:                                                                                                                                             │
+│   102             continue                                                                                                                                            │
+│   103                                                                                                                                                                 │
+│   104         if override:                                                                                                                                            │
+│   105             os.environ[key] = value                                                                                                                             │
+│   106         else:                                                                                                                                                   │
+│   107             os.environ.setdefault(key, value)                                                                                                                   │
+│   108                                                                                                                                                                 │
+│   109     return True                                                                                                                                                 │
+│   110                                                                                                                                                                 │
+│   111                                                                                                                                                                 │
+│   112                                                                                                                                                                 │
+│   113 APP_ENV  = os.getenv("APP_ENV", "development")                                                                                                                  │
+│   114 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")                                                                                                                      │
+│   115 DB_URL    = os.getenv("DB_URL", "sqlite:///app.db")                                                                                                             │
+│   116                                                                                                                                                                 │
+│   117                                                                                                                                                                 │
+│   118 def load_toml_config(path: str) -> dict:                                                                                                                        │
+│   119     with open(path, "rb") as f:                                                                                                                                 │
+│   120         return tomllib.load(f)                                                                                                                                  │
+│   121                                                                                                                                                                 │
+│   122                                                                                                                                                                 │
+│   123 def load_yaml_config(path: str) -> dict:                                                                                                                        │
+│   124     with open(path) as f:                                                                                                                                       │
+│   125         return yaml.safe_load(f)                                                                                                                                │
+│   126                                                                                                                                                                 │
+│   127                                                                                                                                                                 │
+│   128 def load_ini_config(path: str) -> configparser.ConfigParser:                                                                                                    │
+│   129     cfg = configparser.ConfigParser()                                                                                                                           │
+│   130     cfg.read(path)                                                                                                                                              │
+│   131     return cfg                                                                                                                                                  │
+│   132                                                                                                                                                                 │
+│   133                                                                                                                                                                 │
+│   134 def get_all_settings() -> dict:                                                                                                                                 │
+│   135     return {                                                                                                                                                    │
+│   136         "env":       APP_ENV,                                                                                                                                   │
+│   137         "log_level": LOG_LEVEL,                                                                                                                                 │
+│   138         "db_url":    DB_URL,                                                                                                                                    │
+│   139     }                                                                                                                                                           │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+
+→ models/data_models.py
+──────────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/models/data_models.py
+                                    Discovered Imports                                    
+┏━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module      ┃ Alias ┃ Names                       ┃ API Calls Used              ┃
+┡━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    7 │ json        │ —     │ —                           │ —                           │
+│    8 │ pickle      │ —     │ —                           │ dumps                       │
+│    9 │ hashlib     │ —     │ —                           │ sha256                      │
+│   10 │ dataclasses │ —     │ dataclass, field, asdict    │ —                           │
+│   11 │ typing      │ —     │ Optional                    │ —                           │
+│   14 │ pydantic    │ —     │ —                           │ —                           │
+│   15 │ pydantic    │ —     │ BaseModel, Field, validator │ —                           │
+│   18 │ msgpack     │ —     │ —                           │ packb, unpackb              │
+│   19 │ orjson      │ —     │ —                           │ OPT_SORT_KEYS, dumps, loads │
+└──────┴─────────────┴───────┴─────────────────────────────┴─────────────────────────────┘
+
+✓ Found 9 imports
+
+──────────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────────────────────────────────────
+                                                    Rule Results                                                    
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ msgpack     │ is_installed        │  FAIL   │ HIGH       │ message=msgpack is not installed                      │
+│ msgpack     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for msgpack                 │
+│ msgpack     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for msgpack     │
+│ msgpack     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ dataclasses │ is_installed        │  PASS   │ HIGH       │ message=dataclasses is installed and importable       │
+│ dataclasses │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for dataclasses             │
+│ dataclasses │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for dataclasses │
+│ dataclasses │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ orjson      │ is_installed        │  PASS   │ HIGH       │ message=orjson is installed and importable            │
+│ orjson      │ has_metadata        │  PASS   │ MEDIUM     │ version=3.11.7, license=unknown                       │
+│ orjson      │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                            │
+│ orjson      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ pydantic    │ is_installed        │  PASS   │ HIGH       │ message=pydantic is installed and importable          │
+│ pydantic    │ has_metadata        │  PASS   │ MEDIUM     │ version=2.12.5, license=unknown                       │
+│ pydantic    │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                            │
+│ pydantic    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ json        │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable              │
+│ json        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                    │
+│ json        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json        │
+│ json        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ pickle      │ is_installed        │  PASS   │ HIGH       │ message=pickle is installed and importable            │
+│ pickle      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for pickle                  │
+│ pickle      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for pickle      │
+│ pickle      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ hashlib     │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable           │
+│ hashlib     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                 │
+│ hashlib     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib     │
+│ hashlib     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+│ typing      │ is_installed        │  PASS   │ HIGH       │ message=typing is installed and importable            │
+│ typing      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for typing                  │
+│ typing      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for typing      │
+│ typing      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                     │
+└─────────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────┘
+
+✓ Rules engine: 32 checks across 8 packages
+
+Disqualified (not installed): msgpack
+─────────────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────────────
+Scanning 8 package(s) via OSV + PyPI...
+
+                                        Security Scan Results                                         
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ pickle      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ dataclasses │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ msgpack     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hashlib     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ pydantic    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ typing      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ orjson      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Tokens — input: 1,505  output: 1,065  latency: 20091ms
+Equivalence Groups Found
+├── JSON serialization/deserialization (fast binary-compatible)
+│   ├── Candidates : json, orjson
+│   ├── Used APIs  : orjson.dumps, orjson.loads, orjson.OPT_SORT_KEYS
+│   ├── Pitfalls   : orjson.dumps returns bytes, not str — json.dumps returns str; callers must decode if switching to json; orjson.loads accepts 
+│   │   bytes/bytearray/memoryview/str; json.loads is more permissive with str but less performant; orjson.OPT_SORT_KEYS has no direct equivalent in json — use 
+│   │   sort_keys=True in json.dumps instead; orjson does not support all json.JSONEncoder customization hooks; fingerprint() relies on orjson.dumps returning 
+│   │   deterministic bytes; switching to json requires explicit encoding and sort_keys=True
+│   ├── Constraints: requires_connector
+│   └── Both json and orjson serialize Python objects to JSON. orjson is a fast Rust-backed drop-in replacement for json with additional options like OPT_SORT_KEYS. json
+│       is stdlib; orjson is actively used in the code for both serialization and fingerprinting.
+├── Binary object serialization
+│   ├── Candidates : pickle, orjson
+│   ├── Used APIs  : pickle.dumps, orjson.dumps, orjson.loads
+│   ├── Pitfalls   : pickle can serialize arbitrary Python objects including custom classes; orjson is limited to JSON-compatible types; pickle output is not 
+│   │   human-readable or cross-language; orjson output is JSON bytes readable by any language; pickle has well-known arbitrary code execution risk on deserialization of
+│   │   untrusted data — orjson is safe in this regard; orjson always returns bytes; pickle.dumps also returns bytes, so the interface is compatible for dict payloads; 
+│   │   Switching serialize_pickle to orjson would break for non-JSON-serializable objects (e.g. custom class instances, sets, tuples become arrays)
+│   ├── Constraints: requires_connector
+│   └── Both pickle and orjson (alongside msgpack, which is disqualified) are used as binary serialization formats in this codebase. pickle handles arbitrary Python 
+│       objects; orjson handles JSON-serializable dicts/lists. They overlap for the dict serialization use case shown in serialize_pickle and serialize_orjson.
+└── Data validation and structured model definition
+    ├── Candidates : pydantic, dataclasses
+    ├── Used APIs  : BaseModel, Field, validator, dataclass, field, asdict
+    ├── Pitfalls   : pydantic performs runtime type validation and coercion; dataclasses do not validate types at runtime; pydantic validators (@validator) have no 
+    │   direct dataclass equivalent — would need __post_init__ with manual checks; pydantic BaseModel has .dict(), .json(), .parse_obj() etc.; dataclasses require 
+    │   asdict() from the dataclasses module; pydantic Field supports metadata like description, ge/le constraints; dataclasses field() only supports 
+    │   default/default_factory/repr etc.; Migrating UserRecord/EventRecord from pydantic to dataclasses loses email validation and all Field constraints silently; 
+    │   pydantic v1 vs v2 API differences: validator decorator is deprecated in v2 in favor of field_validator
+    ├── Constraints: requires_connector
+    └── Both pydantic (BaseModel) and dataclasses (@dataclass) are used in this file to define structured data models. pydantic adds runtime validation, type coercion, 
+        and serialization; dataclasses provide lightweight structured containers with asdict() for dict conversion. The AXIOM comment explicitly targets this 
+        equivalence.
+
+✓ 3 equivalence group(s) found
+
+──────────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────────────────────────
+All candidate packages already scanned.
+
+─────────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────────────────────────────────────
+Probing 5 package(s) across 3 group(s)...
+
+⠹ ✓ dataclasses
+⠹ ✓ orjson     
+⠹ ✓ pydantic   
+⠹ ✓ json       
+⠹ ✓ pickle     
+Runtime API benchmarks (5 runs each)...
+                                  Benchmark Results                                  
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃     Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ pickle      │     ✓     │          1.2 ms │               — │         242 │       │
+│ json        │     ✓     │          1.9 ms │ 0.21 ms (dumps) │          94 │       │
+│ dataclasses │     ✓     │          9.2 ms │               — │         141 │       │
+│ orjson      │     ✓     │         10.6 ms │ 1.29 ms (dumps) │           8 │       │
+│ pydantic    │     ✓     │         51.5 ms │               — │         236 │       │
+└─────────────┴───────────┴─────────────────┴─────────────────┴─────────────┴───────┘
+
+✓ Profiled 5 package(s), 5 available, 2 with runtime benchmarks
+
+────────────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: c21b5032
+  API compat tokens — input: 272  output: 70  latency: 1744ms
+  API compat tokens — input: 253  output: 70  latency: 1754ms
+  API compat tokens — input: 262  output: 74  latency: 1843ms
+                                                       AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                                                        ┃ Original ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ JSON serialization/deserialization (fast binary-compatible) │ json     │ json        │ MEDIUM │ 1.0   │ 0.081  │ 0.76     │ 0.5 │ 0.785 │
+│ Binary object serialization                                 │ pickle   │ orjson      │ HIGH   │ 0.823 │ 1.0    │ 0.76     │ 1.0 │ 0.89  │
+│ Data validation and structured model definition             │ pydantic │ dataclasses │ HIGH   │ 1.0   │ 1.0    │ 0.76     │ 0.6 │ 0.892 │
+└─────────────────────────────────────────────────────────────┴──────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pickle  →  orjson  (pending)
+  pydantic  →  dataclasses  (pending)
+
+Session save deferred to connector agent.
+
+✓ AXIOM complete — 3 decision(s)
+
+────────────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ──────────────────────────────────────────────────────────────
+
+Analyzing: pickle → orjson
+  Found 1 call site(s):
+    L62: return pickle.dumps(obj)
+  Tokens — in:1,207 out:809 latency:14284ms
+
+  Compatibility analysis:
+    ✗ L62: pickle.dumps(obj)  — pickle.dumps can serialize arbitrary Python objects (custom classes, sets, tuple
+
+  Generated 1 wrapper(s):
+    _serialize_pickle_compat_wrapper  replaces: pickle.dumps(obj)
+╭────────────────────────────────────────────────────────────────── _serialize_pickle_compat_wrapper ───────────────────────────────────────────────────────────────────╮
+│    1 def _serialize_pickle_compat_wrapper(obj) -> bytes:                                                                                                              │
+│    2     """                                                                                                                                                          │
+│    3     Compatibility wrapper for migrating pickle.dumps → orjson.dumps.                                                                                             │
+│    4                                                                                                                                                                  │
+│    5     Original behavior (pickle.dumps):                                                                                                                            │
+│    6       - Accepts ANY Python object, including custom class instances, sets,                                                                                       │
+│    7         tuples, bytes, datetime objects, and other non-JSON-serializable types.                                                                                  │
+│    8       - Returns bytes representing a Python-specific binary pickle stream.                                                                                       │
+│    9       - Output is NOT human-readable and NOT cross-language compatible.                                                                                          │
+│   10                                                                                                                                                                  │
+│   11     New behavior (orjson.dumps):                                                                                                                                 │
+│   12       - Accepts only JSON-compatible types: dict, list, str, int, float,                                                                                         │
+│   13         bool, None, and a limited set of stdlib types (datetime, UUID, etc.).                                                                                    │
+│   14       - Returns UTF-8 encoded JSON bytes.                                                                                                                        │
+│   15       - Raises orjson.JSONEncodeError (a subclass of TypeError) for                                                                                              │
+│   16         non-JSON-serializable objects.                                                                                                                           │
+│   17                                                                                                                                                                  │
+│   18     Transformation applied:                                                                                                                                      │
+│   19       - First attempts orjson.dumps(obj) for JSON-compatible objects.                                                                                            │
+│   20       - If orjson raises a TypeError (non-JSON-serializable input), falls back                                                                                   │
+│   21         to pickle.dumps(obj) to preserve the original broad contract of                                                                                          │
+│   22         serialize_pickle, which accepted arbitrary Python objects.                                                                                               │
+│   23       - This ensures no silent data loss or unexpected exceptions for callers                                                                                    │
+│   24         that pass custom class instances, sets, or other non-primitive types.                                                                                    │
+│   25                                                                                                                                                                  │
+│   26     WARNING:                                                                                                                                                     │
+│   27       - The fallback to pickle retains the arbitrary code execution risk on                                                                                      │
+│   28         deserialization of untrusted data. Callers should migrate their data                                                                                     │
+│   29         models to JSON-compatible types to fully eliminate pickle usage.                                                                                         │
+│   30       - Bytes produced by the orjson path and the pickle fallback path are                                                                                       │
+│   31         NOT interchangeable; deserializers must be aware of which format was                                                                                     │
+│   32         used (e.g., by inspecting the leading byte or tagging the output).                                                                                       │
+│   33     """                                                                                                                                                          │
+│   34     import pickle                                                                                                                                                │
+│   35     import orjson                                                                                                                                                │
+│   36                                                                                                                                                                  │
+│   37     try:                                                                                                                                                         │
+│   38         return orjson.dumps(obj)                                                                                                                                 │
+│   39     except TypeError:                                                                                                                                            │
+│   40         # obj is not JSON-serializable; fall back to pickle to preserve                                                                                          │
+│   41         # the original serialize_pickle contract for arbitrary objects.                                                                                          │
+│   42         return pickle.dumps(obj)                                                                                                                                 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  Applying AST-based inline replacement...
+  ✓ AST-based replacement applied (1 matches)
+
+Analyzing: pydantic → dataclasses
+  Found 3 call site(s):
+    L78: tags:       list = Field(default_factory=list)
+    L79: metadata:   dict = Field(default_factory=dict)
+    L81: @validator("email")
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭─────────────────────────────────────────────────────────────────── AXIOM — Multi-File Project Scan ───────────────────────────────────────────────────────────────────╮
+│ Project:   multiple_experiment                                                                                                                                        │
+│ Files:     5 matched                                                                                                                                                  │
+│ LLM:       CLAUDE / claude-sonnet-4-6                                                                                                                                 │
+│ Security:  ON                                                                                                                                                         │
+│ Connector: ON                                                                                                                                                         │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+→ [1/5] api/main.py
+──────────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/api/main.py
+                                                Discovered Imports                                                
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                                                  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    8 │ time                  │ —     │ —                                                      │ —              │
+│    9 │ logging               │ —     │ —                                                      │ —              │
+│   10 │ json                  │ —     │ —                                                      │ —              │
+│   12 │ fastapi               │ —     │ —                                                      │ —              │
+│   13 │ fastapi               │ —     │ FastAPI, HTTPException, Depends                        │ —              │
+│   14 │ uvicorn               │ —     │ —                                                      │ run            │
+│   17 │ models.data_models    │ —     │ UserRecord, EventRecord, serialize_orjson, fingerprint │ —              │
+│   18 │ services.http_service │ —     │ HttpService                                            │ —              │
+│   19 │ utils.crypto_utils    │ —     │ sha256_digest, xxhash_fast, secure_token               │ —              │
+│   20 │ config.settings       │ —     │ get_all_settings                                       │ —              │
+│   23 │ structlog             │ —     │ —                                                      │ get_logger     │
+│   24 │ loguru                │ —     │ —                                                      │ —              │
+└──────┴───────────────────────┴───────┴────────────────────────────────────────────────────────┴────────────────┘
+
+✓ Found 12 imports
+
+──────────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────────────────────────────────────
+                                                                              Rule Results                                                                               
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                                       ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ uvicorn   │ is_installed        │  PASS   │ HIGH       │ message=uvicorn is installed and importable                                                                  │
+│ uvicorn   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.47.0, license=unknown                                                                              │
+│ uvicorn   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                                   │
+│ uvicorn   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                                                                             │
+│ config    │ is_installed        │  FAIL   │ HIGH       │ message=config is not installed                                                                              │
+│ config    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for config                                                                         │
+│ config    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for config                                                             │
+│ config    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                                                                             │
+│ json      │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                                     │
+│ json      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                                           │
+│ json      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                                               │
+│ json      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.282, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',     │
+│           │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__']                                             │
+│ utils     │ is_installed        │  FAIL   │ HIGH       │ message=utils is not installed                                                                               │
+│ utils     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for utils                                                                          │
+│ utils     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for utils                                                              │
+│ utils     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                                                                              │
+│ logging   │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable                                                                  │
+│ logging   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging                                                                        │
+│ logging   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging                                                            │
+│ logging   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.097, shared_names=['__all__', '__builtins__', '__cached__', '__doc__', '__file__',     │
+│           │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__']                                             │
+│ services  │ is_installed        │  FAIL   │ HIGH       │ message=services is not installed                                                                            │
+│ services  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for services                                                                       │
+│ services  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for services                                                           │
+│ services  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'services'                                                                           │
+│ fastapi   │ is_installed        │  PASS   │ HIGH       │ message=fastapi is installed and importable                                                                  │
+│ fastapi   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.136.1, license=unknown                                                                             │
+│ fastapi   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                                   │
+│ fastapi   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.188, shared_names=['__builtins__', '__cached__', '__doc__', '__file__', '__loader__',  │
+│           │                     │         │            │ '__name__', '__package__', '__path__', '__spec__', '__version__']                                            │
+│ loguru    │ is_installed        │  FAIL   │ HIGH       │ message=loguru is not installed                                                                              │
+│ loguru    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for loguru                                                                         │
+│ loguru    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for loguru                                                             │
+│ loguru    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'loguru'                                                                             │
+│ structlog │ is_installed        │  FAIL   │ HIGH       │ message=structlog is not installed                                                                           │
+│ structlog │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for structlog                                                                      │
+│ structlog │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for structlog                                                          │
+│ structlog │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'structlog'                                                                          │
+│ models    │ is_installed        │  FAIL   │ HIGH       │ message=models is not installed                                                                              │
+│ models    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for models                                                                         │
+│ models    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for models                                                             │
+│ models    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'models'                                                                             │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable                                                                     │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                                                                           │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time                                                               │
+│ time      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.082, shared_names=['__doc__', '__loader__', '__name__', '__package__', '__spec__']     │
+└───────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 44 checks across 11 packages
+
+Disqualified (not installed): config, utils, services, structlog, models, loguru
+─────────────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────────────
+Scanning 11 package(s) via OSV + PyPI...
+
+                                       Security Scan Results                                        
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ config    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ uvicorn   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ structlog │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Tokens — input: 1,486  output: 983  latency: 18989ms
+Equivalence Groups Found
+├── ASGI web framework
+│   ├── Candidates : fastapi, starlette
+│   ├── Used APIs  : FastAPI, HTTPException, Depends, app.get, app.post
+│   ├── Pitfalls   : FastAPI adds automatic request validation via Pydantic models (UserRecord, EventRecord) — Starlette has no built-in Pydantic integration, requiring 
+│   │   manual validation; FastAPI's Depends() dependency injection system has no direct Starlette equivalent; Flask is WSGI (synchronous), not ASGI — async route 
+│   │   handlers would need to be rewritten; FastAPI auto-generates OpenAPI/Swagger docs; Starlette and Flask do not by default; HTTPException semantics differ slightly 
+│   │   between FastAPI and plain Starlette
+│   ├── Constraints: requires_connector
+│   └── FastAPI is built on top of Starlette and both serve as ASGI web frameworks. The source code comment explicitly calls out 'fastapi vs flask vs starlette' as an 
+│       AXIOM target. Starlette is the direct underlying framework for FastAPI and shares routing, request/response, and exception handling APIs.
+└── ASGI/WSGI production server runner
+    ├── Candidates : uvicorn, gunicorn
+    ├── Used APIs  : uvicorn.run
+    ├── Pitfalls   : Gunicorn alone is WSGI-only; to serve ASGI apps like FastAPI it requires the uvicorn worker: gunicorn -k uvicorn.workers.UvicornWorker; 
+    │   uvicorn.run() is a simple programmatic API; gunicorn is typically invoked via CLI or gunicorn.app.base.BaseApplication subclass; Gunicorn does not natively 
+    │   support Windows; uvicorn does; Worker process management and reload behavior differ significantly between the two
+    └── The source code comment explicitly targets 'uvicorn vs gunicorn' as an AXIOM comparison. Both are used to serve Python web applications. uvicorn.run() is the 
+        direct API used in __main__. Gunicorn with the uvicorn worker class (UvicornWorker) is the common production alternative.
+
+✓ 2 equivalence group(s) found
+
+──────────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────────────────────────
+Scanning candidate 2 package(s) via OSV + PyPI...
+
+        Candidate Security Scan         
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ starlette │ unknown │ LOW  │    0.76 │
+│ gunicorn  │ unknown │ LOW  │    0.76 │
+└───────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+─────────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────────────────────────────────────
+Probing 4 package(s) across 2 group(s)...
+
+⠋ ✓ starlette
+⠋ ✓ gunicorn 
+⠋ ✓ uvicorn  
+⠋ ✓ fastapi  
+                                         Benchmark Results                                          
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                      ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ starlette │     ✓     │          0.3 ms │           — │           7 │                            │
+│ uvicorn   │     ✓     │         69.5 ms │           — │         510 │                            │
+│ fastapi   │     ✓     │        514.5 ms │           — │        2063 │                            │
+│ gunicorn  │     ✗     │               — │           — │           — │ No module named 'gunicorn' │
+└───────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────┘
+
+✓ Profiled 4 package(s), 3 available, 0 with runtime benchmarks
+
+────────────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: 5276b44c
+  API compat tokens — input: 260  output: 72  latency: 1716ms
+  API compat tokens — input: 241  output: 31  latency: 1543ms
+                                          AXIOM Optimization Decisions                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                               ┃ Original ┃ Winner    ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ ASGI web framework                 │ fastapi  │ starlette │ MEDIUM │ 1.0   │ 1.0    │ 0.76     │ 0.4 │ 0.862 │
+│ ASGI/WSGI production server runner │ uvicorn  │ uvicorn   │ LOW    │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │
+└────────────────────────────────────┴──────────┴───────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  fastapi  →  starlette  (pending)
+
+Session save deferred to connector agent.
+
+✓ AXIOM complete — 2 decision(s)
+
+────────────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ──────────────────────────────────────────────────────────────
+
+Analyzing: fastapi → starlette
+  Found 1 call site(s):
+    L28: app = FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0")
+  Tokens — in:1,285 out:1,346 latency:22175ms
+
+  Compatibility analysis:
+    ✗ L28: FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0"  — Starlette's equivalent is `starlette.applications.Starlette()`, but its construc
+
+  Generated 1 wrapper(s):
+    _axiom_create_starlette_app  replaces: FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0"
+╭───────────────────────────────────────────────────────────────────── _axiom_create_starlette_app ─────────────────────────────────────────────────────────────────────╮
+│    1 def _axiom_create_starlette_app(title: str = "", version: str = "", routes=None, middleware=None, exception_handlers=None, on_startup=None, on_shutdown=None):   │
+│    2     """                                                                                                                                                          │
+│    3     Wrapper to replace FastAPI() constructor with a Starlette() application instance.                                                                            │
+│    4                                                                                                                                                                  │
+│    5     ORIGINAL (FastAPI):                                                                                                                                          │
+│    6         FastAPI(title=..., version=...) returns a FastAPI application that:                                                                                      │
+│    7           - Accepts `title` and `version` as metadata for auto-generated OpenAPI/Swagger docs.                                                                   │
+│    8           - Supports decorator-based routing: @app.get('/path'), @app.post('/path'), etc.                                                                        │
+│    9           - Provides automatic Pydantic request body validation via type-annotated parameters.                                                                   │
+│   10           - Provides a built-in Depends() dependency injection system.                                                                                           │
+│   11           - Auto-generates /docs (Swagger UI) and /redoc endpoints.                                                                                              │
+│   12                                                                                                                                                                  │
+│   13     NEW (Starlette):                                                                                                                                             │
+│   14         Starlette(routes=...) returns a Starlette application that:                                                                                              │
+│   15           - Does NOT accept `title` or `version` — these are silently dropped here to avoid TypeError.                                                           │
+│   16           - Does NOT support decorator-based routing; routes must be passed explicitly as a list                                                                 │
+│   17             of `Route`, `Mount`, or `WebSocketRoute` objects from `starlette.routing`.                                                                           │
+│   18           - Does NOT perform automatic Pydantic validation; request bodies must be parsed and                                                                    │
+│   19             validated manually (e.g., via `await request.json()` + Pydantic model constructor).                                                                  │
+│   20           - Does NOT have a Depends() system; dependencies must be called explicitly.                                                                            │
+│   21           - Does NOT auto-generate OpenAPI docs.                                                                                                                 │
+│   22                                                                                                                                                                  │
+│   23     TRANSFORMATION APPLIED:                                                                                                                                      │
+│   24         - `title` and `version` kwargs are accepted in this wrapper's signature to preserve                                                                      │
+│   25           call-site compatibility but are intentionally NOT forwarded to Starlette(), since                                                                      │
+│   26           Starlette does not recognise them and would raise TypeError.                                                                                           │
+│   27         - All valid Starlette constructor kwargs (`routes`, `middleware`, `exception_handlers`,                                                                  │
+│   28           `on_startup`, `on_shutdown`) are forwarded transparently.                                                                                              │
+│   29         - IMPORTANT: The caller must also refactor all @app.get / @app.post decorator-based                                                                      │
+│   30           route definitions into explicit Route() objects and pass them via the `routes`                                                                         │
+│   31           parameter, since Starlette has no decorator routing API.                                                                                               │
+│   32                                                                                                                                                                  │
+│   33     EXAMPLE MIGRATION of route definitions:                                                                                                                      │
+│   34                                                                                                                                                                  │
+│   35         # FastAPI style (incompatible with Starlette):                                                                                                           │
+│   36         #   @app.get("/health")                                                                                                                                  │
+│   37         #   async def health(request): ...                                                                                                                       │
+│   38                                                                                                                                                                  │
+│   39         # Starlette style (required):                                                                                                                            │
+│   40         #   from starlette.routing import Route                                                                                                                  │
+│   41         #   from starlette.requests import Request                                                                                                               │
+│   42         #   from starlette.responses import JSONResponse                                                                                                         │
+│   43         #                                                                                                                                                        │
+│   44         #   async def health(request: Request):                                                                                                                  │
+│   45         #       return JSONResponse({"status": "ok"})                                                                                                            │
+│   46         #                                                                                                                                                        │
+│   47         #   app = _axiom_create_starlette_app(                                                                                                                   │
+│   48         #       title="AXIOM Multi-File Experiment",                                                                                                             │
+│   49         #       version="2.0.0",                                                                                                                                 │
+│   50         #       routes=[Route("/health", health)]                                                                                                                │
+│   51         #   )                                                                                                                                                    │
+│   52     """                                                                                                                                                          │
+│   53     from starlette.applications import Starlette                                                                                                                 │
+│   54                                                                                                                                                                  │
+│   55     # Build kwargs dict with only the arguments Starlette actually accepts.                                                                                      │
+│   56     # `title` and `version` are deliberately excluded — Starlette has no use for them                                                                            │
+│   57     # and would raise TypeError if they were forwarded.                                                                                                          │
+│   58     starlette_kwargs = {}                                                                                                                                        │
+│   59     if routes is not None:                                                                                                                                       │
+│   60         starlette_kwargs["routes"] = routes                                                                                                                      │
+│   61     if middleware is not None:                                                                                                                                   │
+│   62         starlette_kwargs["middleware"] = middleware                                                                                                              │
+│   63     if exception_handlers is not None:                                                                                                                           │
+│   64         starlette_kwargs["exception_handlers"] = exception_handlers                                                                                              │
+│   65     if on_startup is not None:                                                                                                                                   │
+│   66         starlette_kwargs["on_startup"] = on_startup                                                                                                              │
+│   67     if on_shutdown is not None:                                                                                                                                  │
+│   68         starlette_kwargs["on_shutdown"] = on_shutdown                                                                                                            │
+│   69                                                                                                                                                                  │
+│   70     return Starlette(**starlette_kwargs)                                                                                                                         │
+│   71                                                                                                                                                                  │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  Applying AST-based inline replacement...
+  ✓ AST-based replacement applied (1 matches)
+
+Session saved: 5276b44c
+╭──────────────────────────────────────────────────────────────── Patched Source (with inline adapters) ────────────────────────────────────────────────────────────────╮
+│     1 """                                                                                                                                                             │
+│     2 api/main.py                                                                                                                                                     │
+│     3 ────────────                                                                                                                                                    │
+│     4 FastAPI application entry point.                                                                                                                                │
+│     5 Ties together all modules.                                                                                                                                      │
+│     6 AXIOM target: fastapi vs flask vs starlette, uvicorn vs gunicorn                                                                                                │
+│     7 """                                                                                                                                                             │
+│     8 import time                                                                                                                                                     │
+│     9 import logging                                                                                                                                                  │
+│    10 import json                                                                                                                                                     │
+│    11                                                                                                                                                                 │
+│    12 import fastapi                                                                                                                                                  │
+│    13 from fastapi import FastAPI, HTTPException, Depends                                                                                                             │
+│    14 import uvicorn                                                                                                                                                  │
+│    15                                                                                                                                                                 │
+│    16 # Import our own modules — these are the files AXIOM should also analyze                                                                                        │
+│    17 from models.data_models import UserRecord, EventRecord, serialize_orjson, fingerprint                                                                           │
+│    18 from services.http_service import HttpService                                                                                                                   │
+│    19 from utils.crypto_utils import sha256_digest, xxhash_fast, secure_token                                                                                         │
+│    20 from config.settings import get_all_settings                                                                                                                    │
+│    21                                                                                                                                                                 │
+│    22 # Logging — standard logging vs structlog vs loguru                                                                                                             │
+│    23 import structlog                                                                                                                                                │
+│    24 import loguru                                                                                                                                                   │
+│    25                                                                                                                                                                 │
+│    26                                                                                                                                                                 │
+│    27 # ──────────────────────────────────────────────────────────────────────                                                                                        │
+│    28 # AXIOM CONNECTOR: fastapi → starlette                                                                                                                          │
+│    29 # The following functions bridge API incompatibilities between                                                                                                  │
+│    30 # fastapi and starlette. They are injected by the AXIOM                                                                                                         │
+│    31 # connector agent and called in place of the original API.                                                                                                      │
+│    32 # ──────────────────────────────────────────────────────────────────────                                                                                        │
+│    33 def _axiom_create_starlette_app(title: str = "", version: str = "", routes=None, middleware=None, exception_handlers=None, on_startup=None, on_shutdown=None):  │
+│    34     """                                                                                                                                                         │
+│    35     Wrapper to replace FastAPI() constructor with a Starlette() application instance.                                                                           │
+│    36                                                                                                                                                                 │
+│    37     ORIGINAL (FastAPI):                                                                                                                                         │
+│    38         FastAPI(title=..., version=...) returns a FastAPI application that:                                                                                     │
+│    39           - Accepts `title` and `version` as metadata for auto-generated OpenAPI/Swagger docs.                                                                  │
+│    40           - Supports decorator-based routing: @app.get('/path'), @app.post('/path'), etc.                                                                       │
+│    41           - Provides automatic Pydantic request body validation via type-annotated parameters.                                                                  │
+│    42           - Provides a built-in Depends() dependency injection system.                                                                                          │
+│    43           - Auto-generates /docs (Swagger UI) and /redoc endpoints.                                                                                             │
+│    44                                                                                                                                                                 │
+│    45     NEW (Starlette):                                                                                                                                            │
+│    46         Starlette(routes=...) returns a Starlette application that:                                                                                             │
+│    47           - Does NOT accept `title` or `version` — these are silently dropped here to avoid TypeError.                                                          │
+│    48           - Does NOT support decorator-based routing; routes must be passed explicitly as a list                                                                │
+│    49             of `Route`, `Mount`, or `WebSocketRoute` objects from `starlette.routing`.                                                                          │
+│    50           - Does NOT perform automatic Pydantic validation; request bodies must be parsed and                                                                   │
+│    51             validated manually (e.g., via `await request.json()` + Pydantic model constructor).                                                                 │
+│    52           - Does NOT have a Depends() system; dependencies must be called explicitly.                                                                           │
+│    53           - Does NOT auto-generate OpenAPI docs.                                                                                                                │
+│    54                                                                                                                                                                 │
+│    55     TRANSFORMATION APPLIED:                                                                                                                                     │
+│    56         - `title` and `version` kwargs are accepted in this wrapper's signature to preserve                                                                     │
+│    57           call-site compatibility but are intentionally NOT forwarded to Starlette(), since                                                                     │
+│    58           Starlette does not recognise them and would raise TypeError.                                                                                          │
+│    59         - All valid Starlette constructor kwargs (`routes`, `middleware`, `exception_handlers`,                                                                 │
+│    60           `on_startup`, `on_shutdown`) are forwarded transparently.                                                                                             │
+│    61         - IMPORTANT: The caller must also refactor all @app.get / @app.post decorator-based                                                                     │
+│    62           route definitions into explicit Route() objects and pass them via the `routes`                                                                        │
+│    63           parameter, since Starlette has no decorator routing API.                                                                                              │
+│    64                                                                                                                                                                 │
+│    65     EXAMPLE MIGRATION of route definitions:                                                                                                                     │
+│    66                                                                                                                                                                 │
+│    67         # FastAPI style (incompatible with Starlette):                                                                                                          │
+│    68         #   @app.get("/health")                                                                                                                                 │
+│    69         #   async def health(request): ...                                                                                                                      │
+│    70                                                                                                                                                                 │
+│    71         # Starlette style (required):                                                                                                                           │
+│    72         #   from starlette.routing import Route                                                                                                                 │
+│    73         #   from starlette.requests import Request                                                                                                              │
+│    74         #   from starlette.responses import JSONResponse                                                                                                        │
+│    75         #                                                                                                                                                       │
+│    76         #   async def health(request: Request):                                                                                                                 │
+│    77         #       return JSONResponse({"status": "ok"})                                                                                                           │
+│    78         #                                                                                                                                                       │
+│    79         #   app = _axiom_create_starlette_app(                                                                                                                  │
+│    80         #       title="AXIOM Multi-File Experiment",                                                                                                            │
+│    81         #       version="2.0.0",                                                                                                                                │
+│    82         #       routes=[Route("/health", health)]                                                                                                               │
+│    83         #   )                                                                                                                                                   │
+│    84     """                                                                                                                                                         │
+│    85     from starlette.applications import Starlette                                                                                                                │
+│    86                                                                                                                                                                 │
+│    87     # Build kwargs dict with only the arguments Starlette actually accepts.                                                                                     │
+│    88     # `title` and `version` are deliberately excluded — Starlette has no use for them                                                                           │
+│    89     # and would raise TypeError if they were forwarded.                                                                                                         │
+│    90     starlette_kwargs = {}                                                                                                                                       │
+│    91     if routes is not None:                                                                                                                                      │
+│    92         starlette_kwargs["routes"] = routes                                                                                                                     │
+│    93     if middleware is not None:                                                                                                                                  │
+│    94         starlette_kwargs["middleware"] = middleware                                                                                                             │
+│    95     if exception_handlers is not None:                                                                                                                          │
+│    96         starlette_kwargs["exception_handlers"] = exception_handlers                                                                                             │
+│    97     if on_startup is not None:                                                                                                                                  │
+│    98         starlette_kwargs["on_startup"] = on_startup                                                                                                             │
+│    99     if on_shutdown is not None:                                                                                                                                 │
+│   100         starlette_kwargs["on_shutdown"] = on_shutdown                                                                                                           │
+│   101                                                                                                                                                                 │
+│   102     return Starlette(**starlette_kwargs)                                                                                                                        │
+│   103                                                                                                                                                                 │
+│   104                                                                                                                                                                 │
+│   105                                                                                                                                                                 │
+│   106 log = structlog.get_logger()                                                                                                                                    │
+│   107                                                                                                                                                                 │
+│   108 app = _axiom_create_starlette_app(title="AXIOM Multi-File Experiment", version="2.0.0")                                                                         │
+│   109                                                                                                                                                                 │
+│   110                                                                                                                                                                 │
+│   111 @app.get("/health")                                                                                                                                             │
+│   112 async def health():                                                                                                                                             │
+│   113     return {"status": "ok", "settings": get_all_settings()}                                                                                                     │
+│   114                                                                                                                                                                 │
+│   115                                                                                                                                                                 │
+│   116 @app.post("/users")                                                                                                                                             │
+│   117 async def create_user(user: UserRecord):                                                                                                                        │
+│   118     fp = fingerprint(user.dict())                                                                                                                               │
+│   119     token = secure_token()                                                                                                                                      │
+│   120     log.info("user_created", user_id=user.id, fingerprint=fp)                                                                                                   │
+│   121     return {"user": user.dict(), "fingerprint": fp, "token": token}                                                                                             │
+│   122                                                                                                                                                                 │
+│   123                                                                                                                                                                 │
+│   124 @app.post("/events")                                                                                                                                            │
+│   125 async def ingest_event(event: EventRecord):                                                                                                                     │
+│   126     serialized = serialize_orjson(event.dict())                                                                                                                 │
+│   127     checksum    = xxhash_fast(serialized)                                                                                                                       │
+│   128     log.info("event_ingested", event_id=event.event_id, checksum=checksum)                                                                                      │
+│   129     return {"event_id": event.event_id, "checksum": checksum, "size": len(serialized)}                                                                          │
+│   130                                                                                                                                                                 │
+│   131                                                                                                                                                                 │
+│   132 @app.get("/hash-compare")                                                                                                                                       │
+│   133 async def hash_compare(data: str = "benchmark"):                                                                                                                │
+│   134     payload = data.encode()                                                                                                                                     │
+│   135     return {                                                                                                                                                    │
+│   136         "sha256":  sha256_digest(payload),                                                                                                                      │
+│   137         "xxhash":  xxhash_fast(payload),                                                                                                                        │
+│   138     }                                                                                                                                                           │
+│   139                                                                                                                                                                 │
+│   140                                                                                                                                                                 │
+│   141 if __name__ == "__main__":                                                                                                                                      │
+│   142     uvicorn.run(app, host="0.0.0.0", port=8000)                                                                                                                 │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+  done in 50.8s — 2 decision(s)
+
+→ [2/5] config/settings.py
+──────────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/config/settings.py
+                    Discovered Imports                    
+┏━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module       ┃ Alias   ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    7 │ os           │ —       │ —     │ getenv         │
+│    8 │ json         │ —       │ —     │ —              │
+│    9 │ configparser │ —       │ —     │ ConfigParser   │
+│   13 │ tomllib      │ —       │ —     │ load           │
+│   15 │ tomli        │ tomllib │ —     │ load           │
+│   18 │ dotenv       │ —       │ —     │ load_dotenv    │
+│   24 │ yaml         │ —       │ —     │ safe_load      │
+└──────┴──────────────┴─────────┴───────┴────────────────┘
+
+✓ Found 7 imports
+
+──────────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────────────────────────────────────
+                                                     Rule Results                                                     
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                 ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ tomli        │ is_installed        │  FAIL   │ HIGH       │ message=tomli is not installed                         │
+│ tomli        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tomli                    │
+│ tomli        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tomli        │
+│ tomli        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ os           │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                 │
+│ os           │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                       │
+│ os           │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os           │
+│ os           │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ configparser │ is_installed        │  PASS   │ HIGH       │ message=configparser is installed and importable       │
+│ configparser │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for configparser             │
+│ configparser │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for configparser │
+│ configparser │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ json         │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable               │
+│ json         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                     │
+│ json         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json         │
+│ json         │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ dotenv       │ is_installed        │  PASS   │ HIGH       │ message=dotenv is installed and importable             │
+│ dotenv       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for dotenv                   │
+│ dotenv       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for dotenv       │
+│ dotenv       │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ tomllib      │ is_installed        │  PASS   │ HIGH       │ message=tomllib is installed and importable            │
+│ tomllib      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tomllib                  │
+│ tomllib      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tomllib      │
+│ tomllib      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+│ yaml         │ is_installed        │  PASS   │ HIGH       │ message=yaml is installed and importable               │
+│ yaml         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for yaml                     │
+│ yaml         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for yaml         │
+│ yaml         │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tomli'                        │
+└──────────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 28 checks across 7 packages
+
+Disqualified (not installed): tomli
+─────────────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────────────
+Scanning 7 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                         
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ os           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ dotenv       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ configparser │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tomli        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tomllib      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ yaml         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└──────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Tokens — input: 1,252  output: 703  latency: 13063ms
+Equivalence Groups Found
+└── INI/structured configuration file parser
+    ├── Candidates : configparser, tomllib
+    ├── Used APIs  : ConfigParser, load
+    ├── Pitfalls   : configparser returns a ConfigParser object with section-based access (cfg['section']['key']); tomllib returns a plain dict; File 
+    │   formats are incompatible — switching requires converting existing .ini files to .toml or vice versa; configparser supports DEFAULT section 
+    │   fallback; tomllib has no such concept; configparser reads text mode files; tomllib requires binary mode ('rb')
+    ├── Constraints: requires_connector
+    └── Both configparser and tomllib serve the role of structured configuration file parsing for application settings. configparser handles INI-style 
+        files; tomllib handles TOML files. They are partial substitutes — TOML is a superset of INI in expressiveness and both produce dict-like config 
+        objects.
+
+✓ 1 equivalence group(s) found
+
+──────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────
+All candidate packages already scanned.
+
+────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ configparser
+⠙ ✓ tomllib     
+                                Benchmark Results                                 
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package      ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ configparser │     ✓     │          1.5 ms │           — │         188 │       │
+│ tomllib      │     ✓     │          6.3 ms │           — │         113 │       │
+└──────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: 865204b2
+  API compat tokens — input: 243  output: 70  latency: 1627ms
+                                                AXIOM Optimization Decisions                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                                     ┃ Original     ┃ Winner       ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ INI/structured configuration file parser │ configparser │ configparser │ MEDIUM │ 0.867 │ 0.6    │ 0.76     │ 1.0 │ 0.865 │
+└──────────────────────────────────────────┴──────────────┴──────────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session saved: 865204b2
+
+✓ AXIOM complete — 1 decision(s)
+
+  done in 14.9s — 1 decision(s)
+
+→ [3/5] models/data_models.py
+─────────────────────────────────────────────────────────────────── 🔍 Parser Agent ────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_old_backup/multiple_experiment/models/data_models.py
+                                    Discovered Imports                                    
+┏━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module      ┃ Alias ┃ Names                       ┃ API Calls Used              ┃
+┡━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    7 │ json        │ —     │ —                           │ —                           │
+│    8 │ pickle      │ —     │ —                           │ dumps                       │
+│    9 │ hashlib     │ —     │ —                           │ sha256                      │
+│   10 │ dataclasses │ —     │ dataclass, field, asdict    │ —                           │
+│   11 │ typing      │ —     │ Optional                    │ —                           │
+│   14 │ pydantic    │ —     │ —                           │ —                           │
+│   15 │ pydantic    │ —     │ BaseModel, Field, validator │ —                           │
+│   18 │ msgpack     │ —     │ —                           │ packb, unpackb              │
+│   19 │ orjson      │ —     │ —                           │ loads, OPT_SORT_KEYS, dumps │
+└──────┴─────────────┴───────┴─────────────────────────────┴─────────────────────────────┘
+
+✓ Found 9 imports
+
+─────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────
+                                                                      Rule Results                                                                      
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ orjson      │ is_installed        │  PASS   │ HIGH       │ message=orjson is installed and importable                                                │
+│ orjson      │ has_metadata        │  PASS   │ MEDIUM     │ version=3.11.7, license=unknown                                                           │
+│ orjson      │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                │
+│ orjson      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                                                         │
+│ msgpack     │ is_installed        │  FAIL   │ HIGH       │ message=msgpack is not installed                                                          │
+│ msgpack     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for msgpack                                                     │
+│ msgpack     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for msgpack                                         │
+│ msgpack     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'msgpack'                                                         │
+│ pickle      │ is_installed        │  PASS   │ HIGH       │ message=pickle is installed and importable                                                │
+│ pickle      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for pickle                                                      │
+│ pickle      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for pickle                                          │
+│ pickle      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.076, shared_names=['__all__', '__builtins__', '__cached__',         │
+│             │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', 'dumps']      │
+│ json        │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                  │
+│ json        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                        │
+│ json        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                            │
+│ json        │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.326, shared_names=['JSONDecodeError', '__all__', '__builtins__',    │
+│             │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__'] │
+│ dataclasses │ is_installed        │  PASS   │ HIGH       │ message=dataclasses is installed and importable                                           │
+│ dataclasses │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for dataclasses                                                 │
+│ dataclasses │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for dataclasses                                     │
+│ dataclasses │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.088, shared_names=['__all__', '__builtins__', '__cached__',         │
+│             │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ typing      │ is_installed        │  PASS   │ HIGH       │ message=typing is installed and importable                                                │
+│ typing      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for typing                                                      │
+│ typing      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for typing                                          │
+│ typing      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.039, shared_names=['__all__', '__builtins__', '__cached__',         │
+│             │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ pydantic    │ is_installed        │  PASS   │ HIGH       │ message=pydantic is installed and importable                                              │
+│ pydantic    │ has_metadata        │  PASS   │ MEDIUM     │ version=2.12.5, license=unknown                                                           │
+│ pydantic    │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                │
+│ pydantic    │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.006, shared_names=['__version__']                                   │
+│ hashlib     │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable                                               │
+│ hashlib     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                                                     │
+│ hashlib     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib                                         │
+│ hashlib     │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.164, shared_names=['__all__', '__builtins__', '__cached__',         │
+│             │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+└─────────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 32 checks across 8 packages
+
+Disqualified (not installed): msgpack
+────────────────────────────────────────────────────────────────── 🔒 Security Agent ───────────────────────────────────────────────────────────────────
+Scanning 8 package(s) via OSV + PyPI...
+
+                                        Security Scan Results                                         
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ msgpack     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ orjson      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ typing      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ pydantic    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ pickle      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hashlib     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ dataclasses │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ───────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-sonnet-4-6...
+Tokens — input: 1,505  output: 1,170  latency: 21940ms
+Equivalence Groups Found
+├── JSON serialization/deserialization (binary or text output)
+│   ├── Candidates : json, orjson
+│   ├── Used APIs  : orjson.dumps, orjson.loads, orjson.OPT_SORT_KEYS, json (imported but no direct api_calls recorded)
+│   ├── Pitfalls   : orjson.dumps() returns bytes, not str — json.dumps() returns str; callers must handle encoding differences; 
+│   │   orjson.OPT_SORT_KEYS has no direct equivalent in json; use sort_keys=True kwarg in json.dumps instead; orjson does not support all 
+│   │   json.dumps kwargs (e.g. indent behaves differently, separators not supported); orjson is stricter about types (e.g. non-str dict keys
+│   │   raise TypeError); json silently coerces them; fingerprint() relies on orjson.OPT_SORT_KEYS for deterministic output — migrating to 
+│   │   json requires sort_keys=True and explicit .encode() to get bytes for hashlib
+│   ├── Constraints: requires_connector
+│   └── Both json and orjson serve the same purpose of serializing Python objects to JSON and deserializing JSON back to Python objects. 
+│       orjson is a fast Rust-backed alternative to the stdlib json module, returning bytes instead of str. The code uses orjson.dumps/loads 
+│       directly and also imports json (likely as a fallback or for text-mode serialization).
+├── Binary object serialization
+│   ├── Candidates : pickle, orjson
+│   ├── Used APIs  : pickle.dumps, orjson.dumps, orjson.loads
+│   ├── Pitfalls   : pickle is Python-only and not cross-language; orjson output is interoperable JSON bytes; pickle can serialize arbitrary 
+│   │   Python objects (classes, lambdas); orjson only handles JSON-compatible types; pickle carries a well-known arbitrary code execution 
+│   │   risk on deserialization of untrusted data — orjson has no such risk; Switching from pickle to orjson requires all serialized objects 
+│   │   to be JSON-serializable (no custom classes without __json__ hooks); pickle output is not human-readable or deterministic across 
+│   │   Python versions; orjson output is deterministic with OPT_SORT_KEYS
+│   └── Both pickle and orjson (and the disqualified msgpack) are used in this file as binary serialization formats. pickle.dumps produces 
+│       Python-specific binary blobs; orjson.dumps produces JSON bytes. They overlap in the role of converting Python objects to bytes for 
+│       storage or transport.
+└── Data validation and structured data modeling
+    ├── Candidates : pydantic, dataclasses
+    ├── Used APIs  : pydantic.BaseModel, pydantic.Field, pydantic.validator, dataclasses.dataclass, dataclasses.field, dataclasses.asdict
+    ├── Pitfalls   : dataclasses provide no runtime type validation or coercion; pydantic validates and coerces on assignment; pydantic 
+    │   @validator decorators have no dataclasses equivalent — custom __post_init__ methods must be written manually; pydantic BaseModel 
+    │   instances are not plain dicts; dataclasses use asdict() for dict conversion, pydantic uses .dict() or .model_dump() (v2); pydantic v1
+    │   uses validator; pydantic v2 uses field_validator — migration between versions is also a pitfall; 
+    │   dataclasses.field(default_factory=...) syntax is similar to pydantic Field(default_factory=...) but semantics differ for nested 
+    │   validation; pydantic models are immutable by default (unless Config allows mutation); dataclasses are mutable by default; Migrating 
+    │   UserRecord and EventRecord from pydantic to dataclasses loses email validation and all Field constraints silently
+    └── Both pydantic and dataclasses define structured data models with typed fields and default values. The file comment explicitly names 
+        this as an AXIOM target ('pydantic vs attrs vs dataclasses'). pydantic adds runtime validation, coercion, and serialization on top of
+        what dataclasses provide.
+
+✓ 3 equivalence group(s) found
+
+────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────────
+All candidate packages already scanned.
+
+───────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 5 package(s) across 3 group(s)...
+
+⠹ ✓ orjson     
+⠹ ✓ pickle     
+⠹ ✓ json       
+⠹ ✓ dataclasses
+⠹ ✓ pydantic   
+Runtime API benchmarks (5 runs each)...
+                                  Benchmark Results                                  
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃     Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ pickle      │     ✓     │          1.2 ms │               — │         242 │       │
+│ json        │     ✓     │          2.2 ms │ 0.20 ms (dumps) │          94 │       │
+│ dataclasses │     ✓     │          8.2 ms │               — │         141 │       │
+│ orjson      │     ✓     │          9.3 ms │ 1.22 ms (dumps) │           8 │       │
+│ pydantic    │     ✓     │         47.2 ms │               — │         236 │       │
+└─────────────┴───────────┴─────────────────┴─────────────────┴─────────────┴───────┘
+
+✓ Profiled 5 package(s), 5 available, 2 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: fae8e924
+  API compat tokens — input: 286  output: 70  latency: 2126ms
+  API compat tokens — input: 253  output: 70  latency: 1847ms
+  API compat tokens — input: 286  output: 74  latency: 1674ms
+                                                       AXIOM Optimization Decisions                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                                                       ┃ Original ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ JSON serialization/deserialization (binary or text output) │ json     │ json        │ MEDIUM │ 1.0   │ 0.081  │ 0.76     │ 0.6 │ 0.8   │
+│ Binary object serialization                                │ pickle   │ orjson      │ HIGH   │ 0.826 │ 1.0    │ 0.76     │ 1.0 │ 0.891 │
+│ Data validation and structured data modeling               │ pydantic │ dataclasses │ HIGH   │ 1.0   │ 1.0    │ 0.76     │ 0.5 │ 0.877 │
+└────────────────────────────────────────────────────────────┴──────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+Drop-in import patches (no connector needed):
+  pickle  →  orjson
+
+Session save deferred to connector agent.
+
+✓ AXIOM complete — 3 decision(s)
+
+──────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+
+Analyzing: pickle → orjson
+  Found 1 call site(s):
+    L62: return pickle.dumps(obj)
+  Tokens — in:1,208 out:737 latency:11701ms
+
+  Compatibility analysis:
+    ✗ L62: pickle.dumps(obj)  — pickle.dumps() serializes arbitrary Python objects (including non-JSON-serializa
+
+  Generated 1 wrapper(s):
+    _pickle_dumps_to_orjson_wrapper  replaces: pickle.dumps(obj)
+╭───────────────────────────────────────────────────── _pickle_dumps_to_orjson_wrapper ─────────────────────────────────────────────────────╮
+│    1 def _pickle_dumps_to_orjson_wrapper(obj) -> bytes:                                                                                   │
+│    2     """                                                                                                                              │
+│    3     Replaces pickle.dumps(obj) with orjson.dumps(obj).                                                                               │
+│    4                                                                                                                                      │
+│    5     Original behavior (pickle.dumps):                                                                                                │
+│    6       - Accepts ANY Python object, including custom classes, lambdas,                                                                │
+│    7         sets, datetime objects with tzinfo, etc.                                                                                     │
+│    8       - Returns a Python-specific binary pickle stream (not human-readable,                                                          │
+│    9         not cross-language, not deterministic across Python versions).                                                               │
+│   10       - Carries an arbitrary code execution risk on deserialization of                                                               │
+│   11         untrusted data.                                                                                                              │
+│   12                                                                                                                                      │
+│   13     New behavior (orjson.dumps):                                                                                                     │
+│   14       - Accepts only JSON-compatible types: dict, list, str, int, float,                                                             │
+│   15         bool, None, plus orjson natively supports datetime, UUID, numpy                                                              │
+│   16         arrays, and dataclasses.                                                                                                     │
+│   17       - Returns UTF-8 encoded JSON bytes (human-readable, cross-language,                                                            │
+│   18         deterministic).                                                                                                              │
+│   19       - Has no code execution risk on deserialization.                                                                               │
+│   20                                                                                                                                      │
+│   21     Transformation applied:                                                                                                          │
+│   22       - Delegates directly to orjson.dumps(obj).                                                                                     │
+│   23       - IMPORTANT: If `obj` contains types that are not JSON-serializable                                                            │
+│   24         (e.g., arbitrary custom class instances, lambdas, sets), orjson                                                              │
+│   25         will raise a TypeError. The caller must ensure `obj` is                                                                      │
+│   26         JSON-serializable before using this wrapper, or pass a custom                                                                │
+│   27         `default` handler via orjson.dumps() directly.                                                                               │
+│   28                                                                                                                                      │
+│   29     Args:                                                                                                                            │
+│   30         obj: A JSON-serializable Python object (dict, list, str, int,                                                                │
+│   31              float, bool, None, datetime, UUID, dataclass, etc.).                                                                    │
+│   32                                                                                                                                      │
+│   33     Returns:                                                                                                                         │
+│   34         bytes: UTF-8 encoded JSON representation of `obj`.                                                                           │
+│   35                                                                                                                                      │
+│   36     Raises:                                                                                                                          │
+│   37         TypeError: If `obj` contains types not supported by orjson.                                                                  │
+│   38     """                                                                                                                              │
+│   39     return orjson.dumps(obj)                                                                                                         │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  Applying AST-based inline replacement...
+  ✓ AST-based replacement applied (1 matches)
+
+Analyzing: pydantic → dataclasses
+  Found 3 call site(s):
+    L75: tags:       list = Field(default_factory=list)
+    L76: metadata:   dict = Field(default_factory=dict)
+    L78: @validator("email")

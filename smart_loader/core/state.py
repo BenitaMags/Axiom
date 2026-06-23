@@ -23,6 +23,8 @@ class EquivalenceGroup:
     used_apis: list[str]
     reasoning: str
     pitfalls: list[str] = field(default_factory=list)
+    crypto_required: bool = False
+    requires_connector: bool = False
 
 
 @dataclass
@@ -31,6 +33,9 @@ class BenchmarkResult:
     import_time_ms: float
     available: bool
     memory_kb: float = 0.0
+    runtime_ms: float = 0.0
+    runtime_api: str = ""
+    api_runtimes: dict[str, float] = field(default_factory=dict)
     error: Optional[str] = None
 
 
@@ -83,18 +88,21 @@ class LoaderState(TypedDict, total=False):
     # PROFILER OUTPUT
     benchmarks: dict[str, BenchmarkResult]
     
+    # SECURITY OUTPUT  (populated by security_agent; values are SecurityResult instances)
+    security_results: dict
+
     # AXIOM OUTPUT
     decisions: list[LoadDecision]
     patched_code: str
-    
+
+    # CONNECTOR OUTPUT  (populated by connector_agent; role → adapter metadata dict)
+    connectors: dict
+
     # TELEMETRY
     agent_trace: list[AgentEvent]
     messages: Annotated[list[BaseMessage], add_messages]
-    
+
     # CONTROL
     error: Optional[str]
     done: bool
-    
-    # Additional fields (if needed for security/connector agents)
-    security_results: dict
     _session_id: str
