@@ -129,13 +129,7 @@ axiom_v2/
     │   └── connector_agent.py     Node 7 — inline API adapter codegen
     │
     ├── dashboard/
-    │   └── app.py                 FastAPI token dashboard (port 7788)
-    │
-    └── experiment_libs/
-        ├── http_experiment.py     requests vs httpx vs urllib3
-        ├── json_experiment.py     json vs ujson vs orjson
-        ├── dataframe_experiment.py pandas vs polars
-        └── mixed_experiment.py    all categories combined
+        └── app.py                 FastAPI token dashboard (port 7788)
 ```
 
 ---
