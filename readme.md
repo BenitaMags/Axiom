@@ -1,6 +1,6 @@
-# AXIOM v2 — Adaptive eXecution & Import Optimization Module
+# AXIOM — Adaptive eXecution & Import Optimization Module
 
-> Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+> Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude/NVIDIA
 
 ---
 
@@ -10,17 +10,18 @@ AXIOM is a multi-agent AI system that simulates the behavior of an **OS-level dy
 
 When an OS loader runs a binary, it reads the dependency manifest, checks available libraries, resolves which shared libraries serve the same purpose, measures load costs, and patches the binary to use the optimal one. AXIOM does the exact same thing for Python:
 
-| OS Loader Phase                  | AXIOM Agent          | Method                        |
-|----------------------------------|----------------------|-------------------------------|
-| Read ELF header / .dynamic       | `parser_agent`       | Python `ast` module           |
-| Deterministic library checks     | `rules_agent`        | importlib + metadata          |
-| Security validation              | `security_agent`     | OSV API + PyPI                |
-| Symbol resolution                | `resolver_agent`     | LLM reasoning                 |
-| Library load cost profiling      | `profiler_agent`     | subprocess timing              |
-| GOT patching / relocation        | `axiom_agent`        | AST rewriting                 |
-| Compatibility shim generation    | `connector_agent`    | LLM-generated adapter code    |
+| OS Loader Phase               | AXIOM Agent        | Method                          |
+|-------------------------------|--------------------|---------------------------------|
+| Read ELF header / .dynamic    | `parser_agent`     | Python `ast` module             |
+| Deterministic library checks  | `rules_agent`      | importlib + metadata            |
+| Security validation           | `security_agent`   | OSV API + PyPI                  |
+| Symbol resolution             | `resolver_agent`   | LLM reasoning                   |
+| Library load cost profiling   | `profiler_agent`   | subprocess timing               |
+| Human review gate             | `approval_gate`    | LangGraph `interrupt()` + diff  |
+| GOT patching / relocation     | `axiom_agent`      | AST rewriting                   |
+| Compatibility shim generation | `connector_agent`  | LLM-generated adapter code      |
 
-Given a Python file, AXIOM will tell you which of your imports are redundant, which alternatives are faster and safer, and rewrite your source to use them — with generated adapter code so existing call sites work unchanged.
+Inspired by **CodeAugur** (Professor Agadakos's binary semantic equivalence analyzer): AXIOM determines functional equivalence between Python packages the same way CodeAugur determines binary similarity across compiler optimization levels — capability/task equivalence, not syntactic API compatibility.
 
 ---
 
@@ -34,37 +35,57 @@ Given a Python file, AXIOM will tell you which of your imports are redundant, wh
         ├── no imports or file error ──► END
         │
   [rules_agent]
-        │         Runs deterministic checks on every package:
-        │         is it installed? does it have metadata? permissive license?
-        │         API surface overlap? Disqualifies unavailable packages.
+        │         Deterministic checks: is_installed, has_metadata,
+        │         license_permissive, api_surface_overlap,
+        │         not_transitive_dependency (never groups parent/child
+        │         packages like FastAPI/Starlette as alternatives).
+        │         Disqualifies unavailable packages before any LLM call.
         │
   [security_agent]
         │         Queries OSV API for CVEs per package+version.
         │         Queries PyPI for release freshness and yanked versions.
-        │         Parallel HTTP — no LLM, no new dependencies.
+        │         Parallel HTTP — no LLM, no extra dependencies.
         │
   [resolver_agent]
         │         LLM call #1. Groups packages into equivalence clusters:
         │         sets of imports that serve the same functional role.
-        │         Also identifies migration pitfalls between equivalents.
+        │         Identifies migration pitfalls between equivalents.
+        │         Uses core/llm_json.py to parse output — correctly
+        │         strips <think> blocks from reasoning models (NVIDIA
+        │         Nemotron, DeepSeek-R1) before JSON extraction.
         │
         ├── no equivalence groups found ──► END
         │
   [profiler_agent]
         │         Benchmarks each candidate in a fresh subprocess:
-        │         import time (ms, averaged over 3 runs) + memory (KB).
+        │         import time (ms, averaged over 3 runs) + memory (KB) +
+        │         runtime API benchmarks where snippets are available.
         │
   [axiom_agent]
-        │         LLM call #2. Scores all candidates with a weighted formula
-        │         across speed, memory, availability, API compatibility,
-        │         and security. Picks a winner per group with a confidence
-        │         level. Rewrites the source AST. Saves a telemetry session.
+        │         LLM call #2. Scores all candidates across speed, memory,
+        │         security, API compatibility. Picks winner per group.
+        │         Applies crypto-veto correctly: only blocks non-crypto
+        │         hash packages (xxhash, mmh3) when the resolver
+        │         explicitly identifies a security-sensitive role — NOT
+        │         just because hashlib.md5 appears in the import list.
         │
+        ├── (require_approval=True) ──► [approval_gate]
+        │                                     │
+        │         LangGraph interrupt() — graph genuinely pauses here.
+        │         Shows proposed changes table + per-file unified diff.
+        │         Human types a/r/1,2,3 to accept/reject before ANY
+        │         source file is touched. MemorySaver checkpointer
+        │         persists state so resume_loader() continues from
+        │         exactly this point.
+        │                                     │
+        ├── (no approval gate) ──────────────►│
+        │                                     │
   [connector_agent]
-        │         LLM calls #3 and #4. For each replaced package, generates
-        │         a thin Python adapter module (axiom_{pkg}_compat.py) that
-        │         wraps the new package to match the original's call signatures.
-        │         Then rewrites the source imports to use the adapter.
+        │         LLM call #3. For each replaced package whose API
+        │         differs from the original, generates a thin inline
+        │         wrapper function injected directly into the patched
+        │         source. Call sites are untouched — they call the
+        │         wrapper, which handles the API translation.
         │
        END
 ```
@@ -76,34 +97,45 @@ Given a Python file, AXIOM will tell you which of your imports are redundant, wh
 ```
 axiom_v2/
 ├── pyproject.toml
+├── .env                           ← API keys (never commit this)
 └── smart_loader/
-    ├── cli.py                         Typer CLI entry point
+    ├── cli.py                     Typer CLI entry point
     ├── __main__.py
     │
     ├── core/
-    │   ├── state.py                   All dataclasses + LoaderState
-    │   ├── graph.py                   LangGraph StateGraph builder
-    │   ├── rules_engine.py            Deterministic rule registry
-    │   ├── token_tracker.py           Per-LLM-call token log (JSONL)
-    │   └── telemetry.py               Session lean log + integrity hash
+    │   ├── state.py               All dataclasses + LoaderState TypedDict
+    │   ├── graph.py               LangGraph StateGraph builder + run_loader()
+    │   ├── llm_factory.py         Single source of truth for LLM instantiation
+    │   ├── llm_json.py            ← NEW: robust JSON extraction for reasoning models
+    │   ├── feedback_loop.py       ← REWRITTEN: all human-in-the-loop logic
+    │   │                            run_feedback_loop()      single-file post-pipeline review
+    │   │                            approval_gate_node()     LangGraph interrupt() node
+    │   │                            scan_dir_approval_prompt() per-file diffs + y/n gate
+    │   ├── diff_reporter.py       DiffReporter + PerfReporter + AxiomReport
+    │   │                            (diff/perf superclass — professor's concept)
+    │   ├── constraints.py         Crypto-veto + connector-required inference
+    │   ├── ast_rewrite.py         ImportRewriter AST node transformer
+    │   ├── rules_engine.py        Deterministic rule registry (@rule decorator)
+    │   ├── token_tracker.py       ← NEW: per-LLM-call JSONL token log
+    │   └── telemetry.py           Session lean log + content-addressed detail store
     │
     ├── agents/
-    │   ├── parser_agent.py            Node 1 — AST import extraction
-    │   ├── rules_agent.py             Node 2 — deterministic validation
-    │   ├── security_agent.py          Node 3 — OSV + PyPI CVE scan
-    │   ├── resolver_agent.py          Node 4 — LLM equivalence clustering
-    │   ├── profiler_agent.py          Node 5 — subprocess benchmarking
-    │   ├── axiom_agent.py             Node 6 — scoring + AST rewrite
-    │   └── connector_agent.py         Node 7 — API adapter shim codegen
+    │   ├── parser_agent.py        Node 1 — AST import + call-site extraction
+    │   ├── rules_agent.py         Node 2 — deterministic validation
+    │   ├── security_agent.py      Node 3 — OSV + PyPI CVE scan
+    │   ├── resolver_agent.py      Node 4 — LLM equivalence clustering
+    │   ├── profiler_agent.py      Node 5 — subprocess benchmarking
+    │   ├── axiom_agent.py         Node 6 — scoring + deferred AST rewrite
+    │   └── connector_agent.py     Node 7 — inline API adapter codegen
     │
     ├── dashboard/
-    │   └── app.py                     FastAPI token dashboard (port 7788)
+    │   └── app.py                 FastAPI token dashboard (port 7788)
     │
     └── experiment_libs/
-        ├── http_experiment.py         requests vs httpx vs urllib3
-        ├── json_experiment.py         json vs ujson vs orjson
-        ├── dataframe_experiment.py    pandas vs polars
-        └── mixed_experiment.py        all categories combined
+        ├── http_experiment.py     requests vs httpx vs urllib3
+        ├── json_experiment.py     json vs ujson vs orjson
+        ├── dataframe_experiment.py pandas vs polars
+        └── mixed_experiment.py    all categories combined
 ```
 
 ---
@@ -116,151 +148,209 @@ axiom_v2/
 - [Ollama](https://ollama.com) installed and running locally (for the default local LLM)
 - Git
 
-### 1. Clone the repository
+### 1. Clone and install
 
 ```bash
 git clone <your-repo-url>
 cd axiom_v2
-```
-
-### 2. Create a virtual environment
-
-```bash
 python -m venv .venv
 source .venv/bin/activate        # macOS / Linux
-.venv\Scripts\activate           # Windows
+pip install -e .
+pip install python-dotenv        # required for .env key loading
 ```
 
-### 3. Install AXIOM
+### 2. Set your API key
+
+Create a `.env` file in the project root — this is the reliable way to set API keys regardless of which terminal or tool launches axiom:
 
 ```bash
-pip install .
+# For Claude
+echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env
+
+# For NVIDIA NIM
+echo 'NVIDIA_API_KEY=nvapi-...' >> .env
 ```
 
-This registers the `axiom` command globally in your environment. Verify:
+Never export keys in one terminal and expect them to appear in another session, VS Code's integrated terminal, or tools like Cursor/Antigravity. The `.env` file is read by the Python process itself on every run.
+
+### 3. Pull a local model (optional)
 
 ```bash
-axiom --help
-```
-
-### 4. Install the default LLM model (Ollama)
-
-```bash
-# Start Ollama if it isn't already running
 ollama serve
-
-# Pull the default model
-ollama pull qwen3-coder-next
-```
-
-Any Ollama model that supports tool calling works (`llama3.1`, `llama3.3`, `mistral`, `qwen2.5`).
-
-### 5. (Optional) Set up Claude
-
-If you want to use Anthropic's Claude instead of Ollama:
-
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-```
-
-Or pass it directly: `axiom run file.py --llm claude --api-key sk-ant-...`
-
-### 6. Install dashboard dependencies
-
-The token dashboard requires FastAPI and Uvicorn:
-
-```bash
-pip install fastapi uvicorn
+ollama pull mistral        # fast, works for most experiments
+ollama pull qwen3-coder-next  # stronger reasoning, slower
 ```
 
 ---
 
-## Usage
+## Supported LLM Providers
 
-### Analyze a Python file
+| Provider | `--llm` flag | Required env var | Notes |
+|---|---|---|---|
+| Ollama (local) | `ollama` | — | Default. `ollama pull <model>` first |
+| Anthropic Claude | `claude` | `ANTHROPIC_API_KEY` | Recommended for best results |
+| NVIDIA NIM | `nvidia` | `NVIDIA_API_KEY` | Supports Nemotron reasoning models |
+| OpenAI | `openai` | `OPENAI_API_KEY` | |
+| Any OpenAI-compatible | `openai-compat` | `OPENAI_COMPAT_API_KEY` + `OPENAI_COMPAT_BASE_URL` | vLLM, LM Studio, etc. |
+
+**Reasoning models** (Nemotron Ultra/Super, DeepSeek-R1, QwQ) are automatically detected by name. AXIOM raises their `max_tokens` budget to 16,384 and passes `enable_thinking: False` to NVIDIA's endpoint — preventing chain-of-thought from leaking into the JSON output and causing "all imports already optimal" false negatives.
+
+---
+
+## CLI Reference
+
+### Analyze a single file
 
 ```bash
 axiom run path/to/script.py
+
+# Full options
+axiom run path/to/script.py \
+  --llm claude \
+  --model claude-sonnet-4-6 \
+  --save \                        # write patched file + versioned diff/perf report
+  --feedback \                    # pause for human accept/reject before saving
+  --non-interactive \             # auto-accept (for CI)
+  --no-patch \                    # suppress patched source printout
+  --no-security \                 # skip OSV/PyPI network calls (faster)
+  --no-connector \                # skip adapter shim generation
+  --output path/to/output.py      # custom output path
 ```
 
+### Scan a multi-file project
+
 ```bash
-# Save the rewritten file
-axiom run path/to/script.py --save
+axiom scan-dir path/to/project/
 
-# Specify output path
-axiom run path/to/script.py --save --output path/to/optimized.py
+# Full options
+axiom scan-dir path/to/project/ \
+  --llm nvidia \
+  --model nvidia/nemotron-3-ultra-550b-a55b \
+  --save \                        # write all modified files after approval
+  --no-approve \                  # skip approval gate (use after dry-run review)
+  --non-interactive \             # auto-accept without prompting (CI)
+  --exclude "test_*.py,*_optimized.py" \
+  --no-security \
+  --no-connector
 
-# Write generated adapter shims to disk
-axiom run path/to/script.py --save-connectors --connector-dir ./my_connectors
-
-# Show the dashboard URL after the run
-axiom run path/to/script.py --dashboard
-
-# Disable security scan (faster, skips OSV/PyPI network calls)
-axiom run path/to/script.py --no-security
-
-# Disable connector generation (skips adapter shim codegen)
-axiom run path/to/script.py --no-connector
-
-# Use Claude instead of Ollama
-axiom run path/to/script.py --llm claude --model claude-sonnet-4-20250514
+# Dry run (no --save): see all decisions without touching any file
+axiom scan-dir path/to/project/ --llm claude --model claude-sonnet-4-6
 ```
 
-### Run the experiment batch
+`scan-dir` runs the full pipeline per file, then reconciles decisions **project-wide** — if `pandas → polars` wins in `file_a.py`, the same replacement is applied in `file_b.py` too, so the project converges on one consistent dependency choice.
+
+With `--save` (the default has `--approve` ON), AXIOM shows:
+1. The project-wide decisions table
+2. A per-file unified diff for every file that would be modified
+3. A single `y/n` prompt — nothing is written until you type `y`
+
+### Version history and diffs
 
 ```bash
-axiom experiment
-axiom experiment --llm claude --model claude-sonnet-4-20250514
+# List all saved versions of a file
+axiom versions path/to/script.py
+
+# Show unified diff between any two versions
+axiom diff path/to/script.py --from 1 --to 2
+
+# Two identical versions produce an empty diff (null diff)
+# — mirrors `diff` Linux behavior, as per the diff/perf superclass design
 ```
 
-### One-off security scan
+### Security scan
 
 ```bash
-axiom security requests
+axiom security requests      # scan one package against OSV + PyPI
 axiom security numpy
-axiom security pillow
 ```
 
-### Token usage dashboard
+### Other commands
 
 ```bash
-# Start the dashboard server
-axiom dashboard               # http://localhost:7788
-axiom dashboard --port 9000   # custom port
+axiom experiment             # run all experiment_libs files in sequence
+axiom verify <session_id>    # check session log integrity (tamper detection)
+axiom dashboard              # token usage dashboard at http://localhost:7788
+axiom visualize              # print pipeline topology
 ```
 
-### Verify a session's integrity
+---
+
+## Human-in-the-Loop (Feedback Loop)
+
+AXIOM implements human-in-the-loop at two levels, both backed by the same `core/feedback_loop.py` module.
+
+### For `axiom run` — `--feedback` flag
 
 ```bash
-axiom verify <session_id>
+axiom run myfile.py --llm claude --model claude-sonnet-4-6 --save --feedback
 ```
 
-### View pipeline topology
+After scoring, before writing anything, AXIOM shows:
+- A table of all proposed changes (role, original package, replacement, confidence, rationale)
+- A coloured unified diff of the full source change
+- A prompt: `a` accept all, `r` reject all, `1,2,3` reject specific changes by number
+
+Then runs an **output equivalence check**: executes both the original and patched source in isolated subprocesses, compares stdout/stderr. If they produce identical output, prints `✓ EQUIVALENT` (null diff — same behavior as the professor's `diff original patched → empty`). If they differ, shows the output diff so you can decide.
+
+### For `axiom scan-dir` — `--approve` flag (default ON)
+
+The approval gate fires once for the whole project after all files have been analyzed. Nothing is written until you approve. It shows:
+- The project-wide decisions table
+- A full per-file unified diff for every file that would be modified
+- `Write these N file(s)? [y/n]` — defaults to `n` (the safe default)
+
+This is implemented as a genuine **LangGraph `interrupt()`** with `MemorySaver` checkpointing — not a UI prompt that runs after writes. The graph genuinely pauses before the AST rewrite node; `resume_loader()` with `Command(resume=...)` continues from the exact checkpoint.
+
+---
+
+## Diff and Version Tracking
+
+AXIOM implements **diff/perf superclass** concept: `AxiomReport` inherits conceptually from both `diff` (structural change tracking) and `perf stat` (benchmark delta reporting).
+
+Every `--save` run writes versioned records under `axiom_logs/versions/{filename}/`:
+
+```
+axiom_logs/
+├── versions/
+│   └── {filename}/
+│       ├── v1_original.py           always the untouched source
+│       ├── v{n}_patched.py          each --save creates a new version
+│       ├── diff_v{n-1}_to_v{n}.txt  unified diff between consecutive versions
+│       └── perf_report.json         import-time speedup ratios
+├── sessions/
+│   ├── {session_id}.json            lean log: decisions, hashes, integrity field
+│   └── details/sha256_{h}.json      full decision content, keyed by hash
+└── token_usage.jsonl                per-LLM-call token log (input, output, latency)
+```
 
 ```bash
-axiom visualize
+axiom versions myfile.py       # list all versions with +/- line counts
+axiom diff myfile.py --from 1 --to 3    # compare any two versions
+axiom verify <session_id>      # recompute integrity hash to detect tampering
 ```
 
 ---
 
 ## Scoring Formula
 
-Every candidate package in an equivalence group receives a weighted score:
+| Signal            | Weight | Source                              |
+|-------------------|--------|-------------------------------------|
+| Import speed      | 35%    | Profiler — fastest import wins      |
+| Availability      | 20%    | Rules engine                        |
+| Security          | 20%    | OSV overall score                   |
+| API compatibility | 15%    | LLM-rated drop-in compatibility     |
+| Memory footprint  | 10%    | Profiler — smallest peak memory     |
 
-| Signal              | Weight | Source                         |
-|---------------------|--------|--------------------------------|
-| Import speed        | 35%    | Profiler — fastest import wins |
-| Availability        | 20%    | Rules engine                   |
-| Security            | 20%    | OSV overall score              |
-| API compatibility   | 15%    | LLM-rated drop-in score        |
-| Memory footprint    | 10%    | Profiler — smallest wins       |
-
-A package with a CRITICAL CVE gets a security score near 0.0 — a 20-point penalty that overrides speed advantages.
+A package with a CRITICAL CVE gets security score ≈ 0.0 — a 20-point penalty that overrides speed advantages.
 
 **Confidence levels:**
-- `HIGH` — winner leads by more than 0.15 score gap
+- `HIGH` — winner leads by > 0.15 score gap
 - `MEDIUM` — winner leads but margin is close
 - `LOW` — only one available candidate
+
+**Active role separation**: if both `requests` and `httpx` have distinct active call sites in the same file (different functions use each), AXIOM correctly identifies them as serving complementary roles, not as alternatives — neither will be replaced.
+
+**Crypto-veto**: non-cryptographic hash packages (`xxhash`, `mmh3`, `farmhash`) are excluded from groups where the resolver identifies a security-sensitive role. The veto only fires when the role is genuinely crypto-sensitive — it does NOT fire when the resolver explicitly notes the hash usage is non-security-sensitive (e.g. cache-key generation, deduplication checksums).
 
 ---
 
@@ -268,65 +358,47 @@ A package with a CRITICAL CVE gets a security score near 0.0 — a 20-point pena
 
 AXIOM queries two external APIs (no LLM, no extra dependencies):
 
-- **OSV API** (`https://api.osv.dev`) — CVE lookup per package and version
-- **PyPI JSON API** — release freshness, yanked versions
+- **OSV API** (`https://api.osv.dev`) — CVE lookup per package and installed version
+- **PyPI JSON API** — release freshness, yanked version detection
 
 Risk levels: `CRITICAL` · `HIGH` · `MEDIUM` · `LOW`
 
-All package scans run in parallel. Results are factored into the scoring formula and printed in a dedicated summary table at the end of each run.
+All scans run in parallel. Results feed into the scoring formula and appear in a dedicated summary table. A package with HIGH or CRITICAL risk has its score penalized and the resolver is told to prefer safer alternatives in the same equivalence group.
 
 ---
 
 ## Adapter Shims (Connector Agent)
 
-When AXIOM replaces `requests` with `httpx`, your existing code still calls `requests.get(...)`. The connector agent generates a thin adapter module that wraps the new package to match the original's exact call signatures — so no manual refactoring is needed.
-
-**Example generated connector** (`axiom_requests_compat.py`):
+When AXIOM replaces `fastapi` with `starlette`, existing code still calls `FastAPI(title=..., version=...)`. The connector agent generates a thin wrapper function — injected **inline** into the patched source — that bridges the API difference so existing call sites work unchanged.
 
 ```python
-"""AXIOM connector: requests → httpx"""
-import httpx as _httpx
+# AXIOM CONNECTOR: fastapi → starlette
+# Injected inline by the connector agent
+def _axiom_create_starlette_app(title: str = "", version: str = "", **kwargs):
+    """Wraps Starlette() to accept FastAPI's constructor signature."""
+    from starlette.applications import Starlette
+    starlette_keys = {"debug", "routes", "middleware",
+                      "exception_handlers", "on_startup", "on_shutdown"}
+    return Starlette(**{k: v for k, v in kwargs.items() if k in starlette_keys})
 
-def get(url, **kwargs):
-    timeout = kwargs.pop("timeout", 10)
-    with _httpx.Client(timeout=timeout) as client:
-        return client.get(url, **kwargs)
-
-def post(url, **kwargs):
-    timeout = kwargs.pop("timeout", 10)
-    with _httpx.Client(timeout=timeout) as client:
-        return client.post(url, **kwargs)
+app = _axiom_create_starlette_app(title="My App", version="1.0")
 ```
 
-Your existing code is rewritten to import `axiom_requests_compat as requests` — call sites are untouched.
-
----
-
-## Token Dashboard
-
-AXIOM logs every LLM call to `axiom_logs/token_usage.jsonl`. The dashboard visualizes this in real time:
-
-```bash
-axiom dashboard    # http://localhost:7788
-```
-
-Charts available: token usage timeline, input/output by agent, token distribution, calls per agent, tokens per session, input/output ratio.
+The connector agent also documents what would still break after the migration (e.g. `@app.get()` decorators, Pydantic body parsing, `Depends()` injection) so you know exactly what manual work remains.
 
 ---
 
 ## Telemetry & Audit
 
-Every run saves two artefacts:
+Every session produces three artefacts:
 
-```
-axiom_logs/
-├── sessions/{session_id}.json        lean log: event sequence + hashes + verdict
-├── sessions/{session_id}_patched.py  the rewritten source
-├── details/sha256_{hash}.json        full decision content per equivalence group
-└── token_usage.jsonl                 per-LLM-call token log
-```
+| File | Content |
+|------|---------|
+| `axiom_logs/sessions/{id}.json` | Lean log: event sequence, hashes, verdict, token usage |
+| `axiom_logs/details/sha256_{h}.json` | Full decision content keyed by hash — includes `crypto_vetoed`, `used_apis`, `requires_connector` |
+| `axiom_logs/token_usage.jsonl` | Per-LLM-call log: agent, model, provider, input/output tokens, latency |
 
-The `integrity` field in the session log is a SHA-256 computed over all detail hashes. Recomputing it detects any post-hoc tampering.
+The `integrity` field in the lean log is a SHA-256 computed over all referenced detail hashes. Recomputing it is sufficient to detect any post-hoc tampering.
 
 ```bash
 axiom verify <session_id>
@@ -336,24 +408,36 @@ axiom verify <session_id>
 
 ## Experiment Files
 
-Four pre-built test files with intentional overlapping dependencies:
+### Built-in single-file experiments (`experiment_libs/`)
 
-| File                        | Equivalence Groups                              |
-|-----------------------------|--------------------------------------------------|
-| `http_experiment.py`        | requests ≡ httpx (HTTP client)                  |
-| `json_experiment.py`        | json ≡ ujson ≡ orjson (JSON serializer)         |
-| `dataframe_experiment.py`   | pandas ≡ polars (DataFrame library)             |
-| `mixed_experiment.py`       | All of the above combined                       |
+| File | Equivalence Groups |
+|------|-------------------|
+| `http_experiment.py` | requests ≡ httpx |
+| `json_experiment.py` | json ≡ ujson ≡ orjson |
+| `dataframe_experiment.py` | pandas ≡ polars |
+| `mixed_experiment.py` | all of the above combined |
+
+### Multi-file project experiments (`multiple_experiment/`)
+
+A realistic multi-module FastAPI project with files spread across `api/`, `models/`, `services/`, `utils/`, `config/` — demonstrating that AXIOM analyzes an entire project, not just one entry point. Use `axiom scan-dir` to analyze the whole project with one command.
+
+### `cache_lib/` experiment
+
+A purpose-built 4-file library (`client.py`, `storage.py`, `config.py`, `cli.py`) designed to exercise specific AXIOM behaviors:
+- `client.py` — single-role `requests` → `httpx` replacement target
+- `storage.py` — non-crypto hash veto test (`hashlib.md5` for cache keys, not security)
+- `config.py` / `cli.py` — stdlib-only control files (AXIOM must leave these untouched)
 
 ```bash
-axiom run smart_loader/experiment_libs/mixed_experiment.py --save --dashboard
+cd cache_lib && pip install -e ".[candidates]"   # installs httpx, orjson, xxhash
+axiom scan-dir cache_lib/ --llm claude --model claude-sonnet-4-6 --save
 ```
 
 ---
 
 ## Adding a Custom Rule
 
-Rules run before any LLM call. They never raise exceptions — always return `PASS`, `FAIL`, or `UNKNOWN`.
+Rules run before any LLM call and never raise exceptions — always return `PASS`, `FAIL`, or `UNKNOWN`.
 
 ```python
 from smart_loader.core.rules_engine import rule
@@ -361,7 +445,6 @@ from smart_loader.core.rules_engine import rule
 @rule("my_rule", confidence="HIGH")
 def _my_rule(package: str) -> tuple[str, dict]:
     try:
-        # your check here
         return "PASS", {"detail": "..."}
     except Exception as e:
         return "UNKNOWN", {"error": str(e)}
@@ -371,18 +454,24 @@ def _my_rule(package: str) -> tuple[str, dict]:
 
 ## Environment Variables
 
-| Variable            | Default          | Description                        |
-|---------------------|------------------|------------------------------------|
-| `ANTHROPIC_API_KEY` | —                | Required when using `--llm claude` |
-| `AXIOM_LOGS_DIR`    | `./axiom_logs`   | Directory for all log output       |
+| Variable | Default | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | — | Required for `--llm claude` |
+| `NVIDIA_API_KEY` | — | Required for `--llm nvidia` |
+| `OPENAI_API_KEY` | — | Required for `--llm openai` |
+| `AXIOM_LOGS_DIR` | `./axiom_logs` | Directory for all log output |
+| `OLLAMA_HOST` | `http://localhost:11434` | Ollama server address |
+
+All variables are also read from a `.env` file in the project root (via `python-dotenv`). This is more reliable than shell `export` commands, which only live in one terminal session.
 
 ---
 
 ## Related Research
 
-| Paper                       | Relation to AXIOM                                        |
-|-----------------------------|----------------------------------------------------------|
-| PLLM (arXiv:2501.16191)     | LLM dependency resolution — AXIOM optimizes, PLLM fixes  |
-| SMT-LLM (arXiv:2605.11772)  | AST-based Python analysis, same approach                 |
-| MemRes (arXiv:2604.16941)   | Skips LLM for known packages — AXIOM does same in rules  |
-| COMPILOT (arXiv:2511.00592) | LLM + feedback loop optimization — same pattern          |
+| Paper | Relation to AXIOM |
+|---|---|
+| PLLM (arXiv:2501.16191) | LLM dependency resolution — AXIOM optimizes, PLLM fixes |
+| SMT-LLM (arXiv:2605.11772) | AST-based Python analysis, same approach |
+| MemRes (arXiv:2604.16941) | Skips LLM for known packages — AXIOM does same in rules |
+| COMPILOT (arXiv:2511.00592) | LLM + feedback loop optimization — same pattern |
+| CodeAugur (Agadakos et al.) | Primary architectural reference — binary semantic equivalence; AXIOM applies the same reasoning to Python packages |
