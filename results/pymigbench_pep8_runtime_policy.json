@@ -1,0 +1,367 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 1,
+    "case_offset": 0,
+    "case_filter": "schlamar/flake8-todo"
+  },
+  "metrics": {
+    "total_cases": 1,
+    "errored_cases": 0,
+    "detection_rate_pct": 100.0,
+    "detection_n": 1,
+    "target_selection_rate_pct": 0.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 1,
+    "verified_ground_truth_rate_pct": 100.0,
+    "execution_ready_n": 1,
+    "verified_ground_truth_rate_ready_pct": 100.0,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "ground_truth_verified": 1
+    },
+    "result_categories": {
+      "pymigbench_exact_verified": 1
+    },
+    "verified_alternative_runtime_efficiency_superior_n": 0,
+    "verified_alternative_runtime_efficiency_unproven_n": 0,
+    "connector_invoked_n": 1,
+    "verification_environment_incomplete_n": 0,
+    "verification_environment_incomplete_by_status": {},
+    "verifier_clean_rate_pct": 100.0,
+    "verifier_n": 1,
+    "repair_cases_n": 1,
+    "repair_cycle_total": 2,
+    "repair_cycles_per_case": 2.0,
+    "repair_cycles_per_repaired_case": 2.0,
+    "verified_after_repair_n": 1,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {
+      "axiom": 2
+    },
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 4,
+    "runtime_measured_package_case_n": 2,
+    "runtime_measurement_coverage_pct": 50.0,
+    "runtime_measured_probe_n": 2,
+    "runtime_probe_status_counts": {
+      "unsupported": 2,
+      "measured": 2
+    },
+    "by_domain": {
+      "Codestyle": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 100.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 1,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "result_category_definitions": {
+    "pymigbench_exact_verified": "AXIOM produced and verified the same target migration recorded by PyMigBench.",
+    "verified_alternative": "AXIOM verified a different target for the same source role. A runtime-efficiency claim additionally requires actual selected-target API use and one shared measured semantic runtime probe across source, reference target, and alternative.",
+    "rejected_after_repair_budget": "A selected migration remained unaccepted after the globally bounded verifier repair budget was exhausted.",
+    "not_verified_or_not_adjudicated": "No verified migration claim is made. category_reason and detailed outcome distinguish no-change, environment, resolver, provider, and other causes."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "adapter_runtime": "Optional timing of a recognised, side-effect-free Connector wrapper. scope='adapter_only' measures generated application glue and is never used as selected-package runtime evidence.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 58.76900672912598,
+  "results": [
+    {
+      "migration_id": "pep8__pycodestyle__schlamar/flake8-todo__fcd59c6c",
+      "repo": "schlamar/flake8-todo",
+      "domain": "Codestyle",
+      "source": "pep8",
+      "target": "pycodestyle",
+      "file_path": "flake8_todo.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [],
+      "base_requirement_count": 0,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": false,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "pycodestyle",
+      "attempted_axiom_winner": "ruff",
+      "attempted_selection_status": "alternative",
+      "attempted_selection_count": 3,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 2,
+      "repair_history": [
+        {
+          "cycle": 1,
+          "max_cycles": 5,
+          "route": "axiom",
+          "failure_class": "decision_level",
+          "roles": [
+            "Python style guide checker / linter plugin base"
+          ],
+          "errors": [
+            {
+              "check": "target_identity",
+              "line": 1,
+              "message": "pep8\u2192ruff: connector analysis cited unselected candidate(s) pycodestyle while the locked target is ruff (import ruff)"
+            }
+          ]
+        },
+        {
+          "cycle": 2,
+          "max_cycles": 5,
+          "route": "axiom",
+          "failure_class": "decision_level",
+          "roles": [
+            "Python style guide checker / linter plugin base"
+          ],
+          "errors": [
+            {
+              "check": "target_identity",
+              "line": 1,
+              "message": "pep8\u2192flake8: connector analysis cited unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)"
+            }
+          ]
+        }
+      ],
+      "final_verifier_feedback": {
+        "cycle": 2,
+        "max_cycles": 5,
+        "route": "axiom",
+        "failure_class": "decision_level",
+        "roles": [
+          "Python style guide checker / linter plugin base"
+        ],
+        "errors": [
+          {
+            "check": "target_identity",
+            "line": 1,
+            "message": "pep8\u2192flake8: connector analysis cited unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)"
+          }
+        ]
+      },
+      "profiler_evidence": {
+        "flake8": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 2.048,
+          "memory_kb": 458.7,
+          "profile_detail": "import module: flake8",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "no noqa_detection implementation is registered for flake8",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "noqa_detection": {
+              "status": "unsupported",
+              "probe_id": "noqa_detection",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "no noqa_detection implementation is registered for flake8",
+              "used_apis": []
+            }
+          }
+        },
+        "pep8": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 5.349,
+          "memory_kb": 814.0,
+          "profile_detail": "import module: pep8",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:noqa_detection",
+            "probe_kind": "pure_local",
+            "median_ms": 0.00025,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "noqa_detection"
+            ]
+          },
+          "runtime_probes": {
+            "noqa_detection": {
+              "status": "measured",
+              "probe_id": "noqa_detection",
+              "kind": "pure_local",
+              "distribution": "pep8",
+              "module": "pep8",
+              "median_ms": 0.00025,
+              "p95_ms": 0.000333,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "816d7c1b2931a2fd",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "pycodestyle": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 5.374,
+          "memory_kb": 652.5,
+          "profile_detail": "import module: pycodestyle",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:noqa_detection",
+            "probe_kind": "pure_local",
+            "median_ms": 0.000166,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "noqa_detection"
+            ]
+          },
+          "runtime_probes": {
+            "noqa_detection": {
+              "status": "measured",
+              "probe_id": "noqa_detection",
+              "kind": "pure_local",
+              "distribution": "pycodestyle",
+              "module": "pycodestyle",
+              "median_ms": 0.000166,
+              "p95_ms": 0.000208,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "816d7c1b2931a2fd",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "ruff": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 0.747,
+          "memory_kb": 121.2,
+          "profile_detail": "import module: ruff",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "no noqa_detection implementation is registered for ruff",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "noqa_detection": {
+              "status": "unsupported",
+              "probe_id": "noqa_detection",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "no noqa_detection implementation is registered for ruff",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "pycodestyle",
+        "target_version": "auto",
+        "resolved_target_version": "2.14.0",
+        "target_requirement": "pycodestyle",
+        "requirement_count": 0,
+        "requirement_file_count": 0,
+        "python_evidence": [],
+        "warnings": [
+          "No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery."
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "flake8": {
+            "distribution": "flake8",
+            "version": "7.3.0",
+            "install_spec": "flake8==7.3.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "pycodestyle": {
+            "distribution": "pycodestyle",
+            "version": "2.14.0",
+            "install_spec": "pycodestyle==2.14.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "ruff": {
+            "distribution": "ruff",
+            "version": "0.16.0",
+            "install_spec": "ruff==0.16.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": true,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "verified",
+      "verification_environment_status": "ready",
+      "selection_status": "exact_target",
+      "outcome": "ground_truth_verified",
+      "verified_ground_truth": true,
+      "verified_alternative": false,
+      "result_category": "pymigbench_exact_verified",
+      "category_reason": "AXIOM selected PyMigBench's target and the final patch passed verification.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    }
+  ]
+}

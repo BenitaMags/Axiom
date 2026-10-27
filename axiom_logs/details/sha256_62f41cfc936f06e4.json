@@ -1,0 +1,40 @@
+{
+  "role": "Modbus TCP client for reading/writing holding registers on industrial field devices",
+  "winner": "modbus-tk",
+  "original": "pymodbus",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.0,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.681,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'modbus-tk' wins 'Modbus TCP client for reading/writing holding registers on industrial field devices'. Confidence: MEDIUM. Total: 0.681 (speed=1.0, mem=1.0, sec=0.895, api=0.0). Migration note: modbus-tk uses a different object model (modbus_tcp.TcpMaster + master.execute with function codes) instead of pymodbus's ModbusTcpClient.read_holding_registers/write_register calls",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "ModbusTcpClient",
+    "connect",
+    "read_holding_registers",
+    "write_register",
+    "isError",
+    "registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

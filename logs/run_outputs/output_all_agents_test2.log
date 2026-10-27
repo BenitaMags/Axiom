@@ -1,0 +1,95 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpk2b9bfqd_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                               Rule Results                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                           ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ time    │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable         │
+│ time    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time               │
+│ time    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time   │
+│ time    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka.vendor.six.moves' │
+│ kafka   │ is_installed        │  FAIL   │ HIGH       │ message=kafka is not installed                   │
+│ kafka   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.5, license=Apache License 2.0        │
+│ kafka   │ license_permissive  │  PASS   │ MEDIUM     │ license=apache license 2.0, permissive=True      │
+│ kafka   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka.vendor.six.moves' │
+│ locust  │ is_installed        │  FAIL   │ HIGH       │ message=locust is not installed                  │
+│ locust  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for locust             │
+│ locust  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for locust │
+│ locust  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'                 │
+└─────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): kafka, locust
+──────────────────────────────────────────────────────────── 🔒 Security Agent ─────────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                      Security Scan Results                                       
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ kafka   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ locust  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+──────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+  locust -> k6, vegeta, hey
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,755  output: 2  latency: 11248ms
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+
+Evaluation took 15.4s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     0.0%  (n=1)
+Full-pipeline accuracy:      requested, but 0 cases were scoreable — usually means neither source nor target package is pip-installed here 
+(profiler_agent can't benchmark what it can't import), or resolver never produced a decision. Try --seed-target to bypass resolver's own 
+discovery, or pip install the specific pair you're testing.
+        Detection Rate by Domain         
+┏━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain       ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients │     1 │           0.0% │
+└──────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_all_agents_test.json, pymigbench_all_agents_test.csv

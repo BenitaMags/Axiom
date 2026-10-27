@@ -1,0 +1,39 @@
+{
+  "role": "Modbus protocol client (TCP register read/write)",
+  "winner": "pymodbus",
+  "original": "pymodbus",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.15,
+    "total": 1.0,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'pymodbus' wins 'Modbus protocol client (TCP register read/write)'. Confidence: LOW. Total: 1.0 (speed=None, mem=None, sec=None, api=1.0). Migration note: pymodbus returns a response object with .isError() and .registers; pyModbusTCP's read_holding_registers returns a plain list or None on failure (no isError method)",
+  "confidence": "LOW",
+  "used_apis": [
+    "ModbusTcpClient",
+    "client.connect",
+    "client.read_holding_registers",
+    "result.isError",
+    "result.registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

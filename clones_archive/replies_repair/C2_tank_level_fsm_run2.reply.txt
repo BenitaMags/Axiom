@@ -1,0 +1,177 @@
+# parsed 3 file(s): ['alarms.py', 'fsm.py', 'process.py']
+# expected: ['alarms.py', 'fsm.py', 'process.py']
+# reply length: 5481 chars
+======================================================================
+Looking at this program, the `fsm.py` docstring says the FSM logic is "first-party logic that the LMA must re-encode into an equivalent but structurally different machine" and explicitly states "State bookkeeping uses the `transitions` library in the original" — implying it should no longer use that library. However, this is condition 1 territory unless the documentation explicitly says to remove the dependency and reimplement first-party. Re-reading carefully: it says the guards/commands are first-party (already true), and the FSM library usage should be replaced with "an equivalent but structurally different machine" — this indicates using a different library, not eliminating state-machine libraries entirely as first-party code. Since it doesn't say "write your own state machine implementation," I'll apply condition 1 and migrate to `python-statemachine`, a well-maintained alternative FSM library, providing an equivalent but structurally different machine.
+
+### FILENAME: fsm.py
+```python
+# CHOSEN-TARGET: python-statemachine
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `python-statemachine` library in this version.
+"""
+from alarms import interlock_ok
+from statemachine import StateMachine, State
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class _TankMachine(StateMachine):
+    IDLE = State("IDLE", initial=True)
+    FILLING = State("FILLING")
+    HOLDING = State("HOLDING")
+    DRAINING = State("DRAINING")
+    FAULT = State("FAULT")
+
+    start_fill = IDLE.to(FILLING, cond="can_fill")
+    level_reached = FILLING.to(HOLDING)
+    start_drain = HOLDING.to(DRAINING) | FILLING.to(DRAINING)
+    empty = DRAINING.to(IDLE)
+    trip = (
+        IDLE.to(FAULT)
+        | FILLING.to(FAULT)
+        | HOLDING.to(FAULT)
+        | DRAINING.to(FAULT)
+        | FAULT.to(FAULT)
+    )
+
+    def __init__(self, controller):
+        self._controller = controller
+        super().__init__()
+
+    def can_fill(self):
+        return self._controller.can_fill()
+
+    def on_start_fill(self):
+        self._controller.open_inlet()
+
+    def on_level_reached(self):
+        self._controller.close_inlet()
+
+    def on_start_drain(self):
+        self._controller.open_outlet()
+
+    def on_empty(self):
+        self._controller.close_outlet()
+
+    def on_trip(self):
+        self._controller.safe_all()
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        self._machine = _TankMachine(self)
+
+    @property
+    def state(self):
+        return self._machine.current_state.id
+
+    # --- transition triggers (public API preserved) ---------------------------
+    def start_fill(self):
+        self._machine.start_fill()
+
+    def level_reached(self):
+        self._machine.level_reached()
+
+    def start_drain(self):
+        self._machine.start_drain()
+
+    def empty(self):
+        self._machine.empty()
+
+    def trip(self):
+        self._machine.trip()
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+### FILENAME: alarms.py
+```python
+"""alarms -- level alarm evaluation and interlocks (first-party logic)."""
+
+LOLO = 0.2
+LOW = 1.0
+HIGH = 8.0
+HIHI = 9.5
+
+
+def evaluate(level: float) -> set:
+    """Return the set of active alarm labels for a tank level."""
+    active = set()
+    if level >= HIHI:
+        active.add("HIHI")
+    if level >= HIGH:
+        active.add("HIGH")
+    if level <= LOLO:
+        active.add("LOLO")
+    if level <= LOW:
+        active.add("LOW")
+    return active
+
+
+def interlock_ok(level: float) -> bool:
+    """Filling is permitted only below the HIHI trip point."""
+    return level < HIHI
+```
+
+### FILENAME: process.py
+```python
+"""process -- physical process variables and a simple update model."""
+from dataclasses import dataclass
+
+
+@dataclass
+class Process:
+    level: float = 0.0
+    inlet: bool = False
+    outlet: bool = False
+
+    def apply(self, dt: float = 1.0, fill_rate: float = 0.5, drain_rate: float = 0.4) -> float:
+        """Advance the level given the current valve commands."""
+        delta = 0.0
+        if self.inlet:
+            delta += fill_rate
+        if self.outlet:
+            delta -= drain_rate
+        self.level = max(0.0, self.level + delta * dt)
+        return self.level
+```

@@ -1,0 +1,72 @@
+% =========================================================================
+% INSERT into related.tex as a new subsection, placed FIRST in Section VII
+% (before "Code Clone and Similarity Detection"). Library migration is the
+% task Proteus actually performs, and its absence is the most conspicuous
+% gap in the current related work.
+% =========================================================================
+
+\subsection{Library Migration}
+
+The task \sys performs---replacing a third-party dependency while preserving
+observable behavior---is studied directly in the library-migration literature.
+Islam et al.\ construct \emph{PyMigBench}~\cite{islam2023pymigbench}, a
+benchmark of real Python library migrations mined from open-source history,
+and later evaluate large language models on that benchmark~\cite{islam2025llmmigration},
+finding that models handle mechanical import and call-site rewrites well and
+degrade on migrations that require reconciling different execution models. Their
+\emph{MigrateLib}~\cite{islam2025migratelib} assembles these steps into an
+end-to-end tool. He et al.~\cite{he2021ranking} address the selection problem
+that \sys's \emph{LSA} faces, ranking candidate replacement libraries by
+multiple metrics rather than popularity alone.
+
+\sys differs from this line in three respects, and shares its central
+difficulty. First, the migrations here are not recovered from history: no
+ground-truth target is supplied to any configuration, so selecting the
+replacement is part of the task rather than an input to it. Second, migration
+is coupled with deliberate diversification of first-party logic, which the
+migration literature does not attempt. Third, acceptance is gated on an
+executable equivalence oracle rather than on the project's own test suite
+alone.
+
+The shared difficulty is the one our results make sharpest. Migration
+benchmarks are validated by whether the migrated project's tests pass, and
+Section~\ref{sec:results} shows that criterion accepting clones with serious
+behavioral defects at a rate near one in two on our corpus. Our subjects
+dependency-inject their I/O clients---good practice, and common in the
+real projects PyMigBench draws from---which makes exactly the migrated code
+path unreachable by the suite that certifies it. We read this as evidence that
+test-passage-based validation understates defect rates in library-migration
+evaluation generally, and not only in ours.
+
+% =========================================================================
+% INSERT into related.tex, Section VII-D (Software Diversity), after the
+% Larsen and Collberg sentences.
+% =========================================================================
+
+Closest to \sys's \emph{LMA} is the line of work that synthesizes diverse
+variants by program transformation. Baudry et al.~\cite{baudry2014tailored}
+generate computationally diverse variants through tailored source
+transformations, and Auto-SPT~\cite{hooda2025autospt} automates the discovery
+of semantics-preserving transformations---the class of rewrite our \emph{LMA}
+applies. Gal\'apagos~\cite{ron2024galapagos} uses LLMs to produce N-version
+program variants, and is the closest in method to \sys: it likewise treats
+generation as the objective and validates variants by execution. \sys differs
+in coupling variant synthesis to a dependency substitution, so that divergence
+arises from both a changed library and a rewritten first-party core, and in
+attributing each rejected variant to the agent that produced it.
+
+% =========================================================================
+% INSERT into related.tex, Section VII-C (Agentic Reasoning and Self-Repair),
+% after the SWE-bench sentence.
+% =========================================================================
+
+Our \emph{GSA} applies its edits through an agent--computer interface in the
+sense of SWE-agent~\cite{yang2024sweagent}: the model operates on the real file
+through \texttt{open}, \texttt{search}, \texttt{goto} and \texttt{edit}
+operations whose effects are validated before they are committed, rather than
+regenerating the module wholesale. SWE-agent shows that the design of this
+interface, and not only model capability, determines how reliably an agent can
+edit code. Our experience is consistent with that finding and extends it: we
+observed the editing session rewrite a call site other than the one its own
+analysis had identified, and moved call-site rewriting to a deterministic AST
+transformation in response, reserving the model for adapter synthesis.

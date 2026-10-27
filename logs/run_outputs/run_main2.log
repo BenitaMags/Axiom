@@ -1,0 +1,350 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────────────────────────────────────────── AXIOM — Run ────────────────────────────────────────────────────────────────────────╮
+│ Target:    multiple_experiment/api/main.py                                                                                                                  │
+│ LLM:       OLLAMA / mistral                                                                                                                                 │
+│ Security:  ON                                                                                                                                               │
+│ Connector: ON                                                                                                                                               │
+│ Feedback:  OFF                                                                                                                                              │
+│ Time:      2026-06-28 16:26:31                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_fixed 3/multiple_experiment/api/main.py
+                                                Discovered Imports                                                
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                                                  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    8 │ time                  │ —     │ —                                                      │ —              │
+│    9 │ logging               │ —     │ —                                                      │ —              │
+│   10 │ json                  │ —     │ —                                                      │ —              │
+│   12 │ fastapi               │ —     │ —                                                      │ —              │
+│   13 │ fastapi               │ —     │ FastAPI, HTTPException, Depends                        │ —              │
+│   14 │ uvicorn               │ —     │ —                                                      │ run            │
+│   17 │ models.data_models    │ —     │ UserRecord, EventRecord, serialize_orjson, fingerprint │ —              │
+│   18 │ services.http_service │ —     │ HttpService                                            │ —              │
+│   19 │ utils.crypto_utils    │ —     │ sha256_digest, xxhash_fast, secure_token               │ —              │
+│   20 │ config.settings       │ —     │ get_all_settings                                       │ —              │
+│   23 │ structlog             │ —     │ —                                                      │ get_logger     │
+│   24 │ loguru                │ —     │ —                                                      │ —              │
+└──────┴───────────────────────┴───────┴────────────────────────────────────────────────────────┴────────────────┘
+
+✓ Found 12 imports
+
+─────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ───────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────────
+                                                  Rule Results                                                  
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                              ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ utils     │ is_installed        │  FAIL   │ HIGH       │ message=utils is not installed                      │
+│ utils     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for utils                 │
+│ utils     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for utils     │
+│ utils     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+│ loguru    │ is_installed        │  FAIL   │ HIGH       │ message=loguru is not installed                     │
+│ loguru    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for loguru                │
+│ loguru    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for loguru    │
+│ loguru    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'loguru'                    │
+│ uvicorn   │ is_installed        │  PASS   │ HIGH       │ message=uvicorn is installed and importable         │
+│ uvicorn   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.47.0, license=unknown                     │
+│ uvicorn   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                          │
+│ uvicorn   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+│ models    │ is_installed        │  FAIL   │ HIGH       │ message=models is not installed                     │
+│ models    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for models                │
+│ models    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for models    │
+│ models    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'models'                    │
+│ config    │ is_installed        │  FAIL   │ HIGH       │ message=config is not installed                     │
+│ config    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for config                │
+│ config    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for config    │
+│ config    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                    │
+│ structlog │ is_installed        │  FAIL   │ HIGH       │ message=structlog is not installed                  │
+│ structlog │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for structlog             │
+│ structlog │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for structlog │
+│ structlog │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'structlog'                 │
+│ json      │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable            │
+│ json      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                  │
+│ json      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json      │
+│ json      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+│ services  │ is_installed        │  FAIL   │ HIGH       │ message=services is not installed                   │
+│ services  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for services              │
+│ services  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for services  │
+│ services  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'services'                  │
+│ fastapi   │ is_installed        │  PASS   │ HIGH       │ message=fastapi is installed and importable         │
+│ fastapi   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.136.1, license=unknown                    │
+│ fastapi   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                          │
+│ fastapi   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable            │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                  │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time      │
+│ time      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+│ logging   │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable         │
+│ logging   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging               │
+│ logging   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging   │
+│ logging   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                     │
+└───────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────┘
+
+✓ Rules engine: 44 checks across 11 packages
+
+Disqualified (not installed): utils, loguru, models, config, structlog, services
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 11 package(s) via OSV + PyPI...
+
+                                       Security Scan Results                                        
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ structlog │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ uvicorn   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ config    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Querying OLLAMA / mistral...
+Tokens — input: 1,593  output: 313  latency: 30978ms
+Equivalence Groups Found
+├── FastAPI web framework
+│   ├── Candidates : fastapi, starlette, flask
+│   ├── Used APIs  : FastAPI, HTTPException, Depends
+│   ├── Pitfalls   : FastAPI uses async by default, Flask is sync
+│   └── All three packages are web frameworks for building APIs in Python. FastAPI and Starlette share a common base, Starlette, while Flask is an alternative 
+│       popular web framework.
+└── ASGI server
+    ├── Candidates : uvicorn, gunicorn
+    ├── Used APIs  : run
+    └── Both Uvicorn and Gunicorn are ASGI servers used to run FastAPI applications.
+
+✓ 2 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Scanning candidate 3 package(s) via OSV + PyPI...
+
+        Candidate Security Scan         
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ gunicorn  │ unknown │ LOW  │    0.76 │
+│ flask     │ unknown │ LOW  │    0.76 │
+│ starlette │ unknown │ LOW  │    0.76 │
+└───────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 5 package(s) across 2 group(s)...
+
+⠹ ✓ uvicorn  
+⠹ ✓ gunicorn 
+⠹ ✓ fastapi  
+⠹ ✓ flask    
+⠹ ✓ starlette
+                                         Benchmark Results                                          
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                      ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ starlette │     ✓     │          0.3 ms │           — │           7 │                            │
+│ uvicorn   │     ✓     │         75.4 ms │           — │         501 │                            │
+│ flask     │     ✓     │         99.6 ms │           — │         707 │                            │
+│ fastapi   │     ✓     │        539.6 ms │           — │        2017 │                            │
+│ gunicorn  │     ✗     │               — │           — │           — │ No module named 'gunicorn' │
+└───────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────┘
+
+✓ Profiled 5 package(s), 4 available, 0 with runtime benchmarks
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: OLLAMA / mistral  |  Session: baccf556
+  API compat tokens — input: 246  output: 91  latency: 6524ms
+  API compat tokens — input: 229  output: 49  latency: 2892ms
+                                   AXIOM Optimization Decisions                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                  ┃ Original ┃ Winner    ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ FastAPI web framework │ fastapi  │ starlette │ MEDIUM │ 0.6   │ 1.0    │ 0.76     │ 0.8 │ 0.782 │
+│ ASGI server           │ uvicorn  │ uvicorn   │ LOW    │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │
+└───────────────────────┴──────────┴───────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  fastapi  →  starlette  (pending)
+
+Session save deferred to connector agent.
+
+✓ AXIOM complete — 2 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: fastapi → starlette
+  Found 1 call site(s):
+    L28: app = FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0")
+  Tokens — in:1,223 out:319 latency:24316ms
+
+  Compatibility analysis:
+    ✗ L28: FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0"  — FastAPI uses async by default, while Starlette is sync. We need to use Starlette
+    ✓ L57: uvicorn.run(app, host="0.0.0.0", port=8000)  — No changes needed as uvicorn works with both FastAPI and Starlette.
+
+  Generated 1 wrapper(s):
+    _starlette_fastapi_wrapper  replaces: FastAPI(title="AXIOM Multi-File Experiment", version="2.0.0"
+╭──────────────────────────────────────────────────────────────── _starlette_fastapi_wrapper ─────────────────────────────────────────────────────────────────╮
+│   1 def _starlette_fastapi_wrapper(app):                                                                                                                    │
+│   2     from starlette.fastapi import FastAPI as StarletteFastAPI                                                                                           │
+│   3     return StarletteFastAPI(**app.dict())                                                                                                               │
+│   4                                                                                                                                                         │
+│   5     __doc__ = app.__doc__                                                                                                                               │
+│   6                                                                                                                                                         │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  Applying AST-based inline replacement...
+  ✓ AST-based replacement applied (1 matches)
+
+Session saved: baccf556
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1 """                                                                                                                                                    │
+│    2 api/main.py                                                                                                                                            │
+│    3 ────────────                                                                                                                                           │
+│    4 FastAPI application entry point.                                                                                                                       │
+│    5 Ties together all modules.                                                                                                                             │
+│    6 AXIOM target: fastapi vs flask vs starlette, uvicorn vs gunicorn                                                                                       │
+│    7 """                                                                                                                                                    │
+│    8 import time                                                                                                                                            │
+│    9 import logging                                                                                                                                         │
+│   10 import json                                                                                                                                            │
+│   11                                                                                                                                                        │
+│   12 import fastapi                                                                                                                                         │
+│   13 from fastapi import FastAPI, HTTPException, Depends                                                                                                    │
+│   14 import uvicorn                                                                                                                                         │
+│   15                                                                                                                                                        │
+│   16 # Import our own modules — these are the files AXIOM should also analyze                                                                               │
+│   17 from models.data_models import UserRecord, EventRecord, serialize_orjson, fingerprint                                                                  │
+│   18 from services.http_service import HttpService                                                                                                          │
+│   19 from utils.crypto_utils import sha256_digest, xxhash_fast, secure_token                                                                                │
+│   20 from config.settings import get_all_settings                                                                                                           │
+│   21                                                                                                                                                        │
+│   22 # Logging — standard logging vs structlog vs loguru                                                                                                    │
+│   23 import structlog                                                                                                                                       │
+│   24 import loguru                                                                                                                                          │
+│   25                                                                                                                                                        │
+│   26                                                                                                                                                        │
+│   27 # ──────────────────────────────────────────────────────────────────────                                                                               │
+│   28 # AXIOM CONNECTOR: fastapi → starlette                                                                                                                 │
+│   29 # The following functions bridge API incompatibilities between                                                                                         │
+│   30 # fastapi and starlette. They are injected by the AXIOM                                                                                                │
+│   31 # connector agent and called in place of the original API.                                                                                             │
+│   32 # ──────────────────────────────────────────────────────────────────────                                                                               │
+│   33 def _starlette_fastapi_wrapper(app):                                                                                                                   │
+│   34     from starlette.fastapi import FastAPI as StarletteFastAPI                                                                                          │
+│   35     return StarletteFastAPI(**app.dict())                                                                                                              │
+│   36                                                                                                                                                        │
+│   37     __doc__ = app.__doc__                                                                                                                              │
+│   38                                                                                                                                                        │
+│   39                                                                                                                                                        │
+│   40                                                                                                                                                        │
+│   41 log = structlog.get_logger()                                                                                                                           │
+│   42                                                                                                                                                        │
+│   43 app = _starlette_fastapi_wrapper(app)                                                                                                                  │
+│   44                                                                                                                                                        │
+│   45                                                                                                                                                        │
+│   46 @app.get("/health")                                                                                                                                    │
+│   47 async def health():                                                                                                                                    │
+│   48     return {"status": "ok", "settings": get_all_settings()}                                                                                            │
+│   49                                                                                                                                                        │
+│   50                                                                                                                                                        │
+│   51 @app.post("/users")                                                                                                                                    │
+│   52 async def create_user(user: UserRecord):                                                                                                               │
+│   53     fp = fingerprint(user.dict())                                                                                                                      │
+│   54     token = secure_token()                                                                                                                             │
+│   55     log.info("user_created", user_id=user.id, fingerprint=fp)                                                                                          │
+│   56     return {"user": user.dict(), "fingerprint": fp, "token": token}                                                                                    │
+│   57                                                                                                                                                        │
+│   58                                                                                                                                                        │
+│   59 @app.post("/events")                                                                                                                                   │
+│   60 async def ingest_event(event: EventRecord):                                                                                                            │
+│   61     serialized = serialize_orjson(event.dict())                                                                                                        │
+│   62     checksum    = xxhash_fast(serialized)                                                                                                              │
+│   63     log.info("event_ingested", event_id=event.event_id, checksum=checksum)                                                                             │
+│   64     return {"event_id": event.event_id, "checksum": checksum, "size": len(serialized)}                                                                 │
+│   65                                                                                                                                                        │
+│   66                                                                                                                                                        │
+│   67 @app.get("/hash-compare")                                                                                                                              │
+│   68 async def hash_compare(data: str = "benchmark"):                                                                                                       │
+│   69     payload = data.encode()                                                                                                                            │
+│   70     return {                                                                                                                                           │
+│   71         "sha256":  sha256_digest(payload),                                                                                                             │
+│   72         "xxhash":  xxhash_fast(payload),                                                                                                               │
+│   73     }                                                                                                                                                  │
+│   74                                                                                                                                                        │
+│   75                                                                                                                                                        │
+│   76 if __name__ == "__main__":                                                                                                                             │
+│   77     uvicorn.run(app, host="0.0.0.0", port=8000)                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────────────────────────────── ── Security Summary ── ────────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ CVEs ┃ Score ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ structlog │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ uvicorn   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ config    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ gunicorn  │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ starlette │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ flask     │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴───────┴───────────────────────────┘
+──────────────────────────────────────────────────────────────── ── Optimization Decisions ── ─────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                  ┃ Original ┃ Winner    ┃ Confidence ┃ Security ┃ Rationale                                                                 ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ FastAPI web framework │ fastapi  │ starlette │ MEDIUM     │ 0.76     │ 'starlette' wins 'FastAPI web framework'. Confidence: MEDIUM. Total: 0... │
+│ ASGI server           │ uvicorn  │ uvicorn   │ LOW        │ 0.76     │ 'uvicorn' wins 'ASGI server'. Confidence: LOW. Total: 0.952 (speed=1.0... │
+└───────────────────────┴──────────┴───────────┴────────────┴──────────┴───────────────────────────────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── ── Generated Connectors ── ──────────────────────────────────────────────────────────────────
+  fastapi → starlette  adapter injected  wrappers: _starlette_fastapi_wrapper
+──────────────────────────────────────────────────────────────── ── Token Usage (this run) ── ─────────────────────────────────────────────────────────────────
+  resolver                   in= 1,593  out=  313  calls=1
+  axiom                      in=   475  out=  140  calls=2
+  connector                  in= 1,223  out=  319  calls=1
+  TOTAL                      in= 3,291  out=  772
+────────────────────────────────────────────────────────────────────── ── Agent Trace ── ──────────────────────────────────────────────────────────────────────
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+⚠ Output equivalence check: patched output differs from original — review before relying on this patch.
+
+✓ Saved to: multiple_experiment/api/main_optimized.py
+Version 2 recorded (+16/-1 lines, total speedup ×0.001). Use 'axiom diff multiple_experiment/api/main.py --to 2' to inspect.

@@ -1,0 +1,52 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "max_cases": 20,
+    "case_filter": ""
+  },
+  "metrics": {
+    "total_cases": 20,
+    "errored_cases": 11,
+    "detection_rate_pct": 55.56,
+    "detection_n": 9,
+    "recommendation_accuracy_pct": 28.57,
+    "recommendation_scoreable_n": 7,
+    "connector_invoked_n": 4,
+    "verifier_clean_rate_pct": 22.22,
+    "verifier_n": 9,
+    "by_domain": {
+      "HTTP Clients": {
+        "n": 3,
+        "detection_rate_pct": 33.33
+      },
+      "API wrapper": {
+        "n": 2,
+        "detection_rate_pct": 50.0
+      },
+      "Cryptography": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "Database": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "Utility": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "Filesystem&Crypto": {
+        "n": 1,
+        "detection_rate_pct": 0.0
+      }
+    }
+  },
+  "elapsed_seconds": 3379.2013578414917
+}

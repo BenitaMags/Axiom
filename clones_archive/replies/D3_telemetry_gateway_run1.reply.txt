@@ -1,0 +1,189 @@
+# parsed 3 file(s): ['estimator.py', 'gateway.py', 'sink.py']
+# expected: ['estimator.py', 'gateway.py', 'sink.py']
+# reply length: 6266 chars
+======================================================================
+### FILENAME: estimator.py
+```python
+"""estimator -- first-party engineering-unit estimation with anomaly flagging.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. It scales raw counts to engineering units, smooths with a
+moving average, and flags a rate-of-change anomaly when consecutive samples jump too far.
+"""
+
+
+class Estimator:
+    def __init__(self, scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.scale = scale
+        self.window = window
+        self.roc_limit = roc_limit
+        self.history = []
+        self.previous_value = None
+
+    def update(self, raw_counts: float) -> dict:
+        scaled = raw_counts * self.scale
+
+        self.history.append(scaled)
+        excess = len(self.history) - self.window
+        while excess > 0:
+            del self.history[0]
+            excess -= 1
+
+        total = 0.0
+        for entry in self.history:
+            total += entry
+        averaged = total / len(self.history)
+
+        if self.previous_value is None:
+            delta = 0.0
+        else:
+            diff = scaled - self.previous_value
+            delta = diff if diff >= 0 else -diff
+
+        self.previous_value = scaled
+
+        is_anomalous = delta > self.roc_limit
+
+        return {"value": scaled, "smoothed": averaged, "anomaly": is_anomalous}
+```
+
+### FILENAME: gateway.py
+```python
+"""gateway -- telemetry gateway: read raw counts, estimate, publish.
+
+Combines all three transformations in one program:
+  * LSA + GSA: swap the MQTT client (`paho-mqtt` -> `aiomqtt`) and write async glue.
+  * LMA: rewrite the first-party estimation/anomaly logic in `estimator.py`.
+
+`reader` is an injected callable `tag -> raw_counts` (the field acquisition source).
+"""
+from estimator import Estimator
+from sink import MqttSink
+
+
+class TelemetryGateway:
+    def __init__(self, reader, sink: MqttSink, estimators: dict = None,
+                 scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.reader = reader
+        self.sink = sink
+        self.estimators = estimators if estimators is not None else {}
+        self._cfg = {"scale": scale, "window": window, "roc_limit": roc_limit}
+
+    def _estimator(self, tag: str) -> Estimator:
+        existing = self.estimators.get(tag)
+        if existing is not None:
+            return existing
+        created = Estimator(**self._cfg)
+        self.estimators[tag] = created
+        return created
+
+    def process(self, tag: str) -> dict:
+        """Acquire one sample for *tag*, estimate, publish, and return the record."""
+        est = self._estimator(tag)
+        raw_sample = self.reader(tag)
+        record = est.update(raw_sample)
+        record.update(tag=tag)
+        self.sink.publish(tag, record)
+        return record
+
+    def process_all(self, tags) -> list:
+        results = []
+        for t in tags:
+            results.append(self.process(t))
+        return results
+```
+
+### FILENAME: sink.py
+```python
+"""sink -- MQTT publication of estimated telemetry records.
+
+The MQTT client is one substitution target: `paho-mqtt` (synchronous, callback-based)
+-> `aiomqtt` (async, context-managed) -> glue required. The client is injected.
+
+Since `aiomqtt` is async-only and context-manager based, this module provides a small
+synchronous adapter (`_AiomqttSyncAdapter`) that owns a background event loop thread,
+enters the `aiomqtt.Client` async context once, and exposes a synchronous `.publish(...)`
+method so the rest of the (synchronous) codebase and its public API are unaffected.
+"""
+import asyncio
+import json
+import threading
+
+
+class _AiomqttSyncAdapter:
+    """Wraps an aiomqtt.Client so it can be driven from synchronous code.
+
+    Runs a private asyncio event loop on a background thread, keeps the
+    aiomqtt client's async context manager open for the adapter's lifetime,
+    and marshals `.publish()` calls onto that loop.
+    """
+
+    def __init__(self, host: str = "localhost", port: int = 1883):
+        import aiomqtt  # lazy import for testability
+
+        self._aiomqtt = aiomqtt
+        self._host = host
+        self._port = port
+
+        self._loop = asyncio.new_event_loop()
+        self._ready = threading.Event()
+        self._thread = threading.Thread(target=self._run_loop, daemon=True)
+        self._thread.start()
+        self._ready.wait()
+
+        self._client_cm = None
+        self._client = None
+        fut = asyncio.run_coroutine_threadsafe(self._enter_client(), self._loop)
+        fut.result()
+
+    def _run_loop(self):
+        asyncio.set_event_loop(self._loop)
+        self._ready.set()
+        self._loop.run_forever()
+
+    async def _enter_client(self):
+        self._client_cm = self._aiomqtt.Client(self._host, self._port)
+        self._client = await self._client_cm.__aenter__()
+
+    async def _do_publish(self, topic: str, payload: bytes):
+        await self._client.publish(topic, payload)
+        return 0
+
+    def publish(self, topic: str, payload: bytes) -> int:
+        fut = asyncio.run_coroutine_threadsafe(
+            self._do_publish(topic, payload), self._loop
+        )
+        return fut.result()
+
+    def __del__(self):
+        try:
+            if self._client_cm is not None:
+                fut = asyncio.run_coroutine_threadsafe(
+                    self._client_cm.__aexit__(None, None, None), self._loop
+                )
+                fut.result(timeout=5)
+        except Exception:
+            pass
+        finally:
+            try:
+                self._loop.call_soon_threadsafe(self._loop.stop)
+            except Exception:
+                pass
+
+
+def _default_client(host: str = "localhost", port: int = 1883):
+    return _AiomqttSyncAdapter(host, port)
+
+
+class MqttSink:
+    def __init__(self, topic_base: str = "plant/est", client=None):
+        self.topic_base = topic_base
+        self.client = client if client is not None else _default_client()
+
+    def publish(self, tag: str, record: dict) -> int:
+        encoded = json.dumps(record, separators=(",", ":")).encode("utf-8")
+        topic = self.topic_base + "/" + tag
+        result = self.client.publish(topic, encoded)
+        rc = getattr(result, "rc", None)
+        return rc if rc is not None else (result if isinstance(result, int) else 0)
+```

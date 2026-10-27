@@ -1,0 +1,40 @@
+{
+  "role": "synchronous HTTP client (session-based, for REST calls)",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 0.829,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.9,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.9,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'httpx' wins 'synchronous HTTP client (session-based, for REST calls)'. Confidence: MEDIUM. Total: 0.9 (speed=0.829, mem=0.624, sec=1.0, api=0.9). Migration note: httpx.Client is not literally named Session \u2014 construction code (`_default_session`) must be updated to `httpx.Client()`",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "session.post",
+    "r.raise_for_status",
+    "r.json",
+    "r.status_code"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

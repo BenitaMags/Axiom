@@ -1,0 +1,2214 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Enabling isolated profiling/verification for reproducible PyMigBench execution.
+Loaded 248 migrations from PyMigBench.
+Reached --max-cases=12, stopping collection.
+Built 12 evaluable case(s).
+→ [1/12] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpikz2_3qy_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃          ┃         ┃      ┃        ┃           ┃     Vuln ┃           ┃         ┃          ┃
+┃ Package  ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃    Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ kafka →  │ 2.0.1   │    2 │ MEDIUM │ AVAILABLE │     0.60 │      1.00 │    0.72 │ PyPI     │
+│ kafka-p… │         │      │        │           │          │           │         │ distrib… │
+│          │         │      │        │           │          │           │         │ kafka-p… │
+│ locust → │ 0.999   │    0 │  LOW   │ AVAILABLE │     1.00 │      0.20 │    0.76 │ PyPI     │
+│ locustio │         │      │        │           │          │           │         │ distrib… │
+│          │         │      │        │           │          │           │         │ locustio │
+│ time     │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+└──────────┴─────────┴──────┴────────┴───────────┴──────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, pykafka
+  locust -> molotov, tox-locust, jmeter
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,844  output: 1,112  latency: 11324ms
+Discovery leads not advanced to an equivalence group after file/API fit review: locust: 
+molotov, tox-locust, jmeter
+Equivalence Groups Found
+└── Kafka producer client for publishing messages to a Kafka topic
+    ├── Candidates : kafka, confluent-kafka, aiokafka, pykafka
+    ├── Used APIs  : KafkaProducer, producer.send, producer.flush, future.add_callback, 
+    │   future.add_errback
+    ├── Pitfalls   : kafka-python's send() returns a FutureRecordMetadata supporting 
+    │   add_callback/add_errback chaining; confluent-kafka's produce() uses a single callback 
+    │   argument instead, requiring rewritten callback logic; aiokafka is asyncio-based 
+    │   (AIOKafkaProducer.send is a coroutine), incompatible with this synchronous 
+    │   Locust-based code without significant async refactoring; pykafka's Producer API lacks 
+    │   the Future-based callback pattern used here (add_callback/add_errback), requiring a 
+    │   different error/success handling approach; value_serializer semantics and constructor 
+    │   argument names differ across these libraries; flush(timeout=...) signature/behavior 
+    │   may differ slightly between libraries
+    ├── Constraints: requires_connector
+    └── kafka-python's KafkaProducer is used to construct a producer, send messages with 
+        bootstrap_servers/value_serializer config, and attach success/failure callbacks via 
+        the returned Future object. confluent-kafka, aiokafka, and pykafka are all Kafka 
+        client libraries that could technically replace kafka-python for producing messages to
+        Kafka, but their APIs and concurrency models differ substantially.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+                 Candidate Security Scan                  
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package         ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ aiokafka        │ 0.11.0  │ LOW  │ AVAILABLE │    1.00 │
+│ confluent-kafka │ 2.15.0  │ LOW  │ AVAILABLE │    1.00 │
+│ pykafka         │ 2.8.0   │ LOW  │ AVAILABLE │    0.76 │
+└─────────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+  ⚠ Full base-requirement install failed (RCES.txt'
+      
+      Error: pg_config executable not found.
+      
+      pg_config is required to build psycopg2 from source.  Please add the directory
+      containing pg_config to the $PATH or spe); retrying with only the 1 package(s) this 
+file's imports actually need (dropped: psycogreen, psycopg2-binary, pymongo, python-dateutil, 
+websocket-client)
+  ✓ Narrowed base install succeeded.
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃                ┃           ┃      Import (3 ┃   Runtime API ┃             ┃                ┃
+┃ Package        ┃ Available ┃          runs) ┃  (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ kafka          │     ✓     │        20.1 ms │  UNMEASURED — │        4270 │ import module: │
+│                │           │                │ No registered │             │ kafka          │
+│                │           │                │ side-effect-… │             │                │
+│                │           │                │ runtime probe │             │                │
+│                │           │                │           for │             │                │
+│                │           │                │ KafkaProduce… │             │                │
+│                │           │                │ producer.sen… │             │                │
+│                │           │                │ producer.flu… │             │                │
+│                │           │                │ future.add_c… │             │                │
+│ confluent-kaf… │     ✓     │       114.4 ms │  UNMEASURED — │         547 │ import module: │
+│                │           │                │ No registered │             │ confluent_kaf… │
+│                │           │                │ side-effect-… │             │                │
+│                │           │                │ runtime probe │             │                │
+│                │           │                │           for │             │                │
+│                │           │                │ KafkaProduce… │             │                │
+│                │           │                │ producer.sen… │             │                │
+│                │           │                │ producer.flu… │             │                │
+│                │           │                │ future.add_c… │             │                │
+│ aiokafka       │     ✓     │       230.8 ms │  UNMEASURED — │        6819 │ import module: │
+│                │           │                │ No registered │             │ aiokafka       │
+│                │           │                │ side-effect-… │             │                │
+│                │           │                │ runtime probe │             │                │
+│                │           │                │           for │             │                │
+│                │           │                │ KafkaProduce… │             │                │
+│                │           │                │ producer.sen… │             │                │
+│                │           │                │ producer.flu… │             │                │
+│                │           │                │ future.add_c… │             │                │
+│ pykafka        │     ✓     │       572.6 ms │  UNMEASURED — │       10362 │ import module: │
+│                │           │                │ No registered │             │ pykafka        │
+│                │           │                │ side-effect-… │             │                │
+│                │           │                │ runtime probe │             │                │
+│                │           │                │           for │             │                │
+│                │           │                │ KafkaProduce… │             │                │
+│                │           │                │ producer.sen… │             │                │
+│                │           │                │ producer.flu… │             │                │
+│                │           │                │ future.add_c… │             │                │
+└────────────────┴───────────┴────────────────┴───────────────┴─────────────┴────────────────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: c2fe190f
+  API compat tokens — input: 303  output: 209  latency: 3067ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Install… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ Kafka    │ kafka    │ kafka  │ MEDIUM │ 1.0   │ 0.128  │ 0.72     │ 1.0 │ 0.795 │ ✓        │
+│ producer │          │        │        │       │        │          │     │       │          │
+│ client   │          │        │        │       │        │          │     │       │          │
+│ for      │          │        │        │       │        │          │     │       │          │
+│ publish… │          │        │        │       │        │          │     │       │          │
+│ messages │          │        │        │       │        │          │     │       │          │
+│ to a     │          │        │        │       │        │          │     │       │          │
+│ Kafka    │          │        │        │       │        │          │     │       │          │
+│ topic    │          │        │        │       │        │          │     │       │          │
+└──────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴──────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: c2fe190f
+→ [2/12] alice-biometrics/petisco  slackclient→slack-sdk  
+(petisco/extra/slack/application/notifier/slack_notifier.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmp0hzg_57c_slack_notifier.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                   ┃ API Calls Used          ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ typing                  │ —     │ Optional                │ —                       │
+│    3 │ slack                   │ —     │ WebClient               │ WebClient               │
+│    4 │ slack.errors            │ —     │ SlackApiError           │ WebClient               │
+│    6 │ petisco.base.applicati… │ —     │ Notifier                │ BlocksSlackNotifierMes… │
+│    7 │ petisco.base.applicati… │ —     │ NotifierMessage         │ BlocksSlackNotifierMes… │
+│    8 │ petisco.base.domain.er… │ —     │ DomainError             │ BlocksSlackNotifierMes… │
+│    9 │ petisco.extra.slack.ap… │ —     │ BlocksSlackNotifierMes… │ BlocksSlackNotifierMes… │
+│      │                         │       │ SlackNotifierMessageCo… │                         │
+└──────┴─────────────────────────┴───────┴─────────────────────────┴─────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ slack →   │ 2.5.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.20 │    0.76 │ PyPI     │
+│ slackcli… │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ slackcl… │
+│ petisco   │ 2.2.3   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.65 │    0.90 │ ✓ Clean  │
+│ typing    │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  slack -> slack-sdk, slackclient, slacker, slackweb
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,873  output: 674  latency: 7692ms
+Discovery leads not advanced to an equivalence group after file/API fit review: slack: 
+slacker, slackweb
+Equivalence Groups Found
+└── Slack API client for sending chat messages
+    ├── Candidates : slackclient, slack, slack-sdk
+    ├── Used APIs  : WebClient, WebClient.chat_postMessage, SlackApiError
+    ├── Pitfalls   : Import path changes: 'slack' -> 'slack_sdk', and 'slack.errors' -> 
+    │   'slack_sdk.errors'; The legacy 'slack' package is deprecated and no longer maintained;
+    │   slack-sdk is the actively supported replacement; Some newer slack-sdk versions default
+    │   to async clients in certain submodules, but WebClient remains sync-compatible
+    └── The 'slack' package (legacy 'slackclient' library, later renamed) is used here via 
+        WebClient and SlackApiError from slack.errors. 'slack-sdk' is the official modern 
+        successor that preserves the same WebClient class and chat_postMessage method 
+        signature, as well as slack_sdk.errors.SlackApiError, making it a near drop-in 
+        replacement. 'slackclient' is the historical name for the same codebase and shares 
+        identical API surface.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Reusing pinned source security evidence: slackclient ← slack
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ slack     │ 2.9.4   │ LOW  │ AVAILABLE │    0.76 │
+│ slack-sdk │ 3.43.0  │ LOW  │ AVAILABLE │    1.00 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+Project-local or undeclared imports supplied from the project checkout: petisco
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-wlmf8b0v/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃     Runtime API ┃             ┃                ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃    (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✓     │         64.8 ms │ UNMEASURED — No │        5864 │ import module: │
+│             │           │                 │      registered │             │ slack_sdk      │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │  for WebClient, │             │                │
+│             │           │                 │ WebClient.chat… │             │                │
+│             │           │                 │  SlackApiError; │             │                │
+│             │           │                 │         an inte │             │                │
+│ slackclient │     ✓     │        395.9 ms │ UNMEASURED — No │        8903 │ import module: │
+│             │           │                 │      registered │             │ slack          │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │  for WebClient, │             │                │
+│             │           │                 │ WebClient.chat… │             │                │
+│             │           │                 │  SlackApiError; │             │                │
+│             │           │                 │         an inte │             │                │
+│ slack       │     ✗     │               — │ UNMEASURED — No │           — │ ERROR: Could   │
+│             │           │                 │      registered │             │ not find a     │
+│             │           │                 │ side-effect-fr… │             │ version that   │
+│             │           │                 │   runtime probe │             │ satisfies the  │
+│             │           │                 │  for WebClient, │             │ requirement    │
+│             │           │                 │ WebClient.chat… │             │ slack==2.9.4   │
+│             │           │                 │  SlackApiError; │             │ (from          │
+│             │           │                 │         an inte │             │ versions:      │
+│             │           │                 │                 │             │ 0.0.1, 0.0.2)  │
+│             │           │                 │                 │             │ ERROR: No      │
+│             │           │                 │                 │             │ matching       │
+│             │           │                 │                 │             │ distribution   │
+│             │           │                 │                 │             │ found for      │
+│             │           │                 │                 │             │ slack==2.9.4   │
+│             │           │                 │                 │             │                │
+└─────────────┴───────────┴─────────────────┴─────────────────┴─────────────┴────────────────┘
+
+✓ Profiled 3 package(s), 2 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 79c9135b
+  Profiler veto: excluded slack: hard_install_failure
+  API compat tokens — input: 267  output: 35  latency: 4699ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Slack    │ slackcl… │ slack-s… │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 1.0 │ 1.0   │ ✓       │
+│ API      │          │          │       │       │        │          │     │       │         │
+│ client   │          │          │       │       │        │          │     │       │         │
+│ for      │          │          │       │       │        │          │     │       │         │
+│ sending  │          │          │       │       │        │          │     │       │         │
+│ chat     │          │          │       │       │        │          │     │       │         │
+│ messages │          │          │       │       │        │          │     │       │         │
+└──────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Drop-in import patches (no connector needed):
+  slack  →  slack_sdk
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-5wewgj59/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-v7is5psa/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                            Stage 1 — Differential Static Analysis                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                            │
+│ Pylint (errors)        │     1 finding(s)      │ 1 finding(s) │ [                          │
+│                        │                       │              │     {                      │
+│                        │                       │              │         "type": "error",   │
+│                        │                       │              │         "module":          │
+│                        │                       │              │ "petisco.extra.slack.appl… │
+│ Bandit                 │         PASS          │     PASS     │ {                          │
+│                        │                       │              │   "errors": [],            │
+│                        │                       │              │   "generated_at":          │
+│                        │                       │              │ "2026-07-31T03:07:32Z",    │
+│                        │                       │              │   "metrics": {             │
+│                        │                       │              │     "/var/folders/_4/t4jx  │
+│ Mypy (untyped defs)    │     1 finding(s)      │ 1 finding(s) │ /var/folders/_4/t4jxnllx1… │
+│ Patch integrity        │           —           │     PASS     │                            │
+│ Adapter contracts      │           —           │     PASS     │                            │
+│ Stale source symbols   │           —           │     PASS     │                            │
+│ Referenced target APIs │           —           │ 1 failure(s) │ slack_sdk does not expose  │
+│                        │                       │              │ SlackApiError              │
+│ New static findings    │ baseline is reference │     PASS     │                            │
+│ Import smoke test      │         FAIL          │     FAIL     │ Traceback (most recent     │
+│                        │                       │              │ call last):                │
+│                        │                       │              │   File "<string>", line    │
+│                        │                       │              │ 14, in <module>            │
+│                        │                       │              │   File "/var/folders/_4/t  │
+└────────────────────────┴───────────────────────┴──────────────┴────────────────────────────┘
+Verification environment/instrumentation incomplete: baseline import smoke failed: Traceback 
+(most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/extra/
+slack/application/notifier/slack_notifier.py", line 6, in <module>
+    from petisco.base.application.notifier.notifier import Notifier
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/__init
+__.py", line 7, in <module>
+    from petisco.public_api import *
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/public
+_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/base/a
+pplication/application.py", line 3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+  environment_incomplete: Verification environment incomplete: baseline import smoke failed: 
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/extra/
+slack/application/notifier/slack_notifier.py", line 6, in <module>
+    from petisco.base.application.notifier.notifier import Notifier
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/__init
+__.py", line 7, in <module>
+    from petisco.public_api import *
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/public
+_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-570e_rwm/project/petisco/base/a
+pplication/application.py", line 3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+→ [3/12] alice-biometrics/petisco  slackclient→slack-sdk  
+(petisco/extra/slack/is_slack_available.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpkd134tpx_is_slack_available.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ slack  │ —     │ —     │ —              │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ slack →   │ 2.5.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.20 │    0.76 │ PyPI     │
+│ slackcli… │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ slackcl… │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: slack
+Discovered candidates:
+  slack -> slack_sdk, slackclient, slacker
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 1,862  output: 762  latency: 9114ms
+Discovery leads not advanced to an equivalence group after file/API fit review: slack: slacker
+Equivalence Groups Found
+└── Slack API client library (availability check only, no specific API calls used)
+    ├── Candidates : slackclient, slack, slack_sdk
+    ├── Used APIs  : none detected
+    ├── Pitfalls   : The 'slack' package is deprecated/archived upstream; slack_sdk is the 
+    │   maintained successor with a different import path (slack_sdk vs slack); slackclient 
+    │   (v2) uses a different client class structure (WebClient) compared to legacy 'slack' 
+    │   package; If actual Slack API usage is added later, method signatures differ 
+    │   significantly between slack_sdk and slackclient versions
+    └── The file only checks whether the 'slack' package can be imported (try/except 
+        ImportError) with no actual API calls made. 'slack' (the original PyPI package) is 
+        deprecated in favor of 'slack_sdk', and 'slackclient' was the predecessor package that
+        slack_sdk replaced. All three provide a Python interface to the Slack Web/RTM API and 
+        are used interchangeably as Slack client dependencies. Since no methods are actually 
+        called here, substitution is straightforward at the import level.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Reusing pinned source security evidence: slackclient ← slack
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ slack     │ 2.9.4   │ LOW  │ AVAILABLE │    0.76 │
+│ slack_sdk │ 3.43.0  │ LOW  │ AVAILABLE │    1.00 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-afxzfqdv/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃     Runtime API ┃             ┃                ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃    (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ slack_sdk   │     ✓     │         64.6 ms │ UNMEASURED — No │        5864 │ import module: │
+│             │           │                 │      registered │             │ slack_sdk      │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │   for no parsed │             │                │
+│             │           │                 │         API; an │             │                │
+│             │           │                 │     integration │             │                │
+│             │           │                 │      fixture is │             │                │
+│             │           │                 │    required for │             │                │
+│             │           │                 │         network │             │                │
+│ slackclient │     ✓     │        389.5 ms │ UNMEASURED — No │        8904 │ import module: │
+│             │           │                 │      registered │             │ slack          │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │   for no parsed │             │                │
+│             │           │                 │         API; an │             │                │
+│             │           │                 │     integration │             │                │
+│             │           │                 │      fixture is │             │                │
+│             │           │                 │    required for │             │                │
+│             │           │                 │         network │             │                │
+│ slack       │     ✗     │               — │ UNMEASURED — No │           — │ ERROR: Could   │
+│             │           │                 │      registered │             │ not find a     │
+│             │           │                 │ side-effect-fr… │             │ version that   │
+│             │           │                 │   runtime probe │             │ satisfies the  │
+│             │           │                 │   for no parsed │             │ requirement    │
+│             │           │                 │         API; an │             │ slack==2.9.4   │
+│             │           │                 │     integration │             │ (from          │
+│             │           │                 │      fixture is │             │ versions:      │
+│             │           │                 │    required for │             │ 0.0.1, 0.0.2)  │
+│             │           │                 │         network │             │ ERROR: No      │
+│             │           │                 │                 │             │ matching       │
+│             │           │                 │                 │             │ distribution   │
+│             │           │                 │                 │             │ found for      │
+│             │           │                 │                 │             │ slack==2.9.4   │
+│             │           │                 │                 │             │                │
+└─────────────┴───────────┴─────────────────┴─────────────────┴─────────────┴────────────────┘
+
+✓ Profiled 3 package(s), 2 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 20030dde
+  Profiler veto: excluded slack: hard_install_failure
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Slack    │ slackcl… │ slack_s… │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ —   │ 1.0   │ ✓       │
+│ API      │          │          │       │       │        │          │     │       │         │
+│ client   │          │          │       │       │        │          │     │       │         │
+│ library  │          │          │       │       │        │          │     │       │         │
+│ (availa… │          │          │       │       │        │          │     │       │         │
+│ check    │          │          │       │       │        │          │     │       │         │
+│ only, no │          │          │       │       │        │          │     │       │         │
+│ specific │          │          │       │       │        │          │     │       │         │
+│ API      │          │          │       │       │        │          │     │       │         │
+│ calls    │          │          │       │       │        │          │     │       │         │
+│ used)    │          │          │       │       │        │          │     │       │         │
+└──────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  slackclient  →  slack_sdk  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+
+Analyzing: slackclient → slack_sdk
+  No call sites found for slack (distribution: slackclient) — skipping.
+
+Applying migration import rewrites: {'slack': 'slack_sdk'}
+╭────────────────────────── Patched Source (with inline adapters) ───────────────────────────╮
+│   1 def is_slack_available() -> bool:                                                      │
+│   2     try:                                                                               │
+│   3         import slack_sdk  # noqa                                                       │
+│   4     except (RuntimeError, ImportError):                                                │
+│   5         return False                                                                   │
+│   6     return True                                                                        │
+│   7                                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-9b0wnabi/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-ojn8z6zc/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                            Stage 1 — Differential Static Analysis                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃ Patched ┃ Detail                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │  PASS   │                                 │
+│ Pylint (errors)        │         PASS          │  PASS   │ []                              │
+│ Bandit                 │         PASS          │  PASS   │ {                               │
+│                        │                       │         │   "errors": [],                 │
+│                        │                       │         │   "generated_at":               │
+│                        │                       │         │ "2026-07-31T03:08:22Z",         │
+│                        │                       │         │   "metrics": {                  │
+│                        │                       │         │     "/var/folders/_4/t4jx       │
+│ Mypy (untyped defs)    │         PASS          │  PASS   │ /dev/null: No  section in       │
+│                        │                       │         │ config file                     │
+│ Patch integrity        │           —           │  PASS   │                                 │
+│ Adapter contracts      │           —           │  PASS   │                                 │
+│ Stale source symbols   │           —           │  PASS   │                                 │
+│ Referenced target APIs │           —           │  PASS   │ No statically referenced        │
+│                        │                       │         │ rewritten module symbols to     │
+│                        │                       │         │ probe.                          │
+│ New static findings    │ baseline is reference │  PASS   │                                 │
+│ Import smoke test      │         PASS          │  PASS   │ Exited cleanly.                 │
+└────────────────────────┴───────────────────────┴─────────┴─────────────────────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 20030dde
+→ [4/12] alice-biometrics/petisco  slackclient→slack-sdk  
+(petisco/legacy/notifier/infrastructure/slack/slack_notifier.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpgmfcxyq9_slack_notifier.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                   ┃ API Calls Used          ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ slack                   │ —     │ WebClient               │ WebClient               │
+│    2 │ slack.errors            │ —     │ SlackApiError           │ WebClient               │
+│    4 │ petisco.legacy.notifie… │ —     │ INotifier               │ SlackNotifierMessageCo… │
+│      │                         │       │                         │ SlackError              │
+│    5 │ petisco.legacy.notifie… │ —     │ NotifierMessage         │ SlackNotifierMessageCo… │
+│      │                         │       │                         │ SlackError              │
+│    6 │ petisco.legacy.notifie… │ —     │ SlackError              │ SlackNotifierMessageCo… │
+│      │                         │       │                         │ SlackError              │
+│    7 │ petisco.legacy.notifie… │ —     │ ISlackNotifierMessageC… │ SlackNotifierMessageCo… │
+│      │                         │       │                         │ SlackError              │
+│   10 │ petisco.legacy.notifie… │ —     │ SlackNotifierMessageCo… │ SlackNotifierMessageCo… │
+│      │                         │       │                         │ SlackError              │
+└──────┴─────────────────────────┴───────┴─────────────────────────┴─────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ slack →   │ 2.5.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.20 │    0.76 │ PyPI     │
+│ slackcli… │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ slackcl… │
+│ petisco   │ 2.2.3   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.65 │    0.90 │ ✓ Clean  │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  slack -> slack_sdk, slackclient, slacker
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,948  output: 693  latency: 7971ms
+Discovery leads not advanced to an equivalence group after file/API fit review: slack: slacker
+Equivalence Groups Found
+└── Slack API client for sending messages
+    ├── Candidates : slackclient, slack, slack_sdk
+    ├── Used APIs  : WebClient, WebClient.chat_postMessage, SlackApiError
+    ├── Pitfalls   : Import path changes: slack_sdk.WebClient and 
+    │   slack_sdk.errors.SlackApiError instead of slack.WebClient/slack.errors.SlackApiError; 
+    │   slack_sdk introduces async client variants (WebClient vs AsyncWebClient) - ensure sync
+    │   client is used to match current usage; The 'slack' package is unmaintained/deprecated 
+    │   upstream, so pinning versions may hide behavior differences during migration; 
+    │   Rate-limiting and retry defaults may differ slightly between versions
+    └── The 'slack' package (slackclient v2.x) is deprecated in favor of 'slack_sdk', which is
+        the official successor maintained by Slack. Both expose the same WebClient class and 
+        chat_postMessage method, and SlackApiError is preserved under slack_sdk.errors, making
+        it a near drop-in replacement. 'slackclient' is the historical PyPI name for the same 
+        library lineage (slack -> slackclient -> slack_sdk), sharing the same WebClient API 
+        surface.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Reusing pinned source security evidence: slackclient ← slack
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ slack     │ 2.9.4   │ LOW  │ AVAILABLE │    0.76 │
+│ slack_sdk │ 3.43.0  │ LOW  │ AVAILABLE │    1.00 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+Project-local or undeclared imports supplied from the project checkout: petisco
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-29c19hqa/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃     Runtime API ┃             ┃                ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃    (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ slack_sdk   │     ✓     │         64.9 ms │ UNMEASURED — No │        5864 │ import module: │
+│             │           │                 │      registered │             │ slack_sdk      │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │  for WebClient, │             │                │
+│             │           │                 │ WebClient.chat… │             │                │
+│             │           │                 │  SlackApiError; │             │                │
+│             │           │                 │         an inte │             │                │
+│ slackclient │     ✓     │        395.3 ms │ UNMEASURED — No │        8904 │ import module: │
+│             │           │                 │      registered │             │ slack          │
+│             │           │                 │ side-effect-fr… │             │                │
+│             │           │                 │   runtime probe │             │                │
+│             │           │                 │  for WebClient, │             │                │
+│             │           │                 │ WebClient.chat… │             │                │
+│             │           │                 │  SlackApiError; │             │                │
+│             │           │                 │         an inte │             │                │
+│ slack       │     ✗     │               — │ UNMEASURED — No │           — │ ERROR: Could   │
+│             │           │                 │      registered │             │ not find a     │
+│             │           │                 │ side-effect-fr… │             │ version that   │
+│             │           │                 │   runtime probe │             │ satisfies the  │
+│             │           │                 │  for WebClient, │             │ requirement    │
+│             │           │                 │ WebClient.chat… │             │ slack==2.9.4   │
+│             │           │                 │  SlackApiError; │             │ (from          │
+│             │           │                 │         an inte │             │ versions:      │
+│             │           │                 │                 │             │ 0.0.1, 0.0.2)  │
+│             │           │                 │                 │             │ ERROR: No      │
+│             │           │                 │                 │             │ matching       │
+│             │           │                 │                 │             │ distribution   │
+│             │           │                 │                 │             │ found for      │
+│             │           │                 │                 │             │ slack==2.9.4   │
+│             │           │                 │                 │             │                │
+└─────────────┴───────────┴─────────────────┴─────────────────┴─────────────┴────────────────┘
+
+✓ Profiled 3 package(s), 2 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: fcce9dcc
+  Profiler veto: excluded slack: hard_install_failure
+  API compat tokens — input: 265  output: 35  latency: 1679ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Slack    │ slackcl… │ slack_s… │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 1.0 │ 1.0   │ ✓       │
+│ API      │          │          │       │       │        │          │     │       │         │
+│ client   │          │          │       │       │        │          │     │       │         │
+│ for      │          │          │       │       │        │          │     │       │         │
+│ sending  │          │          │       │       │        │          │     │       │         │
+│ messages │          │          │       │       │        │          │     │       │         │
+└──────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Drop-in import patches (no connector needed):
+  slack  →  slack_sdk
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-xj5db1__/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File 
+"/private/tmp/pip-build-env-_uxedgei/overlay/lib/python3.12/site-packages/setuptools/_distutil
+s/command/sdist.py", line 245, i); retrying with only the 0 package(s) this file's imports 
+actually need (dropped: apscheduler, backports-datetime-fromisoformat, cryptography, 
+dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                            Stage 1 — Differential Static Analysis                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                            │
+│ Pylint (errors)        │         PASS          │     PASS     │ []                         │
+│ Bandit                 │         PASS          │     PASS     │ {                          │
+│                        │                       │              │   "errors": [],            │
+│                        │                       │              │   "generated_at":          │
+│                        │                       │              │ "2026-07-31T03:09:14Z",    │
+│                        │                       │              │   "metrics": {             │
+│                        │                       │              │     "/var/folders/_4/t4jx  │
+│ Mypy (untyped defs)    │         PASS          │     PASS     │ /dev/null: No  section in  │
+│                        │                       │              │ config file                │
+│ Patch integrity        │           —           │     PASS     │                            │
+│ Adapter contracts      │           —           │     PASS     │                            │
+│ Stale source symbols   │           —           │     PASS     │                            │
+│ Referenced target APIs │           —           │ 1 failure(s) │ slack_sdk does not expose  │
+│                        │                       │              │ SlackApiError              │
+│ New static findings    │ baseline is reference │     PASS     │                            │
+│ Import smoke test      │         FAIL          │     FAIL     │ Traceback (most recent     │
+│                        │                       │              │ call last):                │
+│                        │                       │              │   File "<string>", line    │
+│                        │                       │              │ 14, in <module>            │
+│                        │                       │              │   File "/var/folders/_4/t  │
+└────────────────────────┴───────────────────────┴──────────────┴────────────────────────────┘
+Verification environment/instrumentation incomplete: baseline import smoke failed: Traceback 
+(most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/legacy
+/notifier/infrastructure/slack/slack_notifier.py", line 4, in <module>
+    from petisco.legacy.notifier.domain.interface_notifier import INotifier
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/__init
+__.py", line 7, in <module>
+    from petisco.public_api import *
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/public
+_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/base/a
+pplication/application.py", line 3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+  environment_incomplete: Verification environment incomplete: baseline import smoke failed: 
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/legacy
+/notifier/infrastructure/slack/slack_notifier.py", line 4, in <module>
+    from petisco.legacy.notifier.domain.interface_notifier import INotifier
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/__init
+__.py", line 7, in <module>
+    from petisco.public_api import *
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/public
+_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-5zct2q16/project/petisco/base/a
+pplication/application.py", line 3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+→ [5/12] phuks-co/throat  eventlet→gevent  (throat.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpw8m7uy_2_throat.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names                ┃ API Calls Used  ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│    3 │ eventlet │ —     │ —                    │ monkey_patch    │
+│    5 │ app      │ —     │ create_app, socketio │ run, create_app │
+└──────┴──────────┴───────┴──────────────────────┴─────────────────┘
+
+✓ Found 2 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃          ┃         ┃      ┃        ┃           ┃     Vuln ┃           ┃         ┃          ┃
+┃ Package  ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃    Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ eventlet │ 0.25.2  │    6 │ MEDIUM │ AVAILABLE │     0.60 │      1.00 │    0.72 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 0.25.2   │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 0.       │
+│ app      │ 0.0.1   │    0 │  LOW   │ AVAILABLE │     1.00 │      0.20 │    0.76 │ 📅 Not   │
+│          │         │      │        │           │          │           │         │ updated  │
+│          │         │      │        │           │          │           │         │ in 10y   │
+│          │         │      │        │           │          │           │         │ 0mo      │
+└──────────┴─────────┴──────┴────────┴───────────┴──────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: app, eventlet
+Discovered candidates:
+  eventlet -> gevent, trio, twisted
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,024  output: 682  latency: 10517ms
+Discovery leads not advanced to an equivalence group after file/API fit review: eventlet: 
+trio, twisted
+Equivalence Groups Found
+└── cooperative async concurrency / monkey-patching backend for Flask-SocketIO
+    ├── Candidates : eventlet, gevent
+    ├── Used APIs  : monkey_patch
+    ├── Pitfalls   : eventlet and gevent use different underlying event loop implementations 
+    │   (libev/libuv vs greenlet-based hub) which can cause subtle behavioral differences in 
+    │   edge cases; Flask-SocketIO must be configured with the matching async_mode ('eventlet'
+    │   vs 'gevent'); Some monkey-patched modules differ slightly between the two libraries 
+    │   (e.g., DNS resolution, threading edge cases); eventlet is less actively maintained; 
+    │   verify gevent supports all patched modules currently relied upon (e.g., ssl, socket, 
+    │   os)
+    └── eventlet.monkey_patch() is used to patch stdlib sockets for cooperative concurrency, a
+        common backend choice for Flask-SocketIO. gevent provides the same monkey_patch() API 
+        and is a well-known drop-in alternative backend supported natively by Flask-SocketIO 
+        for the same purpose.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ gevent  │ 26.7.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+Project-local or undeclared imports supplied from the project checkout: app
+  ⚠ Full base-requirement install failed (kup for cairo with method 'pkg-config' failed: 
+Pkg-config for machine host machine not found. Giving up.
+      
+            A full log can be found at /private/tmp/pip-install-y96vhlyd/pycairo_92db34a); 
+retrying with only the 0 package(s) this file's imports actually need (dropped: bcrypt, bs4, 
+captcha, coverage, email-validator, feedgen, flask, flask-babel, flask-caching, 
+flask-jwt-extended, flask-login, flask-socketio, flask-webpack, flask-wtf, lxml, misaka, 
+peewee, peewee-migrate, pep8, pillow, pygobject, pyopenssl, pyotp, pytest, python-magic, 
+pyyaml, redis, requests, sendgrid, tinycss2, wheel, wheezy-html, wheezy-template, wtforms)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃          ┃           ┃                 ┃      Runtime API ┃             ┃                  ┃
+┃ Package  ┃ Available ┃ Import (3 runs) ┃     (real probe) ┃ Memory (KB) ┃ Notes            ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ gevent   │     ✓     │        437.4 ms │  UNMEASURED — No │        1552 │ import module:   │
+│          │           │                 │       registered │             │ gevent           │
+│          │           │                 │ side-effect-free │             │                  │
+│          │           │                 │    runtime probe │             │                  │
+│          │           │                 │              for │             │                  │
+│          │           │                 │ monkey_patch; an │             │                  │
+│          │           │                 │      integration │             │                  │
+│          │           │                 │       fixture is │             │                  │
+│          │           │                 │     required for │             │                  │
+│          │           │                 │         network, │             │                  │
+│ eventlet │     ✗     │               — │  UNMEASURED — No │           — │ No module named  │
+│          │           │                 │       registered │             │ 'imp'            │
+│          │           │                 │ side-effect-free │             │                  │
+│          │           │                 │    runtime probe │             │                  │
+│          │           │                 │              for │             │                  │
+│          │           │                 │ monkey_patch; an │             │                  │
+│          │           │                 │      integration │             │                  │
+│          │           │                 │       fixture is │             │                  │
+│          │           │                 │     required for │             │                  │
+│          │           │                 │         network, │             │                  │
+└──────────┴───────────┴─────────────────┴──────────────────┴─────────────┴──────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 2985c068
+  Performance evidence omitted for this group; no real, comparable isolated measurement exists
+for: eventlet (hard_probe_failure).
+  API compat tokens — input: 258  output: 32  latency: 1494ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installe… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━┩
+│ coopera… │ eventlet │ gevent │ LOW   │ —     │ —      │ 1.0      │ 0.9 │ 0.97  │ ✓         │
+│ async    │          │        │       │       │        │          │     │       │           │
+│ concurr… │          │        │       │       │        │          │     │       │           │
+│ /        │          │        │       │       │        │          │     │       │           │
+│ monkey-… │          │        │       │       │        │          │     │       │           │
+│ backend  │          │        │       │       │        │          │     │       │           │
+│ for      │          │        │       │       │        │          │     │       │           │
+│ Flask-S… │          │        │       │       │        │          │     │       │           │
+└──────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴───────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  eventlet  →  gevent  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,751 out:1,139 latency:14590ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+↩ Repair cycle 1/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined)
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,860 out:673 latency:7385ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+↩ Repair cycle 2/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+↩ Retrying with verifier feedback (repair cycle 2: line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined)
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,860 out:639 latency:6703ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+↩ Repair cycle 3/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+↩ Retrying with verifier feedback (repair cycle 3: line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined)
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,860 out:581 latency:6476ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+↩ Repair cycle 4/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+↩ Retrying with verifier feedback (repair cycle 4: line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined)
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,860 out:645 latency:7358ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+↩ Repair cycle 5/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined
+──────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────
+↩ Retrying with verifier feedback (repair cycle 5: line 1: AXIOM selected a replacement but 
+Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: 
+name 'coerce_llm_text' is not defined)
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:1,860 out:387 latency:4225ms
+  Connector failed for eventlet: name 'coerce_llm_text' is not defined
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/connector_agent.py", 
+line 733, in connector_agent
+    result = _parse_json_response(coerce_llm_text(resp.content))
+                                  ^^^^^^^^^^^^^^^
+NameError: name 'coerce_llm_text' is not defined
+
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: connector exception: name 'coerce_llm_text' is not defined
+Repair budget exhausted (5/5); refusing to ship an unverified patch.
+  verification_rejected: AXIOM selected a replacement but Connector/AST rewrite produced no 
+source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not 
+defined Repair budget exhausted after 5 cycle(s).
+→ [6/12] hhyo/archery  pycrypto→pycryptodome  (sql/utils/aes_decryptor.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmp8hkbwibh_aes_decryptor.py
+                          Discovered Imports                          
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names            ┃ API Calls Used   ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│    1 │ Crypto.Cipher │ —     │ AES              │ MODE_CBC, new    │
+│    2 │ binascii      │ —     │ b2a_hex, a2b_hex │ b2a_hex, a2b_hex │
+│   40 │ sys           │ —     │ —                │ argv             │
+└──────┴───────────────┴───────┴──────────────────┴──────────────────┘
+
+✓ Found 3 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ Crypto →  │ 2.6.1   │    4 │ HIGH │ AVAILABLE │      0.60 │      0.20 │    0.48 │ PyPI     │
+│ pycrypto  │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ pycrypto │
+│ binascii  │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ sys       │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+⚠️  High-risk packages detected: Crypto
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: Crypto
+Discovered candidates:
+  Crypto -> cryptography, pynacl, M2Crypto
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,807  output: 1,556  latency: 17718ms
+Discovery leads not advanced to an equivalence group after file/API fit review: Crypto: pynacl
+Equivalence Groups Found
+└── Symmetric AES block cipher (CBC mode) encryption/decryption
+    ├── Candidates : pycrypto, cryptography, M2Crypto
+    ├── Used APIs  : AES.MODE_CBC, AES.new, cryptor.encrypt, cryptor.decrypt
+    ├── Pitfalls   : cryptography's Cipher API is object-oriented but requires separate 
+    │   encryptor()/decryptor() calls (encryptor.update()+finalize()) rather than a single 
+    │   .encrypt()/.decrypt() call like PyCryptodome; cryptography enforces stricter 
+    │   validation of key/IV sizes and does not silently accept string types — all inputs must
+    │   be bytes; M2Crypto relies on OpenSSL bindings and has a less Pythonic, more verbose 
+    │   API (op, key, iv setup calls) and is less actively maintained/documented; This code 
+    │   uses manual null-byte padding rather than a standard padding scheme (e.g. PKCS7); when
+    │   migrating, the padding logic must be preserved as-is or explicitly reimplemented with 
+    │   the new library's padding utilities; Static/hardcoded IV (b'0000000000000000') is 
+    │   itself insecure regardless of library choice — migration should ideally also address 
+    │   this but that is out of scope for a drop-in replacement
+    ├── Constraints: crypto_required, requires_connector
+    └── The file uses Crypto.Cipher.AES to instantiate an AES-CBC cipher object with a key and
+        static IV, then calls .encrypt()/.decrypt() on it. Both `cryptography` (via 
+        hazmat.primitives.ciphers.Cipher/algorithms.AES/modes.CBC) and `M2Crypto` (via 
+        EVP.Cipher with 'aes_128_cbc') expose equivalent low-level AES-CBC primitives that can
+        perform the same raw block encryption/decryption, making them functionally viable 
+        substitutes for this specific use case. pynacl was considered but rejected since it 
+        does not expose raw AES-CBC mode encryption (it is built around XSalsa20-Poly1305 
+        secretbox constructions), so it is not a genuine substitute here.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Reusing pinned source security evidence: pycrypto ← Crypto
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+                Candidate Security Scan                
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package      ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ cryptography │ 49.0.0  │ LOW  │ AVAILABLE │    1.00 │
+│ M2Crypto     │ 0.48.0  │ LOW  │ AVAILABLE │    1.00 │
+└──────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+  ⚠ Full base-requirement install failed ( 
+"/private/tmp/pip-build-env-zf6hnvhh/overlay/lib/python3.12/site-packages/setuptools/build_met
+a.py", line 317, in run_setup
+          exec(code, locals())
+        File "<string>", line 18, in <module); retrying with only the 0 package(s) this file's
+imports actually need (dropped: certifi, chardet, django, django-apscheduler, idna, 
+mysqlclient, naked, pyecharts, pyecharts-snapshot, pyyaml, requests, shellescape, simplejson, 
+sqlparse, urllib3)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃              ┃           ┃      Import (3 ┃     Runtime API ┃             ┃                ┃
+┃ Package      ┃ Available ┃          runs) ┃    (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ pycrypto     │     ✓     │         0.2 ms │ UNMEASURED — No │           9 │ import module: │
+│              │           │                │      registered │             │ Crypto         │
+│              │           │                │ side-effect-fr… │             │                │
+│              │           │                │   runtime probe │             │                │
+│              │           │                │             for │             │                │
+│              │           │                │   AES.MODE_CBC, │             │                │
+│              │           │                │        AES.new, │             │                │
+│              │           │                │ cryptor.encryp… │             │                │
+│              │           │                │ cryptor.decryp… │             │                │
+│              │           │                │            an i │             │                │
+│ cryptography │     ✓     │         0.4 ms │ UNMEASURED — No │          26 │ import module: │
+│              │           │                │      registered │             │ cryptography   │
+│              │           │                │ side-effect-fr… │             │                │
+│              │           │                │   runtime probe │             │                │
+│              │           │                │             for │             │                │
+│              │           │                │   AES.MODE_CBC, │             │                │
+│              │           │                │        AES.new, │             │                │
+│              │           │                │ cryptor.encryp… │             │                │
+│              │           │                │ cryptor.decryp… │             │                │
+│              │           │                │            an i │             │                │
+│ M2Crypto     │     ✗     │              — │ UNMEASURED — No │           — │ options        │
+│              │           │                │      registered │             │       Runtime… │
+│              │           │                │ side-effect-fr… │             │ gcc -E ended   │
+│              │           │                │   runtime probe │             │ with return    │
+│              │           │                │             for │             │ code 1         │
+│              │           │                │   AES.MODE_CBC, │             │                │
+│              │           │                │        AES.new, │             │                │
+│              │           │                │ cryptor.encryp… │             │   note: This   │
+│              │           │                │ cryptor.decryp… │             │ error          │
+│              │           │                │            an i │             │ originates     │
+│              │           │                │                 │             │ from a         │
+│              │           │                │                 │             │ subprocess,    │
+│              │           │                │                 │             │ and is likely  │
+│              │           │                │                 │             │ not a problem  │
+│              │           │                │                 │             │ with pip.      │
+│              │           │                │                 │             │ error:         │
+│              │           │                │                 │             │ subprocess-ex… │
+│              │           │                │                 │             │                │
+│              │           │                │                 │             │ × Getting      │
+│              │           │                │                 │             │ requirements   │
+│              │           │                │                 │             │ to build wheel │
+│              │           │                │                 │             │ did not run    │
+│              │           │                │                 │             │ successfully.  │
+│              │           │                │                 │             │ │ exit code: 1 │
+│              │           │                │                 │             │ ╰─> See above  │
+│              │           │                │                 │             │ for output.    │
+│              │           │                │                 │             │                │
+│              │           │                │                 │             │ note: This     │
+│              │           │                │                 │             │ error          │
+│              │           │                │                 │             │ originates     │
+│              │           │                │                 │             │ from a         │
+│              │           │                │                 │             │ subprocess,    │
+│              │           │                │                 │             │ and is likely  │
+│              │           │                │                 │             │ not a problem  │
+│              │           │                │                 │             │ with pip.      │
+│              │           │                │                 │             │                │
+└──────────────┴───────────┴────────────────┴─────────────────┴─────────────┴────────────────┘
+
+✓ Profiled 3 package(s), 2 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 588f59d7
+⚠️  Security warning: Crypto is HIGH risk (score=0.48)
+⚠️  Security warning: pycrypto is HIGH risk (score=0.48)
+  Profiler veto: excluded M2Crypto: hard_install_failure
+  API compat tokens — input: 292  output: 48  latency: 1576ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner  ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Symmetr… │ pycrypto │ pycryp… │ MEDIUM │ 1.0   │ 1.0    │ 0.48     │ 1.0 │ 0.68  │ ✓       │
+│ AES      │          │         │        │       │        │          │     │       │         │
+│ block    │          │         │        │       │        │          │     │       │         │
+│ cipher   │          │         │        │       │        │          │     │       │         │
+│ (CBC     │          │         │        │       │        │          │     │       │         │
+│ mode)    │          │         │        │       │        │          │     │       │         │
+│ encrypt… │          │         │        │       │        │          │     │       │         │
+└──────────┴──────────┴─────────┴────────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: 588f59d7
+→ [7/12] ethereum/py-evm  leveldb→plyvel  (evm/db/backends/level.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpe0p4eoc0_level.py
+                 Discovered Imports                 
+┏━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module  ┃ Alias ┃ Names  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ base    │ —     │ BaseDB │ —              │
+│   13 │ leveldb │ —     │ —      │ LevelDB        │
+└──────┴─────────┴───────┴────────┴────────────────┘
+
+✓ Found 2 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━┩
+│ leveldb │ 0.201   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not    │
+│         │         │      │      │           │            │           │         │ updated   │
+│         │         │      │      │           │            │           │         │ in 6y 7mo │
+│ base    │ 0.0.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ 📅 Not    │
+│         │         │      │      │           │            │           │         │ updated   │
+│         │         │      │      │           │            │           │         │ in 3y 2mo │
+└─────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴───────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: base, leveldb
+Discovered candidates:
+  leveldb -> plyvel, rocksdict, lmdb
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,259  output: 1,399  latency: 15534ms
+Equivalence Groups Found
+└── embedded key-value store backend
+    ├── Candidates : leveldb, plyvel, rocksdict, lmdb
+    ├── Used APIs  : LevelDB(), Get, Put, Delete
+    ├── Pitfalls   : API naming differs: leveldb uses Get/Put/Delete (capitalized), plyvel 
+    │   uses lowercase get/put/delete, rocksdict is more dict-like (__getitem__/__setitem__), 
+    │   lmdb requires explicit transaction objects (env.begin()); Error semantics differ: 
+    │   leveldb.Get raises KeyError unless a default is given, plyvel.get returns None by 
+    │   default, lmdb raises KeyError inside a transaction, rocksdict raises KeyError like a 
+    │   dict; lmdb requires specifying a max map_size up front and explicit transaction/commit
+    │   handling, unlike leveldb/plyvel which handle this transparently; 
+    │   create_if_missing/error_if_exists flags used here are leveldb-specific constructor 
+    │   kwargs; plyvel uses create_if_missing too but rocksdict/lmdb use different 
+    │   initialization parameters; Byte-array vs bytes return types differ slightly 
+    │   (leveldb.Get returns bytearray requiring explicit bytes() conversion, as seen in this 
+    │   code)
+    ├── Constraints: requires_connector
+    └── The file wraps the 'leveldb' Python binding to implement a BaseDB interface 
+        (get/set/exists/delete) backed by an embedded on-disk key-value store. plyvel (also a 
+        LevelDB binding), rocksdict (RocksDB binding), and lmdb (Lightning Memory-Mapped DB) 
+        all provide the same fundamental capability: a persistent, ordered, embedded key-value
+        store accessible via simple get/put/delete operations, making them plausible drop-in 
+        backends for this abstraction layer.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ lmdb      │ 2.1.1   │ LOW  │ AVAILABLE │    1.00 │
+│ plyvel    │ 1.5.1   │ LOW  │ AVAILABLE │    0.82 │
+│ rocksdict │ 0.3.29  │ LOW  │ AVAILABLE │    0.95 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+───────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after
+the case finishes.
+Project-local or undeclared imports supplied from the project checkout: base
+  ⚠ Full base-requirement install failed (  Could not find a version that satisfies the 
+requirement eth-typing<4,>=3.0.0 (from eth-keys<1.0.0,>=0.2.0b3->-c 
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-j3x4e4hh/axiom-base-con); 
+retrying with only the 0 package(s) this file's imports actually need (dropped: aiohttp, 
+async-lru, cryptography, cytoolz, eth-bloom, eth-keys, eth-tester, eth-utils, py-ecc, 
+pyethash, rlp, trie, web3)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer 
+entirely (the failing packages are unrelated to the migration under test).
+                                      Benchmark Results                                       
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃           ┃           ┃                 ┃     Runtime API ┃             ┃                  ┃
+┃ Package   ┃ Available ┃ Import (3 runs) ┃    (real probe) ┃ Memory (KB) ┃ Notes            ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│ leveldb   │     ✗     │               — │ UNMEASURED — No │           — │ pip-build-ughyd… │
+│           │           │                 │      registered │             │ 'open',          │
+│           │           │                 │ side-effect-fr… │             │ open)(__file__)… │
+│           │           │                 │   runtime probe │             │ '\n');f.close()… │
+│           │           │                 │  for LevelDB(), │             │ __file__,        │
+│           │           │                 │       Get, Put, │             │ 'exec'))"        │
+│           │           │                 │      Delete; an │             │ install --record │
+│           │           │                 │     integration │             │ /tmp/pip-oknpec… │
+│           │           │                 │      fixture is │             │ --single-versio… │
+│           │           │                 │          requir │             │ --compile        │
+│           │           │                 │                 │             │ --install-heade… │
+│           │           │                 │                 │             │ /axiom-env/venv… │
+│           │           │                 │                 │             │ failed with      │
+│           │           │                 │                 │             │ error code 1 in  │
+│           │           │                 │                 │             │ /tmp/pip-build-… │
+│           │           │                 │                 │             │                  │
+│ lmdb      │     ✗     │               — │ UNMEASURED — No │           — │ Command "python  │
+│           │           │                 │      registered │             │ setup.py         │
+│           │           │                 │ side-effect-fr… │             │ egg_info" failed │
+│           │           │                 │   runtime probe │             │ with error code  │
+│           │           │                 │  for LevelDB(), │             │ 1 in             │
+│           │           │                 │       Get, Put, │             │ /tmp/pip-build-… │
+│           │           │                 │      Delete; an │             │                  │
+│           │           │                 │     integration │             │                  │
+│           │           │                 │      fixture is │             │                  │
+│           │           │                 │          requir │             │                  │
+│ plyvel    │     ✗     │               — │ UNMEASURED — No │           — │ mp/pip-build-fl… │
+│           │           │                 │      registered │             │ 'open',          │
+│           │           │                 │ side-effect-fr… │             │ open)(__file__)… │
+│           │           │                 │   runtime probe │             │ '\n');f.close()… │
+│           │           │                 │  for LevelDB(), │             │ __file__,        │
+│           │           │                 │       Get, Put, │             │ 'exec'))"        │
+│           │           │                 │      Delete; an │             │ install --record │
+│           │           │                 │     integration │             │ /tmp/pip-76d7jq… │
+│           │           │                 │      fixture is │             │ --single-versio… │
+│           │           │                 │          requir │             │ --compile        │
+│           │           │                 │                 │             │ --install-heade… │
+│           │           │                 │                 │             │ /axiom-env/venv… │
+│           │           │                 │                 │             │ failed with      │
+│           │           │                 │                 │             │ error code 1 in  │
+│           │           │                 │                 │             │ /tmp/pip-build-… │
+│           │           │                 │                 │             │                  │
+│ rocksdict │     ✗     │               — │ UNMEASURED — No │           — │   Could not find │
+│           │           │                 │      registered │             │ a version that   │
+│           │           │                 │ side-effect-fr… │             │ satisfies the    │
+│           │           │                 │   runtime probe │             │ requirement      │
+│           │           │                 │  for LevelDB(), │             │ rocksdict==0.3.… │
+│           │           │                 │       Get, Put, │             │ (from versions:  │
+│           │           │                 │      Delete; an │             │ )                │
+│           │           │                 │     integration │             │ No matching      │
+│           │           │                 │      fixture is │             │ distribution     │
+│           │           │                 │          requir │             │ found for        │
+│           │           │                 │                 │             │ rocksdict==0.3.… │
+│           │           │                 │                 │             │                  │
+└───────────┴───────────┴─────────────────┴─────────────────┴─────────────┴──────────────────┘
+
+✓ Profiled 4 package(s), 0 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: a14769ff
+  Profiler veto: excluded plyvel: hard_install_failure; rocksdict: hard_install_failure; lmdb:
+hard_install_failure
+  Performance evidence omitted for this group; no real, comparable isolated measurement exists
+for: leveldb (hard_install_failure).
+  API compat tokens — input: 249  output: 34  latency: 1800ms
+                                 AXIOM Optimization Decisions                                 
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━┓
+┃ Role     ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Install… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━┩
+│ embedded │ leveldb  │ leveldb │ LOW   │ —     │ —      │ 0.76     │ 0.9 │ 0.634 │ not      │
+│ key-val… │          │         │       │       │        │          │     │       │ install… │
+│ store    │          │         │       │       │        │          │     │       │          │
+│ backend  │          │         │       │       │        │          │     │       │          │
+└──────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴──────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: a14769ff
+→ [8/12] usergeteam/userge-plugins  requests→aiohttp  (plugins/info.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmprvabro45_info.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module    ┃ Alias ┃ Names                          ┃ API Calls Used                 ┃
+┡━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    5 │ spamwatch │ —     │ —                              │ Client                         │
+│    6 │ requests  │ —     │ —                              │ get                            │
+│    7 │ datetime  │ —     │ datetime                       │ fromtimestamp                  │
+│    9 │ userge    │ —     │ userge, Config, Message,       │ on_cmd, SPAM_WATCH_API,        │
+│      │           │       │ get_collection                 │ get_collection                 │
+└──────┴───────────┴───────┴────────────────────────────────┴────────────────────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 4 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ spamwatch │ 0.3.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.20 │    0.76 │ 📅 Not   │
+│           │         │      │      │           │           │           │         │ updated  │
+│           │         │      │      │           │           │           │         │ in 6y    │
+│           │         │      │      │           │           │           │         │ 1mo      │
+│ userge    │ 0.0.1   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.20 │    0.76 │ 📅 Not   │
+│           │         │      │      │           │           │           │         │ updated  │
+│           │         │      │      │           │           │           │         │ in 5y    │
+│           │         │      │      │           │           │           │         │ 5mo      │
+│ requests  │ 2.34.2  │    0 │ LOW  │ AVAILABLE │      1.00 │      1.00 │    1.00 │ ✓ Clean  │
+│ datetime  │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: requests, spamwatch, userge
+Discovered candidates:
+  requests -> httpx, urllib3, aiohttp
+  userge -> telethon, pyrogram, pyrofork
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 3,662  output: 2,000  latency: 26003ms
+⚠️  Could not extract JSON from LLM response (model: claude-sonnet-5). First 150 chars:
+'[\n  {\n    "role": "Synchronous HTTP client for simple GET requests to external APIs 
+(SpamWatch/CAS ban checks)",\n    "candidates": ["requests", "httpx'...
+Discovery leads not advanced to an equivalence group after file/API fit review: requests: 
+httpx, urllib3, aiohttp; userge: telethon, pyrogram, pyrofork
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [9/12] miguelgrinberg/flask-socketio  gevent→eventlet  (example/app.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmp49h00toa_app.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module             ┃ Alias ┃ Names                     ┃ API Calls Used             ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ gevent             │ —     │ monkey                    │ patch_all                  │
+│    4 │ time               │ —     │ —                         │ sleep                      │
+│    5 │ threading          │ —     │ Thread                    │ Thread                     │
+│    6 │ flask              │ —     │ Flask, render_template,   │ disconnect, join_room,     │
+│      │                    │       │ session, request          │ render_template, SocketIO, │
+│      │                    │       │                           │ emit, Flask, get,          │
+│      │                    │       │                           │ close_room, leave_room,    │
+│      │                    │       │                           │ namespace                  │
+│    7 │ flask.ext.socketio │ —     │ SocketIO, emit,           │ disconnect, join_room,     │
+│      │                    │       │ join_room, leave_room,    │ render_template, SocketIO, │
+│      │                    │       │ close_room, disconnect    │ emit, Flask, get,          │
+│      │                    │       │                           │ close_room, leave_room,    │
+│      │                    │       │                           │ namespace                  │
+└──────┴────────────────────┴───────┴───────────────────────────┴────────────────────────────┘
+
+✓ Found 5 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 4 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃          ┃         ┃      ┃        ┃           ┃     Vuln ┃           ┃         ┃          ┃
+┃ Package  ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃    Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ flask    │ 0.10.1  │    8 │ MEDIUM │ AVAILABLE │     0.60 │      1.00 │    0.72 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 0.10.1   │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 3.       │
+│ gevent   │ 1.0.1   │    2 │ MEDIUM │ AVAILABLE │     0.60 │      1.00 │    0.72 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 1.0.1    │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 26.      │
+│ threadi… │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ time     │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+└──────────┴─────────┴──────┴────────┴───────────┴──────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: flask, gevent
+Discovered candidates:
+  flask -> django, fastapi, bottle, pyramid
+  gevent -> eventlet, asyncio, twisted
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 3,462  output: 2,000  latency: 23958ms
+⚠️  Could not extract JSON from LLM response (model: claude-sonnet-5). First 150 chars:
+''...
+Discovery leads not advanced to an equivalence group after file/API fit review: flask: django,
+fastapi, bottle, pyramid; gevent: eventlet, asyncio, twisted
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [10/12] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  
+(tools/c7n_mailer/c7n_mailer/cli.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmp76evdtjg_cli.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                   ┃ API Calls Used          ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ __future__              │ —     │ absolute_import,        │ —                       │
+│      │                         │       │ division,               │                         │
+│      │                         │       │ print_function,         │                         │
+│      │                         │       │ unicode_literals        │                         │
+│    3 │ argparse                │ —     │ —                       │ ArgumentParser          │
+│    4 │ functools               │ —     │ —                       │ partial                 │
+│    5 │ logging                 │ —     │ —                       │ INFO, WARNING, DEBUG,   │
+│      │                         │       │                         │ basicConfig, getLogger  │
+│    6 │ os                      │ —     │ path                    │ abspath, expandvars,    │
+│      │                         │       │                         │ expanduser, dirname,    │
+│      │                         │       │                         │ join                    │
+│    8 │ boto3                   │ —     │ —                       │ Session                 │
+│    9 │ jsonschema              │ —     │ —                       │ validate                │
+│   10 │ c7n_mailer              │ —     │ deploy, utils           │ setup_defaults,         │
+│      │                         │       │                         │ get_provider,           │
+│      │                         │       │                         │ MailerSqsQueueProcesso… │
+│      │                         │       │                         │ Azure,                  │
+│      │                         │       │                         │ MailerAzureQueueProces… │
+│      │                         │       │                         │ provision, AWS          │
+│   11 │ c7n_mailer.azure_maile… │ —     │ MailerAzureQueueProces… │ setup_defaults,         │
+│      │                         │       │                         │ get_provider,           │
+│      │                         │       │                         │ MailerSqsQueueProcesso… │
+│      │                         │       │                         │ Azure,                  │
+│      │                         │       │                         │ MailerAzureQueueProces… │
+│      │                         │       │                         │ provision, AWS          │
+│   12 │ c7n_mailer.azure_mailer │ —     │ deploy                  │ setup_defaults,         │
+│      │                         │       │                         │ get_provider,           │
+│      │                         │       │                         │ MailerSqsQueueProcesso… │
+│      │                         │       │                         │ Azure,                  │
+│      │                         │       │                         │ MailerAzureQueueProces… │
+│      │                         │       │                         │ provision, AWS          │
+│   13 │ c7n_mailer.sqs_queue_p… │ —     │ MailerSqsQueueProcessor │ setup_defaults,         │
+│      │                         │       │                         │ get_provider,           │
+│      │                         │       │                         │ MailerSqsQueueProcesso… │
+│      │                         │       │                         │ Azure,                  │
+│      │                         │       │                         │ MailerAzureQueueProces… │
+│      │                         │       │                         │ provision, AWS          │
+│   14 │ c7n_mailer.utils        │ —     │ get_provider, Providers │ setup_defaults,         │
+│      │                         │       │                         │ get_provider,           │
+│      │                         │       │                         │ MailerSqsQueueProcesso… │
+│      │                         │       │                         │ Azure,                  │
+│      │                         │       │                         │ MailerAzureQueueProces… │
+│      │                         │       │                         │ provision, AWS          │
+│   15 │ ruamel                  │ —     │ yaml                    │ SafeLoader, load        │
+└──────┴─────────────────────────┴───────┴─────────────────────────┴─────────────────────────┘
+
+✓ Found 13 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 9 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ jsonsche… │ 3.2.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.85 │    0.95 │ Histori… │
+│           │         │      │      │           │           │           │         │ project  │
+│           │         │      │      │           │           │           │         │ pin:     │
+│           │         │      │      │           │           │           │         │ 3.2.0    │
+│           │         │      │      │           │           │           │         │ (latest  │
+│           │         │      │      │           │           │           │         │ PyPI     │
+│           │         │      │      │           │           │           │         │ release: │
+│           │         │      │      │           │           │           │         │ 4.2      │
+│ ruamel →  │ 0.16.10 │    0 │ LOW  │ AVAILABLE │      1.00 │      0.85 │    0.95 │ PyPI     │
+│ ruamel.y… │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ ruamel.… │
+│ boto3     │ 1.12.35 │    0 │ LOW  │ AVAILABLE │      1.00 │      1.00 │    1.00 │ Histori… │
+│           │         │      │      │           │           │           │         │ project  │
+│           │         │      │      │           │           │           │         │ pin:     │
+│           │         │      │      │           │           │           │         │ 1.12.35  │
+│           │         │      │      │           │           │           │         │ (latest  │
+│           │         │      │      │           │           │           │         │ PyPI     │
+│           │         │      │      │           │           │           │         │ release: │
+│           │         │      │      │           │           │           │         │ 1        │
+│ c7n_mail… │ 0.6.50  │    0 │ LOW  │ AVAILABLE │      1.00 │      1.00 │    1.00 │ 🧬       │
+│           │         │      │      │           │           │           │         │ Transit… │
+│           │         │      │      │           │           │           │         │ scan     │
+│           │         │      │      │           │           │           │         │ covered  │
+│           │         │      │      │           │           │           │         │ first 12 │
+│           │         │      │      │           │           │           │         │ of 13    │
+│           │         │      │      │           │           │           │         │ direct   │
+│           │         │      │      │           │           │           │         │ depende  │
+│ __future… │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ argparse  │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ functools │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ logging   │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ os        │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: argparse, boto3, c7n_mailer, jsonschema, ruamel
+Discovered candidates:
+  argparse -> click, typer, docopt, fire
+  boto3 -> aioboto3, apache-libcloud, boto
+  jsonschema -> fastjsonschema, cerberus, voluptuous, schema
+  ruamel -> pyyaml, strictyaml, oyaml
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 4,540  output: 2,000  latency: 21521ms
+⚠️  Could not extract JSON from LLM response (model: claude-sonnet-5). First 150 chars:
+'[\n  {\n    "role": "CLI argument parsing",\n    "candidates": ["argparse", "click", "typer",
+"fire"],\n    "used_apis": ["ArgumentParser"],\n    "reasonin'...
+Discovery leads not advanced to an equivalence group after file/API fit review: argparse: 
+click, typer, docopt, fire; boto3: aioboto3, apache-libcloud, boto; jsonschema: 
+fastjsonschema, cerberus, voluptuous, schema; ruamel: pyyaml, strictyaml, oyaml
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [11/12] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  
+(tools/c7n_mailer/c7n_mailer/replay.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpsqum3iu2_replay.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                   ┃ API Calls Used          ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   10 │ __future__              │ —     │ absolute_import,        │ —                       │
+│      │                         │       │ division,               │                         │
+│      │                         │       │ print_function,         │                         │
+│      │                         │       │ unicode_literals        │                         │
+│   12 │ argparse                │ —     │ —                       │ ArgumentParser          │
+│   13 │ base64                  │ —     │ —                       │ b64decode               │
+│   14 │ json                    │ —     │ —                       │ loads                   │
+│   15 │ logging                 │ —     │ —                       │ WARNING, basicConfig,   │
+│      │                         │       │                         │ DEBUG, getLogger        │
+│   16 │ os                      │ —     │ —                       │ path                    │
+│   17 │ zlib                    │ —     │ —                       │ decompress              │
+│   19 │ boto3                   │ —     │ —                       │ Session                 │
+│   20 │ jsonschema              │ —     │ —                       │ validate                │
+│   21 │ c7n_mailer.cli          │ —     │ CONFIG_SCHEMA           │ setup_defaults,         │
+│      │                         │       │                         │ get_mimetext_message,   │
+│      │                         │       │                         │ EmailDelivery           │
+│   22 │ c7n_mailer.email_deliv… │ —     │ EmailDelivery           │ setup_defaults,         │
+│      │                         │       │                         │ get_mimetext_message,   │
+│      │                         │       │                         │ EmailDelivery           │
+│   23 │ c7n_mailer.utils        │ —     │ setup_defaults          │ setup_defaults,         │
+│      │                         │       │                         │ get_mimetext_message,   │
+│      │                         │       │                         │ EmailDelivery           │
+│   24 │ c7n_mailer.utils_email  │ —     │ get_mimetext_message    │ setup_defaults,         │
+│      │                         │       │                         │ get_mimetext_message,   │
+│      │                         │       │                         │ EmailDelivery           │
+│   25 │ ruamel                  │ —     │ yaml                    │ SafeLoader, load        │
+└──────┴─────────────────────────┴───────┴─────────────────────────┴─────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 11 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃           ┃         ┃      ┃      ┃           ┃      Vuln ┃           ┃         ┃          ┃
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃     Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ jsonsche… │ 3.2.0   │    0 │ LOW  │ AVAILABLE │      1.00 │      0.85 │    0.95 │ Histori… │
+│           │         │      │      │           │           │           │         │ project  │
+│           │         │      │      │           │           │           │         │ pin:     │
+│           │         │      │      │           │           │           │         │ 3.2.0    │
+│           │         │      │      │           │           │           │         │ (latest  │
+│           │         │      │      │           │           │           │         │ PyPI     │
+│           │         │      │      │           │           │           │         │ release: │
+│           │         │      │      │           │           │           │         │ 4.2      │
+│ ruamel →  │ 0.16.10 │    0 │ LOW  │ AVAILABLE │      1.00 │      0.85 │    0.95 │ PyPI     │
+│ ruamel.y… │         │      │      │           │           │           │         │ distrib… │
+│           │         │      │      │           │           │           │         │ ruamel.… │
+│ boto3     │ 1.12.35 │    0 │ LOW  │ AVAILABLE │      1.00 │      1.00 │    1.00 │ Histori… │
+│           │         │      │      │           │           │           │         │ project  │
+│           │         │      │      │           │           │           │         │ pin:     │
+│           │         │      │      │           │           │           │         │ 1.12.35  │
+│           │         │      │      │           │           │           │         │ (latest  │
+│           │         │      │      │           │           │           │         │ PyPI     │
+│           │         │      │      │           │           │           │         │ release: │
+│           │         │      │      │           │           │           │         │ 1        │
+│ c7n_mail… │ 0.6.50  │    0 │ LOW  │ AVAILABLE │      1.00 │      1.00 │    1.00 │ 🧬       │
+│           │         │      │      │           │           │           │         │ Transit… │
+│           │         │      │      │           │           │           │         │ scan     │
+│           │         │      │      │           │           │           │         │ covered  │
+│           │         │      │      │           │           │           │         │ first 12 │
+│           │         │      │      │           │           │           │         │ of 13    │
+│           │         │      │      │           │           │           │         │ direct   │
+│           │         │      │      │           │           │           │         │ depende  │
+│ __future… │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ argparse  │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ base64    │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ json      │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ logging   │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ os        │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+│ zlib      │ stdlib  │    — │ N/A  │    N/A    │         — │         — │       — │ Python   │
+│           │         │      │      │           │           │           │         │ standar… │
+│           │         │      │      │           │           │           │         │ module;  │
+│           │         │      │      │           │           │           │         │ no       │
+│           │         │      │      │           │           │           │         │ PyPI/OSV │
+│           │         │      │      │           │           │           │         │ package  │
+│           │         │      │      │           │           │           │         │ sca      │
+└───────────┴─────────┴──────┴──────┴───────────┴───────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: argparse, boto3, c7n_mailer, jsonschema, ruamel
+Discovered candidates:
+  argparse -> click, docopt, typer, fire
+  boto3 -> botocore, aiobotocore, apache-libcloud
+  jsonschema -> fastjsonschema, cerberus, voluptuous, schema
+  ruamel -> pyyaml, oyaml, strictyaml
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 4,669  output: 2,000  latency: 24045ms
+⚠️  Could not extract JSON from LLM response (model: claude-sonnet-5). First 150 chars:
+''...
+Discovery leads not advanced to an equivalence group after file/API fit review: argparse: 
+click, docopt, typer, fire; boto3: botocore, aiobotocore, apache-libcloud; jsonschema: 
+fastjsonschema, cerberus, voluptuous, schema; ruamel: pyyaml, oyaml, strictyaml
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [12/12] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  
+(tools/c7n_mailer/c7n_mailer/utils.py)
+────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────
+Resolved path: /private/tmp/tmpqv313_ue_utils.py
+                                      Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                   ┃ API Calls Used          ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   14 │ __future__              │ —     │ absolute_import,        │ —                       │
+│      │                         │       │ division,               │                         │
+│      │                         │       │ print_function,         │                         │
+│      │                         │       │ unicode_literals        │                         │
+│   16 │ base64                  │ —     │ —                       │ binascii, b64decode     │
+│   17 │ datetime                │ —     │ datetime, timedelta     │ timedelta,              │
+│      │                         │       │                         │ utcfromtimestamp,       │
+│      │                         │       │                         │ utcnow, now             │
+│   18 │ functools               │ —     │ —                       │ partial                 │
+│   19 │ json                    │ —     │ —                       │ dumps, loads            │
+│   20 │ os                      │ —     │ —                       │ path                    │
+│   21 │ time                    │ —     │ —                       │ mktime                  │
+│   23 │ jinja2                  │ —     │ —                       │ FileSystemLoader,       │
+│      │                         │       │                         │ Template, Environment   │
+│   24 │ jmespath                │ —     │ —                       │ search                  │
+│   25 │ botocore.exceptions     │ —     │ ClientError             │ —                       │
+│   26 │ dateutil                │ —     │ parser                  │ tzutc, parse, gettz     │
+│   27 │ dateutil.tz             │ —     │ gettz, tzutc            │ tzutc, parse, gettz     │
+│   28 │ ruamel                  │ —     │ yaml                    │ safe_dump               │
+│  395 │ c7n_mailer.azure_maile… │ —     │ azure_decrypt           │ azure_decrypt           │
+└──────┴─────────────────────────┴───────┴─────────────────────────┴─────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────
+Scanning 13 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                     
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃          ┃         ┃      ┃        ┃           ┃     Vuln ┃           ┃         ┃          ┃
+┃ Package  ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃    Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ jinja2   │ 2.11.1  │   10 │ MEDIUM │ AVAILABLE │     0.60 │      0.65 │    0.61 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 2.11.1   │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 3.       │
+│ dateutil │ 2.8.1   │    0 │  LOW   │ AVAILABLE │     1.00 │      0.40 │    0.82 │ PyPI     │
+│ →        │         │      │        │           │          │           │         │ distrib… │
+│ python-… │         │      │        │           │          │           │         │ python-… │
+│ jmespath │ 0.9.5   │    0 │  LOW   │ AVAILABLE │     1.00 │      0.85 │    0.95 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 0.9.5    │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 1.1      │
+│ ruamel → │ 0.16.10 │    0 │  LOW   │ AVAILABLE │     1.00 │      0.85 │    0.95 │ PyPI     │
+│ ruamel.… │         │      │        │           │          │           │         │ distrib… │
+│          │         │      │        │           │          │           │         │ ruamel.… │
+│ botocore │ 1.15.35 │    0 │  LOW   │ AVAILABLE │     1.00 │      1.00 │    1.00 │ Histori… │
+│          │         │      │        │           │          │           │         │ project  │
+│          │         │      │        │           │          │           │         │ pin:     │
+│          │         │      │        │           │          │           │         │ 1.15.35  │
+│          │         │      │        │           │          │           │         │ (latest  │
+│          │         │      │        │           │          │           │         │ PyPI     │
+│          │         │      │        │           │          │           │         │ release: │
+│          │         │      │        │           │          │           │         │ 1        │
+│ c7n_mai… │ 0.6.50  │    0 │  LOW   │ AVAILABLE │     1.00 │      1.00 │    1.00 │ 🧬       │
+│          │         │      │        │           │          │           │         │ Transit… │
+│          │         │      │        │           │          │           │         │ scan     │
+│          │         │      │        │           │          │           │         │ covered  │
+│          │         │      │        │           │          │           │         │ first 12 │
+│          │         │      │        │           │          │           │         │ of 13    │
+│          │         │      │        │           │          │           │         │ direct   │
+│          │         │      │        │           │          │           │         │ depende  │
+│ __futur… │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ base64   │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ datetime │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ functoo… │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ json     │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ os       │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+│ time     │ stdlib  │    — │  N/A   │    N/A    │        — │         — │       — │ Python   │
+│          │         │      │        │           │          │           │         │ standar… │
+│          │         │      │        │           │          │           │         │ module;  │
+│          │         │      │        │           │          │           │         │ no       │
+│          │         │      │        │           │          │           │         │ PyPI/OSV │
+│          │         │      │        │           │          │           │         │ package  │
+│          │         │      │        │           │          │           │         │ sca      │
+└──────────┴─────────┴──────┴────────┴───────────┴──────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────
+Discovering alternative libraries for: botocore, c7n_mailer, dateutil, jinja2, jmespath, 
+ruamel
+Discovered candidates:
+  botocore -> boto, aiobotocore
+  dateutil -> pendulum, arrow, maya
+  jinja2 -> mako, chameleon, genshi
+  jmespath -> jsonpath-ng, jsonpath-rw, objectpath
+  ruamel -> pyyaml, oyaml, strictyaml
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 4,505  output: 2,000  latency: 20016ms
+⚠️  Could not extract JSON from LLM response (model: claude-sonnet-5). First 150 chars:
+'[\n  {\n    "role": "YAML serialization/deserialization (safe_dump usage)",\n    
+"candidates": ["ruamel", "pyyaml", "oyaml"],\n    "used_apis": ["yaml.saf'...
+Discovery leads not advanced to an equivalence group after file/API fit review: botocore: 
+boto, aiobotocore; dateutil: pendulum, arrow, maya; jinja2: mako, chameleon, genshi; jmespath:
+jsonpath-ng, jsonpath-rw, objectpath; ruamel: pyyaml, oyaml, strictyaml
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+
+Evaluation took 523.0s for 12 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                12
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     50.0%  (n=12)
+Target selection rate:        57.14%  (n=7; selection only)
+Verified exact PyMigBench migrations: 8.33%  (1/12)
+Verification environments incomplete: 2
+  Environment reasons: blocked=2
+Proven target-infeasible migrations: 0
+Verified exact among deterministic patch verdicts: 50.0%  (n=2)
+Verified alternatives (not scored as exact target): 0
+Connector invoked on:        2 case(s)
+Verifier repair cycles:      5 across 1 case(s)
+Verified after repair:       0  (budget exhausted: 1)
+Verifier accepted (differential): 50.0%  (n=2)
+Real runtime-probe coverage: 0.0%  (0/22 package-case profiles; 0 measured probe(s))
+              Publication Outcome Categories              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Category                                       ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Verified exact PyMigBench migration            │     1 │
+│ Verified alternative (see efficiency evidence) │     0 │
+│ Rejected after repair budget                   │     1 │
+│ Not verified / not adjudicated                 │    10 │
+└────────────────────────────────────────────────┴───────┘
+        Terminal Outcomes         
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome                ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ environment_incomplete │     2 │
+│ ground_truth_verified  │     1 │
+│ no_migration_selected  │     3 │
+│ resolver_miss          │     5 │
+│ verification_rejected  │     1 │
+└────────────────────────┴───────┘
+           Detection / Verified Exact Rate by Domain            
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain             ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ API wrapper        │     3 │         100.0% │         33.33% │
+│ File reader/writer │     3 │           0.0% │           0.0% │
+│ HTTP Clients       │     2 │          50.0% │           0.0% │
+│ Utility            │     2 │          50.0% │           0.0% │
+│ Cryptography       │     1 │           0.0% │           0.0% │
+│ Database           │     1 │         100.0% │           0.0% │
+└────────────────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_claude_12.json, pymigbench_claude_12.csv

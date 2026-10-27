@@ -1,0 +1,41 @@
+{
+  "role": "finite-state machine engine",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.853,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state machine engine'. Confidence: LOW. Total: 0.853 (speed=None, mem=None, sec=0.895, api=1.0). Migration note: transitions dynamically injects methods (start_fill, trip, etc.) onto the model instance at runtime; python-statemachine/automat/pysm use different declarative patterns (class-level State/Transition descriptors or decorators) requiring restructuring of TankController",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine",
+    "add_transition",
+    "model=self",
+    "states=STATES",
+    "initial=",
+    "conditions=",
+    "after="
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

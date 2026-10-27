@@ -1,0 +1,3109 @@
+{
+  "config": {
+    "llm": "claude",
+    "model": "claude-sonnet-5",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 12,
+    "case_offset": 0,
+    "case_filter": ""
+  },
+  "metrics": {
+    "total_cases": 12,
+    "errored_cases": 0,
+    "detection_rate_pct": 91.67,
+    "detection_n": 12,
+    "target_selection_rate_pct": 66.67,
+    "target_selection_n": 12,
+    "verified_ground_truth_n": 1,
+    "verified_ground_truth_rate_pct": 8.33,
+    "execution_ready_n": 4,
+    "verified_ground_truth_rate_ready_pct": 25.0,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "no_migration_selected": 3,
+      "environment_incomplete": 5,
+      "ground_truth_verified": 1,
+      "verification_rejected": 3
+    },
+    "result_categories": {
+      "not_verified_or_not_adjudicated": 8,
+      "pymigbench_exact_verified": 1,
+      "rejected_after_repair_budget": 3
+    },
+    "verified_alternative_runtime_efficiency_superior_n": 0,
+    "verified_alternative_runtime_efficiency_unproven_n": 0,
+    "connector_invoked_n": 4,
+    "verification_environment_incomplete_n": 5,
+    "verification_environment_incomplete_by_status": {
+      "blocked": 5
+    },
+    "verifier_clean_rate_pct": 25.0,
+    "verifier_n": 4,
+    "repair_cases_n": 3,
+    "repair_cycle_total": 15,
+    "repair_cycles_per_case": 1.25,
+    "repair_cycles_per_repaired_case": 5.0,
+    "verified_after_repair_n": 0,
+    "repair_budget_exhausted_n": 3,
+    "repair_routes": {
+      "connector": 15
+    },
+    "final_verifier_routes": {
+      "proceed": 12
+    },
+    "profiler_package_case_n": 39,
+    "runtime_measured_package_case_n": 6,
+    "runtime_measurement_coverage_pct": 15.38,
+    "runtime_measured_probe_n": 6,
+    "runtime_probe_status_counts": {
+      "unsupported": 27,
+      "measured": 6,
+      "not_comparable": 3
+    },
+    "by_domain": {
+      "HTTP Clients": {
+        "n": 2,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      },
+      "API wrapper": {
+        "n": 3,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 33.33
+      },
+      "Utility": {
+        "n": 2,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      },
+      "Cryptography": {
+        "n": 1,
+        "detection_rate_pct": 0.0,
+        "verified_ground_truth_rate_pct": 0.0
+      },
+      "Database": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      },
+      "File reader/writer": {
+        "n": 3,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 12,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "result_category_definitions": {
+    "pymigbench_exact_verified": "AXIOM produced and verified the same target migration recorded by PyMigBench.",
+    "verified_alternative": "AXIOM verified a different target for the same source role. A runtime-efficiency claim additionally requires actual selected-target API use and one shared measured semantic runtime probe across source, reference target, and alternative.",
+    "rejected_after_repair_budget": "A selected migration remained unaccepted after the globally bounded verifier repair budget was exhausted.",
+    "not_verified_or_not_adjudicated": "No verified migration claim is made. category_reason and detailed outcome distinguish no-change, environment, resolver, provider, and other causes."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "adapter_runtime": "Optional timing of a recognised, side-effect-free Connector wrapper. scope='adapter_only' measures generated application glue and is never used as selected-package runtime evidence.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 1790.3408110141754,
+  "results": [
+    {
+      "migration_id": "kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5",
+      "repo": "svenskaspel/locust-plugins",
+      "domain": "HTTP Clients",
+      "source": "kafka",
+      "target": "confluent-kafka",
+      "file_path": "locust_plugins/kafka.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "locustio>=1.0",
+        "psycogreen==1.0.2",
+        "psycopg2-binary==2.8.5",
+        "websocket-client==0.57.0",
+        "python-dateutil==2.8.1",
+        "pymongo==3.10.1",
+        "kafka-python==2.0.1"
+      ],
+      "base_requirement_count": 7,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": null,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": null,
+      "attempted_axiom_winner": null,
+      "attempted_selection_status": "no_migration",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "aiokafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 243.755,
+          "memory_kb": 6818.6,
+          "profile_detail": "import module: aiokafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "producer.send",
+                "future.add_callback",
+                "future.add_errback",
+                "producer.flush"
+              ]
+            }
+          }
+        },
+        "confluent-kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 112.157,
+          "memory_kb": 547.1,
+          "profile_detail": "import module: confluent_kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "producer.send",
+                "future.add_callback",
+                "future.add_errback",
+                "producer.flush"
+              ]
+            }
+          }
+        },
+        "kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 20.232,
+          "memory_kb": 4269.9,
+          "profile_detail": "import module: kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "producer.send",
+                "future.add_callback",
+                "future.add_errback",
+                "producer.flush"
+              ]
+            }
+          }
+        },
+        "pykafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 591.501,
+          "memory_kb": 10358.3,
+          "profile_detail": "import module: pykafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, producer.send, future.add_callback, future.add_errback, producer.flush; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "producer.send",
+                "future.add_callback",
+                "future.add_errback",
+                "producer.flush"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": "3.6",
+        "python_constraint": ">=3.6, <4",
+        "selected_python": "/Users/benz.mags/.local/bin/python3.8",
+        "selected_python_version": "3.8",
+        "target_distribution": "confluent-kafka",
+        "target_version": "auto",
+        "resolved_target_version": "2.15.0",
+        "target_requirement": "confluent-kafka",
+        "requirement_count": 7,
+        "requirement_file_count": 0,
+        "python_evidence": [
+          "setup.py python_requires: >=3.6, <4"
+        ],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "aiokafka": {
+            "distribution": "aiokafka",
+            "version": "0.11.0",
+            "install_spec": "aiokafka==0.11.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "confluent-kafka": {
+            "distribution": "confluent-kafka",
+            "version": "2.15.0",
+            "install_spec": "confluent-kafka==2.15.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "pykafka": {
+            "distribution": "pykafka",
+            "version": "2.8.0",
+            "install_spec": "pykafka==2.8.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "not_applicable",
+      "verification_environment_status": "ready",
+      "selection_status": "no_migration",
+      "outcome": "no_migration_selected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    },
+    {
+      "migration_id": "slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f",
+      "repo": "alice-biometrics/petisco",
+      "domain": "API wrapper",
+      "source": "slackclient",
+      "target": "slack-sdk",
+      "file_path": "petisco/extra/slack/application/notifier/slack_notifier.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "meiga==1.2.12",
+        "pydantic==1.8.2",
+        "requests==2.24.0",
+        "dataclasses==0.7;python_version<\"3.7\"",
+        "dataclasses-json==0.5.2",
+        "backports-datetime-fromisoformat==1.0.0",
+        "pyjwt==2.1.0",
+        "cryptography==3.4.7",
+        "py-healthcheck==1.7.2",
+        "APScheduler==3.6.3",
+        "pyyaml==5.4.1",
+        "deprecation==2.1.0",
+        "slackclient==2.5.0",
+        "validators==0.15.0",
+        "python-dateutil==2.8.1"
+      ],
+      "base_requirement_count": 15,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "slack-sdk",
+      "attempted_axiom_winner": "slack-sdk",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "slack": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "ERROR: Could not find a version that satisfies the requirement slack==2.9.4 (from versions: 0.0.1, 0.0.2)\nERROR: No matching distribution found for slack==2.9.4",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        },
+        "slack-sdk": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 64.571,
+          "memory_kb": 5862.6,
+          "profile_detail": "import module: slack_sdk",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        },
+        "slackclient": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 394.656,
+          "memory_kb": 8902.0,
+          "profile_detail": "import module: slack",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "slack-sdk",
+        "target_version": "auto",
+        "resolved_target_version": "3.43.0",
+        "target_requirement": "slack-sdk",
+        "requirement_count": 15,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "slack": {
+            "distribution": "slackclient",
+            "version": "2.9.4",
+            "install_spec": "slackclient==2.9.4",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "slack-sdk": {
+            "distribution": "slack-sdk",
+            "version": "3.43.0",
+            "install_spec": "slack-sdk==3.43.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: baseline import smoke failed: ation.notifier.notifier import Notifier\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/__init__.py\", line 7, in <module>\n    from petisco.public_api import *\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/public_api.py\", line 5, in <module>\n    from petisco.base.application.application import Application\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/application/application.py\", line 10, in <module>\n    from petisco.base.domain.message.chaos.service_deployed import ServiceDeployed\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/message/chaos/service_deployed.py\", line 1, in <module>\n    from petisco.base.domain.message.domain_event import DomainEvent\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/message/domain_event.py\", line 4, in <module>\n    from petisco.base.domain.message.message import Message\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/message/message.py\", line 6, in <module>\n    from petisco.base.domain.model.value_object import ValueObject\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/model/value_object.py\", line 6, in <module>\n    from petisco.base.domain.errors.defaults.invalid_value_object import InvalidValueObject\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/errors/defaults/invalid_value_object.py\", line 1, in <module>\n    from petisco.base.domain.errors.domain_error import DomainError\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-utvzn79b/project/petisco/base/domain/errors/domain_error.py\", line 4, in <module>\n    from meiga import Error\nModuleNotFoundError: No module named 'meiga'\n"
+    },
+    {
+      "migration_id": "slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f",
+      "repo": "alice-biometrics/petisco",
+      "domain": "API wrapper",
+      "source": "slackclient",
+      "target": "slack-sdk",
+      "file_path": "petisco/extra/slack/is_slack_available.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "meiga==1.2.12",
+        "pydantic==1.8.2",
+        "requests==2.24.0",
+        "dataclasses==0.7;python_version<\"3.7\"",
+        "dataclasses-json==0.5.2",
+        "backports-datetime-fromisoformat==1.0.0",
+        "pyjwt==2.1.0",
+        "cryptography==3.4.7",
+        "py-healthcheck==1.7.2",
+        "APScheduler==3.6.3",
+        "pyyaml==5.4.1",
+        "deprecation==2.1.0",
+        "slackclient==2.5.0",
+        "validators==0.15.0",
+        "python-dateutil==2.8.1"
+      ],
+      "base_requirement_count": 15,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "slack_sdk",
+      "attempted_axiom_winner": "slack_sdk",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "slack": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "ERROR: Could not find a version that satisfies the requirement slack==2.9.4 (from versions: 0.0.1, 0.0.2)\nERROR: No matching distribution found for slack==2.9.4",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:api": {
+              "status": "unsupported",
+              "probe_id": "unsupported:api",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": []
+            }
+          }
+        },
+        "slack_sdk": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 64.304,
+          "memory_kb": 5863.0,
+          "profile_detail": "import module: slack_sdk",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:api": {
+              "status": "unsupported",
+              "probe_id": "unsupported:api",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": []
+            }
+          }
+        },
+        "slackclient": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 395.318,
+          "memory_kb": 8903.0,
+          "profile_detail": "import module: slack",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:api": {
+              "status": "unsupported",
+              "probe_id": "unsupported:api",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for no parsed API; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "slack-sdk",
+        "target_version": "auto",
+        "resolved_target_version": "3.43.0",
+        "target_requirement": "slack-sdk",
+        "requirement_count": 15,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "slack": {
+            "distribution": "slackclient",
+            "version": "2.9.4",
+            "install_spec": "slackclient==2.9.4",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "slack_sdk": {
+            "distribution": "slack_sdk",
+            "version": "3.43.0",
+            "install_spec": "slack_sdk==3.43.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": true,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "verified",
+      "verification_environment_status": "ready",
+      "selection_status": "exact_target",
+      "outcome": "ground_truth_verified",
+      "verified_ground_truth": true,
+      "verified_alternative": false,
+      "result_category": "pymigbench_exact_verified",
+      "category_reason": "AXIOM selected PyMigBench's target and the final patch passed verification.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    },
+    {
+      "migration_id": "slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f",
+      "repo": "alice-biometrics/petisco",
+      "domain": "API wrapper",
+      "source": "slackclient",
+      "target": "slack-sdk",
+      "file_path": "petisco/legacy/notifier/infrastructure/slack/slack_notifier.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "meiga==1.2.12",
+        "pydantic==1.8.2",
+        "requests==2.24.0",
+        "dataclasses==0.7;python_version<\"3.7\"",
+        "dataclasses-json==0.5.2",
+        "backports-datetime-fromisoformat==1.0.0",
+        "pyjwt==2.1.0",
+        "cryptography==3.4.7",
+        "py-healthcheck==1.7.2",
+        "APScheduler==3.6.3",
+        "pyyaml==5.4.1",
+        "deprecation==2.1.0",
+        "slackclient==2.5.0",
+        "validators==0.15.0",
+        "python-dateutil==2.8.1"
+      ],
+      "base_requirement_count": 15,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "slack_sdk",
+      "attempted_axiom_winner": "slack_sdk",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "slack": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "ERROR: Could not find a version that satisfies the requirement slack==2.9.4 (from versions: 0.0.1, 0.0.2)\nERROR: No matching distribution found for slack==2.9.4",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        },
+        "slack_sdk": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 64.573,
+          "memory_kb": 5862.6,
+          "profile_detail": "import module: slack_sdk",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        },
+        "slackclient": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 396.538,
+          "memory_kb": 8902.6,
+          "profile_detail": "import module: slack",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:webclient": {
+              "status": "unsupported",
+              "probe_id": "unsupported:webclient",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for WebClient, WebClient.chat_postMessage, SlackApiError; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "WebClient",
+                "WebClient.chat_postMessage",
+                "SlackApiError"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "slack-sdk",
+        "target_version": "auto",
+        "resolved_target_version": "3.43.0",
+        "target_requirement": "slack-sdk",
+        "requirement_count": 15,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "slack": {
+            "distribution": "slackclient",
+            "version": "2.9.4",
+            "install_spec": "slackclient==2.9.4",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "slack_sdk": {
+            "distribution": "slack_sdk",
+            "version": "3.43.0",
+            "install_spec": "slack_sdk==3.43.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: baseline import smoke failed: ain.interface_notifier import INotifier\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/__init__.py\", line 7, in <module>\n    from petisco.public_api import *\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/public_api.py\", line 5, in <module>\n    from petisco.base.application.application import Application\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/application/application.py\", line 10, in <module>\n    from petisco.base.domain.message.chaos.service_deployed import ServiceDeployed\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/message/chaos/service_deployed.py\", line 1, in <module>\n    from petisco.base.domain.message.domain_event import DomainEvent\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/message/domain_event.py\", line 4, in <module>\n    from petisco.base.domain.message.message import Message\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/message/message.py\", line 6, in <module>\n    from petisco.base.domain.model.value_object import ValueObject\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/model/value_object.py\", line 6, in <module>\n    from petisco.base.domain.errors.defaults.invalid_value_object import InvalidValueObject\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/errors/defaults/invalid_value_object.py\", line 1, in <module>\n    from petisco.base.domain.errors.domain_error import DomainError\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-p3tazbtp/project/petisco/base/domain/errors/domain_error.py\", line 4, in <module>\n    from meiga import Error\nModuleNotFoundError: No module named 'meiga'\n"
+    },
+    {
+      "migration_id": "eventlet__gevent__phuks-co/throat__9a289609",
+      "repo": "phuks-co/throat",
+      "domain": "Utility",
+      "source": "eventlet",
+      "target": "gevent",
+      "file_path": "throat.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "wheel==0.34.2",
+        "Flask==1.1.2",
+        "wtforms==2.3.1",
+        "Flask-WTF==0.14.3",
+        "Flask-Babel==1.0.0",
+        "Flask-Login==0.5.0",
+        "Flask-SocketIO==4.3.0",
+        "Flask-Webpack==0.1.0",
+        "flask-caching==1.8.0",
+        "bcrypt==3.1.7",
+        "misaka==2.1.1",
+        "peewee==3.13.3",
+        "tinycss2==0.6.1",
+        "redis==3.5.1",
+        "requests==2.23.0",
+        "pillow==7.1.2",
+        "pytest==5.4.2",
+        "sendgrid==6.3.0",
+        "bs4==0.0.1",
+        "eventlet==0.25.2",
+        "wheezy.template==0.1.167",
+        "wheezy.html==0.1.147",
+        "python-magic==0.4.18",
+        "pyotp==2.3.0",
+        "coverage==5.1",
+        "pep8==1.7.1",
+        "lxml==4.5.0",
+        "flask-jwt-extended==3.24.1",
+        "captcha==0.3",
+        "peewee_migrate==1.1.6",
+        "pyyaml==5.3.1",
+        "email_validator==1.1.0",
+        "feedgen==0.9.0",
+        "pyOpenSSL==19.1.0",
+        "pygobject==3.36.1"
+      ],
+      "base_requirement_count": 35,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "gevent",
+      "attempted_axiom_winner": "gevent",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 5,
+      "repair_history": [
+        {
+          "cycle": 1,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 2,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 3,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 4,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 5,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        }
+      ],
+      "final_verifier_feedback": {
+        "cycle": 5,
+        "max_cycles": 5,
+        "route": "connector",
+        "failure_class": "patch_generation",
+        "roles": [
+          "cooperative concurrency monkey-patching for async I/O (used with socketio)"
+        ],
+        "errors": [
+          {
+            "check": "patch_integrity",
+            "line": 1,
+            "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+          }
+        ]
+      },
+      "profiler_evidence": {
+        "eventlet": {
+          "available": false,
+          "profile_status": "hard_probe_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "No module named 'imp'",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for monkey_patch; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:monkey_patch": {
+              "status": "unsupported",
+              "probe_id": "unsupported:monkey_patch",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for monkey_patch; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "monkey_patch"
+              ]
+            }
+          }
+        },
+        "gevent": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 443.676,
+          "memory_kb": 1551.6,
+          "profile_detail": "import module: gevent",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for monkey_patch; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:monkey_patch": {
+              "status": "unsupported",
+              "probe_id": "unsupported:monkey_patch",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for monkey_patch; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "monkey_patch"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "gevent",
+        "target_version": "auto",
+        "resolved_target_version": "26.7.0",
+        "target_requirement": "gevent",
+        "requirement_count": 35,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "gevent": {
+            "distribution": "gevent",
+            "version": "26.7.0",
+            "install_spec": "gevent==26.7.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "rejected",
+      "verification_environment_status": "ready",
+      "selection_status": "exact_target",
+      "outcome": "verification_rejected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "rejected_after_repair_budget",
+      "category_reason": "The migration was not accepted after the verifier's bounded repair budget was exhausted.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": true,
+      "error": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined Repair budget exhausted after 5 cycle(s)."
+    },
+    {
+      "migration_id": "pycrypto__pycryptodome__hhyo/archery__e192ca69",
+      "repo": "hhyo/archery",
+      "domain": "Cryptography",
+      "source": "pycrypto",
+      "target": "pycryptodome",
+      "file_path": "sql/utils/aes_decryptor.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "certifi==2017.7.27.1",
+        "chardet==3.0.4",
+        "Django==2.0.6",
+        "idna==2.6",
+        "Naked==0.1.31",
+        "pycrypto==2.6.1",
+        "mysqlclient==1.3.13",
+        "PyYAML==3.12",
+        "requests==2.18.4",
+        "shellescape==3.4.1",
+        "simplejson==3.14.0",
+        "urllib3==1.22",
+        "django-apscheduler==0.2.12",
+        "pyecharts==0.5.5",
+        "pyecharts_snapshot==0.1.7",
+        "sqlparse==0.2.4"
+      ],
+      "base_requirement_count": 16,
+      "base_requirement_recovery_errors": [],
+      "detected_group": false,
+      "recommended_target": false,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "pycryptodomex",
+      "attempted_axiom_winner": "pycryptodomex",
+      "attempted_selection_status": "alternative",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 5,
+      "repair_history": [
+        {
+          "cycle": 1,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "symmetric block cipher (AES-CBC encryption/decryption)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 2,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "symmetric block cipher (AES-CBC encryption/decryption)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 3,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "symmetric block cipher (AES-CBC encryption/decryption)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 4,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "symmetric block cipher (AES-CBC encryption/decryption)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 5,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "symmetric block cipher (AES-CBC encryption/decryption)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        }
+      ],
+      "final_verifier_feedback": {
+        "cycle": 5,
+        "max_cycles": 5,
+        "route": "connector",
+        "failure_class": "patch_generation",
+        "roles": [
+          "symmetric block cipher (AES-CBC encryption/decryption)"
+        ],
+        "errors": [
+          {
+            "check": "patch_integrity",
+            "line": 1,
+            "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+          }
+        ]
+      },
+      "profiler_evidence": {
+        "cryptography": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 0.359,
+          "memory_kb": 26.5,
+          "profile_detail": "import module: cryptography",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:new": {
+              "status": "unsupported",
+              "probe_id": "unsupported:new",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "AES.new",
+                "AES.MODE_CBC",
+                "cryptor.encrypt",
+                "cryptor.decrypt"
+              ]
+            }
+          }
+        },
+        "pycrypto": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 0.186,
+          "memory_kb": 8.7,
+          "profile_detail": "import module: Crypto",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:new": {
+              "status": "unsupported",
+              "probe_id": "unsupported:new",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "AES.new",
+                "AES.MODE_CBC",
+                "cryptor.encrypt",
+                "cryptor.decrypt"
+              ]
+            }
+          }
+        },
+        "pycryptodomex": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 0.191,
+          "memory_kb": 8.1,
+          "profile_detail": "import module: Cryptodome",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:new": {
+              "status": "unsupported",
+              "probe_id": "unsupported:new",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for AES.new, AES.MODE_CBC, cryptor.encrypt, cryptor.decrypt; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "AES.new",
+                "AES.MODE_CBC",
+                "cryptor.encrypt",
+                "cryptor.decrypt"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "pycryptodome",
+        "target_version": "auto",
+        "resolved_target_version": null,
+        "target_requirement": "pycryptodome",
+        "requirement_count": 16,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "cryptography": {
+            "distribution": "cryptography",
+            "version": "50.0.0",
+            "install_spec": "cryptography==50.0.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "pycryptodomex": {
+            "distribution": "pycryptodomex",
+            "version": "3.23.0",
+            "install_spec": "pycryptodomex==3.23.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "rejected",
+      "verification_environment_status": "ready",
+      "selection_status": "alternative",
+      "outcome": "verification_rejected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "rejected_after_repair_budget",
+      "category_reason": "The migration was not accepted after the verifier's bounded repair budget was exhausted.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": true,
+      "error": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined Repair budget exhausted after 5 cycle(s)."
+    },
+    {
+      "migration_id": "leveldb__plyvel__ethereum/py-evm__5c273fff",
+      "repo": "ethereum/py-evm",
+      "domain": "Database",
+      "source": "leveldb",
+      "target": "plyvel",
+      "file_path": "evm/db/backends/level.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "aiohttp==2.3.10",
+        "async_lru==0.1.0",
+        "cryptography==2.2.2",
+        "cytoolz==0.9.0.1",
+        "eth-bloom==1.0.0",
+        "eth-utils==1.0.1",
+        "pyethash==0.1.27",
+        "py-ecc==1.4.2",
+        "rlp==0.6.0",
+        "eth-keys>=0.2.0b3,<1.0.0",
+        "trie==1.3.1",
+        "eth-tester==0.1.0b21",
+        "web3>=4.0.0b6,<5.0.0"
+      ],
+      "base_requirement_count": 13,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": null,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": null,
+      "attempted_axiom_winner": null,
+      "attempted_selection_status": "no_migration",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "leveldb": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "pip-build-piykqv0o/leveldb/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\\r\\n', '\\n');f.close();exec(compile(code, __file__, 'exec'))\" install --record /tmp/pip-fx6u74l9-record/install-record.txt --single-version-externally-managed --compile --install-headers /axiom-env/venv/include/site/python3.5/leveldb\" failed with error code 1 in /tmp/pip-build-piykqv0o/leveldb/",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:leveldb()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:leveldb()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "LevelDB()",
+                "Get()",
+                "Put()",
+                "Delete()"
+              ]
+            }
+          }
+        },
+        "lmdb": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "Command \"python setup.py egg_info\" failed with error code 1 in /tmp/pip-build-ojg6af64/lmdb/",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:leveldb()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:leveldb()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "LevelDB()",
+                "Get()",
+                "Put()",
+                "Delete()"
+              ]
+            }
+          }
+        },
+        "plyvel": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "mp/pip-build-0_hwzbjw/plyvel/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\\r\\n', '\\n');f.close();exec(compile(code, __file__, 'exec'))\" install --record /tmp/pip-ryoiwrl1-record/install-record.txt --single-version-externally-managed --compile --install-headers /axiom-env/venv/include/site/python3.5/plyvel\" failed with error code 1 in /tmp/pip-build-0_hwzbjw/plyvel/",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:leveldb()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:leveldb()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "LevelDB()",
+                "Get()",
+                "Put()",
+                "Delete()"
+              ]
+            }
+          }
+        },
+        "rocksdb": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "Command \"python setup.py egg_info\" failed with error code 1 in /tmp/pip-build-gl8ut2xt/rocksdb/",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:leveldb()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:leveldb()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for LevelDB(), Get(), Put(), Delete(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "LevelDB()",
+                "Get()",
+                "Put()",
+                "Delete()"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "docker",
+        "requested_python": "auto",
+        "detected_python": "3.5",
+        "python_constraint": ">=3.5,<3.6",
+        "selected_python": "docker://python:3.5-slim",
+        "selected_python_version": "3.5",
+        "target_distribution": "plyvel",
+        "target_version": "auto",
+        "resolved_target_version": "1.5.1",
+        "target_requirement": "plyvel",
+        "requirement_count": 13,
+        "requirement_file_count": 0,
+        "python_evidence": [
+          "tox.ini envlist: py35"
+        ],
+        "warnings": [
+          "No local interpreter satisfied Python >=3.5,<3.6; auto-provisioned a python:3.5-slim container for this historical project."
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "lmdb": {
+            "distribution": "lmdb",
+            "version": "2.1.1",
+            "install_spec": "lmdb==2.1.1",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.5",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "plyvel": {
+            "distribution": "plyvel",
+            "version": "1.5.1",
+            "install_spec": "plyvel==1.5.1",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.5",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "rocksdb": {
+            "distribution": "rocksdb",
+            "version": "0.7.0",
+            "install_spec": "rocksdb==0.7.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.5",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "not_applicable",
+      "verification_environment_status": "ready",
+      "selection_status": "no_migration",
+      "outcome": "no_migration_selected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    },
+    {
+      "migration_id": "requests__aiohttp__usergeteam/userge-plugins__80a54344",
+      "repo": "usergeteam/userge-plugins",
+      "domain": "HTTP Clients",
+      "source": "requests",
+      "target": "aiohttp",
+      "file_path": "plugins/info.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "cairosvg==2.5.1",
+        "coffeehouse==2.2.4",
+        "colour==0.1.5",
+        "deezloader==2020.11.26",
+        "emoji-country-flag==1.2.3",
+        "gdshortener==1.0.1",
+        "google-images-search==1.3.5",
+        "google==3.0.0",
+        "glitch-this==1.0.2",
+        "gtts==2.2.2",
+        "humanize==3.2.0",
+        "justwatch==0.5.1",
+        "lottie==0.6.6",
+        "newspaper3k==0.2.8",
+        "pydub==0.24.1",
+        "pyfiglet==0.8.post1",
+        "qrcode==6.1",
+        "spotdl==3.3.2",
+        "tracemoepy==3.8",
+        "validators==0.18.2"
+      ],
+      "base_requirement_count": 20,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": null,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": null,
+      "attempted_axiom_winner": null,
+      "attempted_selection_status": "no_migration",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "aiohttp": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 596.825,
+          "memory_kb": 9488.3,
+          "profile_detail": "import module: aiohttp",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:json()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:json()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "requests.get(...).json()"
+              ]
+            }
+          }
+        },
+        "httpx": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 50.278,
+          "memory_kb": 6926.2,
+          "profile_detail": "import module: httpx",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:json()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:json()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "requests.get(...).json()"
+              ]
+            }
+          }
+        },
+        "requests": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 141.073,
+          "memory_kb": 5142.7,
+          "profile_detail": "import module: requests",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:json()": {
+              "status": "unsupported",
+              "probe_id": "unsupported:json()",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for requests.get(...).json(); an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "requests.get(...).json()"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "aiohttp",
+        "target_version": "auto",
+        "resolved_target_version": "3.14.3",
+        "target_requirement": "aiohttp",
+        "requirement_count": 20,
+        "requirement_file_count": 1,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "aiohttp": {
+            "distribution": "aiohttp",
+            "version": "3.14.3",
+            "install_spec": "aiohttp==3.14.3",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "httpx": {
+            "distribution": "httpx",
+            "version": "0.28.1",
+            "install_spec": "httpx==0.28.1",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "not_applicable",
+      "verification_environment_status": "ready",
+      "selection_status": "no_migration",
+      "outcome": "no_migration_selected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    },
+    {
+      "migration_id": "gevent__eventlet__miguelgrinberg/flask-socketio__883e73e5",
+      "repo": "miguelgrinberg/flask-socketio",
+      "domain": "Utility",
+      "source": "gevent",
+      "target": "eventlet",
+      "file_path": "example/app.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "Flask==0.10.1",
+        "gevent==1.0.1",
+        "gevent-socketio==0.3.6"
+      ],
+      "base_requirement_count": 3,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "eventlet",
+      "attempted_axiom_winner": "eventlet",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 5,
+      "repair_history": [
+        {
+          "cycle": 1,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 2,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 3,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 4,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        },
+        {
+          "cycle": 5,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_generation",
+          "roles": [
+            "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+          ],
+          "errors": [
+            {
+              "check": "patch_integrity",
+              "line": 1,
+              "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+            }
+          ]
+        }
+      ],
+      "final_verifier_feedback": {
+        "cycle": 5,
+        "max_cycles": 5,
+        "route": "connector",
+        "failure_class": "patch_generation",
+        "roles": [
+          "green-thread concurrency / monkey-patching for async I/O (used to make Flask-SocketIO work with synchronous code)"
+        ],
+        "errors": [
+          {
+            "check": "patch_integrity",
+            "line": 1,
+            "message": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined"
+          }
+        ]
+      },
+      "profiler_evidence": {
+        "eventlet": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 137.386,
+          "memory_kb": 10368.9,
+          "profile_detail": "import module: eventlet",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for monkey.patch_all; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:patch_all": {
+              "status": "unsupported",
+              "probe_id": "unsupported:patch_all",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for monkey.patch_all; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "monkey.patch_all"
+              ]
+            }
+          }
+        },
+        "gevent": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "unsupported operand type(s) for >>: 'builtin_function_or_method' and '_io.TextIOWrapper'. Did you mean \"print(<message>, file=<output_stream>)\"?\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\n  ERROR: Failed building wheel for gevent\nERROR: Could not build wheels for gevent, which is required to install pyproject.toml-based projects\n\n[same-major-version fallback also failed: Compiler.Errors.CompileError: src/gevent/libev/corecext.p",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for monkey.patch_all; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:patch_all": {
+              "status": "unsupported",
+              "probe_id": "unsupported:patch_all",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for monkey.patch_all; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "monkey.patch_all"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "eventlet",
+        "target_version": "auto",
+        "resolved_target_version": "0.41.1",
+        "target_requirement": "eventlet",
+        "requirement_count": 3,
+        "requirement_file_count": 0,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "eventlet": {
+            "distribution": "eventlet",
+            "version": "0.41.1",
+            "install_spec": "eventlet==0.41.1",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "rejected",
+      "verification_environment_status": "ready",
+      "selection_status": "exact_target",
+      "outcome": "verification_rejected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "rejected_after_repair_budget",
+      "category_reason": "The migration was not accepted after the verifier's bounded repair budget was exhausted.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": true,
+      "error": "AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector exception: name 'coerce_llm_text' is not defined Repair budget exhausted after 5 cycle(s)."
+    },
+    {
+      "migration_id": "ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808",
+      "repo": "cloud-custodian/cloud-custodian",
+      "domain": "File reader/writer",
+      "source": "ruamel.yaml",
+      "target": "pyyaml",
+      "file_path": "tools/c7n_mailer/c7n_mailer/cli.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "apipkg==1.5",
+        "appdirs==1.4.3",
+        "argcomplete==1.11.1",
+        "atomicwrites==1.3.0; sys_platform == \"win32\"",
+        "attrs==19.3.0",
+        "aws-xray-sdk==2.4.3",
+        "bleach==3.1.4",
+        "boto3==1.12.35",
+        "botocore==1.15.35",
+        "certifi==2019.11.28",
+        "cffi==1.14.0; sys_platform == \"linux\"",
+        "chardet==3.0.4",
+        "colorama==0.4.3; sys_platform == \"win32\" or platform_system == \"Windows\"",
+        "coverage==5.0.4",
+        "cryptography==2.9; sys_platform == \"linux\"",
+        "distlib==0.3.0",
+        "docutils==0.15.2",
+        "entrypoints==0.3",
+        "execnet==1.7.1",
+        "filelock==3.0.12",
+        "flake8==3.7.9",
+        "future==0.18.2",
+        "idna==2.9",
+        "importlib-metadata==1.6.0",
+        "importlib-resources==1.4.0; python_version < \"3.7\"",
+        "jeepney==0.4.3; sys_platform == \"linux\"",
+        "jmespath==0.9.5",
+        "jsonpatch==1.25",
+        "jsonpickle==1.3",
+        "jsonpointer==2.0",
+        "jsonschema==3.2.0",
+        "keyring==21.2.0",
+        "mccabe==0.6.1",
+        "mock==4.0.2",
+        "more-itertools==8.2.0",
+        "multidict==4.7.5; python_version >= \"3.6\"",
+        "packaging==20.3",
+        "pkginfo==1.5.0.1",
+        "placebo==0.9.0",
+        "pluggy==0.13.1",
+        "psutil==5.7.0",
+        "py==1.8.1",
+        "pycodestyle==2.5.0",
+        "pycparser==2.20; sys_platform == \"linux\"",
+        "pyflakes==2.1.1",
+        "pygments==2.6.1",
+        "pyparsing==2.4.6",
+        "pyrsistent==0.16.0",
+        "pytest==5.4.1",
+        "pytest-cov==2.8.1",
+        "pytest-forked==1.1.3",
+        "pytest-xdist==1.31.0",
+        "python-dateutil==2.8.1",
+        "pywin32-ctypes==0.2.0; sys_platform == \"win32\"",
+        "pyyaml==5.3.1",
+        "readme-renderer==25.0",
+        "requests==2.23.0",
+        "requests-toolbelt==0.9.1",
+        "s3transfer==0.3.3",
+        "secretstorage==3.1.2; sys_platform == \"linux\"",
+        "six==1.14.0",
+        "tabulate==0.8.7",
+        "toml==0.10.0",
+        "tox==3.14.6",
+        "tqdm==4.45.0",
+        "twine==3.1.1",
+        "urllib3==1.25.8",
+        "vcrpy==4.0.2",
+        "virtualenv==20.0.15",
+        "wcwidth==0.1.9",
+        "webencodings==0.5.1",
+        "wrapt==1.12.1",
+        "yarl==1.4.2; python_version >= \"3.6\"",
+        "zipp==3.1.0",
+        "datadog==0.34.1",
+        "decorator==4.4.2",
+        "jinja2==2.11.1",
+        "ldap3==2.7",
+        "markupsafe==1.1.1",
+        "pyasn1==0.4.8",
+        "python-http-client==3.2.7",
+        "redis==3.4.1",
+        "ruamel.yaml==0.16.10",
+        "ruamel.yaml.clib==0.2.0; platform_python_implementation == \"CPython\" and python_version < \"3.9\"",
+        "sendgrid==6.2.1"
+      ],
+      "base_requirement_count": 85,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "PyYAML",
+      "attempted_axiom_winner": "PyYAML",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "oyaml": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 7.141,
+          "memory_kb": 782.8,
+          "profile_detail": "import module: oyaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.061479,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "oyaml",
+              "module": "oyaml",
+              "median_ms": 0.061479,
+              "p95_ms": 0.063667,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "PyYAML": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 8.36,
+          "memory_kb": 791.0,
+          "profile_detail": "import module: yaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.061667,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "PyYAML",
+              "module": "yaml",
+              "median_ms": 0.061667,
+              "p95_ms": 0.063833,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "ruamel": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": null,
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {}
+        },
+        "ruamel.yaml": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "package was not import-measured (hard_install_failure)",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "not_comparable",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "package was not import-measured (hard_install_failure)",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": "3.6",
+        "python_constraint": ">=3.6,<4.0",
+        "selected_python": "/Users/benz.mags/.local/bin/python3.8",
+        "selected_python_version": "3.8",
+        "target_distribution": "pyyaml",
+        "target_version": "auto",
+        "resolved_target_version": "6.0.3",
+        "target_requirement": "pyyaml",
+        "requirement_count": 85,
+        "requirement_file_count": 1,
+        "python_evidence": [
+          "pyproject Poetry python: ^3.6",
+          "tox.ini envlist: py27",
+          "Dockerfile Python image: 3.8",
+          ".github/workflows/ci-master.yml python-version: 3.6"
+        ],
+        "warnings": [
+          "Conflicting Python evidence: tox.ini envlist: py27"
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "PyYAML": {
+            "distribution": "PyYAML",
+            "version": "6.0.3",
+            "install_spec": "PyYAML==6.0.3",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "oyaml": {
+            "distribution": "oyaml",
+            "version": "1.0",
+            "install_spec": "oyaml==1.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: ruamel:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n]"
+    },
+    {
+      "migration_id": "ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808",
+      "repo": "cloud-custodian/cloud-custodian",
+      "domain": "File reader/writer",
+      "source": "ruamel.yaml",
+      "target": "pyyaml",
+      "file_path": "tools/c7n_mailer/c7n_mailer/replay.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "apipkg==1.5",
+        "appdirs==1.4.3",
+        "argcomplete==1.11.1",
+        "atomicwrites==1.3.0; sys_platform == \"win32\"",
+        "attrs==19.3.0",
+        "aws-xray-sdk==2.4.3",
+        "bleach==3.1.4",
+        "boto3==1.12.35",
+        "botocore==1.15.35",
+        "certifi==2019.11.28",
+        "cffi==1.14.0; sys_platform == \"linux\"",
+        "chardet==3.0.4",
+        "colorama==0.4.3; sys_platform == \"win32\" or platform_system == \"Windows\"",
+        "coverage==5.0.4",
+        "cryptography==2.9; sys_platform == \"linux\"",
+        "distlib==0.3.0",
+        "docutils==0.15.2",
+        "entrypoints==0.3",
+        "execnet==1.7.1",
+        "filelock==3.0.12",
+        "flake8==3.7.9",
+        "future==0.18.2",
+        "idna==2.9",
+        "importlib-metadata==1.6.0",
+        "importlib-resources==1.4.0; python_version < \"3.7\"",
+        "jeepney==0.4.3; sys_platform == \"linux\"",
+        "jmespath==0.9.5",
+        "jsonpatch==1.25",
+        "jsonpickle==1.3",
+        "jsonpointer==2.0",
+        "jsonschema==3.2.0",
+        "keyring==21.2.0",
+        "mccabe==0.6.1",
+        "mock==4.0.2",
+        "more-itertools==8.2.0",
+        "multidict==4.7.5; python_version >= \"3.6\"",
+        "packaging==20.3",
+        "pkginfo==1.5.0.1",
+        "placebo==0.9.0",
+        "pluggy==0.13.1",
+        "psutil==5.7.0",
+        "py==1.8.1",
+        "pycodestyle==2.5.0",
+        "pycparser==2.20; sys_platform == \"linux\"",
+        "pyflakes==2.1.1",
+        "pygments==2.6.1",
+        "pyparsing==2.4.6",
+        "pyrsistent==0.16.0",
+        "pytest==5.4.1",
+        "pytest-cov==2.8.1",
+        "pytest-forked==1.1.3",
+        "pytest-xdist==1.31.0",
+        "python-dateutil==2.8.1",
+        "pywin32-ctypes==0.2.0; sys_platform == \"win32\"",
+        "pyyaml==5.3.1",
+        "readme-renderer==25.0",
+        "requests==2.23.0",
+        "requests-toolbelt==0.9.1",
+        "s3transfer==0.3.3",
+        "secretstorage==3.1.2; sys_platform == \"linux\"",
+        "six==1.14.0",
+        "tabulate==0.8.7",
+        "toml==0.10.0",
+        "tox==3.14.6",
+        "tqdm==4.45.0",
+        "twine==3.1.1",
+        "urllib3==1.25.8",
+        "vcrpy==4.0.2",
+        "virtualenv==20.0.15",
+        "wcwidth==0.1.9",
+        "webencodings==0.5.1",
+        "wrapt==1.12.1",
+        "yarl==1.4.2; python_version >= \"3.6\"",
+        "zipp==3.1.0",
+        "datadog==0.34.1",
+        "decorator==4.4.2",
+        "jinja2==2.11.1",
+        "ldap3==2.7",
+        "markupsafe==1.1.1",
+        "pyasn1==0.4.8",
+        "python-http-client==3.2.7",
+        "redis==3.4.1",
+        "ruamel.yaml==0.16.10",
+        "ruamel.yaml.clib==0.2.0; platform_python_implementation == \"CPython\" and python_version < \"3.9\"",
+        "sendgrid==6.2.1"
+      ],
+      "base_requirement_count": 85,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "PyYAML",
+      "attempted_axiom_winner": "PyYAML",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "oyaml": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 7.262,
+          "memory_kb": 782.8,
+          "profile_detail": "import module: oyaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.063271,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "oyaml",
+              "module": "oyaml",
+              "median_ms": 0.063271,
+              "p95_ms": 0.064834,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "PyYAML": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 8.403,
+          "memory_kb": 791.0,
+          "profile_detail": "import module: yaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.062312,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "PyYAML",
+              "module": "yaml",
+              "median_ms": 0.0623125,
+              "p95_ms": 0.063833,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "ruamel": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": null,
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {}
+        },
+        "ruamel.yaml": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "package was not import-measured (hard_install_failure)",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "not_comparable",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "package was not import-measured (hard_install_failure)",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": "3.6",
+        "python_constraint": ">=3.6,<4.0",
+        "selected_python": "/Users/benz.mags/.local/bin/python3.8",
+        "selected_python_version": "3.8",
+        "target_distribution": "pyyaml",
+        "target_version": "auto",
+        "resolved_target_version": "6.0.3",
+        "target_requirement": "pyyaml",
+        "requirement_count": 85,
+        "requirement_file_count": 1,
+        "python_evidence": [
+          "pyproject Poetry python: ^3.6",
+          "tox.ini envlist: py27",
+          "Dockerfile Python image: 3.8",
+          ".github/workflows/ci-master.yml python-version: 3.6"
+        ],
+        "warnings": [
+          "Conflicting Python evidence: tox.ini envlist: py27"
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "PyYAML": {
+            "distribution": "PyYAML",
+            "version": "6.0.3",
+            "install_spec": "PyYAML==6.0.3",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "oyaml": {
+            "distribution": "oyaml",
+            "version": "1.0",
+            "install_spec": "oyaml==1.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: ruamel:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n]"
+    },
+    {
+      "migration_id": "ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808",
+      "repo": "cloud-custodian/cloud-custodian",
+      "domain": "File reader/writer",
+      "source": "ruamel.yaml",
+      "target": "pyyaml",
+      "file_path": "tools/c7n_mailer/c7n_mailer/utils.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "apipkg==1.5",
+        "appdirs==1.4.3",
+        "argcomplete==1.11.1",
+        "atomicwrites==1.3.0; sys_platform == \"win32\"",
+        "attrs==19.3.0",
+        "aws-xray-sdk==2.4.3",
+        "bleach==3.1.4",
+        "boto3==1.12.35",
+        "botocore==1.15.35",
+        "certifi==2019.11.28",
+        "cffi==1.14.0; sys_platform == \"linux\"",
+        "chardet==3.0.4",
+        "colorama==0.4.3; sys_platform == \"win32\" or platform_system == \"Windows\"",
+        "coverage==5.0.4",
+        "cryptography==2.9; sys_platform == \"linux\"",
+        "distlib==0.3.0",
+        "docutils==0.15.2",
+        "entrypoints==0.3",
+        "execnet==1.7.1",
+        "filelock==3.0.12",
+        "flake8==3.7.9",
+        "future==0.18.2",
+        "idna==2.9",
+        "importlib-metadata==1.6.0",
+        "importlib-resources==1.4.0; python_version < \"3.7\"",
+        "jeepney==0.4.3; sys_platform == \"linux\"",
+        "jmespath==0.9.5",
+        "jsonpatch==1.25",
+        "jsonpickle==1.3",
+        "jsonpointer==2.0",
+        "jsonschema==3.2.0",
+        "keyring==21.2.0",
+        "mccabe==0.6.1",
+        "mock==4.0.2",
+        "more-itertools==8.2.0",
+        "multidict==4.7.5; python_version >= \"3.6\"",
+        "packaging==20.3",
+        "pkginfo==1.5.0.1",
+        "placebo==0.9.0",
+        "pluggy==0.13.1",
+        "psutil==5.7.0",
+        "py==1.8.1",
+        "pycodestyle==2.5.0",
+        "pycparser==2.20; sys_platform == \"linux\"",
+        "pyflakes==2.1.1",
+        "pygments==2.6.1",
+        "pyparsing==2.4.6",
+        "pyrsistent==0.16.0",
+        "pytest==5.4.1",
+        "pytest-cov==2.8.1",
+        "pytest-forked==1.1.3",
+        "pytest-xdist==1.31.0",
+        "python-dateutil==2.8.1",
+        "pywin32-ctypes==0.2.0; sys_platform == \"win32\"",
+        "pyyaml==5.3.1",
+        "readme-renderer==25.0",
+        "requests==2.23.0",
+        "requests-toolbelt==0.9.1",
+        "s3transfer==0.3.3",
+        "secretstorage==3.1.2; sys_platform == \"linux\"",
+        "six==1.14.0",
+        "tabulate==0.8.7",
+        "toml==0.10.0",
+        "tox==3.14.6",
+        "tqdm==4.45.0",
+        "twine==3.1.1",
+        "urllib3==1.25.8",
+        "vcrpy==4.0.2",
+        "virtualenv==20.0.15",
+        "wcwidth==0.1.9",
+        "webencodings==0.5.1",
+        "wrapt==1.12.1",
+        "yarl==1.4.2; python_version >= \"3.6\"",
+        "zipp==3.1.0",
+        "datadog==0.34.1",
+        "decorator==4.4.2",
+        "jinja2==2.11.1",
+        "ldap3==2.7",
+        "markupsafe==1.1.1",
+        "pyasn1==0.4.8",
+        "python-http-client==3.2.7",
+        "redis==3.4.1",
+        "ruamel.yaml==0.16.10",
+        "ruamel.yaml.clib==0.2.0; platform_python_implementation == \"CPython\" and python_version < \"3.9\"",
+        "sendgrid==6.2.1"
+      ],
+      "base_requirement_count": 85,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "PyYAML",
+      "attempted_axiom_winner": "PyYAML",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "oyaml": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 6.976,
+          "memory_kb": 782.8,
+          "profile_detail": "import module: oyaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.061583,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "oyaml",
+              "module": "oyaml",
+              "median_ms": 0.0615835,
+              "p95_ms": 0.063334,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "PyYAML": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 8.024,
+          "memory_kb": 791.0,
+          "profile_detail": "import module: yaml",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:yaml_serialization",
+            "probe_kind": "pure_local",
+            "median_ms": 0.062271,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "yaml_serialization"
+            ]
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "measured",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": "PyYAML",
+              "module": "yaml",
+              "median_ms": 0.062271,
+              "p95_ms": 0.065,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "bcf540b9481f5eca",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "ruamel": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": null,
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {}
+        },
+        "ruamel.yaml": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with e",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "package was not import-measured (hard_install_failure)",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "yaml_serialization": {
+              "status": "not_comparable",
+              "probe_id": "yaml_serialization",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "package was not import-measured (hard_install_failure)",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": "3.6",
+        "python_constraint": ">=3.6,<4.0",
+        "selected_python": "/Users/benz.mags/.local/bin/python3.8",
+        "selected_python_version": "3.8",
+        "target_distribution": "pyyaml",
+        "target_version": "auto",
+        "resolved_target_version": "6.0.3",
+        "target_requirement": "pyyaml",
+        "requirement_count": 85,
+        "requirement_file_count": 1,
+        "python_evidence": [
+          "pyproject Poetry python: ^3.6",
+          "tox.ini envlist: py27",
+          "Dockerfile Python image: 3.8",
+          ".github/workflows/ci-master.yml python-version: 3.6"
+        ],
+        "warnings": [
+          "Conflicting Python evidence: tox.ini envlist: py27"
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "PyYAML": {
+            "distribution": "PyYAML",
+            "version": "6.0.3",
+            "install_spec": "PyYAML==6.0.3",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "oyaml": {
+            "distribution": "oyaml",
+            "version": "1.0",
+            "install_spec": "oyaml==1.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.8",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: ruamel:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n\n[same-major-version fallback also failed:  errors generated.\n      error: command 'cc' failed with exit status 1\n      [end of output]\n  \n  note: This error originates from a subprocess, and is likely not a problem with pip.\nerror: legacy-install-failure\n\n\u00d7 Encountered error while trying to install package.\n\u2570\u2500> ruamel.yaml.clib\n\nnote: This is an issue with the package mentioned above, not pip.\nhint: See above for output from the failure.\n]"
+    }
+  ]
+}

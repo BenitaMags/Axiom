@@ -1,0 +1,37 @@
+{
+  "role": "MQTT client for publishing telemetry to a broker",
+  "winner": "amqtt",
+  "original": "paho-mqtt",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": 1.0,
+    "api_match": 0.2,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.76,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'amqtt' wins 'MQTT client for publishing telemetry to a broker'. Confidence: LOW. Total: 0.76 (speed=None, mem=None, sec=1.0, api=0.2). Migration note: paho-mqtt is synchronous/callback-based; gmqtt, asyncio-mqtt, and amqtt are async and require `async def`/`await` and event-loop integration",
+  "confidence": "LOW",
+  "used_apis": [
+    "mqtt.Client",
+    "client.connect",
+    "client.publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,261 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────────────────────────────────────────── AXIOM — Run ────────────────────────────────────────────────────────────────────────╮
+│ Target:    multiple_experiment/utils/crypto_utils.py                                                                                                        │
+│ LLM:       OLLAMA / mistral                                                                                                                                 │
+│ Security:  ON                                                                                                                                               │
+│ Connector: ON                                                                                                                                               │
+│ Feedback:  ON                                                                                                                                               │
+│ Time:      2026-06-29 07:39:26                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_fixed 3/multiple_experiment/utils/crypto_utils.py
+                                     Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                    ┃ Alias ┃ Names      ┃ API Calls Used    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│    7 │ os                                        │ —     │ —          │ urandom           │
+│    8 │ hashlib                                   │ —     │ —          │ sha256            │
+│    9 │ hmac                                      │ —     │ —          │ new               │
+│   10 │ secrets                                   │ —     │ —          │ token_hex         │
+│   12 │ xxhash                                    │ —     │ —          │ xxh3_128, xxh64   │
+│   15 │ cryptography.fernet                       │ —     │ Fernet     │ —                 │
+│   16 │ cryptography.hazmat.primitives            │ —     │ hashes     │ —                 │
+│   17 │ cryptography.hazmat.primitives.kdf.pbkdf2 │ —     │ PBKDF2HMAC │ —                 │
+│   18 │ base64                                    │ —     │ —          │ urlsafe_b64encode │
+└──────┴───────────────────────────────────────────┴───────┴────────────┴───────────────────┘
+
+✓ Found 9 imports
+
+─────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ───────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────────
+                                                                         Rule Results                                                                          
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                          ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ cryptography │ is_installed        │  PASS   │ HIGH       │ message=cryptography is installed and importable                                                │
+│ cryptography │ has_metadata        │  PASS   │ MEDIUM     │ version=46.0.4, license=unknown                                                                 │
+│ cryptography │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                      │
+│ cryptography │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.244, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',    │
+│              │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__']                    │
+│ xxhash       │ is_installed        │  PASS   │ HIGH       │ message=xxhash is installed and importable                                                      │
+│ xxhash       │ has_metadata        │  PASS   │ MEDIUM     │ version=3.8.0, license=BSD-2-Clause                                                             │
+│ xxhash       │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd-2-clause, permissive=True                                                           │
+│ xxhash       │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.244, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',    │
+│              │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__']                    │
+│ hmac         │ is_installed        │  PASS   │ HIGH       │ message=hmac is installed and importable                                                        │
+│ hmac         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hmac                                                              │
+│ hmac         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hmac                                                  │
+│ hmac         │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.308, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',   │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ secrets      │ is_installed        │  PASS   │ HIGH       │ message=secrets is installed and importable                                                     │
+│ secrets      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for secrets                                                           │
+│ secrets      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for secrets                                               │
+│ secrets      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.346, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',    │
+│              │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                                │
+│ hashlib      │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable                                                     │
+│ hashlib      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                                                           │
+│ hashlib      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib                                               │
+│ hashlib      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.231, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',    │
+│              │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                                │
+│ os           │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                                          │
+│ os           │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                                                │
+│ os           │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                                    │
+│ os           │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.025, shared_names=['__all__', '__builtins__', '__doc__', '__file__',      │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ base64       │ is_installed        │  PASS   │ HIGH       │ message=base64 is installed and importable                                                      │
+│ base64       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base64                                                            │
+│ base64       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base64                                                │
+│ base64       │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.141, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',    │
+│              │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                                │
+└──────────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 28 checks across 7 packages
+
+All packages installed and available
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 7 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                         
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ base64       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ os           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ xxhash       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hashlib      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hmac         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ secrets      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ cryptography │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└──────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Querying OLLAMA / mistral...
+Tokens — input: 2,239  output: 360  latency: 30761ms
+Equivalence Groups Found
+└── cryptographic hashing
+    ├── Candidates : hashlib, xxhash
+    ├── Used APIs  : sha256, xxh64
+    ├── Pitfalls   : hashlib uses more CPU cycles than xxhash
+    ├── Constraints: crypto_required, requires_connector
+    └── Both hashlib and xxhash provide cryptographic hashing functionality. They are interchangeable for this purpose, but xxhash is faster while hashlib 
+        provides a wider range of algorithms.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+All candidate packages already scanned.
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ hashlib
+⠙ ✓ xxhash 
+Runtime API benchmarks (5 runs each)...
+                                Benchmark Results                                 
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃      Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ xxhash  │     ✓     │          1.5 ms │ 0.10 ms (sha256) │          14 │       │
+│ hashlib │     ✓     │          3.5 ms │ 0.37 ms (sha256) │          24 │       │
+└─────────┴───────────┴─────────────────┴──────────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 2 with runtime benchmarks
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: OLLAMA / mistral  |  Session: 80ef7aae
+  Skipping 'cryptographic hashing': all candidates (hashlib, xxhash) are actively used — complementary roles, not alternatives.
+                         AXIOM Optimization Decisions                         
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+└──────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session saved: 80ef7aae
+
+✓ AXIOM complete — 2 decision(s)
+
+─────────────────────────────────────────────────────────────────── ── Security Summary ── ────────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Version ┃ Risk ┃ CVEs ┃ Score ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ base64       │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ os           │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ xxhash       │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ hashlib      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ hmac         │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ secrets      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ cryptography │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+└──────────────┴─────────┴──────┴──────┴───────┴───────────────────────────┘
+──────────────────────────────────────────────────────────────── ── Optimization Decisions ── ─────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                  ┃ Original ┃ Winner  ┃ Confidence ┃ Security ┃ Rationale                                                                 ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ cryptographic hashing │ hashlib  │ hashlib │ HIGH       │ 1.0      │ Kept: 'hashlib' is actively used for its own role in 'cryptographic ha... │
+│ cryptographic hashing │ xxhash   │ xxhash  │ HIGH       │ 1.0      │ Kept: 'xxhash' is actively used for its own role in 'cryptographic has... │
+└───────────────────────┴──────────┴─────────┴────────────┴──────────┴───────────────────────────────────────────────────────────────────────────┘
+──────────────────────────────────────────────────────────────────── ── Patched Source ── ─────────────────────────────────────────────────────────────────────
+   1 """                                                                                                                                                       
+   2 utils/crypto_utils.py                                                                                                                                     
+   3 ──────────────────────                                                                                                                                    
+   4 Hashing, encryption helpers.                                                                                                                              
+   5 AXIOM target: hashlib vs xxhash vs blake3, cryptography vs pycryptodome                                                                                   
+   6 """                                                                                                                                                       
+   7 import os                                                                                                                                                 
+   8 import hashlib                                                                                                                                            
+   9 import hmac                                                                                                                                               
+  10 import secrets                                                                                                                                            
+  11 # Fast hashing — xxhash vs hashlib                                                                                                                        
+  12 import xxhash                                                                                                                                             
+  13                                                                                                                                                           
+  14 # Encryption — cryptography vs pycryptodome                                                                                                               
+  15 from cryptography.fernet import Fernet                                                                                                                    
+  16 from cryptography.hazmat.primitives import hashes                                                                                                         
+  17 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC                                                                                          
+  18 import base64                                                                                                                                             
+  19                                                                                                                                                           
+  20                                                                                                                                                           
+  21 def sha256_digest(data: bytes) -> str:                                                                                                                    
+  22     return hashlib.sha256(data).hexdigest()                                                                                                               
+  23                                                                                                                                                           
+  24                                                                                                                                                           
+  25 def xxhash_fast(data: bytes) -> str:                                                                                                                      
+  26     return xxhash.xxh64(data).hexdigest()                                                                                                                 
+  27                                                                                                                                                           
+  28                                                                                                                                                           
+  29 def xxhash_secure(data: bytes) -> str:                                                                                                                    
+  30     # xxhash is NOT cryptographically secure — use for checksums only                                                                                     
+  31     return xxhash.xxh3_128(data).hexdigest()                                                                                                              
+  32                                                                                                                                                           
+  33                                                                                                                                                           
+  34 def derive_key(password: str, salt: bytes | None = None) -> tuple[bytes, bytes]:                                                                          
+  35     if salt is None:                                                                                                                                      
+  36         salt = os.urandom(16)                                                                                                                             
+  37     kdf = PBKDF2HMAC(                                                                                                                                     
+  38         algorithm=hashes.SHA256(),                                                                                                                        
+  39         length=32,                                                                                                                                        
+  40         salt=salt,                                                                                                                                        
+  41         iterations=480000,                                                                                                                                
+  42     )                                                                                                                                                     
+  43     key = base64.urlsafe_b64encode(kdf.derive(password.encode()))                                                                                         
+  44     return key, salt                                                                                                                                      
+  45                                                                                                                                                           
+  46                                                                                                                                                           
+  47 def encrypt(data: bytes, password: str) -> tuple[bytes, bytes]:                                                                                           
+  48     key, salt = derive_key(password)                                                                                                                      
+  49     f = Fernet(key)                                                                                                                                       
+  50     return f.encrypt(data), salt                                                                                                                          
+  51                                                                                                                                                           
+  52                                                                                                                                                           
+  53 def decrypt(token: bytes, password: str, salt: bytes) -> bytes:                                                                                           
+  54     key, _ = derive_key(password, salt)                                                                                                                   
+  55     return Fernet(key).decrypt(token)                                                                                                                     
+  56                                                                                                                                                           
+  57                                                                                                                                                           
+  58 def secure_token(length: int = 32) -> str:                                                                                                                
+  59     return secrets.token_hex(length)                                                                                                                      
+  60                                                                                                                                                           
+  61                                                                                                                                                           
+  62 def hmac_sign(key: bytes, message: bytes) -> str:                                                                                                         
+  63     return hmac.new(key, message, hashlib.sha256).hexdigest()                                                                                             
+──────────────────────────────────────────────────────────────── ── Token Usage (this run) ── ─────────────────────────────────────────────────────────────────
+  resolver                   in= 2,239  out=  360  calls=1
+  TOTAL                      in= 2,239  out=  360
+────────────────────────────────────────────────────────────────────── ── Agent Trace ── ──────────────────────────────────────────────────────────────────────
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+
+────────────────────────────────────────────────────────────────── ── AXIOM Feedback Loop ── ──────────────────────────────────────────────────────────────────
+No replacements were made — nothing to review.
+
+─────────────────────────────────────────────────────────────── ── Output Equivalence Check ── ────────────────────────────────────────────────────────────────
+Running original and patched code to compare outputs...
+Skipped: No __main__ block — cannot run equivalence check automatically
+
+✓ Saved to: multiple_experiment/utils/crypto_utils_optimized.py
+Version 1 recorded — identical to previous version (no diff).

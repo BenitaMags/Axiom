@@ -1,0 +1,384 @@
+$ run_axiom_arms.py --config proteus_no_verif --program C3_anomaly_threshold_engine --runs 1 --start-run 1
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_c3_prompt.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-C3_anomaly_threshold_engine-3v2a547c/notifier.py
+                Discovered Imports                 
+┏━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module  ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│   10 │ smtplib │ —     │ —     │ SMTP           │
+└──────┴─────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                           Security Scan Results                                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ smtplib │ stdlib  │    — │ N/A  │   N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└─────────┴─────────┴──────┴──────┴──────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: (none — all stdlib)
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,200  output: 917  latency: 10964ms
+Equivalence Groups Found
+└── email/notification sending backend
+    ├── Candidates : smtplib, apprise
+    ├── Used APIs  : SMTP, sendmail
+    ├── Pitfalls   : apprise's API (notify()) is fundamentally different from smtplib's sendmail()/SMTP object model — requires rewriting the EmailNotifier 
+    │   class internals, not just import swapping; apprise requires configuring notification service URLs (e.g. mailto://) instead of host/port SMTP connection
+    │   objects; Error handling and return values differ significantly (apprise returns bool success, smtplib raises SMTPException subclasses); Dependency 
+    │   injection pattern (smtp=None param passing an SMTP-like object) does not map cleanly onto apprise's Apprise() object model
+    ├── Constraints: requires_connector
+    └── The file's own docstring identifies apprise as the intended substitution target for smtplib, both serving the role of dispatching operator 
+        notifications (email in this case). smtplib is stdlib SMTP client used via SMTP()/sendmail(), while apprise is a multi-service notification library 
+        with a very different notify()-based API. Functionally both can deliver the same 'send an alarm notification' capability, but the underlying transport 
+        model is different (raw SMTP protocol vs. apprise's URL-based multi-backend abstraction).
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ apprise │ 1.13.1  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠏ ✓ apprise
+⠏ ✓ smtplib
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃                                                                      Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ smtplib │     ✓     │         21.7 ms │  UNMEASURED — No registered side-effect-free runtime probe for SMTP, sendmail; an integration │         139 │       │
+│         │           │                 │                                                                fixture is required for networ │             │       │
+│ apprise │     ✓     │        498.8 ms │  UNMEASURED — No registered side-effect-free runtime probe for SMTP, sendmail; an integration │        1216 │       │
+│         │           │                 │                                                                fixture is required for networ │             │       │
+└─────────┴───────────┴─────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 61d10f73
+  API compat tokens — input: 243  output: 32  latency: 1214ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating missing data as a score.
+                                               AXIOM Optimization Decisions                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                               ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ email/notification sending backend │ smtplib  │ apprise │ HIGH  │ 0.043 │ 0.114  │ —        │ 0.0 │ 0.045 │ ✓          │
+└────────────────────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  smtplib  →  apprise  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: smtplib → apprise
+  Found 1 call site(s):
+    L12: return smtplib.SMTP(host, port)
+  Tokens — in:2,021 out:2,835 latency:31869ms
+
+  Compatibility analysis:
+    ✗ L12: smtplib.SMTP(host, port)  — apprise has no equivalent to smtplib.SMTP's host/port connection object. apprise
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - smtplib.SMTP is a stateful connection object (host/port, persistent socket) constructed independently of message content; apprise's model requires the 
+destination/service to be encoded in a URL at Apprise object construction/add() time, and notify() is a single fire-and-forget call — the dependency-injection 
+pattern here (smtp=None passed as a live connection-like object with .sendmail()) does not map cleanly onto apprise's design even with a wrapper, since 
+testers/callers may inject smtplib.SMTP-like doubles expecting synchronous socket semantics (e.g. mocking connect/sendmail/quit) that an apprise-based shim 
+cannot faithfully emulate.
+    - EmailNotifier.notify() manually constructs a raw MIME-style message string (From/To/Subject/body) and hands it wholesale to sendmail(); apprise has no 
+concept of a raw message blob — it wants discrete title/body plus a pre-configured recipient URL. Reconstructing subject/body reliably from the concatenated 
+string via a wrapper is fragile and changes semantics (e.g. multiple recipients per URL are handled completely differently: apprise typically requires one URL 
+to be added per recipient/service, not a to-list passed at send time).
+    - Error handling model differs fundamentally: smtplib communicates failures via exceptions (SMTPException subclasses) that calling code may already be 
+catching; apprise communicates failure via a boolean return from notify(). A wrapper can approximate this by raising on False, but this is a semantic patch, 
+not a real equivalence, and pitfalls explicitly state the EmailNotifier class internals need rewriting rather than a transparent import swap.
+
+  1 call site(s) need a wrapper:
+    _apprise_smtp_wrapper  L12: Return a shim object exposing a sendmail(sender, recipients, message) 
+  Opening ACI edit session for smtplib → apprise...
+    · scope repair — sendmail: added `import apprise` for `apprise`
+  ACI session: 2 edit(s) applied over 5 tool call(s)  |  tokens in:48,535 out:2,276
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open()
+    · submit(note=...)
+  ACI session result failed integrity check (removed source structure or returned an empty file) — falling back.
+  Falling back to one-shot wrapper generation for smtplib...
+    _create_apprise_smtp_shim  replaces: smtplib.SMTP(host, port)
+╭───────────────────────────────────────────────────────────────── _create_apprise_smtp_shim ─────────────────────────────────────────────────────────────────╮
+│    1 def _create_apprise_smtp_shim(host: str = "localhost", port: int = 25):                                                                                │
+│    2     """Wrapper replacing smtplib.SMTP(host, port).                                                                                                     │
+│    3                                                                                                                                                        │
+│    4     Original: smtplib.SMTP(host, port) returns a live smtplib.SMTP connection                                                                          │
+│    5     object whose .sendmail(sender, recipients, message) method transmits a raw                                                                         │
+│    6     MIME-ish message string over SMTP and raises smtplib exceptions (e.g.                                                                              │
+│    7     smtplib.SMTPException / smtplib.SMTPRecipientsRefused / OSError) on                                                                                │
+│    8     transport or protocol failure.                                                                                                                     │
+│    9                                                                                                                                                        │
+│   10     New: this factory returns a small shim object exposing the same                                                                                    │
+│   11     sendmail(sender, recipients, message) signature, but internally it                                                                                 │
+│   12     parses the raw message string into a subject/body pair, builds a                                                                                   │
+│   13     mailto:// apprise URL from host/port/sender/recipients, and dispatches                                                                             │
+│   14     the notification via apprise.Apprise().add(url) + apobj.notify(...).                                                                               │
+│   15     apprise reports failure as a boolean False return rather than raising;                                                                             │
+│   16     this shim translates that False into a raised smtplib.SMTPException so                                                                             │
+│   17     that callers written against smtplib's exception-based error signaling                                                                             │
+│   18     keep working.                                                                                                                                      │
+│   19     """                                                                                                                                                │
+│   20                                                                                                                                                        │
+│   21     class _AppriseSMTPShim:                                                                                                                            │
+│   22         def __init__(self, host, port):                                                                                                                │
+│   23             self.host = host                                                                                                                           │
+│   24             self.port = port                                                                                                                           │
+│   25                                                                                                                                                        │
+│   26         def sendmail(self, sender, recipients, message):                                                                                               │
+│   27             import re                                                                                                                                  │
+│   28             import smtplib  # lazy import, mirrors original deferred import                                                                            │
+│   29                                                                                                                                                        │
+│   30             subject = ""                                                                                                                               │
+│   31             body = message                                                                                                                             │
+│   32             match = re.search(r"^Subject: (.*?)\r\n\r\n(.*)", message, re.DOTALL | re.MULTILINE)                                                       │
+│   33             if match:                                                                                                                                  │
+│   34                 subject = match.group(1)                                                                                                               │
+│   35                 body = match.group(2)                                                                                                                  │
+│   36                                                                                                                                                        │
+│   37             recipients_str = ",".join(recipients)                                                                                                      │
+│   38             url = f"mailto://{sender}@{self.host}:{self.port}/?to={recipients_str}"                                                                    │
+│   39                                                                                                                                                        │
+│   40             import apprise  # lazy import for testability, mirrors original pattern                                                                    │
+│   41                                                                                                                                                        │
+│   42             apobj = apprise.Apprise()                                                                                                                  │
+│   43             apobj.add(url)                                                                                                                             │
+│   44             success = apobj.notify(title=subject, body=body)                                                                                           │
+│   45                                                                                                                                                        │
+│   46             if not success:                                                                                                                            │
+│   47                 raise smtplib.SMTPException(                                                                                                           │
+│   48                     "apprise failed to deliver notification via mailto:// URL"                                                                         │
+│   49                 )                                                                                                                                      │
+│   50                                                                                                                                                        │
+│   51             return {}                                                                                                                                  │
+│   52                                                                                                                                                        │
+│   53     return _AppriseSMTPShim(host, port)                                                                                                                │
+│   54                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ✓ AST-based replacement applied (1 matches)
+  Migration incomplete: 'smtplib' is still imported and in use after the edit — line 74: import smtplib  # lazy import for testability; line 36: import smtplib
+# lazy import, mirrors original deferred import
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1                                                                                                                                                        │
+│    2                                                                                                                                                        │
+│    3 # ──────────────────────────────────────────────────────────────────────                                                                               │
+│    4 # AXIOM CONNECTOR: smtplib → apprise                                                                                                                   │
+│    5 # The following functions bridge API incompatibilities between                                                                                         │
+│    6 # smtplib and apprise. They are injected by the AXIOM                                                                                                  │
+│    7 # connector agent and called in place of the original API.                                                                                             │
+│    8 # ──────────────────────────────────────────────────────────────────────                                                                               │
+│    9 def _create_apprise_smtp_shim(host: str = "localhost", port: int = 25):                                                                                │
+│   10     """Wrapper replacing smtplib.SMTP(host, port).                                                                                                     │
+│   11                                                                                                                                                        │
+│   12     Original: smtplib.SMTP(host, port) returns a live smtplib.SMTP connection                                                                          │
+│   13     object whose .sendmail(sender, recipients, message) method transmits a raw                                                                         │
+│   14     MIME-ish message string over SMTP and raises smtplib exceptions (e.g.                                                                              │
+│   15     smtplib.SMTPException / smtplib.SMTPRecipientsRefused / OSError) on                                                                                │
+│   16     transport or protocol failure.                                                                                                                     │
+│   17                                                                                                                                                        │
+│   18     New: this factory returns a small shim object exposing the same                                                                                    │
+│   19     sendmail(sender, recipients, message) signature, but internally it                                                                                 │
+│   20     parses the raw message string into a subject/body pair, builds a                                                                                   │
+│   21     mailto:// apprise URL from host/port/sender/recipients, and dispatches                                                                             │
+│   22     the notification via apprise.Apprise().add(url) + apobj.notify(...).                                                                               │
+│   23     apprise reports failure as a boolean False return rather than raising;                                                                             │
+│   24     this shim translates that False into a raised smtplib.SMTPException so                                                                             │
+│   25     that callers written against smtplib's exception-based error signaling                                                                             │
+│   26     keep working.                                                                                                                                      │
+│   27     """                                                                                                                                                │
+│   28                                                                                                                                                        │
+│   29     class _AppriseSMTPShim:                                                                                                                            │
+│   30         def __init__(self, host, port):                                                                                                                │
+│   31             self.host = host                                                                                                                           │
+│   32             self.port = port                                                                                                                           │
+│   33                                                                                                                                                        │
+│   34         def sendmail(self, sender, recipients, message):                                                                                               │
+│   35             import re                                                                                                                                  │
+│   36             import smtplib  # lazy import, mirrors original deferred import                                                                            │
+│   37                                                                                                                                                        │
+│   38             subject = ""                                                                                                                               │
+│   39             body = message                                                                                                                             │
+│   40             match = re.search(r"^Subject: (.*?)\r\n\r\n(.*)", message, re.DOTALL | re.MULTILINE)                                                       │
+│   41             if match:                                                                                                                                  │
+│   42                 subject = match.group(1)                                                                                                               │
+│   43                 body = match.group(2)                                                                                                                  │
+│   44                                                                                                                                                        │
+│   45             recipients_str = ",".join(recipients)                                                                                                      │
+│   46             url = f"mailto://{sender}@{self.host}:{self.port}/?to={recipients_str}"                                                                    │
+│   47                                                                                                                                                        │
+│   48             import apprise  # lazy import for testability, mirrors original pattern                                                                    │
+│   49                                                                                                                                                        │
+│   50             apobj = apprise.Apprise()                                                                                                                  │
+│   51             apobj.add(url)                                                                                                                             │
+│   52             success = apobj.notify(title=subject, body=body)                                                                                           │
+│   53                                                                                                                                                        │
+│   54             if not success:                                                                                                                            │
+│   55                 raise smtplib.SMTPException(                                                                                                           │
+│   56                     "apprise failed to deliver notification via mailto:// URL"                                                                         │
+│   57                 )                                                                                                                                      │
+│   58                                                                                                                                                        │
+│   59             return {}                                                                                                                                  │
+│   60                                                                                                                                                        │
+│   61     return _AppriseSMTPShim(host, port)                                                                                                                │
+│   62                                                                                                                                                        │
+│   63 # AXIOM CONNECTOR END                                                                                                                                  │
+│   64                                                                                                                                                        │
+│   65 """notifier -- operator notification on alarm state changes.                                                                                           │
+│   66                                                                                                                                                        │
+│   67 The notification backend is the substitution target: `smtplib` (stdlib SMTP) ->                                                                        │
+│   68 `apprise` (multi-service notifications). The API differs (sendmail vs. notify), so a                                                                   │
+│   69 clone needs glue. The SMTP transport is dependency-injected for testing.                                                                               │
+│   70 """                                                                                                                                                    │
+│   71                                                                                                                                                        │
+│   72                                                                                                                                                        │
+│   73 def _default_smtp(host: str = "localhost", port: int = 25):                                                                                            │
+│   74     import smtplib  # lazy import for testability                                                                                                      │
+│   75                                                                                                                                                        │
+│   76     return _create_apprise_smtp_shim(host, port)                                                                                                       │
+│   77                                                                                                                                                        │
+│   78                                                                                                                                                        │
+│   79 class EmailNotifier:                                                                                                                                   │
+│   80     def __init__(self, sender: str, recipients, smtp=None):                                                                                            │
+│   81         self.sender = sender                                                                                                                           │
+│   82         self.recipients = list(recipients)                                                                                                             │
+│   83         self.smtp = smtp if smtp is not None else _default_smtp()                                                                                      │
+│   84                                                                                                                                                        │
+│   85     def notify(self, subject: str, body: str) -> str:                                                                                                  │
+│   86         message = (                                                                                                                                    │
+│   87             f"From: {self.sender}\r\n"                                                                                                                 │
+│   88             f"To: {', '.join(self.recipients)}\r\n"                                                                                                    │
+│   89             f"Subject: {subject}\r\n\r\n{body}"                                                                                                        │
+│   90         )                                                                                                                                              │
+│   91         self.smtp.sendmail(self.sender, self.recipients, message)                                                                                      │
+│   92         return message                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 92 lines) — ranking on diversity alone.
+                            Logic Substitution — isomorphic variant                            
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                                         ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ notifier                                                      │
+│ Lines (original → variant)  │ 92 → 35                                                       │
+│ Requested lines             │ 35                                                            │
+│ Achieved lines              │ 35                                                            │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                                              │
+│ Transformations             │ llm_restructure, added:apprise_shim.py, added:mail_message.py │
+│ Equivalence oracle          │ PASS                                                          │
+│ diversity: ncd              │ 0.4117                                                        │
+│ diversity: ast_structural   │ 0.6900  (rename-insensitive)  ← ranking signal                │
+│ diversity: du_chain         │ 0.6364                                                        │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                                  │
+│ diversity: composite        │ 0.3450  (rename-insensitive)                                  │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 54.4s                │
+└─────────────────────────────┴───────────────────────────────────────────────────────────────┘
+  wrote extracted module apprise_shim.py
+  wrote extracted module mail_message.py
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 38 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ engine                                         │
+│ Lines (original → variant)  │ 38 → 53                                        │
+│ Requested lines             │ 53                                             │
+│ Achieved lines              │ 53                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure                                │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.3071                                         │
+│ diversity: ast_structural   │ 0.4853  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6765                                         │
+│ diversity: cfg_shape        │ 0.4000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.4426  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 6.1s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 20 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ engine_config                                  │
+│ Lines (original → variant)  │ 20 → 16                                        │
+│ Requested lines             │ 16                                             │
+│ Achieved lines              │ 16                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:tag_config_builder.py   │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.3589                                         │
+│ diversity: ast_structural   │ 0.2869  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.8750                                         │
+│ diversity: cfg_shape        │ 0.6667  (rename-insensitive)                   │
+│ diversity: composite        │ 0.4768  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 4.7s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 22 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ hysteresis                                     │
+│ Lines (original → variant)  │ 22 → 21                                        │
+│ Requested lines             │ 21                                             │
+│ Achieved lines              │ 21                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:transitions.py          │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4094                                         │
+│ diversity: ast_structural   │ 0.5130  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6389                                         │
+│ diversity: cfg_shape        │ 0.3333  (rename-insensitive)                   │
+│ diversity: composite        │ 0.4232  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 5.5s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+C3_anomaly_threshold_engine      1       4/4     Y    Y      5      8  0.0345  174.6s
+
+migration_success 1/1 (100%)
+rows appended to results_c3_prompt.csv
+
+--- stderr ---
+note: results_c3_prompt.csv header was out of date; migrated 3 row(s) to the current schema

@@ -1,0 +1,32 @@
+repo: celery/celery
+commit: 9b39fc41998c708c6612f0c7bf4393bf48f72e9b
+source: pyopenssl
+target: cryptography
+commit_url: https://github.com/celery/celery/commit/9b39fc41
+domain: HTTP Clients&Crypto
+files:
+- path: "celery/security/__init__.py"
+  code_changes:
+  - line: "44:41"
+    cardinality: not applicable
+    source_program_elements: [import]
+    target_program_elements: [import]
+    properties: []
+    source_apis: [OpenSSL.crypto]
+    target_apis: [cryptography]
+- path: "celery/security/utils.py"
+  code_changes:
+  - line: "12:8-9"
+    cardinality: not applicable
+    source_program_elements: [import]
+    target_program_elements: [import]
+    properties: []
+    source_apis: [OpenSSL.crypto]
+    target_apis: [cryptography.hazmat.primitives.hashes, cryptography.exceptions]
+  - line: "23:26"
+    cardinality: one-to-one
+    source_program_elements: [exception]
+    target_program_elements: [exception]
+    properties: [element name change]
+    source_apis: [Error]
+    target_apis: [exceptions]

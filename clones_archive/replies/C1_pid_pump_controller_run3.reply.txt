@@ -1,0 +1,187 @@
+# parsed 4 file(s): ['controller.py', 'io_map.py', 'pid_engine.py', 'plant.py']
+# expected: ['controller.py', 'io_map.py', 'plant.py']
+# reply length: 6142 chars
+======================================================================
+### FILENAME: pid_engine.py
+```python
+"""pid_engine -- first-party PID controller implementation.
+
+This module provides a small, self-contained PID controller that mimics the
+subset of `simple-pid` behaviour relied upon elsewhere in this program:
+
+- construction with (kp, ki, kd, setpoint=..., output_limits=(lo, hi))
+- calling the instance with a process variable returns the control output
+- the `setpoint` attribute can be read and reassigned at any time
+- the integral term is clamped so it cannot push the output outside the
+  configured output limits (basic anti-windup)
+- on the very first call there is no meaningful elapsed time, so the
+  derivative term is treated as zero
+"""
+import time
+
+
+class FirstPartyPID:
+    def __init__(self, kp, ki, kd, setpoint=0.0, output_limits=(None, None)):
+        self._kp = kp
+        self._ki = ki
+        self._kd = kd
+        self.setpoint = setpoint
+        self._out_min, self._out_max = output_limits
+
+        self._integral_acc = 0.0
+        self._prev_measurement = None
+        self._prev_time = None
+        self._last_output = 0.0
+
+    def _clock(self):
+        return time.monotonic()
+
+    def _clamp(self, value):
+        lo, hi = self._out_min, self._out_max
+        if lo is not None and value < lo:
+            value = lo
+        if hi is not None and value > hi:
+            value = hi
+        return value
+
+    def __call__(self, measurement, dt=None):
+        now = self._clock()
+
+        if dt is None:
+            if self._prev_time is None:
+                elapsed = 0.0
+            else:
+                elapsed = now - self._prev_time
+                if elapsed <= 0:
+                    elapsed = 0.0
+        else:
+            elapsed = dt
+
+        error = self.setpoint - measurement
+
+        proportional_term = self._kp * error
+
+        candidate_integral = self._integral_acc + self._ki * error * elapsed
+        candidate_output_preview = proportional_term + candidate_integral
+
+        clamped_preview = self._clamp(candidate_output_preview)
+        if clamped_preview == candidate_output_preview:
+            self._integral_acc = candidate_integral
+        else:
+            self._integral_acc = candidate_integral - (candidate_output_preview - clamped_preview)
+
+        if self._prev_measurement is None or elapsed <= 0:
+            derivative_term = 0.0
+        else:
+            derivative_term = -self._kd * (measurement - self._prev_measurement) / elapsed
+
+        raw_output = proportional_term + self._integral_acc + derivative_term
+        output = self._clamp(raw_output)
+
+        self._prev_measurement = measurement
+        self._prev_time = now
+        self._last_output = output
+
+        return output
+
+    @property
+    def components(self):
+        return self._last_output
+
+    def reset(self):
+        self._integral_acc = 0.0
+        self._prev_measurement = None
+        self._prev_time = None
+        self._last_output = 0.0
+
+
+# Alias kept for naming familiarity when reading diffs against the original
+# third-party API; not required by any external caller.
+PID = FirstPartyPID
+```
+
+### FILENAME: controller.py
+```python
+"""controller -- PID pump controller regulating tank level to a setpoint.
+
+The PID engine is provided by the first-party `pid_engine` module (a
+hand-rolled replacement for the former `simple-pid` dependency). The
+surrounding logic (setpoint ramping, output clamping, AUTO/MANUAL mode)
+remains first-party. The PID object is dependency-injected for testing.
+"""
+from io_map import speed_to_counts
+from pid_engine import FirstPartyPID
+
+
+def _make_pid(kp, ki, kd, setpoint):
+    return FirstPartyPID(kp, ki, kd, setpoint=setpoint, output_limits=(0.0, 100.0))
+
+
+class PumpController:
+    def __init__(self, setpoint, kp=2.0, ki=0.5, kd=0.0, ramp=0.5, pid=None):
+        self.target = setpoint
+        self.applied_setpoint = 0.0
+        self.ramp = ramp
+        self.mode = "AUTO"
+        self.pid = pid if pid is not None else _make_pid(kp, ki, kd, 0.0)
+
+    def _ramp_setpoint(self):
+        """First-party logic: move the applied setpoint toward the target by <= ramp."""
+        gap = self.target - self.applied_setpoint
+        if gap > 0:
+            self.applied_setpoint = min(self.target, self.applied_setpoint + self.ramp)
+        elif gap < 0:
+            self.applied_setpoint = max(self.target, self.applied_setpoint - self.ramp)
+        self.pid.setpoint = self.applied_setpoint
+
+    def update(self, level) -> int:
+        """Compute the pump-speed command (in DAC counts) for the measured level."""
+        if self.mode == "MANUAL":
+            return speed_to_counts(0.0)
+        self._ramp_setpoint()
+        speed = self.pid(level)
+        speed = max(0.0, min(100.0, speed))  # clamp before actuation
+        return speed_to_counts(speed)
+```
+
+### FILENAME: io_map.py
+```python
+"""io_map -- field I/O scaling for the pump controller (first-party logic)."""
+
+
+def counts_to_level(counts, adc_span=(0, 4095), level_range=(0.0, 10.0)) -> float:
+    """Convert raw level-sensor ADC counts to meters."""
+    lo, hi = adc_span
+    a, b = level_range
+    return a + (counts - lo) * (b - a) / (hi - lo)
+
+
+def speed_to_counts(speed_pct, dac_span=(0, 4095)) -> int:
+    """Convert a 0-100% pump-speed command to DAC counts (clamped)."""
+    lo, hi = dac_span
+    speed_pct = max(0.0, min(100.0, speed_pct))
+    return int(round(lo + speed_pct * (hi - lo) / 100.0))
+```
+
+### FILENAME: plant.py
+```python
+"""plant -- a minimal tank simulator used to exercise the controller in closed loop.
+
+This is test/reference scaffolding (a first-order integrator), not part of the shipped
+controller, but it provides the reference trajectory the equivalence oracle checks.
+"""
+
+
+class Tank:
+    def __init__(self, level=0.0, inflow_gain=0.05, outflow=0.02, area=1.0):
+        self.level = level
+        self.inflow_gain = inflow_gain
+        self.outflow = outflow
+        self.area = area
+
+    def step(self, pump_speed_pct, dt=1.0) -> float:
+        inflow = self.inflow_gain * pump_speed_pct
+        self.level += (inflow - self.outflow) * dt / self.area
+        self.level = max(0.0, self.level)
+        return self.level
+```

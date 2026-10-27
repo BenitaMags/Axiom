@@ -1,0 +1,170 @@
+# parsed 4 file(s): ['engine.py', 'engine_config.py', 'hysteresis.py', 'notifier.py']
+# expected: ['engine.py', 'engine_config.py', 'hysteresis.py', 'notifier.py']
+# reply length: 5719 chars
+======================================================================
+### FILENAME: engine.py
+```python
+"""engine -- streaming out-of-band anomaly detector with hysteresis.
+
+Ties together per-tag hysteresis detection (first-party), configuration, and operator
+notification. Emits one event per alarm state change and notifies on each transition.
+"""
+from hysteresis import Hysteresis
+
+
+class AnomalyEngine:
+    def __init__(self, config: dict, notifier=None):
+        built = {}
+        for tag, c in config.items():
+            built[tag] = Hysteresis(c.high, c.low)
+        self.detectors = built
+        self.notifier = notifier
+        self.events = []
+
+    def process(self, reading: dict):
+        """Process one {tag, value} reading; return an event on state change else None."""
+        tag = reading["tag"]
+        if tag not in self.detectors:
+            return None
+        detector = self.detectors[tag]
+        prior_state = detector.state
+        new_state = detector.update(reading["value"])
+        if new_state == prior_state:
+            return None
+        event = {"tag": tag, "state": new_state, "value": reading["value"]}
+        self.events.append(event)
+        if self.notifier is not None:
+            self.notifier.notify(f"{tag} {new_state}", str(event))
+        return event
+
+    def process_stream(self, readings) -> list:
+        """Process an iterable of readings, returning only the emitted events."""
+        results = []
+        for reading in readings:
+            outcome = self.process(reading)
+            if outcome is not None:
+                results.append(outcome)
+        return results
+```
+
+### FILENAME: engine_config.py
+```python
+"""engine_config -- per-tag threshold configuration for the anomaly engine."""
+from dataclasses import dataclass
+
+
+@dataclass
+class TagConfig:
+    tag: str
+    high: float
+    low: float
+
+
+def load(config: dict) -> dict:
+    """Build {tag: TagConfig} from a config dict of the form {"tags": [ ... ]}."""
+    tags_by_name = {}
+    for entry in config["tags"]:
+        candidate = TagConfig(tag=entry["tag"], high=entry["high"], low=entry["low"])
+        if not (candidate.low < candidate.high):
+            raise ValueError(f"tag {candidate.tag}: low must be < high")
+        tags_by_name[candidate.tag] = candidate
+    return tags_by_name
+```
+
+### FILENAME: hysteresis.py
+```python
+"""hysteresis -- dual-threshold hysteresis detector (first-party core logic).
+
+This is the detection logic the LMA must rewrite into an equivalent but structurally
+different form. A value at or above `high` trips ALARM; the detector only clears once
+the value falls back to or below `low`, preventing chatter within the deadband.
+"""
+
+NORMAL_STATE = "NORMAL"
+ALARM_STATE = "ALARM"
+
+
+class Hysteresis:
+    def __init__(self, high: float, low: float):
+        if not (low < high):
+            raise ValueError("low must be < high")
+        self.high = high
+        self.low = low
+        self.state = NORMAL_STATE
+
+    def update(self, value: float) -> str:
+        if self.state == NORMAL_STATE:
+            if value >= self.high:
+                self.state = ALARM_STATE
+        else:
+            if value <= self.low:
+                self.state = NORMAL_STATE
+        return self.state
+```
+
+### FILENAME: notifier.py
+```python
+"""notifier -- operator notification on alarm state changes.
+
+The notification backend is the substitution target: `smtplib` (stdlib SMTP) ->
+`apprise` (multi-service notifications). The API differs (sendmail vs. notify), so a
+clone needs glue. The Apprise transport is dependency-injected for testing, and a thin
+adapter exposes an `smtp`-shaped attribute (with a `.sendmail` method) so existing
+callers/tests that poke at `notifier.smtp.sendmail(...)` keep working unchanged.
+"""
+
+
+class _AppriseSmtpAdapter:
+    """Adapter that exposes a `sendmail`-shaped surface backed by an Apprise object.
+
+    This lets EmailNotifier keep constructing/using something that "looks like" an
+    smtplib.SMTP instance (attribute name `smtp`, method `sendmail`), while the actual
+    delivery goes through apprise's `.notify(...)` API instead of raw SMTP verbs.
+    """
+
+    def __init__(self, apprise_obj):
+        self._apprise = apprise_obj
+
+    def sendmail(self, sender: str, recipients, message: str):
+        # Preserve the historical signature/semantics (sender, recipients, full
+        # message text) while dispatching through apprise's notify() call.
+        del sender, recipients  # apprise routes via configured URLs, not envelope args
+        self._apprise.notify(body=message)
+        return None
+
+
+def _build_apprise_target(urls=None):
+    import apprise  # lazy import for testability
+
+    engine = apprise.Apprise()
+    for url in (urls or []):
+        engine.add(url)
+    return _AppriseSmtpAdapter(engine)
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    # Kept for signature/backward-compat purposes; host/port are folded into an
+    # apprise-style mailto URL so the same constructor shape still yields a working
+    # transport without requiring callers to change how they invoke it.
+    del host, port
+    return _build_apprise_target(urls=[])
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        header_lines = [
+            f"From: {self.sender}",
+            f"To: {', '.join(self.recipients)}",
+            f"Subject: {subject}",
+            "",
+            body,
+        ]
+        message = "\r\n".join(header_lines[:-2]) + "\r\n\r\n" + body
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message
+```

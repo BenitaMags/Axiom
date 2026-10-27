@@ -1,0 +1,149 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmppm9sfsg1_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+──────────────────────────────────────────────────────────── 🔒 Security Agent ─────────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                      Security Scan Results                                       
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ locust  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ kafka   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+──────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+  locust -> k6, vegeta, hey
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,905  output: 492  latency: 4968ms
+Equivalence Groups Found
+├── Kafka producer client
+│   ├── Candidates : kafka, confluent-kafka
+│   ├── Used APIs  : KafkaProducer, send, flush, add_callback, add_errback
+│   ├── Pitfalls   : confluent-kafka uses librdkafka (C library) requiring system dependencies; confluent-kafka Producer.poll() must be 
+│   │   called periodically for callbacks to fire; the current callback-only pattern may need a poll loop; Different configuration property 
+│   │   names (e.g., 'bootstrap.servers' vs 'bootstrap_servers'); confluent-kafka's delivery reports use a different callback signature 
+│   │   (err, msg) vs kafka-python's (record_metadata)
+│   ├── Constraints: requires_connector
+│   └── The code uses kafka.KafkaProducer for synchronous message production with callback-based async handling. confluent-kafka provides a 
+│       compatible Producer API with similar send/flush semantics and callback support, making it a viable drop-in replacement for the same 
+│       synchronous producer role.
+└── load testing framework
+    ├── Candidates : locust, k6
+    ├── Used APIs  : Locust, constant, environment.events.request_success.fire, environment.events.request_failure.fire
+    ├── Pitfalls   : Fundamentally different architecture: Locust uses Python classes with event hooks; k6 uses JavaScript scripts with 
+    │   built-in metrics; Migration requires rewriting the entire test structure (KafkaLocust class, KafkaClient, event firing) into k6 
+    │   JavaScript; k6's Kafka support typically requires xk6-kafka extension or external tools; No direct API mapping — Locust's 
+    │   request_success/failure events map to k6's built-in checks and metrics, not a 1:1 API
+    ├── Constraints: requires_connector
+    └── Both locust and k6 are load testing tools capable of simulating Kafka producer load. The code uses Locust's event system for request
+        tracking and constant wait time. k6 can achieve equivalent load generation with its JavaScript API and Kafka extensions, though the 
+        programming model differs (Python classes vs JS scripts).
+
+✓ 2 equivalence group(s) found
+
+────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ──────────────────────────────────────────────────────
+Scanning candidate 2 package(s) via OSV + PyPI...
+
+           Candidate Security Scan            
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package         ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ k6              │ unknown │ LOW  │    0.76 │
+│ confluent-kafka │ unknown │ LOW  │    0.76 │
+└─────────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 4 package(s) across 2 group(s)...
+
+⠋ ✓ kafka          
+⠋ ✓ locust         
+⠋ ✓ k6             
+⠋ ✓ confluent-kafka
+                                                   Benchmark Results                                                    
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ confluent-kafka │     ✗     │               — │           — │           — │ No module named 'confluent-kafka'        │
+│ locust          │     ✗     │               — │           — │           — │ No module named 'locust'                 │
+│ k6              │     ✗     │               — │           — │           — │ No module named 'k6'                     │
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka.vendor.six.moves' │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────┘
+
+✓ Profiled 4 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: c91ee5c6
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka, confluent-kafka
+  API compat tokens — input: 232  output: 64  latency: 707ms
+  Not installed locally (scoring with neutral placeholders, not excluded): locust, k6
+  API compat tokens — input: 232  output: 60  latency: 698ms
+                                          AXIOM Optimization Decisions                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                   ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ Kafka producer client  │ kafka    │ kafka  │ MEDIUM │ 0.5   │ 0.5    │ 0.76     │ 1.0 │ 0.627 │ not installed │
+│ load testing framework │ locust   │ locust │ MEDIUM │ 0.5   │ 0.5    │ 0.76     │ 1.0 │ 0.627 │ not installed │
+└────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 2 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: c91ee5c6
+
+Evaluation took 11.0s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     100.0%  (n=1)
+Full-pipeline accuracy:      0.0%  (n=1)
+Connector invoked on:        0 case(s)
+Verifier clean (no findings):  0.0%  (n=1)
+        Detection Rate by Domain         
+┏━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain       ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients │     1 │         100.0% │
+└──────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_all_agents_test.json, pymigbench_all_agents_test.csv

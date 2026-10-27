@@ -1,0 +1,33 @@
+{
+  "role": "YAML serialization",
+  "winner": "ruamel.yaml",
+  "original": "ruamel.yaml",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.955,
+    "security_evidence": true,
+    "evidence_weight": 0.35,
+    "total": 0.974,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: yaml does not expose yaml; line 1: New mypy finding after migration: Library stubs not installed for \"yaml\"  [import-untyped]; line 1: New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'; line 1: Patched import smoke test failed: Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-z9tr8mm4/project/tools/c7n_mailer/c7n_mailer/utils.py\", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-dbfezmzr/lib/python3.9/site-packages/yaml/__init__.py)\n",
+  "confidence": "LOW",
+  "used_apis": [
+    "safe_dump"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

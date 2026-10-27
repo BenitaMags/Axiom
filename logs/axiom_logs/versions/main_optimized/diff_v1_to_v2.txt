@@ -1,0 +1,32 @@
+--- v1_original.py
++++ v2_patched.py
+@@ -15,14 +15,13 @@
+ from services.http_service import HttpService
+
+ from utils.crypto_utils import sha256_digest, xxhash_fast, secure_token
+
+ from config.settings import get_all_settings
+
+-import structlog
+
+ import loguru
+
+ 
+
+ def _starlette_fastapi_wrapper(app):
+
+     from starlette.fastapi import FastAPI as StarletteFastAPI
+
+     return StarletteFastAPI(**app.dict())
+
+     __doc__ = app.__doc__
+
+-log = structlog.get_logger()
+
++log = loguru.get_logger()
+
+ app = _starlette_fastapi_wrapper(app)
+
+ 
+
+ @app.get('/health')

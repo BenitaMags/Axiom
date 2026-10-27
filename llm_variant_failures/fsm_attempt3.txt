@@ -1,0 +1,155 @@
+```python
+### FILENAME: fsm.py
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+The state-machine engine is the substitution target: `transitions` -> a hand-rolled
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `transitions` library in the original.
+"""
+from alarms import interlock_ok
+
+from statemachine import MachineError, StateEngine, TransitionSpec
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        specs = [
+            TransitionSpec("start_fill", ("IDLE",), "FILLING",
+                            conditions=("can_fill",), after=("open_inlet",)),
+            TransitionSpec("level_reached", ("FILLING",), "HOLDING",
+                            conditions=(), after=("close_inlet",)),
+            TransitionSpec("start_drain", ("HOLDING", "FILLING"), "DRAINING",
+                            conditions=(), after=("open_outlet",)),
+            TransitionSpec("empty", ("DRAINING",), "IDLE",
+                            conditions=(), after=("close_outlet",)),
+            TransitionSpec("trip", ("*",), "FAULT",
+                            conditions=(), after=("safe_all",)),
+        ]
+
+        self.engine = StateEngine(model=self, states=STATES, initial="IDLE", specs=specs)
+
+        for spec in specs:
+            self._bind_trigger(spec.trigger)
+
+    def _bind_trigger(self, trigger_name):
+        def trigger_fn(*args, **kwargs):
+            return self.engine.fire(trigger_name)
+        setattr(self, trigger_name, trigger_fn)
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    @property
+    def state(self):
+        return self.engine.state
+
+    @state.setter
+    def state(self, value):
+        self.engine.state = value
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+```python
+### FILENAME: statemachine.py
+"""Generic hand-rolled state-machine engine used by fsm.TankController.
+
+This module provides a small, reusable replacement for the subset of the
+`transitions` library's API that `fsm.py` relies on: named triggers that move
+a model between states, guarded by boolean condition methods and followed by
+side-effecting "after" callbacks.
+"""
+from typing import Iterable, NamedTuple, Sequence
+
+
+class MachineError(Exception):
+    """Raised when a triggered transition has no matching source/condition."""
+
+
+class TransitionSpec(NamedTuple):
+    trigger: str
+    sources: Sequence[str]
+    dest: str
+    conditions: Sequence[str] = ()
+    after: Sequence[str] = ()
+
+    def applies_from(self, current_state: str) -> bool:
+        return list(self.sources) == ["*"] or current_state in self.sources
+
+    def guards_pass(self, model) -> bool:
+        for cond_name in self.conditions:
+            cond_fn = getattr(model, cond_name)
+            if not cond_fn():
+                return False
+        return True
+
+    def run_after(self, model) -> None:
+        for after_name in self.after:
+            after_fn = getattr(model, after_name)
+            after_fn()
+
+
+class StateEngine:
+    """Drives state transitions for `model` according to a table of specs."""
+
+    def __init__(self, model, states: Iterable[str], initial: str,
+                 specs: Iterable[TransitionSpec]):
+        self.model = model
+        self.states = list(states)
+        self.state = initial
+        self._table = {}
+        for spec in specs:
+            self._table.setdefault(spec.trigger, []).append(spec)
+
+    def fire(self, trigger_name: str) -> bool:
+        specs = self._table.get(trigger_name, [])
+        current = self.state
+        matching = [s for s in specs if s.applies_from(current)]
+        if not matching:
+            raise MachineError(
+                "Can't trigger event %s from state %s!" % (trigger_name, current)
+            )
+
+        spec = matching[0]
+        if not spec.guards_pass(self.model):
+            return False
+
+        self.state = spec.dest
+        spec.run_after(self.model)
+        return True
+```

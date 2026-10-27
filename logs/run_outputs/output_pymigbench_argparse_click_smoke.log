@@ -1,0 +1,193 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] grahame/sedge  argparse→click  (sedge/cli.py)
+──────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────
+Resolved path: /private/tmp/tmpgk396pkg_cli.py
+                                           Discovered Imports                                           
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names                                     ┃ API Calls Used            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ argparse      │ —     │ —                                         │ ArgumentParser            │
+│    2 │ difflib       │ —     │ —                                         │ unified_diff              │
+│    3 │ os.path       │ —     │ —                                         │ path, rename, unlink      │
+│    4 │ sys           │ —     │ —                                         │ exit, stdout, stderr      │
+│    5 │ tempfile      │ —     │ NamedTemporaryFile                        │ NamedTemporaryFile        │
+│    6 │ engine        │ —     │ SedgeEngine, SedgeException, ConfigOutput │ ConfigOutput, SedgeEngine │
+│    7 │ keylib        │ —     │ KeyLibrary                                │ KeyLibrary                │
+│  134 │ pkg_resources │ —     │ —                                         │ require                   │
+└──────┴───────────────┴───────┴───────────────────────────────────────────┴───────────────────────────┘
+
+✓ Found 8 imports
+
+─────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────
+Scanning 8 package(s) via OSV + PyPI...
+
+                                          Security Scan Results                                           
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes         ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ engine        │ 0.6.0   │    0 │ MEDIUM │ AVAILABLE │       1.00 │      0.00 │    0.70 │ ✓ Clean       │
+│ keylib        │ 0.1.1   │    0 │  LOW   │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not        │
+│               │         │      │        │           │            │           │         │ updated in 9y │
+│               │         │      │        │           │            │           │         │ 2mo           │
+│ pkg_resources │ 83.0.0  │    0 │  LOW   │ AVAILABLE │       1.00 │      1.00 │    1.00 │ PyPI          │
+│ → setuptools  │         │      │        │           │            │           │         │ distribution: │
+│               │         │      │        │           │            │           │         │ setuptools    │
+│ argparse      │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python        │
+│               │         │      │        │           │            │           │         │ standard-lib… │
+│               │         │      │        │           │            │           │         │ module; no    │
+│               │         │      │        │           │            │           │         │ PyPI/OSV      │
+│               │         │      │        │           │            │           │         │ package sca   │
+│ difflib       │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python        │
+│               │         │      │        │           │            │           │         │ standard-lib… │
+│               │         │      │        │           │            │           │         │ module; no    │
+│               │         │      │        │           │            │           │         │ PyPI/OSV      │
+│               │         │      │        │           │            │           │         │ package sca   │
+│ os            │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python        │
+│               │         │      │        │           │            │           │         │ standard-lib… │
+│               │         │      │        │           │            │           │         │ module; no    │
+│               │         │      │        │           │            │           │         │ PyPI/OSV      │
+│               │         │      │        │           │            │           │         │ package sca   │
+│ sys           │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python        │
+│               │         │      │        │           │            │           │         │ standard-lib… │
+│               │         │      │        │           │            │           │         │ module; no    │
+│               │         │      │        │           │            │           │         │ PyPI/OSV      │
+│               │         │      │        │           │            │           │         │ package sca   │
+│ tempfile      │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python        │
+│               │         │      │        │           │            │           │         │ standard-lib… │
+│               │         │      │        │           │            │           │         │ module; no    │
+│               │         │      │        │           │            │           │         │ PyPI/OSV      │
+│               │         │      │        │           │            │           │         │ package sca   │
+└───────────────┴─────────┴──────┴────────┴───────────┴────────────┴───────────┴─────────┴───────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────
+Discovering alternative libraries for: argparse, engine, keylib, pkg_resources
+Discovered candidates:
+  argparse -> click, typer, docopt
+  pkg_resources -> importlib-metadata, importlib_resources
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,412  output: 404  latency: 9740ms
+Skipping unrelated resolver group 'package metadata/version inspection': no candidate matches an import in
+this file.
+Discovery leads not advanced to an equivalence group after file/API fit review: argparse: docopt; 
+pkg_resources: importlib-metadata, importlib_resources
+Equivalence Groups Found
+└── command-line argument parsing
+    ├── Candidates : argparse, click, typer
+    ├── Used APIs  : ArgumentParser
+    ├── Pitfalls   : click uses decorator-based API, requiring structural rewrite of argument definitions;
+    │   typer requires Python 3.7+ and type hints, may need Python version bump; both have different 
+    │   paradigms (declarative vs imperative) than argparse
+    ├── Constraints: requires_connector
+    └── The code uses argparse.ArgumentParser for CLI parsing. Both click and typer are modern 
+        alternatives that can replace argparse for command-line interfaces. click uses decorators while 
+        typer uses type hints; both would require rewriting the argument parsing logic but serve the same 
+        functional role.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ click   │ 8.4.2   │ LOW  │ AVAILABLE │    1.00 │
+│ typer   │ 0.27.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+─────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case 
+finishes.
+Project-local or undeclared imports supplied from the project checkout: engine, keylib, pkg_resources
+Runtime API benchmarks (10 warmups + 50 samples; fixed local fixtures)...
+                                            Benchmark Results                                             
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API (real probe) ┃ Memory (KB) ┃ Notes                ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ argparse │     ✓     │          1.6 ms │  0.040 ms median / 0.055 │         309 │                      │
+│          │           │                 │                   ms p95 │             │                      │
+│          │           │                 │  (call:cli_option_parse) │             │                      │
+│ click    │     ✓     │          8.5 ms │  0.036 ms median / 0.040 │        1060 │ import module: click │
+│          │           │                 │                   ms p95 │             │                      │
+│          │           │                 │  (call:cli_option_parse) │             │                      │
+│ typer    │     ✓     │         20.6 ms │          UNMEASURED — no │        2267 │ import module: typer │
+│          │           │                 │         cli_option_parse │             │                      │
+│          │           │                 │        implementation is │             │                      │
+│          │           │                 │     registered for typer │             │                      │
+└──────────┴───────────┴─────────────────┴──────────────────────────┴─────────────┴──────────────────────┘
+
+✓ Profiled 3 package(s), 3 available, 2 with measured runtime probes, 1 explicitly unmeasured
+
+─────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 3351b681
+  API compat tokens — input: 160  output: 40  latency: 11562ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating 
+missing data as a score.
+                                       AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role              ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ command-line      │ argparse │ argparse │ HIGH  │ 1.0   │ 1.0    │ —        │ 1.0 │ 1.0   │ ✓          │
+│ argument parsing  │          │          │       │       │        │          │     │       │            │
+└───────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: 3351b681
+
+Evaluation took 31.2s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     100.0%  (n=1)
+Target selection rate:        0.0%  (n=1; selection only)
+Verified exact PyMigBench migrations: 0.0%  (0/1)
+Verification environments incomplete: 0
+Proven target-infeasible migrations: 0
+No selected patch reached a deterministic verification verdict; do not interpret environment-incomplete 
+cases as failed migrations.
+Verified alternatives (not scored as exact target): 0
+Connector invoked on:        0 case(s)
+Verifier repair cycles:      0 across 0 case(s)
+Real runtime-probe coverage: 66.67%  (2/3 package-case profiles; 2 measured probe(s))
+        Terminal Outcomes        
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome               ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ no_migration_selected │     1 │
+└───────────────────────┴───────┘
+      Detection / Verified Exact Rate by Domain      
+┏━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain  ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Utility │     1 │         100.0% │           0.0% │
+└─────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_argparse_click_smoke.json, pymigbench_argparse_click_smoke.csv

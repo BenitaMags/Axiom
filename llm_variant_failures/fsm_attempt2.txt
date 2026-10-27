@@ -1,0 +1,184 @@
+```python
+### FILENAME: fsm.py
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+The state-machine engine is the substitution target: `transitions` -> a hand-rolled
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `transitions` library in the original.
+"""
+from alarms import interlock_ok
+
+from state_engine import StateEngine, TransitionSpec, EngineError
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+# Backwards-compatible alias for the error type raised on invalid triggers.
+MachineError = EngineError
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        specs = [
+            TransitionSpec("start_fill", ("IDLE",), "FILLING",
+                            conditions=("can_fill",), after=("open_inlet",)),
+            TransitionSpec("level_reached", ("FILLING",), "HOLDING",
+                            conditions=(), after=("close_inlet",)),
+            TransitionSpec("start_drain", ("HOLDING", "FILLING"), "DRAINING",
+                            conditions=(), after=("open_outlet",)),
+            TransitionSpec("empty", ("DRAINING",), "IDLE",
+                            conditions=(), after=("close_outlet",)),
+            TransitionSpec("trip", ("*",), "FAULT",
+                            conditions=(), after=("safe_all",)),
+        ]
+
+        self.machine = StateEngine(model=self, states=STATES, initial="IDLE",
+                                    specs=specs)
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+```python
+### FILENAME: state_engine.py
+"""state_engine -- a small generic replacement for the `transitions` library
+subset used by fsm.TankController.
+
+This module decomposes the original monolithic `_Machine` class into:
+  - a `TransitionSpec` value object describing one trigger's rule set,
+  - a `StateEngine` that owns the dispatch table of triggers and installs
+    bound trigger callables onto the model, mirroring the original API
+    (each trigger becomes a callable attribute on the model instance).
+"""
+from typing import Any, Callable, Iterable, List, NamedTuple, Sequence, Tuple
+
+
+class EngineError(Exception):
+    """Raised when a triggered transition has no matching source/condition."""
+
+
+class TransitionSpec(NamedTuple):
+    """Describes a single trigger: its valid source states, destination state,
+    guard condition names, and after-effect names (all looked up on the model
+    at call time, exactly as the original did with getattr)."""
+
+    trigger: str
+    sources: Tuple[str, ...]
+    dest: str
+    conditions: Tuple[str, ...] = ()
+    after: Tuple[str, ...] = ()
+
+    def matches_source(self, current: str) -> bool:
+        return list(self.sources) == ["*"] or current in self.sources
+
+    def guards_pass(self, model: Any) -> bool:
+        for cond_name in self.conditions:
+            cond_fn = getattr(model, cond_name)
+            if not cond_fn():
+                return False
+        return True
+
+    def run_after(self, model: Any) -> None:
+        for after_name in self.after:
+            after_fn = getattr(model, after_name)
+            after_fn()
+
+    def fire(self, model: Any) -> bool:
+        current = model.state
+        if not self.matches_source(current):
+            raise EngineError(
+                "Can't trigger event %s from state %s!" % (self.trigger, current)
+            )
+        if not self.guards_pass(model):
+            return False
+        model.state = self.dest
+        self.run_after(model)
+        return True
+
+
+def _normalize(value, default: Sequence[str] = ()) -> Tuple[str, ...]:
+    """Normalize a str/list/None field into a tuple of strings, matching the
+    original module's tolerant handling of string-vs-iterable inputs."""
+    if value is None:
+        return tuple(default)
+    if isinstance(value, str):
+        return (value,)
+    return tuple(value)
+
+
+class StateEngine:
+    """Generic dispatch-table-based state machine.
+
+    Installs one bound trigger function per spec onto `model`, matching the
+    attribute-based trigger API of the original `_Machine`.
+    """
+
+    def __init__(self, model: Any, states: Iterable[str], initial: str,
+                 specs: Iterable[Tuple] = ()):
+        self.model = model
+        self.states = list(states)
+        model.state = initial
+
+        self._specs: List[TransitionSpec] = []
+        for spec in specs:
+            self.add_transition(
+                spec.trigger,
+                spec.sources,
+                spec.dest,
+                conditions=spec.conditions,
+                after=spec.after,
+            )
+
+    def add_transition(self, trigger, source, dest, conditions=None, after=None):
+        sources = _normalize(source)
+        conditions_tuple = _normalize(conditions)
+        after_tuple = _normalize(after)
+
+        spec = TransitionSpec(
+            trigger=trigger,
+            sources=sources,
+            dest=dest,
+            conditions=conditions_tuple,
+            after=after_tuple,
+        )
+        self._specs.append(spec)
+
+        def trigger_fn(*args, __spec=spec, **kwargs):
+            return __spec.fire(self.model)
+
+        setattr(self.model, trigger, trigger_fn)
+```

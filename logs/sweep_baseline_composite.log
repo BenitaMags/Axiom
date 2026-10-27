@@ -1,0 +1,75 @@
+catalogue: 12 transformations (0 LLM-designed)
+oracle   : 4 layers incl. script-level __main__ check
+ranking  : composite
+sweep    : 6 targets x 4 modules = 24 variants
+
+ ratio module              orig  want   got  miss  diversity  #tf  oracle
+------------------------------------------------------------------------------
+  0.85 pid_governor          89    76    84    +8     0.0180    4  PASS
+  0.85 pump_controller       96    82    95   +13     0.0475    3  PASS
+  0.85 protective_relay     134   114   134   +20     0.0353    3  PASS
+  0.85 sensor_pipeline      114    97   109   +12     0.0700    2  PASS
+  0.90 pid_governor          89    80    84    +4     0.0180    4  PASS
+  0.90 pump_controller       96    86    95    +9     0.0475    3  PASS
+  0.90 protective_relay     134   121   134   +13     0.0353    3  PASS
+  0.90 sensor_pipeline      114   103   109    +6     0.0700    2  PASS
+  1.00 pid_governor          89    89    89    +0     0.0012    1  PASS
+  1.00 pump_controller       96    96    96    +0     0.0029    1  PASS
+  1.00 protective_relay     134   134   134    +0     0.0233    1  PASS
+  1.00 sensor_pipeline      114   114   114    +0     0.0035    1  PASS
+  1.10 pid_governor          89    98    94    -4     0.0242    4  PASS
+  1.10 pump_controller       96   106    99    -7     0.0899    5  PASS
+  1.10 protective_relay     134   147   135   -12     0.0381    4  PASS
+  1.10 sensor_pipeline      114   125   120    -5     0.0214    4  PASS
+  1.20 pid_governor          89   107    94   -13     0.0242    4  PASS
+  1.20 pump_controller       96   115    99   -16     0.0899    5  PASS
+  1.20 protective_relay     134   161   135   -26     0.0381    4  PASS
+  1.20 sensor_pipeline      114   137   120   -17     0.0214    4  PASS
+  1.30 pid_governor          89   116    94   -22     0.0242    4  PASS
+  1.30 pump_controller       96   125    99   -26     0.0899    5  PASS
+  1.30 protective_relay     134   174   135   -39     0.0381    4  PASS
+  1.30 sensor_pipeline      114   148   120   -28     0.0214    4  PASS
+
+==============================================================================
+BY REQUESTED DIRECTION
+direction      n  mean|miss|  mean div  on target
+shrink         8       10.62    0.0427        0%
+same           4        0.00    0.0077      100%
+grow          12       17.92    0.0434        0%
+
+DOES DIVERSITY RISE WITH THE SIZE OF THE REQUESTED CHANGE?
+  ratio 0.85  mean requested delta  16.0 lines  diversity 0.0427  ########
+  ratio 0.90  mean requested delta  10.8 lines  diversity 0.0427  ########
+  ratio 1.00  mean requested delta   0.0 lines  diversity 0.0077  #
+  ratio 1.10  mean requested delta  10.8 lines  diversity 0.0434  ########
+  ratio 1.20  mean requested delta  21.8 lines  diversity 0.0434  ########
+  ratio 1.30  mean requested delta  32.5 lines  diversity 0.0434  ########
+
+==============================================================================
+ABLATION ROW — comparable across ranking modes
+ranking signal      mean|miss|  on-target  oracle pass   mean cfg_shape of winners   winners w/ cfg>0
+composite                12.50       17% 24/24                               0.0352             7/24
+
+REACH (largest achieved change, per direction)
+  shrink  best single -5 lines, total -22 lines, modules that moved: pid_governor, pump_controller, sensor_pipeline
+  grow    best single +6 lines, total +45 lines, modules that moved: pid_governor, protective_relay, pump_controller, sensor_pipeline
+
+EQUIVALENCE: 24/24 variants passed all four oracle layers (100%)
+SEARCH     : 1396 candidates generated, 1396 equivalent
+TIME       : 150.5s total
+
+TRANSFORMATION USAGE (how often each was selected):
+   23x  invert_if_else
+   12x  extract_subexpression
+   12x  split_return_expression
+    6x  inline_single_use_return
+    6x  collapse_aug_assign
+    5x  expand_aug_assign
+    5x  expand_chained_compare
+    3x  ternary_to_if_else
+    3x  split_boolean_if
+    2x  merge_nested_if
+    2x  if_else_assign_to_ternary
+  never selected: rename_locals
+
+wrote 24 rows to baseline_v2_composite.csv

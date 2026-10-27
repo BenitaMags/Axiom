@@ -1,0 +1,319 @@
+───────────────────────── 🧬 Logic Substitution Agent ──────────────────────────
+Registered 4 LLM-designed transformation(s) from the generated catalogue.
+16 transformations available; targeting 98 lines (currently 89).
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ pid_governor                                   │
+│ Lines (original → variant)  │ 89 → 97                                        │
+│ Requested lines             │ 98                                             │
+│ Achieved lines              │ 97                                             │
+│ Miss (achieved − requested) │ -1   [1 line(s) short]                         │
+│ Transformations             │ call_argument_extraction,                      │
+│                             │ extract_subexpression,                         │
+│                             │ split_return_expression, extract_subexpression │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.1086                                         │
+│ diversity: ast_structural   │ 0.0814  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.1277                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.0407  (rename-insensitive)                   │
+│ Search                      │ 77/77 candidates equivalent, 4 iterations,     │
+│                             │ 11.0s                                          │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+--- pid_governor.py (original)
++++ pid_governor.py (variant)
+@@ -45,12 +45,16 @@
+     """Advance controller + plant by one step. Returns (new_state, command)."""
+     error = setpoint - state.rpm
++    _t0 = state.integral + error * dt
+ 
+     # Integral term with symmetric anti-windup clamp.
+-    integral = clamp(state.integral + error * dt, -2500.0, 2500.0)
++    integral = clamp(_t0, -2500.0, 2500.0)
++    _spt_t1 = (error - state.prev_error)
+ 
+     # Derivative on the error signal.
+-    derivative = (error - state.prev_error) / dt
++    derivative = _spt_t1 / dt
++    _spt_t3 = gains.kp * error
++    _spt_t2 = _spt_t3 + gains.ki * integral
+ 
+-    command = gains.kp * error + gains.ki * integral + gains.kd * derivative
++    command = _spt_t2 + gains.kd * derivative
+     command = clamp(command, 0.0, 100.0)  # fuel valve is 0-100 %
+ 
+@@ -59,6 +63,7 @@
+     b = 1.0    # friction coefficient
+     rpm_next = state.rpm + dt * (a * command - b * state.rpm - load)
++    _spt_r1 = GovernorState(rpm_next, integral, error), command
+ 
+-    return GovernorState(rpm_next, integral, error), command
++    return _spt_r1
+ 
+ 
+@@ -80,5 +85,6 @@
+             load = 300.0
+         state, command = governor_step(state, setpoint, gains, load, dt)
+-        samples.append((state.rpm, command))
++        _t2 = (state.rpm, command)
++        samples.append(_t2)
+     return samples
+ 
+@@ -86,4 +92,6 @@
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print(f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}")
++    _t3 = f"steps={len(out)}"
++    print(_t3)
++    _t4 = f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}"
++    print(_t4)
+───────────────────────── 🧬 Logic Substitution Agent ──────────────────────────
+Registered 4 LLM-designed transformation(s) from the generated catalogue.
+16 transformations available; targeting 106 lines (currently 96).
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ pump_controller                                │
+│ Lines (original → variant)  │ 96 → 104                                       │
+│ Requested lines             │ 106                                            │
+│ Achieved lines              │ 104                                            │
+│ Miss (achieved − requested) │ -2   [2 line(s) short]                         │
+│ Transformations             │ call_argument_extraction, ternary_to_if_else,  │
+│                             │ split_return_expression,                       │
+│                             │ call_argument_extraction, split_boolean_if,    │
+│                             │ demorgan_branch_swap,                          │
+│                             │ independent_assignment_swap,                   │
+│                             │ collapse_aug_assign                            │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.1468                                         │
+│ diversity: ast_structural   │ 0.0934  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.0606                                         │
+│ diversity: cfg_shape        │ 0.1429  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1181  (rename-insensitive)                   │
+│ Search                      │ 246/246 candidates equivalent, 8 iterations,   │
+│                             │ 55.1s                                          │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+--- pump_controller.py (original)
++++ pump_controller.py (variant)
+@@ -43,14 +43,15 @@
+         runtime += dt
+         if level >= cfg.high:
++            runtime = 0.0
+             mode = "OFF"
+-            runtime = 0.0
+     elif mode == "OFF":
+         if level <= cfg.low:
++            runtime = 0.0
+             mode = "ON"
+-            runtime = 0.0
+-
+-    # --- Plant update ---
+-    inflow = cfg.pump_rate if mode == "ON" else 0.0
+-    level = level + dt * (inflow - demand)
++    if mode != "ON":
++        inflow = 0.0
++    else:
++        inflow = cfg.pump_rate
++    level += dt * (inflow - demand)
+     if level < 0.0:
+         level = 0.0
+@@ -59,11 +60,13 @@
+     if level >= cfg.overflow:
+         mode = "FAULT"
+-    if mode == "ON" and runtime > cfg.max_runtime:
+-        mode = "FAULT"
++    if mode == "ON":
++        if runtime > cfg.max_runtime:
++            mode = "FAULT"
+ 
+     if level > cfg.overflow:
+         level = cfg.overflow
++    _spt_r1 = PumpState(level, mode, runtime)
+ 
+-    return PumpState(level, mode, runtime)
++    return _spt_r1
+ 
+ 
+@@ -73,7 +76,7 @@
+                      pump_rate=12.0, max_runtime=40.0)
+     state = PumpState(level=50.0, mode="OFF", runtime=0.0)
+-    dt = 0.5
+ 
+     samples = []
++    dt = 0.5
+     for step in range(400):
+         # Demand rises and falls in phases; a heavy-draw phase stresses the 
+pump.
+@@ -81,10 +84,11 @@
+         if phase < 60:
+             demand = 4.0
+-        elif phase < 120:
++        elif phase >= 120:
++            demand = 2.0
++        else:
+             demand = 10.5
+-        else:
+-            demand = 2.0
+         state = pump_step(state, demand, cfg, dt)
+-        samples.append((state.level, state.mode))
++        _t0 = (state.level, state.mode)
++        samples.append(_t0)
+     return samples
+ 
+@@ -92,5 +96,9 @@
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print(f"final level={out[-1][0]:.3f}  mode={out[-1][1]}")
+-    print("modes seen:", sorted({m for _, m in out}))
++    _t1 = f"steps={len(out)}"
++    print(_t1)
++    _t2 = f"final level={out[-1][0]:.3f}  mode={out[-1][1]}"
++    print(_t2)
++    _t4 = {m for _, m in out}
++    _t3 = sorted(_t4)
++    print("modes seen:", _t3)
+───────────────────────── 🧬 Logic Substitution Agent ──────────────────────────
+Registered 4 LLM-designed transformation(s) from the generated catalogue.
+16 transformations available; targeting 147 lines (currently 134).
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ protective_relay                               │
+│ Lines (original → variant)  │ 134 → 141                                      │
+│ Requested lines             │ 147                                            │
+│ Achieved lines              │ 141                                            │
+│ Miss (achieved − requested) │ -6   [6 line(s) short]                         │
+│ Transformations             │ call_argument_extraction,                      │
+│                             │ split_return_expression,                       │
+│                             │ call_argument_extraction,                      │
+│                             │ demorgan_branch_swap, expand_aug_assign,       │
+│                             │ independent_assignment_swap,                   │
+│                             │ expand_chained_compare                         │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.1677                                         │
+│ diversity: ast_structural   │ 0.1314  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.0444                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.0657  (rename-insensitive)                   │
+│ Search                      │ 175/175 candidates equivalent, 8 iterations,   │
+│                             │ 48.0s                                          │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+--- protective_relay.py (original)
++++ protective_relay.py (variant)
+@@ -54,17 +54,17 @@
+ 
+         # Instantaneous overcurrent.
+-        if current >= cfg.inst_current:
+-            trip = True
+-        else:
++        if current < cfg.inst_current:
+             # Inverse-time accumulation with decay when below pickup.
+-            if current > cfg.pickup_current:
+-                ratio = current / cfg.pickup_current
+-                accum += dt * ratio * ratio
+-            else:
+-                accum -= dt * 0.5
++            if current <= cfg.pickup_current:
++                accum = accum - dt * 0.5
+                 if accum < 0.0:
+                     accum = 0.0
++            else:
++                ratio = current / cfg.pickup_current
++                accum = accum + dt * ratio * ratio
+             if accum >= cfg.trip_energy:
+                 trip = True
++        else:
++            trip = True
+ 
+         # Voltage / frequency protection.
+@@ -75,26 +75,27 @@
+ 
+         if trip:
++            timer = 0.0
+             mode = "TRIPPED"
+-            timer = 0.0
+             accum = 0.0
+ 
+     elif mode == "TRIPPED":
+-        timer += dt
++        timer = timer + dt
+         if timer >= cfg.reclose_delay:
+-            if reclose_count < cfg.max_reclose:
++            if reclose_count >= cfg.max_reclose:
++                mode = "LOCKOUT"
++            else:
++                timer = 0.0
+                 mode = "RECLOSING"
+-                timer = 0.0
+-            else:
+-                mode = "LOCKOUT"
+ 
+     elif mode == "RECLOSING":
+-        reclose_count += 1
+         accum = 0.0
++        reclose_count = reclose_count + 1
+         mode = "CLOSED"   # re-energize; a persistent fault will re-trip next 
+step
+ 
+     elif mode == "LOCKOUT":
+         pass  # latched until a manual reset (not modeled)
++    _spt_r1 = RelayState(mode, accum, timer, reclose_count)
+ 
+-    return RelayState(mode, accum, timer, reclose_count)
++    return _spt_r1
+ 
+ 
+@@ -109,20 +110,21 @@
+     )
+     state = RelayState(mode="CLOSED", accum=0.0, timer=0.0, reclose_count=0)
+-    dt = 0.05
+ 
+     samples = []
++    dt = 0.05
+     for step in range(400):
++        voltage = 230.0
+         t = step * dt
+-        voltage = 230.0
+         frequency = 50.0
+         # Temporary overload 2.0-3.0 s (clears on its own), permanent from 10 
+s.
+-        if 2.0 <= t < 3.0:
++        if (2.0 <= t) and (t < 3.0):
+             current = 260.0
+-        elif t >= 10.0:
++        elif t < 10.0:
++            current = 60.0
++        else:
+             current = 300.0
+-        else:
+-            current = 60.0
+         state = relay_step(state, current, voltage, frequency, cfg, dt)
+-        samples.append((state.mode, round(state.accum, 4), 
+state.reclose_count))
++        _t0 = (state.mode, round(state.accum, 4), state.reclose_count)
++        samples.append(_t0)
+     return samples
+ 
+@@ -130,5 +132,10 @@
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print("final mode:", out[-1][0], " reclose_count:", out[-1][2])
+-    print("modes seen:", sorted({m for m, _, _ in out}))
++    _t1 = f"steps={len(out)}"
++    print(_t1)
++    _t2 = out[-1][0]
++    _t3 = out[-1][2]
++    print("final mode:", _t2, " reclose_count:", _t3)
++    _t5 = {m for m, _, _ in out}
++    _t4 = sorted(_t5)
++    print("modes seen:", _t4)
+───────────────────────── 🧬 Logic Substitution Agent ──────────────────────────
+Registered 4 LLM-designed transformation(s) from the generated catalogue.
+16 transformations available; targeting 125 lines (currently 114).

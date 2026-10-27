@@ -1,0 +1,176 @@
+# parsed 4 file(s): ['controller.py', 'io_map.py', 'pid_engine.py', 'plant.py']
+# expected: ['controller.py', 'io_map.py', 'plant.py']
+# reply length: 5764 chars
+======================================================================
+### FILENAME: pid_engine.py
+```python
+"""pid_engine -- first-party PID controller implementation.
+
+This module replaces the third-party `simple-pid` dependency with a small,
+self-contained PID controller. It mirrors the subset of behaviour relied upon
+elsewhere in this program: proportional/integral/derivative gains, a fixed
+setpoint attribute that can be mutated at runtime, output clamping via
+`output_limits`, and a callable interface `pid(measurement) -> float`.
+"""
+import time
+
+
+class FirstPartyPID:
+    """A minimal PID controller with anti-windup via output clamping.
+
+    Usage mirrors simple-pid's PID class closely enough to be a drop-in
+    replacement for this codebase: construct with gains and a setpoint,
+    then call the instance with a process variable to get the control
+    output. The `setpoint` attribute may be reassigned between calls.
+    """
+
+    def __init__(self, kp, ki, kd, setpoint=0.0, output_limits=(None, None)):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.setpoint = setpoint
+
+        self._lower_limit, self._upper_limit = output_limits
+
+        self._integral_acc = 0.0
+        self._prev_measurement = None
+        self._prev_time = None
+
+    @property
+    def output_limits(self):
+        return (self._lower_limit, self._upper_limit)
+
+    @output_limits.setter
+    def output_limits(self, limits):
+        self._lower_limit, self._upper_limit = limits
+
+    def _clamp(self, value):
+        lo, hi = self._lower_limit, self._upper_limit
+        if hi is not None and value > hi:
+            value = hi
+        if lo is not None and value < lo:
+            value = lo
+        return value
+
+    def _elapsed(self):
+        now = time.monotonic()
+        if self._prev_time is None:
+            dt = 1.0
+        else:
+            dt = now - self._prev_time
+            if dt <= 0:
+                dt = 1e-16
+        self._prev_time = now
+        return dt
+
+    def __call__(self, measurement):
+        dt = self._elapsed()
+
+        error = self.setpoint - measurement
+
+        proportional_term = self.kp * error
+
+        self._integral_acc += self.ki * error * dt
+        self._integral_acc = self._clamp(self._integral_acc)
+
+        if self._prev_measurement is None:
+            derivative_term = 0.0
+        else:
+            derivative_term = -self.kd * (measurement - self._prev_measurement) / dt
+
+        self._prev_measurement = measurement
+
+        output = proportional_term + self._integral_acc + derivative_term
+        return self._clamp(output)
+
+    def reset(self):
+        self._integral_acc = 0.0
+        self._prev_measurement = None
+        self._prev_time = None
+```
+
+### FILENAME: controller.py
+```python
+"""controller -- PID pump controller regulating tank level to a setpoint.
+
+The PID engine used here is a first-party implementation (see `pid_engine.py`)
+that replaces the former `simple-pid` third-party dependency. The surrounding
+logic (setpoint ramping, output clamping, AUTO/MANUAL mode) remains first-party
+and unchanged in behaviour. The PID object is dependency-injected for testing.
+"""
+from io_map import speed_to_counts
+
+
+def _make_pid(kp, ki, kd, setpoint):
+    from pid_engine import FirstPartyPID
+
+    return FirstPartyPID(kp, ki, kd, setpoint=setpoint, output_limits=(0.0, 100.0))
+
+
+class PumpController:
+    def __init__(self, setpoint, kp=2.0, ki=0.5, kd=0.0, ramp=0.5, pid=None):
+        self.target = setpoint
+        self.applied_setpoint = 0.0
+        self.ramp = ramp
+        self.mode = "AUTO"
+        self.pid = pid if pid is not None else _make_pid(kp, ki, kd, 0.0)
+
+    def _ramp_setpoint(self):
+        """First-party logic: move the applied setpoint toward the target by <= ramp."""
+        if self.applied_setpoint < self.target:
+            self.applied_setpoint = min(self.target, self.applied_setpoint + self.ramp)
+        elif self.applied_setpoint > self.target:
+            self.applied_setpoint = max(self.target, self.applied_setpoint - self.ramp)
+        self.pid.setpoint = self.applied_setpoint
+
+    def update(self, level) -> int:
+        """Compute the pump-speed command (in DAC counts) for the measured level."""
+        if self.mode == "MANUAL":
+            return speed_to_counts(0.0)
+        self._ramp_setpoint()
+        speed = self.pid(level)
+        speed = max(0.0, min(100.0, speed))  # clamp before actuation
+        return speed_to_counts(speed)
+```
+
+### FILENAME: io_map.py
+```python
+"""io_map -- field I/O scaling for the pump controller (first-party logic)."""
+
+
+def counts_to_level(counts, adc_span=(0, 4095), level_range=(0.0, 10.0)) -> float:
+    """Convert raw level-sensor ADC counts to meters."""
+    lo, hi = adc_span
+    a, b = level_range
+    return a + (counts - lo) * (b - a) / (hi - lo)
+
+
+def speed_to_counts(speed_pct, dac_span=(0, 4095)) -> int:
+    """Convert a 0-100% pump-speed command to DAC counts (clamped)."""
+    lo, hi = dac_span
+    speed_pct = max(0.0, min(100.0, speed_pct))
+    return int(round(lo + speed_pct * (hi - lo) / 100.0))
+```
+
+### FILENAME: plant.py
+```python
+"""plant -- a minimal tank simulator used to exercise the controller in closed loop.
+
+This is test/reference scaffolding (a first-order integrator), not part of the shipped
+controller, but it provides the reference trajectory the equivalence oracle checks.
+"""
+
+
+class Tank:
+    def __init__(self, level=0.0, inflow_gain=0.05, outflow=0.02, area=1.0):
+        self.level = level
+        self.inflow_gain = inflow_gain
+        self.outflow = outflow
+        self.area = area
+
+    def step(self, pump_speed_pct, dt=1.0) -> float:
+        inflow = self.inflow_gain * pump_speed_pct
+        self.level += (inflow - self.outflow) * dt / self.area
+        self.level = max(0.0, self.level)
+        return self.level
+```

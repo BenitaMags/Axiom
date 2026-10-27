@@ -1,0 +1,37 @@
+{
+  "role": "ISO-8601 timestamp string parsing (stdlib vs faster C-extension parser)",
+  "winner": "datetime",
+  "original": "datetime",
+  "score": {
+    "speed": 0.556,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.6,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.702,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: No import binding for selected source 'datetime' changed during migration to 'ciso8601'.; line 1: New mypy finding after migration: Name \"parse_iso_datetime\" already defined on line 26  [no-redef]; line 1: New pylint finding after migration: function-redefined:function already defined line 26",
+  "confidence": "LOW",
+  "used_apis": [
+    "datetime.fromisoformat",
+    "datetime.replace(tzinfo=...)",
+    "datetime.timestamp"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

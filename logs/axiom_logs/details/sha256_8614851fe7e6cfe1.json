@@ -1,0 +1,37 @@
+{
+  "role": "ISO-8601 timestamp parsing",
+  "winner": "ciso8601",
+  "original": "datetime",
+  "score": {
+    "speed": 0.877,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.579,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'ciso8601' wins 'ISO-8601 timestamp parsing'. Confidence: HIGH. Total: 0.579 (speed=0.877, mem=1.0, sec=None, api=0.1). Migration note: ciso8601 returns naive datetimes for offset-less inputs differently in some versions; must verify tz-naive handling matches the UTC-assumption logic here",
+  "confidence": "HIGH",
+  "used_apis": [
+    "datetime.fromisoformat",
+    "timezone.utc",
+    "datetime.replace"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,52 @@
+--- pid_governor_ORIGINAL.py	2026-08-10 09:37:55.134236680 -0400
++++ pid_governor_VARIANT.py	2026-08-10 09:37:55.140348272 -0400
+@@ -44,22 +44,27 @@
+                   gains: PIDGains, load: float, dt: float) -> tuple:
+     """Advance controller + plant by one step. Returns (new_state, command)."""
+     error = setpoint - state.rpm
++    _t0 = state.integral + error * dt
+ 
+     # Integral term with symmetric anti-windup clamp.
+-    integral = clamp(state.integral + error * dt, -2500.0, 2500.0)
++    integral = clamp(_t0, -2500.0, 2500.0)
++    _spt_t1 = (error - state.prev_error)
+ 
+     # Derivative on the error signal.
+-    derivative = (error - state.prev_error) / dt
++    derivative = _spt_t1 / dt
++    _spt_t3 = gains.kp * error
++    _spt_t2 = _spt_t3 + gains.ki * integral
+ 
+-    command = gains.kp * error + gains.ki * integral + gains.kd * derivative
++    command = _spt_t2 + gains.kd * derivative
+     command = clamp(command, 0.0, 100.0)  # fuel valve is 0-100 %
+ 
+     # First-order engine: fuel raises RPM, friction + load remove it.
+     a = 60.0   # fuel-to-RPM gain
+     b = 1.0    # friction coefficient
+     rpm_next = state.rpm + dt * (a * command - b * state.rpm - load)
++    _spt_r1 = GovernorState(rpm_next, integral, error), command
+ 
+-    return GovernorState(rpm_next, integral, error), command
++    return _spt_r1
+ 
+ 
+ def run_scenario() -> list:
+@@ -79,11 +84,14 @@
+         else:
+             load = 300.0
+         state, command = governor_step(state, setpoint, gains, load, dt)
+-        samples.append((state.rpm, command))
++        _t2 = (state.rpm, command)
++        samples.append(_t2)
+     return samples
+ 
+ 
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print(f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}")
++    _t3 = f"steps={len(out)}"
++    print(_t3)
++    _t4 = f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}"
++    print(_t4)

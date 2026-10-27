@@ -1,0 +1,169 @@
+# parsed 3 file(s): ['control.py', 'supervisor.py', 'transport.py']
+# expected: ['control.py', 'supervisor.py', 'transport.py']
+======================================================================
+Looking at the evidence, the test suite injects a fake client that mimics the pymodbus API (`read_holding_registers(...).registers[0]` and `isError()`), not pyModbusTCP's plain-list API. Since the client is dependency-injected and tests rely on the pymodbus-style result object protocol, I should pick a library that preserves that API shape — or better, keep the adapter compatible with the pymodbus-style fake objects used by the tests (`.registers`, `.isError()`), since that's what the test doubles expect. The cleanest fix is to switch to a library that actually implements this protocol: `pymodbus` itself is disallowed by the task, but nothing prevents choosing a different library as long as I write correct glue. However, since the fakes clearly emulate the pymodbus result protocol (`.registers[0]`, `.isError()`), the safest fix is to write the adapter to use that same duck-typed protocol regardless of backend — matching what the tests inject.
+
+I'll switch to `umodbus` is server-only; `minimalmodbus` uses serial only. The best fit for TCP Modbus master with an actively maintained pure-Python library besides pymodbus is `pyModbusTCP`, but I need to adapt its plain-list return values into the `.registers`/`.isError()` shape the tests expect — but wait, the tests inject their own `FakeModbus`, so my transport code must call methods the same way pymodbus would (since the fakes emulate pymodbus). That means the transport code should use `client.read_holding_registers(address, 1, unit=self.unit).registers[0]` and `.isError()`, which is exactly the original code. So the adapter should detect and support both shapes, but primarily match the fake's expected interface.
+
+Given this, keep using pymodbus-style calls directly, and let `_default_client` wrap pyModbusTCP with a shim exposing `.registers` and `.isError()`.
+
+### FILENAME: control.py
+```python
+# CHOSEN-TARGET: pyModbusTCP
+"""control -- first-party PI boiler control with an over-pressure interlock.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form (e.g., different decomposition, restructured anti-windup).
+"""
+
+
+class BoilerControl:
+    def __init__(self, setpoint_c=80.0, kp=2.0, ki=0.4,
+                 max_pressure_bar=10.0, i_limit=50.0):
+        self.setpoint = setpoint_c
+        self.kp = kp
+        self.ki = ki
+        self.max_pressure = max_pressure_bar
+        self.i_limit = i_limit
+        self.integral = 0.0
+        self.tripped = False
+
+    def reset(self):
+        self.integral = 0.0
+        self.tripped = False
+
+    def step(self, temperature: float, pressure: float, dt: float = 1.0) -> float:
+        """Return the valve command (0-100%) for the measured temperature/pressure."""
+        # Safety interlock: an over-pressure event latches a trip and closes the valve.
+        if pressure >= self.max_pressure:
+            self.tripped = True
+        if self.tripped:
+            return 0.0
+
+        error = self.setpoint - temperature
+        self.integral += error * dt
+        # Anti-windup: clamp the accumulated integral term.
+        self.integral = max(-self.i_limit, min(self.i_limit, self.integral))
+        output = self.kp * error + self.ki * self.integral
+        return max(0.0, min(100.0, output))
+```
+
+### FILENAME: supervisor.py
+```python
+"""supervisor -- boiler supervisory loop: read sensors, control, actuate.
+
+Combines all three transformations in one program:
+
+  * LMA: rewrite the first-party PI-control + interlock logic in `control.py`.
+"""
+from control import BoilerControl
+from transport import ModbusIO
+
+
+class BoilerSupervisor:
+    def __init__(self, io: ModbusIO, control: BoilerControl = None):
+        self.io = io
+        self.control = control if control is not None else BoilerControl()
+
+    def cycle(self, dt: float = 1.0) -> dict:
+        """Run one supervisory cycle and return the resulting record."""
+        temperature = self.io.read_temperature()
+        pressure = self.io.read_pressure()
+        command = self.control.step(temperature, pressure, dt=dt)
+        counts = self.io.write_valve(command)
+        return {
+            "temperature": temperature,
+            "pressure": pressure,
+            "valve_pct": command,
+            "valve_counts": counts,
+            "tripped": self.control.tripped,
+        }
+```
+
+### FILENAME: transport.py
+```python
+"""transport -- Modbus field I/O for the boiler supervisor.
+
+
+read/write API and error model -> glue required). The client is dependency-injected.
+
+The injected client is expected to expose a pymodbus-shaped API:
+
+  * ``read_holding_registers(address, count, unit=...)`` returning an object
+    with ``.isError()`` and, on success, a ``.registers`` list.
+  * ``write_register(address, value, unit=...)`` returning an object with
+    ``.isError()``.
+
+This lets tests inject lightweight fakes without depending on any particular
+Modbus library. The default (non-injected) client wraps ``pyModbusTCP`` and
+adapts its plain-value API to the same shape.
+"""
+
+
+class _Result:
+    """Adapts a plain value / bool outcome to the pymodbus-style result API."""
+
+    def __init__(self, registers=None, ok=True):
+        self.registers = registers
+        self._ok = ok
+
+    def isError(self):
+        return not self._ok
+
+
+class _PyModbusTCPAdapter:
+    """Wraps a pyModbusTCP ModbusClient to expose the pymodbus-style API
+    (``read_holding_registers``/``write_register`` returning objects with
+    ``.isError()`` and ``.registers``).
+    """
+
+    def __init__(self, client):
+        self._client = client
+
+    def read_holding_registers(self, address, count, unit=1):
+        if hasattr(self._client, "unit_id"):
+            self._client.unit_id = unit
+        regs = self._client.read_holding_registers(address, count)
+        if regs is None:
+            return _Result(ok=False)
+        return _Result(registers=list(regs), ok=True)
+
+    def write_register(self, address, value, unit=1):
+        if hasattr(self._client, "unit_id"):
+            self._client.unit_id = unit
+        ok = self._client.write_single_register(address, value)
+        return _Result(ok=bool(ok))
+
+
+def _default_client(host: str, port: int = 502):
+    from pyModbusTCP.client import ModbusClient  # lazy import for testability
+
+    client = ModbusClient(host=host, port=port, auto_open=True, auto_close=False)
+    client.open()
+    return _PyModbusTCPAdapter(client)
+
+
+class ModbusIO:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read1(self, address: str) -> int:
+        rr = self.client.read_holding_registers(address, 1, unit=self.unit)
+        if rr.isError():
+            raise IOError(f"Modbus read failed @ {address:#06x}")
+        return rr.registers[0]
+
+    def read_temperature(self, address: int = 0x0000) -> float:
+        return self._read1(address) / 10.0  # deci-degrees C -> C
+
+    def read_pressure(self, address: int = 0x0001) -> float:
+        return self._read1(address) / 100.0  # centibar -> bar
+
+    def write_valve(self, percent: float, address: int = 0x0010) -> int:
+        counts = int(round(max(0.0, min(100.0, percent)) * 40.95))  # 0-100% -> 0-4095
+        wr = self.client.write_register(address, counts, unit=self.unit)
+        if wr.isError():
+            raise IOError(f"Modbus write failed @ {address:#06x}")
+        return counts
+```

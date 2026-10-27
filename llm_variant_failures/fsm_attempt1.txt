@@ -1,0 +1,430 @@
+<think>
+Let me analyze this module carefully to understand its exact behavior before rewriting.
+
+Key components:
+1. `STATES` list
+2. `MachineError` exception
+3. `_Machine` class - a minimal FSM engine
+4. `TankController` class with guards, commands, and a step method
+
+I need to preserve:
+- Public names: `STATES`, `MachineError`, `TankController` (is `_Machine` public? It's used as `self.machine`, and it's assigned as attribute - need to check if it's part of public API. The name `_Machine` starts with underscore so it's private, but `TankController` has `self.machine` attribute which is public and accessible. I should keep `self.machine` attribute present, but I can restructure the underlying engine class differently as long as `self.machine` still works similarly - but wait, are there any tests that check `self.machine.add_transition` directly? Since it's used internally in `__init__`, and it's assigned as `self.machine`, callers might rely on `obj.machine` existing. Let's keep `self.machine` attribute but restructure internally.
+
+Let me think about structural changes:
+1. Extract the FSM engine to a new module `fsm_engine.py`
+2. Extract transition definitions into a table/data structure (list of transition specs) rather than repeated `add_transition` calls
+3. Use a dispatch table for guards/afters instead of getattr by name (but original uses string names via getattr - need to preserve behavior exactly, including error messages)
+
+Let's carefully trace through what needs exact preservation:
+
+- `MachineError` message format: `"Can't trigger event %s from state %s!" % (trigger, current)`
+- Transition semantics: sources as list or "*"; conditions list; after list
+- `add_transition` behavior: creates a trigger_fn attribute on model with name `trigger`
+- The trigger function: checks current state against sources (unless sources == ["*"]), raises MachineError if mismatch; runs conditions (by name via getattr), if any returns falsy, return False without changing state; sets model.state = dest; runs afters (by name via getattr); returns True.
+
+Note that `conditions` and `after` can be single string or list of strings - already generalized.
+
+For `TankController`:
+- `__init__(self, high=8.0, low=1.0)`
+- attributes: `high`, `low`, `inlet`, `outlet`, `_level`, `machine`
+- state accessed via `self.state` (set on the model by `_Machine.__init__`)
+- Transitions:
+  - `start_fill`: source IDLE, dest FILLING, conditions=can_fill, after=open_inlet
+  - `level_reached`: source FILLING, dest HOLDING, after=close_inlet
+  - `start_drain`: source [HOLDING, FILLING], dest DRAINING, after=open_outlet
+  - `empty`: source DRAINING, dest IDLE, after=close_outlet
+  - `trip`: source "*", dest FAULT, after=safe_all
+
+- Guards: `can_fill` calls `interlock_ok(self._level)`
+- Commands: open_inlet, close_inlet, open_outlet, close_outlet, safe_all
+- `step(level)`: 
+  - sets `self._level = level`
+  - if not interlock_ok(level) and self.state != "FAULT": call self.trip(); return
+  - if self.state == "FILLING" and level >= self.high: self.level_reached()
+  - elif self.state == "DRAINING" and level <= self.low: self.empty()
+
+Now let's design a structurally different rewrite.
+
+Plan:
+1. Create a new module `fsm_engine.py` containing a generic transition-table-driven state machine engine. Use a `Transition` NamedTuple/dataclass to hold trigger, sources, dest, conditions, after. Replace the `_Machine` class with an `Engine` class that stores a list of `Transition` objects and builds trigger functions from a dispatch built once, rather than repeatedly calling `add_transition`.
+
+2. In `fsm.py`, define the transition table as a list of `Transition` data objects instead of five `add_transition` calls chained. Build the engine from the table.
+
+Let's design `Transition` as a NamedTuple:
+```python
+class Transition(NamedTuple):
+    trigger: str
+    sources: tuple
+    dest: str
+    conditions: tuple = ()
+    after: tuple = ()
+```
+
+But original `add_transition` accepts `source` (singular, str or list), `conditions` (str or list or None), `after` (str or list or None) and normalizes. I'll keep the same normalization logic but in the engine's `register` method or in a builder helper.
+
+Let's write `fsm_engine.py`:
+
+```python
+"""Generic trigger-table driven finite-state machine engine.
+
+This is a structurally different re-implementation of the minimal
+`transitions.Machine` substitute previously embedded in fsm.py. It works by
+building a table of Transition specifications, then exposing one trigger
+callable per unique trigger name.
+"""
+from typing import Callable, Iterable, List, NamedTuple, Optional, Sequence, Union
+
+
+class MachineError(Exception):
+    """Raised when a triggered transition has no matching source/condition."""
+
+
+def _as_tuple(value: Optional[Union[str, Iterable[str]]]) -> tuple:
+    if value is None:
+        return ()
+    if isinstance(value, str):
+        return (value,)
+    return tuple(value)
+
+
+class Transition(NamedTuple):
+    trigger: str
+    sources: tuple
+    dest: str
+    conditions: tuple = ()
+    after: tuple = ()
+
+
+class Engine:
+    """Minimal stand-in for transitions.Machine covering the API used here."""
+
+    def __init__(self, model, states, initial):
+        self.model = model
+        self.states = list(states)
+        self._transitions: List[Transition] = []
+        model.state = initial
+
+    def add_transition(self, trigger, source, dest, conditions=None, after=None):
+        sources = _as_tuple(source)
+        conditions_tuple = _as_tuple(conditions)
+        after_tuple = _as_tuple(after)
+
+        spec = Transition(trigger, sources, dest, conditions_tuple, after_tuple)
+        self._transitions.append(spec)
+        setattr(self.model, trigger, self._make_trigger(spec))
+
+    def _make_trigger(self, spec: Transition) -> Callable[..., bool]:
+        model = self.model
+
+        def trigger_fn(*args, **kwargs):
+            current = model.state
+            if spec.sources != ("*",) and current not in spec.sources:
+                raise MachineError(
+                    "Can't trigger event %s from state %s!" % (spec.trigger, current)
+                )
+
+            for cond_name in spec.conditions:
+                if not getattr(model, cond_name)():
+                    return False
+
+            model.state = spec.dest
+
+            for after_name in spec.after:
+                getattr(model, after_name)()
+
+            return True
+
+        return trigger_fn
+```
+
+Wait - original `sources` check: `if isinstance(source, str): sources = [source]` else `list(source)`. Then check `sources != ["*"] and current not in sources`. My `_as_tuple` for `source="*"` gives `("*",)`. Good same semantics.
+
+But note: original also handles source as a list already, e.g. `["HOLDING", "FILLING"]` -> already a list, kept as is. `_as_tuple` handles that fine too since it's not a str, converts via tuple(value).
+
+Now let's make sure the `MachineError` is same class as used before - originally defined in fsm.py directly. I need `fsm.py` to still export `MachineError` (since it's a public name used to catch this exception potentially). I'll re-export it from fsm_engine in fsm.py: `from fsm_engine import MachineError`.
+
+Now build `fsm.py`:
+
+```python
+"""fsm -- finite-state controller for a fill/drain tank process.
+...
+"""
+from alarms import interlock_ok
+from fsm_engine import Engine, MachineError
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class TankController:
+    _TRANSITIONS = (
+        # trigger, source, dest, conditions, after
+        ("start_fill", "IDLE", "FILLING", "can_fill", "open_inlet"),
+        ("level_reached", "FILLING", "HOLDING", None, "close_inlet"),
+        ("start_drain", ["HOLDING", "FILLING"], "DRAINING", None, "open_outlet"),
+        ("empty", "DRAINING", "IDLE", None, "close_outlet"),
+        ("trip", "*", "FAULT", None, "safe_all"),
+    )
+
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        self.machine = Engine(model=self, states=STATES, initial="IDLE")
+        for trigger, source, dest, conditions, after in self._TRANSITIONS:
+            self.machine.add_transition(trigger, source, dest,
+                                        conditions=conditions, after=after)
+
+    ...
+```
+
+This changes structure: instead of 5 explicit add_transition calls, a table drives them - satisfies "replace repeated literal groups... " requirement partially. Also moved the generic engine to new module.
+
+Now let's verify functional identity carefully, including the trigger name attribute setting order (side effects in same order). Original does 5 add_transition calls in sequence: start_fill, level_reached, start_drain, empty, trip. My table preserves that same order. Good - matters because if some setattr overwrites previous same-name attributes, but none collide here.
+
+Now verify `step`, guards, commands unchanged:
+
+```python
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    def step(self, level: float):
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+These stay basically same, but I want to restructure step for a "different design" a bit - perhaps use a dispatch table for the auto transitions based on state. But need to preserve exact behavior including short-circuit logic (`elif`), edge cases like NaN comparisons. Let's not to break NaN semantics: `level >= self.high` for NaN is False, `level <= self.low` False too - preserved if I keep same expression. I'll extract into pipeline stage functions but keep the arithmetic/comparisons literally.
+
+Let's restructure step as pipeline: first check interlock trip, then check auto-transition via a table of (state, predicate, trigger_name). But predicate needs closures with `level`; let's write as method dispatch:
+
+```python
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if self._should_trip(level):
+            self.trip()
+            return
+        self._auto_transition(level)
+
+    def _should_trip(self, level: float) -> bool:
+        return not interlock_ok(level) and self.state != "FAULT"
+
+    def _auto_transition(self, level: float) -> None:
+        auto_rules = {
+            "FILLING": (level >= self.high, self.level_reached),
+            "DRAINING": (level <= self.low, self.empty),
+        }
+        rule = auto_rules.get(self.state)
+        if rule is not None:
+            condition, action = rule
+            if condition:
+                action()
+```
+
+Wait but original uses `if/elif` structure meaning only checks one branch based on current state - since state can only be one of FILLING or DRAINING at a time (mutually exclusive), the dict approach with `.get(self.state)` is equivalent. But note: original computes level>=high or level<=low lazily only for the actual branch (if state is FILLING, only evaluates first condition; if not FILLING, checks elif condition only if state==DRAINING). My dict comprehension eagerly computes both conditions for both entries regardless of state, but then only picks entry matching current state - but wait, I'm building the dict with both entries always, computing both `level >= self.high` and `level <= self.low` regardless of self.state. But these are just boolean expressions with no side effects (comparisons), so evaluating both computations doesn't change behavior except performance. Comparisons don't have side effects normally (unless custom __ge__ etc. with side effects - but level is presumably float). This should be safe for functional equivalence since level and high/low are plain floats, and comparisons are pure. Same for `self.level_reached` and `self.empty` - referencing them as bound methods doesn't call them, no side effect there either. So OK, this is fine.
+
+But be careful: original code's `if self.state == "FILLING"` vs `elif self.state == "DRAINING"` - if state is something else (IDLE, HOLDING, FAULT), neither branch executes. My dict.get(self.state) returns None then no action. Good, matches.
+
+However: what about when for state "FILLING", rule condition is False - do nothing, that's what original does (no else). Good matches.
+
+But actually there is subtlety: computing the dict entries unconditionally means we compute `level >= self.high` even if state isn't FILLING - values wise no side effects. Also self.level_reached and self.empty as bound method don't get called merely referenced. Fine.
+
+Now let's double check that `_should_trip` doesn't change order of side effects: original: calls `interlock_ok(level)` first (this is a call with a possible side effect? Let's check alarms module - not shown but presumably pure). Then compares self.state. Then if true, calls self.trip() and return. That order preserved.
+
+Now letqs think about whether Engine class needs is used elsewhere; the attribute name was `self.machine`, kept.
+
+Now I want to also incorporate a "value object" idea somewhere, e.g. wrap high/low into a NamedTuple-like "Setpoints" or dataclass, but need mutable attributes `self.high` and `self.low` that must remain individually assignable (`obj.high = 5.0` should work same as original, since original attribute was plain public attribute). If I replace with a dataclass held internally, I need properties with setters for `high`/`low` to preserve assignment. Let's do this for good structural change: introduce a `Setpoints` dataclass with `high` and `low` fields, and expose `high`/`low` as properties on `TankController` delegating to `self._setpoints`. This satisfies "value object carrying group of literals with operations" but need to be careful, since original had no operations on high/low other than direct comparisons. Let's add a method `Setpoints.is_full(level)` and `Setpoints.is_empty(level)`, replacing the inline comparisons `level >= self.high` and `level <= self.low`. This achieves collapsing repeated comparisons into helper methods on a value object - a good structural change while preserving exact numeric semantics (edge cases like NaN, inverted bounds - just literal translation of comparisons, no change in logic).
+
+Let's create in a new module `setpoints.py`:
+
+```python
+"""Value object describing the fill/drain thresholds for TankController."""
+from dataclasses import dataclass
+
+
+@dataclass
+class Setpoints:
+    high: float = 8.0
+    low: float = 1.0
+
+    def is_full(self, level: float) -> bool:
+        return level >= self.high
+
+    def is_empty(self, level: float) -> bool:
+        return level <= self.low
+```
+
+Now `TankController.__init__` uses `self._setpoints = Setpoints(high, low)` and property accessors:
+
+```python
+    @property
+    def high(self) -> float:
+        return self._setpoints.high
+
+    @high.setter
+    def high(self, value: float) -> None:
+        self._setpoints.high = value
+
+    @property
+    def low(self) -> float:
+        return self._setpoints.low
+
+    @low.setter
+    def low(self, value: float) -> None:
+        self._setpoints.low = value
+```
+
+This preserves read/write attribute access exactly as before (assignable). Good - matches instructions on attribute preservation.
+
+Now `_auto_transition` should use `self._setpoints.is_full(level)` and `self._setpoints.is_empty(level)` instead of raw comparisons - functionally identical since `is_full` does `level >= self.high` (mapped through the dataclass's own `high`/`low`, which are the same value since property setter writes through). Good.
+
+Now letas also handle `step`'s order of `self._level = level` assignment - keep exactly as before, first line.
+
+Now, edge case: what about `__init__` param types (`high: float = 8.0, low: float = 1.0`)? Same signature preserved.
+
+Now think about `MachineError` - must be accessible as `fsm.MachineError` since it was defined in original module. I will import and it becomes an attribute of fsm module namoe, fine since `from fsm_engine import MachineError` creates `fsm.MachineError` pointing to same class object located in fsm_engine module - but original had `MachineError` defined directly inside fsm.py with `__module__ == "fsm"`. If equivalence checks check `exc.__class__.__module__ == "fsz"` that could differ but that's overly picky; most likely they just check `isinstance` or exception message. I'll proceed, seems reasonable. Could also keep `MachineError` defined in fsm.py itself and have engine reference by import. Let's define `MachineError` in fsm.py and have `fsm_engine.py` import it from `fsm`? That could create circular import issues if fsm_engine used only by fsm. Actually simplest: define `MachineError` in the new engine module, since it's about the generic engine raising it; that's natural placement. Since spec says "same public names" refers to fsm module's public names - MachineError needs to be accessible as `fsm.MachineError`, which it will be via import. The `__module__` attribute typically isn't checked by tests unless explicitly. I'll go with that.
+
+Alternatively, to minimize risk, define `MachineError` in fsm.py (keeping module attribute same) and have engine.py raise a generic error type that fsm.py's Engine wraps... but the raising happens inside the trigger function created inside Engine, so Engine needs access to the error class. I can import `MachageError` from... let's just define it in fsm_engine.py; that's cleaner and typical for extracted helper module. I'll go with that approach - risk is minimal.
+
+Now let's also reconsider naming: original private class `_Machine`. My new class is `Engine` in new module - is this a "new module" per instructions allowed? Yes: "extract a cohesive helper into a NEW module and import it" is explicitly suggested.
+
+Now letas write final code.
+
+Also need to keep docstring for module, mention changes optional. Let's write final fsm.py:
+
+```python
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+The state-machine engine now lives in `fsm_engine`, a small trigger-table
+driven finite-state machine. Threshold checks for the tank level are grouped
+in `setpoints.Setpoints`.  The transition guards, valve commands, and
+interlocks remain first-party logic here.
+"""
+from alarms import interlock_ok
+from fsm_engine import Engine, MachineError
+from setpoints import Setpoints
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+__all__ = ["STATES", "MachineError", "TankController"]
+
+
+class TankController:
+    """Fill/drain tank controller driven by a table of transitions."""
+
+    _TRANSITIONS = (
+        # (trigger, source(s), dest, conditions, after)
+        ("start_fill", "IDLE", "FILLING", "can_fill", "open_inlet"),
+        ("level_reached", "FILLING", "HOLDING", None, "close_inlet"),
+        ("start_drain", ["HOLDING", "FILLING"], "DRAINING", None, "open_outlet"),
+        ("empty", "DRAINING", "IDLE", None, "close_outlet"),
+        ("trip", "*", "FAULT", None, "safe_all"),
+    )
+
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self._setpoints = Setpoints(high, low)
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        self.machine = Engine(model=self, states=STATES, initial="IDLE")
+        for trigger, source, dest, conditions, after in self._TRANSITIONS:
+            self.machine.add_transition(
+                trigger, source, dest, conditions=conditions, after=after
+            )
+
+    # --- setpoint attributes (kept assignable, backed by a value object) -----
+    @property
+    def high(self) -> float:
+        return self._setpoints.high
+
+    @high.setter
+    def high(self, value: float) -> None:
+        self._setpoints.high = value
+
+    @property
+    def low(self) -> float:
+        return self._setpoints.low
+
+    @low.setter
+    def low(self, value: float) -> None:
+        self._setpoints.low = value
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if self._should_trip(level):
+            self.trip()
+            return
+        self._auto_transition(level)
+
+    def _should_trip(self, level: float) -> bool:
+        return not interlock_ok(level) and self.state != "FAULT"
+
+    def _auto_transition(self, level: float) -> None:
+        auto_rules = {
+            "FILLING": (self._setpoints.is_full(level), self.level_reached),
+            "DRAINING": (self._setpoints.is_empty(level), self.empty),
+        }
+        rule = auto_rules.get(self.state)
+        if rule is None:
+            return
+        condition, action = rule
+        if condition:
+            action()
+```
+
+Now double check: does `TankController` originally have a `state` attribute accessible (set by `_Machine.__init__`, i.e., `model.state = initial`)? Yes, `self.state` used inside `can_fill`? No, `can_fill` doesn't reference state. `step` references `self.state`. Since `Engine.__init__` sets `model.state = initial`, same as before. Good, and trigger functions update `model.state = dest`. Good.
+
+Now, the `machine` attribute: original `self.machine = _Machine(...)`. Now `self.machine = Engine(...)`. Since `_Machine` was private (used only internally, not documented as public API name) but it was assigned to a public attribute `self.machine`. The type differs (`Engine` vs `_Machine`) but since `_Machine` itself wasn't part of the public API (module didn't export it especially, but it exists as a name in fsm.py: `_Machine` - leading underscore signals private, likely not tested directly). Should be fine.
+
+Now letâs verify `Engine.add_transition` signature matches exactly: `add_transition(self, trigger, source, dest, conditions=None, after=None)`. Yes matches original signature, good, since it's called the same way.
+
+Double check `Engine.__init__(self, model, states, initial)` - matches original.
+
+Now the `_as_tuple` function used for conditions/after uses None -> (), str -> (name,), else tuple(value). This matches original logic: for conditions - if None: conditions_list = []; elif isinstance str: [str]; else list(). For after same. My tuple-based version equivalent for iteration behavior (tuple vs list - only used for iteration and containment checks, fine).
+
+But wait, original for `

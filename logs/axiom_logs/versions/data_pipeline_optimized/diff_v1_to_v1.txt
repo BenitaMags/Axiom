@@ -1,0 +1,232 @@
+--- v1_original.py
++++ v1_patched.py
+@@ -12,13 +12,10 @@
+ 
+
+ AXIOM should detect: json vs orjson, requests vs httpx
+
+ """
+
+-
+
+ import json
+
+ import hashlib
+
+ import datetime
+
+-import requests
+
+-
+
+-# ── Record deduplication ──────────────────────────────────────────────────────
+
++import httpx
+
+ 
+
+ def checksum(record: dict) -> str:
+
+     """
+
+@@ -27,7 +24,6 @@
+     """
+
+     raw = json.dumps(record, sort_keys=True).encode()
+
+     return hashlib.md5(raw).hexdigest()
+
+-
+
+ 
+
+ def deduplicate(records: list[dict]) -> list[dict]:
+
+     seen = set()
+
+@@ -39,20 +35,13 @@
+             unique.append(record)
+
+     return unique
+
+ 
+
+-
+
+-# ── Serialization ─────────────────────────────────────────────────────────────
+
+-
+
+ def serialize(records: list[dict]) -> bytes:
+
+     """Serialize records to JSON bytes for storage or transmission."""
+
+-    return json.dumps(records, default=str).encode("utf-8")
+
+-
+
++    return json.dumps(records, default=str).encode('utf-8')
+
+ 
+
+ def deserialize(data: bytes) -> list[dict]:
+
+     """Deserialize JSON bytes back to records."""
+
+-    return json.loads(data.decode("utf-8"))
+
+-
+
+-
+
+-# ── HTTP enrichment ───────────────────────────────────────────────────────────
+
++    return json.loads(data.decode('utf-8'))
+
+ 
+
+ def enrich_record(record: dict, api_url: str) -> dict:
+
+     """
+
+@@ -60,39 +49,24 @@
+     Uses requests — synchronous, blocking.
+
+     """
+
+     try:
+
+-        response = requests.post(
+
+-            api_url,
+
+-            json=record,
+
+-            timeout=5,
+
+-            headers={"Content-Type": "application/json"},
+
+-        )
+
++        response = httpx.post(api_url, json=record, timeout=5, headers={'Content-Type': 'application/json'})
+
+         response.raise_for_status()
+
+         enrichment = response.json()
+
+         return {**record, **enrichment}
+
+-    except requests.RequestException as e:
+
+-        record["_enrich_error"] = str(e)
+
++    except httpx.RequestException as e:
+
++        record['_enrich_error'] = str(e)
+
+         return record
+
+-
+
+ 
+
+ def batch_enrich(records: list[dict], api_url: str) -> list[dict]:
+
+     """Enrich a batch of records sequentially."""
+
+     return [enrich_record(r, api_url) for r in records]
+
+ 
+
+-
+
+-# ── Timestamp utilities ───────────────────────────────────────────────────────
+
+-
+
+ def add_timestamp(record: dict) -> dict:
+
+     """Add an ISO 8601 processing timestamp to a record."""
+
+-    record["processed_at"] = datetime.datetime.utcnow().isoformat() + "Z"
+
++    record['processed_at'] = datetime.datetime.utcnow().isoformat() + 'Z'
+
+     return record
+
+ 
+
+-
+
+-# ── Pipeline ──────────────────────────────────────────────────────────────────
+
+-
+
+-def run_pipeline(
+
+-    raw_records: list[dict],
+
+-    enrich_url: str = "https://api.example.com/enrich",
+
+-) -> bytes:
+
++def run_pipeline(raw_records: list[dict], enrich_url: str='https://api.example.com/enrich') -> bytes:
+
+     """
+
+     Full pipeline:
+
+       1. Deduplicate
+
+@@ -104,20 +78,13 @@
+     records = [add_timestamp(r) for r in records]
+
+     records = batch_enrich(records, enrich_url)
+
+     return serialize(records)
+
+-
+
+-
+
+-if __name__ == "__main__":
+
+-    sample = [
+
+-        {"id": 1, "name": "Alice", "score": 95},
+
+-        {"id": 2, "name": "Bob",   "score": 87},
+
+-        {"id": 1, "name": "Alice", "score": 95},  # duplicate
+
+-        {"id": 3, "name": "Carol", "score": 91},
+
+-    ]
+
++if __name__ == '__main__':
+
++    sample = [{'id': 1, 'name': 'Alice', 'score': 95}, {'id': 2, 'name': 'Bob', 'score': 87}, {'id': 1, 'name': 'Alice', 'score': 95}, {'id': 3, 'name': 'Carol', 'score': 91}]
+
+     result = deduplicate(sample)
+
+-    print(f"Deduplicated: {len(sample)} → {len(result)} records")
+
++    print(f'Deduplicated: {len(sample)} → {len(result)} records')
+
+     serialized = serialize(result)
+
+-    print(f"Serialized: {len(serialized)} bytes")
+
++    print(f'Serialized: {len(serialized)} bytes')
+
+     restored = deserialize(serialized)
+
+-    print(f"Round-trip OK: {restored == result}")
+
++    print(f'Round-trip OK: {restored == result}')
+
+     checksum_val = checksum(result[0])
+
+-    print(f"Checksum: {checksum_val}")
+
++    print(f'Checksum: {checksum_val}')

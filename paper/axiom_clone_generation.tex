@@ -1,0 +1,612 @@
+% AXIOM --- preliminary short paper on the clone-generation (mutator) layer.
+%
+% Compiles with plain pdflatex on a stock TeX Live:
+%     pdflatex axiom_clone_generation.tex   (twice, for references)
+%
+% To move to a venue template later, replace the \documentclass line with
+% \documentclass[conference]{IEEEtran} or \documentclass[sigconf]{acmart};
+% the body, tables and bibliography carry over unchanged.
+%
+% TODO before submission: confirm full author names, affiliations and emails.
+
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[margin=0.75in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{balance}
+\sloppy
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  framesep=3pt,
+  rulecolor=\color{gray!50},
+  aboveskip=6pt,
+  belowskip=4pt,
+}
+
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\title{\vspace{-1.5em}\textbf{Length-Targeted Generation of Equivalence-Checked\\
+Program Clones for Software Diversity}\vspace{-0.5em}}
+
+\author{
+  Benita Kingsley \and Prof.~Agadakos \\
+  \small Montclair State University \\
+  \small \texttt{kingsleyprib1@montclair.edu}
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Software monoculture means one exploit generalises across every deployment of
+a program. N-version diversity counters this by shipping structurally distinct
+binaries that behave identically, but producing those variants by hand does not
+scale. We present the clone-generation layer of AXIOM, a system that produces
+program variants which are structurally different, behaviourally identical, and
+close to a caller-specified size. The layer composes a catalogue of 17
+semantics-preserving transformations under a length-targeted beam search adapted
+from Auto-SPT, and gates every candidate through a four-layer equivalence oracle
+built on recorded golden vectors rather than tests alone. Across 24
+(module,~target-size) cells on a four-module industrial control corpus, the
+search explored 2{,}398 candidates and returned an oracle-verified variant in
+24/24 cells, with control-flow structure altered in 16/24. On a second,
+independently authored corpus the layer diversified 12 of 18 runs with 11
+accepted by the oracle, restructuring control flow entirely on three of six
+programs, though a seeding defect in that build means those runs do not yet
+demonstrate migration and diversification composed end to end. Growing the catalogue
+from 12 to 17 rules raised mean rename-insensitive diversity by 73\% and
+improved length accuracy. An ablation on the ranking metric changed the selected
+variant in only 3/24 cells and never changed length accuracy, which we trace to
+the lexicographic objective. We report these as preliminary results and are
+explicit about what the oracle does and does not establish.
+\end{abstract}
+
+\section{Introduction}
+
+A vulnerability in a widely deployed program is a vulnerability in every
+installation of it. This is the software monoculture problem, and the classical
+answer is N-version programming: run several implementations that agree on
+behaviour but differ in structure, so that a memory-corruption exploit tuned to
+one layout fails on the others. The obstacle has always been cost. Writing
+independent implementations is expensive, and automated diversification has
+historically operated at the binary or compiler level, where the transformations
+are opaque to the developer and hard to audit.
+
+This paper describes the component of AXIOM that generates such variants at the
+\emph{source} level. Three properties make the problem non-trivial:
+
+\begin{enumerate}
+\item \textbf{Equivalence must be checked, not assumed.} A transformation that
+      is semantics-preserving in principle can still be misapplied. Program
+      equivalence is undecidable in general (Rice's theorem), so we do not claim
+      proof; we claim equivalence \emph{with respect to a stated set of checks},
+      and we state them.
+\item \textbf{Diversity must survive the obvious objection.} A variant produced
+      by renaming identifiers is not diverse in any useful sense. Our ranking
+      metric is computed after discarding every identifier, so renaming cannot
+      inflate it.
+\item \textbf{Size is a deployment constraint.} A variant that is three times
+      the size of the original may not fit the target. We treat a caller-supplied
+      line target as the primary search objective, with diversity as a
+      tie-break --- not the reverse.
+\end{enumerate}
+
+This is a preliminary report on one layer of a larger system. We report what we
+measured, and Section~\ref{sec:limits} states plainly what these numbers do not
+establish.
+
+\section{Approach}
+
+\subsection{Transformation catalogue}
+
+The catalogue holds 17 semantics-preserving transformations (SPTs), of which the
+four LLM-generated rules are opt-in: they are loaded only when the caller asks
+for them, so the standalone sweeps of Section~\ref{sec:catalogue} use all 17
+while the pipeline deployment of Section~\ref{sec:deploy} used the 13
+hand-written rules alone. Thirteen are
+hand-written using LibCST, a format-preserving concrete syntax tree library:
+transforming through a CST rather than an AST means every part of the file the
+transformation did not touch comes back byte-identical, so a reviewer reads a
+minimal diff instead of a whole-file reformat. Four further rules were
+LLM-generated from a specification and then subjected to the same oracle as
+every other rule.
+
+Rules fall into three groups. \emph{Statement-level} rules change expression
+structure without touching control flow (\code{split\_return\_expression},
+\code{extract\_subexpression}, \code{expand\_aug\_assign}).
+\emph{Control-flow} rules change the branch graph (\code{ternary\_to\_if\_else},
+\code{invert\_if\_else}, \code{demorgan\_branch\_swap},
+\code{for\_range\_to\_while}, \code{merge\_nested\_if}). \emph{Binding} rules
+change names and temporaries (\code{rename\_locals},
+\code{inline\_single\_use\_return}).
+
+The distinction matters because the two groups move different metrics, and a
+catalogue weighted only toward the first produces variants that are longer but
+structurally unchanged --- a failure mode we observed directly and address in
+Section~\ref{sec:catalogue}.
+
+\begin{figure}[t]
+\begin{lstlisting}[caption={Original (top) and variant (bottom) after
+\code{ternary\_to\_if\_else} then \code{split\_return\_expression}.},
+                   captionpos=b,label=lst:example]
+def level(counts):
+    return (0.0 if counts < 0
+            else counts * 0.0025)
+\end{lstlisting}
+\vspace{-8pt}
+\begin{lstlisting}
+def level(counts):
+    if counts < 0:
+        return 0.0
+    scaled = counts * 0.0025
+    return scaled
+\end{lstlisting}
+\vspace{-4pt}
+\centering
+\small
+\begin{tabular}{lrl}
+\toprule
+Metric & Value & Reduces the code to \\
+\midrule
+\code{ncd}            & 0.3600 & compressed bytes \\
+\code{ast\_structural}& 0.2500 & ordered node types \\
+\code{du\_chain}      & 0.5000 & define--use pairs \\
+\code{cfg\_shape}     & 1.0000 & branches by depth \\
+\midrule
+\code{composite}      & 0.6250 & \\
+\bottomrule
+\end{tabular}
+\caption{The same edit, measured five ways.}
+\label{tab:example}
+\end{figure}
+
+Listing~\ref{lst:example} makes the metrics concrete. \code{cfg\_shape} reaches
+$1.0$ because the original contains no branch construct at all
+($\varnothing$) while the variant contains one (\code{\{If@0: 1\}}), so the
+Jaccard intersection is empty. \code{ast\_structural} reports only $0.25$ over
+the same edit, because 17 of the node types still align in order. The two are
+not in conflict --- they answer different questions, which is why we report
+several rather than one, and why \code{composite} weights both equally.
+
+\subsection{Four-layer equivalence oracle}
+
+Every candidate is checked before it may enter the beam. All four layers must
+pass, evaluated cheapest-first in a scratch copy of the program, in a
+subprocess, so a candidate that hangs or corrupts state cannot affect the next:
+
+\begin{enumerate}
+\item \textbf{Import integrity} --- every first-party module still imports.
+\item \textbf{Golden regression} --- every probe reproduces its recorded value
+      \emph{exactly}. Tolerance is zero; float reassociation is therefore
+      forbidden, which is deliberate for control code.
+\item \textbf{Invariants} --- properties that must hold for \emph{any} input,
+      swept over ranges rather than checked at points.
+\item \textbf{Coverage} --- the program's own test suite still passes.
+\end{enumerate}
+
+Golden vectors are recorded once by executing the \emph{pristine} program and
+frozen. They are never re-recorded after a rewrite: an oracle that re-derives
+its answer key from the code under test agrees with whatever it is given, which
+is the one failure mode a golden-vector scheme must not have. Probes are chosen
+for branch coverage rather than representativeness, since a golden set that
+never enters a fault path cannot detect a broken fault path.
+
+Invariants are validated against the pristine program \emph{before} being
+trusted. This caught a real defect in our own harness: an early invariant
+asserted that a counts-to-level conversion clamped to $[0, 10]$, which the
+original does not do --- it returns $-1.22$ for $-500$ counts. An invariant the
+original violates rejects a perfect copy, and the oracle would have looked
+rigorous while accepting nothing.
+
+\subsection{Diversity metrics}
+
+We report five metrics, of which two are rename-insensitive and are the only
+ones we make claims from.
+
+\code{ast\_structural} is the ranking signal: the pre-order sequence of AST node
+\emph{types}, with all identifiers discarded, compared by sequence alignment,
+reported as $1 - \mathrm{ratio}$. A histogram of node types proved far too
+insensitive at this scale --- extracting a subexpression from an 89-line module
+moved a cosine distance by ${\sim}0.0003$, which cannot rank anything --- so the
+comparison is order-aware.
+
+\code{cfg\_shape} counts control-flow constructs tagged by nesting depth
+(\code{If@0}, \code{For@1}) and takes a weighted Jaccard distance. It is
+identifier-free, so branch restructuring registers and renaming does not.
+
+\code{composite} is $0.5\cdot\code{ast\_structural} + 0.5\cdot\code{cfg\_shape}$.
+The equal weighting is deliberate: \code{ast\_structural} alone rewards
+statement-level padding without ever altering control flow.
+
+\code{ncd} is normalised compression distance~\cite{ncd}, used unmodified with
+zlib as the compressor. \code{du\_chain} is a Jaccard distance~\cite{jaccard}
+over define--use pairs. Both are explicitly rename-sensitive and we do not rank
+by them.
+
+\paragraph{Provenance of these metrics.} The ingredients are established;
+the specific measures are ours, and we state which is which because the
+distinction affects how much weight the numbers can carry. Normalised
+compression distance and the Jaccard index are standard and used as published.
+\code{ast\_structural} composes two standard pieces --- AST node-type
+sequences and Ratcliff/Obershelp sequence matching~\cite{ratcliff} --- but the
+composition is our own. \code{du\_chain} approximates define--use chains by
+collecting \emph{(function, used-name)} pairs rather than performing
+reaching-definitions analysis. \code{cfg\_shape} is not a control-flow graph in
+the formal sense: it has no basic blocks and no edges, only a depth-tagged
+histogram of branch and loop constructs. \code{composite} weights its two terms
+equally by judgement, not by fitting.
+
+Consequently none of these is validated against an external referent. We can
+show that a variant differs structurally by these measures; we cannot yet show
+that the difference predicts anything an attacker or a clone detector would
+care about. Correlating them against an independent clone detector --- the
+objective Auto-SPT optimises directly --- is the cheapest way to ground them
+and is planned work.
+
+\subsection{Length-targeted beam search}
+
+The search skeleton is Auto-SPT's Algorithm 1 --- maintain a beam of the $B$
+best candidates and iterate expand, filter, select --- with its clone-detector
+objective replaced by a size objective. Each iteration applies every rule to
+every beam member, discards candidates that are not valid Python, submits the
+remainder to the oracle, and sorts the survivors by
+
+\begin{equation}
+\mathrm{key}(c) = \bigl(\,\lvert \mathrm{lines}(c) - T \rvert,\; -D(x, c)\,\bigr)
+\label{eq:key}
+\end{equation}
+
+where $T$ is the requested line target and $D$ the ranking metric. The key is a
+tuple compared lexicographically. Diversity can therefore never buy back a
+length miss; it only orders candidates already tied on length. This is what
+keeps the length control honest, and it is the substantive departure from
+Auto-SPT, whose objective is a clone-detector score.
+
+The search stops when
+\begin{equation}
+\lvert \mathrm{lines}(c^{*}) - T \rvert \;\le\; \max\bigl(1,\ \lceil \lvert T - \mathrm{lines}(x) \rvert \cdot \tau \rceil \bigr)
+\label{eq:tol}
+\end{equation}
+with $\tau = 0.10$. Tolerance scales with the requested \emph{change}, not the
+file size. Sizing it off the absolute count makes it meaningless: a 10\% band on
+a 97-line target is $\pm 9$ lines, so a search asked to add 8 lines could add
+none and stop satisfied.
+
+\section{Evaluation}
+
+\subsection{Corpora}
+
+The primary corpus is four industrial-control modules (89--134 LOC): a PID
+governor, a pump controller, a protective relay, and a sensor pipeline. Its
+oracle holds 1{,}904 recorded observations across the four modules.
+
+The second corpus is an independently authored set of twelve industrial-control
+programs in four categories, of which categories C and D specify that
+first-party logic must be diversified in addition to any library substitution.
+Categories A and B specify substitution only, with no logic mutation, and are
+therefore outside this layer's scope; the six C/D programs are the ones this
+paper uses. We authored a golden-vector oracle for those six, holding 170
+recorded observations, following the same four-layer construction described in
+Section~2.2. This corpus is the deployment check of
+Section~\ref{sec:deploy}: it was not written by us, and it exercises the layer
+inside the full pipeline rather than standalone.
+
+Each module is swept at six size ratios ($0.85$, $0.90$, $1.00$, $1.10$,
+$1.20$, $1.30$ of original length), giving 24 (module,~target) cells. Beam size
+3, at most 6 iterations.
+
+\subsection{Main results}
+
+\begin{table}[t]
+\centering
+\caption{Per-module results over 24 cells. Diversity values are means over the
+six size targets; \code{cfg${>}0$} counts cells whose winning variant altered
+control-flow structure at all.}
+\label{tab:main}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrr}
+\toprule
+Module & LOC & Cand. & \code{ast} & \code{cfg} & \code{cfg${>}0$} \\
+\midrule
+pid\_governor      &  89 &  539 & 0.0616 & 0.1429 & 3/6 \\
+pump\_controller   &  96 &  735 & 0.0522 & 0.1524 & 5/6 \\
+protective\_relay  & 134 &  594 & 0.1000 & 0.0556 & 3/6 \\
+sensor\_pipeline   & 114 &  530 & 0.0573 & 0.1528 & 5/6 \\
+\midrule
+All                &     & 2398 & 0.0678 & 0.1259 & 16/24 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:main} reports the sweep. The search explored 2{,}398 candidates
+and returned an oracle-verified variant in \textbf{24/24} cells, in 395\,s of
+total search time (4.83 iterations per cell on average).
+
+Two figures deserve comment rather than celebration. First, all 2{,}398
+candidates that reached the oracle passed it. This is what one expects when the
+transformations are semantics-preserving by construction, but it does mean the
+sweep provides no evidence that the oracle \emph{discriminates}. We establish
+that separately: injecting a deliberate fault into an otherwise-correct module
+is rejected at the import layer, and in pipeline deployment the same oracle
+rejected 3 of 18 runs (Section~\ref{sec:deploy}). Second, only 5/24 cells hit
+their line target exactly, with a mean absolute error of 8.88 lines. Length
+control is best-effort, and we report the miss rather than reporting only the
+cells that landed.
+
+\code{protective\_relay} is the clearest negative result: highest
+\code{ast\_structural} (0.1000) but lowest \code{cfg\_shape} (0.0556) and the
+worst length error. It has no shrink path in the current catalogue --- only two
+rules can remove lines --- so every sub-unity ratio for that module is
+unreachable.
+
+\subsection{Catalogue growth}
+\label{sec:catalogue}
+
+\begin{table}[t]
+\centering
+\caption{Effect of catalogue size. Identical corpus, identical 24 cells,
+identical search parameters.}
+\label{tab:catalogue}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Catalogue & \code{ast} & Cand. & Mean $\lvert$err$\rvert$ & On target \\
+\midrule
+12 rules & 0.0392 & 1402 & 12.50 & 4/24 \\
+16 rules & 0.0652 & 2160 & 10.08 & 4/24 \\
+17 rules & 0.0678 & 2398 &  8.88 & 5/24 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:catalogue} isolates the effect of the catalogue. Adding the four
+LLM-generated rules and then one hand-written rule raised mean
+rename-insensitive diversity by \textbf{73\%} and cut mean length error from
+12.50 to 8.88 lines. The gain is superlinear in rule count because rules compose:
+each new rule multiplies the reachable space rather than adding to it.
+
+The single hand-written addition, \code{for\_range\_to\_while}, was motivated by
+a specific failure. Under the 12-rule catalogue most winning variants scored
+\code{cfg\_shape}${}=0$ --- structurally identical control flow --- which
+undermines the entire premise. An earlier attempt, \code{elif\_to\_nested\_if},
+scored exactly $0$ because \code{elif} and \code{else: if} are indistinguishable
+in the Python AST. Rewriting counted \code{for} loops as explicit \code{while}
+loops does change the graph, and control-flow structure is now altered in 16/24
+cells.
+
+\subsection{Ranking-metric ablation}
+
+We re-ran the full sweep with the ranking metric changed from
+\code{ast\_structural} to \code{composite}, holding everything else fixed. The
+selected variant differed in \textbf{3 of 24} cells, and achieved line counts
+were \emph{identical in 24/24}.
+
+This is the behaviour Equation~\ref{eq:key} predicts: because the key is
+lexicographic and length dominates, changing the ranking metric can only reorder
+candidates that are already tied on length. The bottleneck on this corpus is the
+reachable set --- what the catalogue can produce --- not the choice among
+what it produces. We report this as a negative result. It also means the metric
+choice is safe to revisit later without invalidating length-accuracy claims.
+
+\subsection{Deployment inside the full pipeline}
+\label{sec:deploy}
+
+\begin{table}[t]
+\centering
+\caption{Second corpus, three seeds per program, running inside the full
+pipeline. \code{Div.} counts seeds in which the agent applied at least one
+transformation; \code{Eq.} counts those the oracle then accepted. The corpus's
+other six programs (categories A and B) carry no logic-mutation requirement, so
+the pipeline does not route them to this layer and they contribute none of the
+18 runs; they are absent here because the layer was never invoked on them, not
+because the results were poor.}
+\label{tab:deploy}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrr}
+\toprule
+Program & Cat & Div. & Eq. & \code{comp} & \code{cfg} \\
+\midrule
+C1\_pid\_pump      & C & 0/3 & --- & ---    & ---    \\
+C2\_tank\_fsm      & C & 0/3 & --- & ---    & ---    \\
+C3\_anomaly        & C & 3/3 & 3/3 & 0.5448 & 1.0000 \\
+D1\_boiler         & D & 3/3 & 2/3 & 0.2110 & 0.3333 \\
+D2\_pump\_station  & D & 3/3 & 3/3 & 0.5529 & 1.0000 \\
+D3\_telemetry      & D & 3/3 & 3/3 & 0.5438 & 1.0000 \\
+\midrule
+All                & & 12/18 & 11/12 & 0.4631 & 0.8333 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The layer runs as an agent inside AXIOM's migration pipeline, invoked on
+first-party logic after a library substitution. These runs used the 13
+hand-written rules only; the four generated rules are opt-in and the pipeline
+did not request them, so this deployment exercises a smaller catalogue than
+Table~\ref{tab:catalogue}'s best row. Table~\ref{tab:deploy} reports
+the six C/D programs of the second corpus at three seeds each. A defect in how
+the search was seeded --- described at the end of this section --- means these
+runs diversified the pristine modules rather than the migrated ones; we report
+them for what they do measure and are explicit about what they do not.
+
+Three results matter here. First, \textbf{three of six programs reached}
+\code{cfg\_shape}${}={}$\textbf{1.0} --- control-flow structure entirely
+restructured, with every recorded probe value still reproducing exactly. Mean
+composite diversity on this corpus (0.4631) is substantially higher than on the
+primary corpus (0.0968), because these programs are smaller (25--38 LOC), so
+each applied rule moves a larger fraction of the structure. That is a property
+of program size, not evidence that the layer works better here.
+
+Second, the \textbf{single oracle rejection} --- one D1 seed of three --- is the
+discriminating evidence the main sweep lacks. The same rule chain that the
+oracle accepted on two seeds it rejected on the third.
+
+Third, C1 and C2 produced \textbf{no transformations at all}. Both are cases
+where the specified target is not an installable package but a
+reimplementation, and the upstream resolver stage returns no substitution to
+diversify; the layer is never reached with anything to work on. This is a
+pipeline-integration limit rather than a limit of the catalogue.
+
+\paragraph{Refusal as a measurable outcome.} Two further programs in the same
+corpus specify a migration that cannot be written: both ask for
+\code{pymodbus}${\rightarrow}$\code{minimalmodbus}, but the originals speak
+Modbus over TCP and \code{minimalmodbus} is serial-only, exposing no TCP entry
+point at all. The correct behaviour is to decline.
+
+Scored as ordinary tasks these two punish the only right answer, so we score
+them as negative controls: correct means \emph{not} completing the
+substitution. Table~\ref{tab:controls} separates the two populations.
+
+\begin{table}[t]
+\centering
+\caption{The twelve-program corpus split into ten ordinary migrations and two
+negative controls, three seeds each. A migration counts as correct when the
+substitution completed, the source actually changed, and the program's tests
+passed; a control counts as correct when the substitution was \emph{not}
+completed. ``w/ reason'' counts controls declined with a recorded stage
+failure rather than silently.}
+\label{tab:controls}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrr}
+\toprule
+Configuration & Migr. & Ctrl & w/ reason & Overall \\
+              & (30)  & (6)  & (6)       & (36) \\
+\midrule
+single\_shot      & 20/30 & 0/6 & 0/6 & 20/36 \\
+proteus\_no\_verif & 12/30 & 6/6 & 0/6 & 18/36 \\
+proteus\_full     & 18/30 & 6/6 & \textbf{6/6} & \textbf{24/36} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The full pipeline declined all six control runs with a recorded stage failure
+--- three at the substitution agent, three at the verifier. The
+no-verification ablation also declined all six, but recorded no reason for any
+of them, which is a materially weaker result: an arm that does nothing on every
+program would score full marks on negative controls, so outcome alone is cheap
+credit and the ``w/ reason'' column is what separates deliberate refusal from
+inactivity. The single-prompt baseline completed the impossible substitution in
+all six runs, and our un-injected factory check flags five of those six as
+raising on first real call.
+
+We report this because a system that refuses cannot demonstrate that refusal in
+a success-rate table --- a correct decline and an outright failure are
+indistinguishable there. It is also the clearest evidence in this paper that
+the checking apparatus rejects rather than rubber-stamps. Two caveats: this is
+a re-scoring of existing runs rather than new data, and the criterion was
+chosen after observing the results. It rests on a pre-existing column
+(``did the substitution complete''), and the impossibility is verifiable from
+the target library's own signature, neither of which depends on how any arm
+scored.
+
+\paragraph{A seeding defect these runs exposed.} The numbers in
+Table~\ref{tab:deploy} were produced by a build in which the search seeded from
+the corpus's \emph{pristine} module rather than from the patched module handed
+to it by the preceding stage. Two consequences follow. The library substitution
+was discarded, so the variants measured here are diversified originals rather
+than diversified migrations. And the line target, computed from the patched
+text, described a different file than the one searched --- in the worst case a
+25-line module was given a 167-line target and reported a 138-line miss, which
+is why we report no length-accuracy figures for this corpus. We have since
+fixed the seeding; on a re-run of one program the search now starts from the
+patched source, retains the substitution, and lands within one line of target.
+The diversity and equivalence results in Table~\ref{tab:deploy} stand as
+measurements of the catalogue and oracle, but they do not yet demonstrate
+length control or migration-plus-diversification composed end to end. That
+composition is the first experiment we intend to repeat.
+
+\section{Limitations}
+\label{sec:limits}
+
+\textbf{We do not prove equivalence.} Program equivalence is undecidable. Every
+claim here is equivalence with respect to four stated checks. A rewrite that
+breaks a path neither the probes nor the tests visit would pass.
+
+\textbf{The oracle inherits its corpus's blind spots.} Both corpora inject test
+doubles at construction sites, so probes that follow the same pattern do not
+execute the un-injected path. We are aware of this and treat it as future work
+rather than a solved problem.
+
+\textbf{The metrics are not externally validated.} Two of the five are standard
+and used as published; \code{ast\_structural}, \code{cfg\_shape} and
+\code{composite} are our own constructions, and nothing yet ties them to an
+outcome an attacker or a clone detector would recognise. A high
+\code{cfg\_shape} means the branch histogram moved, no more than that.
+
+\textbf{Scale.} Four modules and 24 cells is a pilot; the second corpus adds six
+programs. The 73\% and 16/24 figures are measurements on the primary corpus, not
+general claims, and the two corpora differ enough in program size that their
+diversity values are not directly comparable.
+
+\textbf{Shrinking is weak.} Only two rules remove lines, so sub-unity targets
+are frequently unreachable, which dominates the 8.88-line mean error.
+
+\textbf{No attack evaluation.} We measure structural difference, not exploit
+resistance. Whether these variants defeat a real memory-corruption exploit is
+the obvious next experiment and is not attempted here.
+
+\section{Related work}
+
+Auto-SPT~\cite{autospt} provides the beam-search skeleton and the notion of
+composing semantics-preserving transformations under a search objective; we
+replace its clone-detector objective with a size target, which changes what the
+search optimises for. Classical N-version programming motivates the goal;
+compiler-level and binary-level diversification pursue it at a layer where the
+transformation is not auditable by the developer. MigrateLib~\cite{migratelib}
+informs our use of format-preserving rewriting for minimal diffs.
+
+\section{Conclusion}
+
+We described AXIOM's clone-generation layer and reported preliminary results: an
+oracle-verified variant in 24/24 cells over 2{,}398 explored candidates, control
+flow altered in 16/24, a 73\% diversity gain from growing the catalogue from 12
+to 17 rules, and a ranking-metric ablation that returned a clean negative
+result. The immediate next steps are shrink-capable transformations, probes that
+exercise un-injected construction paths, and an attack-based evaluation to test
+whether measured structural difference translates into exploit resistance.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{autospt}
+Hooda et al.
+\newblock Auto-SPT: automated semantics-preserving transformations.
+\newblock \emph{arXiv:2512.06042}, 2025.
+
+\bibitem{migratelib}
+Islam, Jha, Mahmoud, and Nadi.
+\newblock MigrateLib: library migration with format-preserving rewriting.
+\newblock \emph{arXiv:2510.08810}, 2026.
+
+\bibitem{ncd}
+R.~Cilibrasi and P.~M.~B. Vit\'anyi.
+\newblock Clustering by compression.
+\newblock \emph{IEEE Transactions on Information Theory}, 51(4):1523--1545, 2005.
+
+\bibitem{jaccard}
+P.~Jaccard.
+\newblock \'Etude comparative de la distribution florale dans une portion des
+Alpes et des Jura.
+\newblock \emph{Bulletin de la Soci\'et\'e Vaudoise des Sciences Naturelles},
+37:547--579, 1901.
+
+\bibitem{ratcliff}
+J.~W. Ratcliff and D.~E. Metzener.
+\newblock Pattern matching: the gestalt approach.
+\newblock \emph{Dr.~Dobb's Journal}, 13(7):46--72, 1988.
+\end{thebibliography}
+
+\balance
+\end{document}

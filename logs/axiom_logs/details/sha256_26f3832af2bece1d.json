@@ -1,0 +1,21 @@
+{
+  "role": "synchronous HTTP client",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 0.859,
+    "memory": 1.0,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "security": 0.76,
+    "total": 0.903
+  },
+  "rationale": "'requests' wins 'synchronous HTTP client'. Confidence: MEDIUM. Total: 0.903 (speed=0.859, mem=1.0, sec=0.76, api=1.0). Migration note: httpx uses httpx.RequestError as base exception (not RequestException), though httpx.RequestException exists as alias",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "post",
+    "RequestException"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": []
+}

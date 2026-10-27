@@ -1,0 +1,132 @@
+You are given a Python program. Rewrite it so that it is FUNCTIONALLY EQUIVALENT, while performing this library substitution:
+
+    replace `pymodbus` with `minimalmodbus`
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Use `minimalmodbus` instead of `pymodbus`, adding whatever adapter or glue code the different API requires.
+- Diversify all first-party logic: different internal structure, different intermediate variables, different control flow where possible.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: control.py
+```python
+"""control -- first-party PI boiler control with an over-pressure interlock.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form (e.g., different decomposition, restructured anti-windup).
+"""
+
+
+class BoilerControl:
+    def __init__(self, setpoint_c=80.0, kp=2.0, ki=0.4,
+                 max_pressure_bar=10.0, i_limit=50.0):
+        self.setpoint = setpoint_c
+        self.kp = kp
+        self.ki = ki
+        self.max_pressure = max_pressure_bar
+        self.i_limit = i_limit
+        self.integral = 0.0
+        self.tripped = False
+
+    def reset(self):
+        self.integral = 0.0
+        self.tripped = False
+
+    def step(self, temperature: float, pressure: float, dt: float = 1.0) -> float:
+        """Return the valve command (0-100%) for the measured temperature/pressure."""
+        # Safety interlock: an over-pressure event latches a trip and closes the valve.
+        if pressure >= self.max_pressure:
+            self.tripped = True
+        if self.tripped:
+            return 0.0
+
+        error = self.setpoint - temperature
+        self.integral += error * dt
+        # Anti-windup: clamp the accumulated integral term.
+        self.integral = max(-self.i_limit, min(self.i_limit, self.integral))
+        output = self.kp * error + self.ki * self.integral
+        return max(0.0, min(100.0, output))
+```
+
+### FILENAME: supervisor.py
+```python
+"""supervisor -- boiler supervisory loop: read sensors, control, actuate.
+
+Combines all three transformations in one program:
+  * LSA + GSA: swap the Modbus library (`pymodbus` -> `minimalmodbus`) and write glue.
+  * LMA: rewrite the first-party PI-control + interlock logic in `control.py`.
+"""
+from control import BoilerControl
+from transport import ModbusIO
+
+
+class BoilerSupervisor:
+    def __init__(self, io: ModbusIO, control: BoilerControl = None):
+        self.io = io
+        self.control = control if control is not None else BoilerControl()
+
+    def cycle(self, dt: float = 1.0) -> dict:
+        """Run one supervisory cycle and return the resulting record."""
+        temperature = self.io.read_temperature()
+        pressure = self.io.read_pressure()
+        command = self.control.step(temperature, pressure, dt=dt)
+        counts = self.io.write_valve(command)
+        return {
+            "temperature": temperature,
+            "pressure": pressure,
+            "valve_pct": command,
+            "valve_counts": counts,
+            "tripped": self.control.tripped,
+        }
+```
+
+### FILENAME: transport.py
+```python
+"""transport -- Modbus field I/O for the boiler supervisor.
+
+The Modbus client is one substitution target: `pymodbus` -> `minimalmodbus` (different
+read/write API and error model -> glue required). The client is dependency-injected.
+"""
+
+
+def _default_client(host: str, port: int = 502):
+    from pymodbus.client import ModbusTcpClient  # lazy import for testability
+
+    client = ModbusTcpClient(host, port=port)
+    client.connect()
+    return client
+
+
+class ModbusIO:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read1(self, address: str) -> int:
+        rr = self.client.read_holding_registers(address, 1, unit=self.unit)
+        if rr.isError():
+            raise IOError(f"Modbus read failed @ {address:#06x}")
+        return rr.registers[0]
+
+    def read_temperature(self, address: int = 0x0000) -> float:
+        return self._read1(address) / 10.0  # deci-degrees C -> C
+
+    def read_pressure(self, address: int = 0x0001) -> float:
+        return self._read1(address) / 100.0  # centibar -> bar
+
+    def write_valve(self, percent: float, address: int = 0x0010) -> int:
+        counts = int(round(max(0.0, min(100.0, percent)) * 40.95))  # 0-100% -> 0-4095
+        wr = self.client.write_register(address, counts, unit=self.unit)
+        if wr.isError():
+            raise IOError(f"Modbus write failed @ {address:#06x}")
+        return counts
+```

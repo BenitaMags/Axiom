@@ -1,0 +1,36 @@
+{
+  "role": "finite-state-machine engine (dynamic model binding, transition guards/callbacks)",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.853,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state-machine engine (dynamic model binding, transition guards/callbacks)'. Confidence: LOW. Total: 0.853 (speed=None, mem=None, sec=0.895, api=1.0). Migration note: transitions dynamically injects trigger methods (start_fill, level_reached, etc.) onto the model instance via model=self; fysom and python-statemachine do not support this exact dynamic-binding pattern and would require rewriting trigger invocation as machine.trigger() or machine.send() calls",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine(model=..., states=..., initial=...)",
+    "add_transition(trigger, source, dest, conditions=, after=)"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

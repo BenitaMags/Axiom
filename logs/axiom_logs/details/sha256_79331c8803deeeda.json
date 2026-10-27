@@ -1,0 +1,38 @@
+{
+  "role": "ISO-8601 timestamp string parsing into datetime objects",
+  "winner": "ciso8601",
+  "original": "datetime",
+  "score": {
+    "speed": 0.509,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.645,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'ciso8601' wins 'ISO-8601 timestamp string parsing into datetime objects'. Confidence: HIGH. Total: 0.645 (speed=0.509, mem=1.0, sec=None, api=0.5). Migration note: ciso8601.parse_datetime returns naive datetime for inputs without an offset just like fromisoformat, so the naive->UTC assignment logic must be preserved",
+  "confidence": "HIGH",
+  "used_apis": [
+    "datetime.fromisoformat",
+    "datetime.replace",
+    "timezone.utc",
+    "datetime.timestamp"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,259 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 1,
+    "case_offset": 0,
+    "case_filter": "grahame/sedge"
+  },
+  "metrics": {
+    "total_cases": 1,
+    "errored_cases": 0,
+    "detection_rate_pct": 100.0,
+    "detection_n": 1,
+    "target_selection_rate_pct": 0.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 0,
+    "verified_ground_truth_rate_pct": 0.0,
+    "execution_ready_n": 0,
+    "verified_ground_truth_rate_ready_pct": null,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "no_migration_selected": 1
+    },
+    "connector_invoked_n": 0,
+    "verification_environment_incomplete_n": 0,
+    "verification_environment_incomplete_by_status": {},
+    "verifier_clean_rate_pct": null,
+    "verifier_n": 0,
+    "repair_cases_n": 0,
+    "repair_cycle_total": 0,
+    "repair_cycles_per_case": 0.0,
+    "repair_cycles_per_repaired_case": null,
+    "verified_after_repair_n": 0,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {},
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 3,
+    "runtime_measured_package_case_n": 2,
+    "runtime_measurement_coverage_pct": 66.67,
+    "runtime_measured_probe_n": 2,
+    "runtime_probe_status_counts": {
+      "measured": 2,
+      "unsupported": 1
+    },
+    "by_domain": {
+      "Utility": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 1,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 31.194487810134888,
+  "results": [
+    {
+      "migration_id": "argparse__click__grahame/sedge__3badf078",
+      "repo": "grahame/sedge",
+      "domain": "Utility",
+      "source": "argparse",
+      "target": "click",
+      "file_path": "sedge/cli.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "requests>=2.2"
+      ],
+      "base_requirement_count": 1,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": null,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": null,
+      "attempted_axiom_winner": null,
+      "attempted_selection_status": "no_migration",
+      "attempted_selection_count": 1,
+      "connector_ran": false,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "argparse": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 1.556,
+          "memory_kb": 308.6,
+          "profile_detail": null,
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:cli_option_parse",
+            "probe_kind": "pure_local",
+            "median_ms": 0.039584,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "cli_option_parse"
+            ]
+          },
+          "runtime_probes": {
+            "cli_option_parse": {
+              "status": "measured",
+              "probe_id": "cli_option_parse",
+              "kind": "pure_local",
+              "distribution": "argparse",
+              "module": null,
+              "median_ms": 0.0395835,
+              "p95_ms": 0.05525,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "850e10f251c403ec",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "click": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 8.48,
+          "memory_kb": 1059.7,
+          "profile_detail": "import module: click",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:cli_option_parse",
+            "probe_kind": "pure_local",
+            "median_ms": 0.036041,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "cli_option_parse"
+            ]
+          },
+          "runtime_probes": {
+            "cli_option_parse": {
+              "status": "measured",
+              "probe_id": "cli_option_parse",
+              "kind": "pure_local",
+              "distribution": "click",
+              "module": "click",
+              "median_ms": 0.0360415,
+              "p95_ms": 0.04025,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "850e10f251c403ec",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "typer": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 20.558,
+          "memory_kb": 2267.3,
+          "profile_detail": "import module: typer",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "no cli_option_parse implementation is registered for typer",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "cli_option_parse": {
+              "status": "unsupported",
+              "probe_id": "cli_option_parse",
+              "kind": "pure_local",
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "no cli_option_parse implementation is registered for typer",
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "click",
+        "target_version": "auto",
+        "resolved_target_version": "8.4.2",
+        "target_requirement": "click",
+        "requirement_count": 1,
+        "requirement_file_count": 0,
+        "python_evidence": [],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "click": {
+            "distribution": "click",
+            "version": "8.4.2",
+            "install_spec": "click==8.4.2",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "typer": {
+            "distribution": "typer",
+            "version": "0.27.0",
+            "install_spec": "typer==0.27.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "not_applicable",
+      "verification_environment_status": "ready",
+      "selection_status": "no_migration",
+      "outcome": "no_migration_selected",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "error": null
+    }
+  ]
+}

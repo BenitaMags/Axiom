@@ -1,0 +1,38 @@
+{
+  "role": "finite-state-machine engine for modeling transitions",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.853,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state-machine engine for modeling transitions'. Confidence: LOW. Total: 0.853 (speed=None, mem=None, sec=0.895, api=1.0). Migration note: transitions injects trigger methods onto the model object at runtime (self.start_fill(), self.trip()); fysom uses its own event/trigger naming and object model, so all trigger call sites and conditions='can_fill' style string-based guard resolution would need to be re-wired",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine(model=..., states=..., initial=...)",
+    "add_transition(trigger, source, dest, conditions=, after=)",
+    "dynamically-injected trigger methods (start_fill, level_reached, start_drain, empty, trip)",
+    "self.state"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

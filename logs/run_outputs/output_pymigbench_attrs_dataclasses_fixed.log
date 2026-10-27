@@ -1,0 +1,200 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] simonlindholm/decomp-permuter  attrs→dataclasses  (src/error.py)
+──────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────
+Resolved path: /private/tmp/tmpz14kkbg1_error.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ attr   │ —     │ —     │ ib, s          │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+─────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                          Security Scan Results                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                 ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ attr    │ 0.3.2   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 4y  │
+│         │         │      │      │           │            │           │         │ 0mo                   │
+└─────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴───────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────
+Discovering alternative libraries for: attr
+Discovered candidates:
+  attr -> dataclasses, pydantic, msgspec, attrs
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,244  output: 214  latency: 2975ms
+Discovery leads not advanced to an equivalence group after file/API fit review: attr: pydantic, msgspec
+Equivalence Groups Found
+└── data class / class decorator for structured data
+    ├── Candidates : attrs, dataclasses
+    ├── Used APIs  : attr.s, attr.ib
+    ├── Pitfalls   : dataclasses uses @dataclass decorator instead of @attr.s; dataclasses.field() 
+    │   replaces attr.ib() with slightly different parameters (default_factory vs factory); attr provides 
+    │   additional features like validators, converters, and slots that dataclasses lacks or handles 
+    │   differently; attr.ib() supports more metadata options than dataclasses.field()
+    └── The code uses attr.s as a class decorator and attr.ib for field definition to create a simple 
+        exception class with a typed field. Python's standard library dataclasses provides @dataclass 
+        decorator and field() function that serve the exact same purpose for this use case.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────
+Reusing pinned source security evidence: attrs ← attr
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+               Candidate Security Scan               
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package     ┃ Version ┃ Risk ┃ Evidence ┃ Overall ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+│ dataclasses │ stdlib  │ N/A  │   N/A    │       — │
+└─────────────┴─────────┴──────┴──────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+─────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case 
+finishes.
+Project-local or undeclared imports supplied from the project checkout: attr
+Runtime API benchmarks (10 warmups + 50 samples; fixed local fixtures)...
+                                            Benchmark Results                                             
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃     Runtime API (real ┃             ┃                      ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃                probe) ┃ Memory (KB) ┃ Notes                ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ dataclasses │     ✓     │          6.6 ms │     0.000 ms median / │         141 │                      │
+│             │           │                 │          0.000 ms p95 │             │                      │
+│             │           │                 │ (call:record_constru… │             │                      │
+│ attrs       │     ✓     │          7.1 ms │     0.000 ms median / │         949 │ import module: attrs │
+│             │           │                 │          0.000 ms p95 │             │                      │
+│             │           │                 │ (call:record_constru… │             │                      │
+└─────────────┴───────────┴─────────────────┴───────────────────────┴─────────────┴──────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 2 with measured runtime probes, 0 explicitly unmeasured
+
+─────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 8d187dd5
+  API compat tokens — input: 165  output: 31  latency: 20115ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating 
+missing data as a score.
+                                       AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role          ┃ Original ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ data class /  │ attrs    │ dataclasses │ MEDIUM │ 1.0   │ 1.0    │ —        │ 0.5 │ 0.875 │ ✓          │
+│ class         │          │             │        │       │        │          │     │       │            │
+│ decorator for │          │             │        │       │        │          │     │       │            │
+│ structured    │          │             │        │       │        │          │     │       │            │
+│ data          │          │             │        │       │        │          │     │       │            │
+└───────────────┴──────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  attrs  →  dataclasses  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+
+Applying deterministic native migration: attrs → dataclasses
+  ✓ import attr → from dataclasses import dataclass
+  ✓ @attr.s → @dataclass
+  ✓ annotated attr.ib() field → native required dataclass field
+
+Applying migration import rewrites: {'attr': 'dataclasses'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│   1 from dataclasses import dataclass                                                                  │
+│   2                                                                                                    │
+│   3 @dataclass                                                                                         │
+│   4 class CandidateConstructionFailure(Exception):                                                     │
+│   5     message: str                                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃ Patched ┃ Detail                                      ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │  PASS   │                                             │
+│ Pylint (errors)        │         PASS          │  PASS   │ []                                          │
+│ Bandit                 │         PASS          │  PASS   │ {                                           │
+│                        │                       │         │   "errors": [],                             │
+│                        │                       │         │   "generated_at": "2026-07-26T05:59:48Z",   │
+│                        │                       │         │   "metrics": {                              │
+│                        │                       │         │     "/var/folders/_4/t4jx                   │
+│ Mypy (untyped defs)    │         PASS          │  PASS   │ /dev/null: No  section in config file       │
+│ Patch integrity        │           —           │  PASS   │                                             │
+│ Adapter contracts      │           —           │  PASS   │                                             │
+│ Stale source symbols   │           —           │  PASS   │                                             │
+│ Referenced target APIs │           —           │  PASS   │ No statically referenced rewritten module   │
+│                        │                       │         │ symbols to probe.                           │
+│ New static findings    │ baseline is reference │  PASS   │                                             │
+│ Import smoke test      │         PASS          │  PASS   │ Exited cleanly.                             │
+└────────────────────────┴───────────────────────┴─────────┴─────────────────────────────────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 8d187dd5
+
+Evaluation took 41.0s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     100.0%  (n=1)
+Target selection rate:        100.0%  (n=1; selection only)
+Verified exact PyMigBench migrations: 100.0%  (1/1)
+Verification environments incomplete: 0
+Proven target-infeasible migrations: 0
+Verified exact among deterministic patch verdicts: 100.0%  (n=1)
+Verified alternatives (not scored as exact target): 0
+Connector invoked on:        1 case(s)
+Verifier repair cycles:      0 across 0 case(s)
+Verifier accepted (differential): 100.0%  (n=1)
+Real runtime-probe coverage: 100.0%  (2/2 package-case profiles; 2 measured probe(s))
+              Publication Outcome Categories              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Category                                       ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Verified exact PyMigBench migration            │     1 │
+│ Verified alternative (see efficiency evidence) │     0 │
+│ Rejected after repair budget                   │     0 │
+│ Not verified / not adjudicated                 │     0 │
+└────────────────────────────────────────────────┴───────┘
+        Terminal Outcomes        
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome               ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ ground_truth_verified │     1 │
+└───────────────────────┴───────┘
+      Detection / Verified Exact Rate by Domain      
+┏━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain  ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Utility │     1 │         100.0% │         100.0% │
+└─────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_attrs_dataclasses_fixed.json, pymigbench_attrs_dataclasses_fixed.csv

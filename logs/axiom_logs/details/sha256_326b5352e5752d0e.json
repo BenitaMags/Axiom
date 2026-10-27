@@ -1,0 +1,29 @@
+{
+  "role": "retry decorator for transient failures",
+  "winner": "retrying",
+  "original": "retrying",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": 0.955,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.895,
+    "installed": true
+  },
+  "rationale": "'retrying' wins 'retry decorator for transient failures'. Confidence: HIGH. Total: 0.895 (speed=1.0, mem=1.0, sec=0.955, api=0.5). Migration note: API differences: retrying uses @retry(stop_max_attempt_number=3) while tenacity uses @retry(stop=stop_after_attempt(3))",
+  "confidence": "HIGH",
+  "used_apis": [
+    "retry"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

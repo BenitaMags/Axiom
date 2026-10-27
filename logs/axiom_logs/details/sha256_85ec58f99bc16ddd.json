@@ -1,0 +1,34 @@
+{
+  "role": "YAML configuration parsing",
+  "winner": "ruamel.yaml",
+  "original": "ruamel.yaml",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.955,
+    "security_evidence": true,
+    "evidence_weight": 0.35,
+    "total": 0.974,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: yaml does not expose yaml; line 1: New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'; line 1: Patched import smoke test failed: Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xhl10217/project/tools/c7n_mailer/c7n_mailer/replay.py\", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xhl10217/project/tools/c7n_mailer/c7n_mailer/cli.py\", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xhl10217/project/tools/c7n_mailer/c7n_mailer/utils.py\", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n",
+  "confidence": "LOW",
+  "used_apis": [
+    "SafeLoader",
+    "load"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

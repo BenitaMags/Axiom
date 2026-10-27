@@ -1,0 +1,40 @@
+{
+  "role": "synchronous HTTP client (session-based)",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 0.925,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.6,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.85,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'httpx' wins 'synchronous HTTP client (session-based)'. Confidence: HIGH. Total: 0.85 (speed=0.925, mem=0.624, sec=1.0, api=0.6). Migration note: httpx.Client uses 'timeout' object semantics slightly differently (can be float, tuple, or httpx.Timeout) though float works similarly",
+  "confidence": "HIGH",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "session.post",
+    "r.raise_for_status",
+    "r.json",
+    "r.status_code"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

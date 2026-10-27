@@ -1,0 +1,546 @@
+migration_id,repo,domain,source,target,file_path,verification_scope,base_requirement_count,base_requirement_recovery_errors,detected_group,recommended_target,axiom_winner,attempted_axiom_winner,attempted_selection_status,attempted_selection_count,connector_ran,verifier_route,repair_cycle_count,repair_history,final_verifier_feedback,profiler_package_count,runtime_measured_package_count,runtime_measurement_coverage_pct,runtime_measured_probe_count,runtime_probe_status_counts,verifier_passed_clean,target_infeasibility_evidence,patch_changed,verification_status,verification_environment_status,selection_status,outcome,verified_ground_truth,verified_alternative,error
+kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5,svenskaspel/locust-plugins,HTTP Clients,kafka,confluent-kafka,locust_plugins/kafka.py,component_runtime,7,,True,True,confluent-kafka,confluent-kafka,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/application/notifier/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed:  3, in <module>
+    from petisco.base.application.notifier.notifier_exception_message import (
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-hjmhn97k/project/petisco/base/application/notifier/notifier_exception_message.py"", line 1, in <module>
+    from petisco.legacy.notifier.domain.notifier_message import NotifierMessage
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-hjmhn97k/project/petisco/legacy/__init__.py"", line 8, in <module>
+    from petisco.legacy.application.config.config import Config
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-hjmhn97k/project/petisco/legacy/application/config/config.py"", line 21, in <module>
+    from petisco.legacy.application.config.events.config_events import ConfigEvents
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-hjmhn97k/project/petisco/legacy/application/config/events/config_events.py"", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1275, in dataclass
+    return wrap(cls)
+           ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1265, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 994, in _process_class
+    cls_fields.append(_get_field(cls, name, type, kw_only))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 852, in _get_field
+    raise ValueError(f'mutable default {type(f.default)} for field '
+ValueError: mutable default <class 'petisco.legacy.application.config.events.config_event_publisher.ConfigEventsPublisher'> for field config_event_publisher is not allowed: use default_factory
+"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/is_slack_available.py,component_runtime,15,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/legacy/notifier/infrastructure/slack/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed:  3, in <module>
+    from petisco.base.application.notifier.notifier_exception_message import (
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_c2avb9g/project/petisco/base/application/notifier/notifier_exception_message.py"", line 1, in <module>
+    from petisco.legacy.notifier.domain.notifier_message import NotifierMessage
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_c2avb9g/project/petisco/legacy/__init__.py"", line 8, in <module>
+    from petisco.legacy.application.config.config import Config
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_c2avb9g/project/petisco/legacy/application/config/config.py"", line 21, in <module>
+    from petisco.legacy.application.config.events.config_events import ConfigEvents
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_c2avb9g/project/petisco/legacy/application/config/events/config_events.py"", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1275, in dataclass
+    return wrap(cls)
+           ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1265, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 994, in _process_class
+    cls_fields.append(_get_field(cls, name, type, kw_only))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 852, in _get_field
+    raise ValueError(f'mutable default {type(f.default)} for field '
+ValueError: mutable default <class 'petisco.legacy.application.config.events.config_event_publisher.ConfigEventsPublisher'> for field config_event_publisher is not allowed: use default_factory
+"
+eventlet__gevent__phuks-co/throat__9a289609,phuks-co/throat,Utility,eventlet,gevent,throat.py,component_runtime,35,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+pycrypto__pycryptodome__hhyo/archery__e192ca69,hhyo/archery,Cryptography,pycrypto,pycryptodome,sql/utils/aes_decryptor.py,component_runtime,16,,False,False,pycryptodomex,pycryptodomex,alternative,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:  ""/private/tmp/pip-build-env-tlqdl5c8/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 18, in <module>
+        File ""/private/tmp/pip-install-junoxvf7/mysqlclient_baf2ddedb0814988801f76e45c732d67/setup_posix.py"", line 53, in get_config
+          libs = mysql_config(""libs_r"")
+                 ^^^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-install-junoxvf7/mysqlclient_baf2ddedb0814988801f76e45c732d67/setup_posix.py"", line 28, in mysql_config
+          raise EnvironmentError(""%s not found"" % (mysql_config.path,))
+      OSError: mysql_config not found
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+leveldb__plyvel__ethereum/py-evm__5c273fff,ethereum/py-evm,Database,leveldb,plyvel,evm/db/backends/level.py,component_runtime,13,,True,,,,no_migration,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+requests__aiohttp__usergeteam/userge-plugins__80a54344,usergeteam/userge-plugins,HTTP Clients,requests,aiohttp,plugins/info.py,component_runtime,20,,False,False,httpx,httpx,alternative,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: pylint: unavailable; bandit: unavailable; pylint: unavailable; bandit: unavailable; baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-islme811/project/plugins/info.py"", line 5, in <module>
+    import spamwatch
+ModuleNotFoundError: No module named 'spamwatch'
+"
+gevent__eventlet__miguelgrinberg/flask-socketio__883e73e5,miguelgrinberg/flask-socketio,Utility,gevent,eventlet,example/app.py,component_runtime,3,,True,True,eventlet,eventlet,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xd4sgp1w/project/example/app.py"", line 7, in <module>
+    from flask.ext.socketio import SocketIO, emit, join_room, leave_room, \
+ModuleNotFoundError: No module named 'flask.ext'
+"
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/installation.py,component_runtime,4,"Cannot parse setup.py dependency metadata 'setup.py': Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 200)",True,,,,no_migration,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/tau_installation.py,component_runtime,4,"Cannot parse setup.py dependency metadata 'setup.py': Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 200)",False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+cheetah3__jinja2__shingetsu/saku__d1ad50a9,shingetsu/saku,Web Framework,cheetah3,jinja2,shingetsu/template.py,component_runtime,0,,True,False,Mako,Mako,alternative,1,True,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-1dnf5xx6/project/shingetsu/template.py"", line 34, in <module>
+    import Cheetah.Template
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-1dnf5xx6/project/Cheetah/__init__.py"", line 20, in <module>
+    from Version import *
+ModuleNotFoundError: No module named 'Version'
+"
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/fields.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/forms.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},3,1,33.33,1,"{""measured"": 1, ""not_comparable"": 1, ""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/managers.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/cli.py,component_runtime,85,,True,,,,no_migration,1,False,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/replay.py,component_runtime,85,,True,,,,no_migration,1,False,proceed,0,[],{},3,3,100.0,3,"{""measured"": 3}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/utils.py,component_runtime,85,,True,,,,no_migration,1,False,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+pil__pillow__shoebot/shoebot__0171fb9f,shoebot/shoebot,Image processing,pil,pillow,shoebot/data/img.py,component_runtime,6,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+argparse__click__grahame/sedge__3badf078,grahame/sedge,Utility,argparse,click,sedge/cli.py,component_runtime,1,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+requests__aiohttp__talkpython/async-techniques-python-course__ab4e5fdd,talkpython/async-techniques-python-course,HTTP client/server,requests,aiohttp,src/04-asyncio/web_scraping/async_scrape/program.py,component_runtime,0,,False,False,httpx,httpx,alternative,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-z4gytllf/project/src/04-asyncio/web_scraping/async_scrape/program.py"", line 2, in <module>
+    import bs4
+ModuleNotFoundError: No module named 'bs4'
+"
+ipaddr__netaddr__openstack/deb-designate__eb16b1e1,openstack/deb-designate,HTTP Clients,ipaddr,netaddr,designate/schema.py,component_runtime,19,,False,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+urllib3__requests__canonical/cloud-init__0fc887d9,canonical/cloud-init,HTTP Clients,urllib3,requests,cloudinit/url_helper.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,src/onixcheck/__main__.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,tests/test_onixcheck.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/cpuload.py,component_runtime,3,,False,,,,no_migration,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/diskspace.py,component_runtime,3,,False,False,,python-json-logger,alternative,1,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""pythonjsonlogger does not expose Logger""}, {""line"": 1, ""message"": ""New mypy finding after migration: Module \""pythonjsonlogger\"" has no attribute \""Logger\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'Logger' in module 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-4ojqx5ta/project/sensors/diskspace.py\"", line 5, in <module>\n    from pythonjsonlogger import Logger\nImportError: cannot import name 'Logger' from 'pythonjsonlogger' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-2ltxngla/lib/python3.12/site-packages/pythonjsonlogger/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 1, ""message"": ""pythonjsonlogger does not expose Logger""}, {""line"": 1, ""message"": ""New mypy finding after migration: Module \""pythonjsonlogger\"" has no attribute \""Logger\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'Logger' in module 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-eqc01k84/project/sensors/diskspace.py\"", line 5, in <module>\n    from pythonjsonlogger import Logger\nImportError: cannot import name 'Logger' from 'pythonjsonlogger' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-2ltxngla/lib/python3.12/site-packages/pythonjsonlogger/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""pythonjsonlogger does not expose Logger""}, {""line"": 1, ""message"": ""New mypy finding after migration: Module \""pythonjsonlogger\"" has no attribute \""Logger\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""create_json_logger\"" already defined on line 9  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""log_custom_error\"" already defined on line 29  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 29""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 9""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'Logger' in module 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-vv3migc3/project/sensors/diskspace.py\"", line 5, in <module>\n    from pythonjsonlogger import Logger\nImportError: cannot import name 'Logger' from 'pythonjsonlogger' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-2ltxngla/lib/python3.12/site-packages/pythonjsonlogger/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}",4,0,0.0,0,"{""unsupported"": 4}",False,[],False,rejected,ready,no_migration,verification_rejected,False,False,"Verifier rejected generated adapter: line 1: New mypy finding after migration: Name ""create_json_logger"" already defined on line 7  [no-redef]; line 1: New mypy finding after migration: Name ""pythonjsonlogger"" is not defined  [name-defined]; line 1: New pylint finding after migration: function-redefined:function already defined line 7; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'"
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/memory.py,component_runtime,3,,False,False,,python-json-logger,alternative,1,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 64, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 64, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 64, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 64, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 89, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 89, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}",5,0,0.0,0,"{""unsupported"": 5}",False,[],False,rejected,ready,no_migration,verification_rejected,False,False,"Verifier rejected generated adapter: line 114: Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.; line 1: New mypy finding after migration: Name ""Logger"" already defined on line 6  [no-redef]; line 1: New mypy finding after migration: Name ""pythonjsonlogger"" is not defined  [name-defined]; line 1: New pylint finding after migration: function-redefined:function already defined line 6; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'"
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/ping.py,component_runtime,3,,False,False,,python-json-logger,alternative,1,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 69, ""message"": ""Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""Logger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""pythonjsonlogger\"" is not defined  [name-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'Logger'""}, {""line"": 1, ""message"": ""New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""application logging""], ""route"": ""connector""}",5,0,0.0,0,"{""unsupported"": 5}",False,[],False,rejected,ready,no_migration,verification_rejected,False,False,"Verifier rejected generated adapter: line 69: Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.; line 1: New mypy finding after migration: Name ""Logger"" is not defined  [name-defined]; line 1: New mypy finding after migration: Name ""pythonjsonlogger"" is not defined  [name-defined]; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'Logger'; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'"
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/snmptraffic.py,component_runtime,3,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+pycurl__requests__upstox/upstox-python__dce87602,upstox/upstox-python,HTTP Clients,pycurl,requests,upstox_api/api.py,component_runtime,5,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/base/model/Version.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-rsog5cgc/numpy_7c2b8d2009ef4d0b830bc5b912100fa6/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-rsog5cgc/numpy_7c2b8d2009ef4d0b830bc5b912100fa6/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/commons/model/Slot.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-69xm34nw/numpy_fc6ca44eca5a481ca29003e2a979e30b/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-69xm34nw/numpy_fc6ca44eca5a481ca29003e2a979e30b/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/device/model/Device.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-6_rspkqm/numpy_fe006a778136471eb4d705aa21e60920/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-6_rspkqm/numpy_fe006a778136471eb4d705aa21e60920/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/DialogSession.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-umzesq9l/numpy_488e90d81d3f4120a5d1b7bd32989c46/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-umzesq9l/numpy_488e90d81d3f4120a5d1b7bd32989c46/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/MultiIntent.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-zbbjtod7/numpy_fd38aca87fd84551836963c97ee4d7cc/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-zbbjtod7/numpy_fd38aca87fd84551836963c97ee4d7cc/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/util/model/ThreadTimer.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-hj_gr6d5/numpy_ef1d9dae4d5c4c8181f80bfff40804b9/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-hj_gr6d5/numpy_ef1d9dae4d5c4c8181f80bfff40804b9/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_base.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:    1 warning generated.
+      error: unknown target CPU 'apple-m1'
+      note: valid target CPU values are: nocona, core2, penryn, bonnell, atom, silvermont, slm, goldmont, goldmont-plus, tremont, nehalem, corei7, westmere, sandybridge, corei7-avx, ivybridge, core-avx-i, haswell, core-avx2, broadwell, skylake, skylake-avx512, skx, cascadelake, cooperlake, cannonlake, icelake-client, rocketlake, icelake-server, tigerlake, sapphirerapids, alderlake, knl, knm, k8, athlon64, athlon-fx, opteron, k8-sse3, athlon64-sse3, opteron-sse3, amdfam10, barcelona, btver1, btver2, bdver1, bdver2, bdver3, bdver4, znver1, znver2, znver3, x86-64, x86-64-v2, x86-64-v3, x86-64-v4
+      error: command '/usr/bin/clang++' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for herdingspikes
+ERROR: Could not build wheels for herdingspikes, which is required to install pyproject.toml-based projects
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_behavior.py,component_runtime,17,,False,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: ERROR: Cannot install PySide2 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ecephys.py,component_runtime,17,,False,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: ERROR: Cannot install PySide2 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_general.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:    1 warning generated.
+      error: unknown target CPU 'apple-m1'
+      note: valid target CPU values are: nocona, core2, penryn, bonnell, atom, silvermont, slm, goldmont, goldmont-plus, tremont, nehalem, corei7, westmere, sandybridge, corei7-avx, ivybridge, core-avx-i, haswell, core-avx2, broadwell, skylake, skylake-avx512, skx, cascadelake, cooperlake, cannonlake, icelake-client, rocketlake, icelake-server, tigerlake, sapphirerapids, alderlake, knl, knm, k8, athlon64, athlon-fx, opteron, k8-sse3, athlon64-sse3, opteron-sse3, amdfam10, barcelona, btver1, btver2, bdver1, bdver2, bdver3, bdver4, znver1, znver2, znver3, x86-64, x86-64-v2, x86-64-v3, x86-64-v4
+      error: command '/usr/bin/clang++' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for herdingspikes
+ERROR: Could not build wheels for herdingspikes, which is required to install pyproject.toml-based projects
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_misc.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:    1 warning generated.
+      error: unknown target CPU 'apple-m1'
+      note: valid target CPU values are: nocona, core2, penryn, bonnell, atom, silvermont, slm, goldmont, goldmont-plus, tremont, nehalem, corei7, westmere, sandybridge, corei7-avx, ivybridge, core-avx-i, haswell, core-avx2, broadwell, skylake, skylake-avx512, skx, cascadelake, cooperlake, cannonlake, icelake-client, rocketlake, icelake-server, tigerlake, sapphirerapids, alderlake, knl, knm, k8, athlon64, athlon-fx, opteron, k8-sse3, athlon64-sse3, opteron-sse3, amdfam10, barcelona, btver1, btver2, bdver1, bdver2, bdver3, bdver4, znver1, znver2, znver3, x86-64, x86-64-v2, x86-64-v3, x86-64-v4
+      error: command '/usr/bin/clang++' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for herdingspikes
+ERROR: Could not build wheels for herdingspikes, which is required to install pyproject.toml-based projects
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ophys.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:    1 warning generated.
+      error: unknown target CPU 'apple-m1'
+      note: valid target CPU values are: nocona, core2, penryn, bonnell, atom, silvermont, slm, goldmont, goldmont-plus, tremont, nehalem, corei7, westmere, sandybridge, corei7-avx, ivybridge, core-avx-i, haswell, core-avx2, broadwell, skylake, skylake-avx512, skx, cascadelake, cooperlake, cannonlake, icelake-client, rocketlake, icelake-server, tigerlake, sapphirerapids, alderlake, knl, knm, k8, athlon64, athlon-fx, opteron, k8-sse3, athlon64-sse3, opteron-sse3, amdfam10, barcelona, btver1, btver2, bdver1, bdver2, bdver3, bdver4, znver1, znver2, znver3, x86-64, x86-64-v2, x86-64-v3, x86-64-v4
+      error: command '/usr/bin/clang++' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for herdingspikes
+ERROR: Could not build wheels for herdingspikes, which is required to install pyproject.toml-based projects
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/tabs.py,component_runtime,17,,False,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: ERROR: Cannot install PySide2 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/nwbn_conversion_gui.py,component_runtime,17,,False,False,PyQt6,PyQt6,alternative,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: ERROR: Cannot install PySide2 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+pep8__pycodestyle__schlamar/flake8-todo__fcd59c6c,schlamar/flake8-todo,Codestyle,pep8,pycodestyle,flake8_todo.py,component_runtime,0,,True,False,ruff,ruff,alternative,1,True,proceed,1,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""Target import 'ruff' was not introduced for selected migration 'ruff'.""}, {""line"": 1, ""message"": ""New pylint finding after migration: import-error:Unable to import 'pycodestyle'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-q8v4h8jr/project/flake8_todo.py\"", line 3, in <module>\n    import pycodestyle\nModuleNotFoundError: No module named 'pycodestyle'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""Python style guide checker / linter plugin base""], ""route"": ""connector""}]","{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""Target import 'ruff' was not introduced for selected migration 'ruff'.""}, {""line"": 1, ""message"": ""New pylint finding after migration: import-error:Unable to import 'pycodestyle'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-q8v4h8jr/project/flake8_todo.py\"", line 3, in <module>\n    import pycodestyle\nModuleNotFoundError: No module named 'pycodestyle'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""Python style guide checker / linter plugin base""], ""route"": ""connector""}",4,0,0.0,0,"{""unsupported"": 4}",True,[],True,verified,ready,alternative,verified_alternative,False,True,
+prettytable__tabulate__educationaltestingservice/skll__f870a659,educationaltestingservice/skll,Utility,prettytable,tabulate,skll/experiments.py,component_runtime,11,,True,False,rich,rich,alternative,1,True,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 5}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-7w5yp76w/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-7w5yp76w/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-7w5yp76w/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/common/exceptions.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/l3/l3_odl.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/l3/l3_odl_v2.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/ml2/legacy_port_binding.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/ml2/mech_driver.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/ml2/ovsdb_topology.py,component_runtime,4,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+logbook__loguru__thombashi/sqlitebiter__311c7ce5,thombashi/sqlitebiter,Logging/tracing,logbook,loguru,sqlitebiter/sqlitebiter.py,component_runtime,16,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+raven__sentry-sdk__agdsn/sipa__ea23791c,agdsn/sipa,Logging/tracing,raven,sentry-sdk,sipa/initialization.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/copy_experiment.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/copy_run.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/export_experiment.py,component_runtime,0,,True,False,cliff,cliff,alternative,1,True,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-qjovfc46/project/mlflow_tools/export_import/export_experiment.py"", line 6, in <module>
+    import mlflow
+ModuleNotFoundError: No module named 'mlflow'
+"
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/export_registered_models.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/export_run.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/import_experiment.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/import_model.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__amesar/mlflow-tools__431737a8,amesar/mlflow-tools,Utility,argparse,click,mlflow_tools/export_import/import_run.py,component_runtime,0,,True,False,cliff,cliff,alternative,1,True,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-dg4auumr/project/mlflow_tools/export_import/import_run.py"", line 7, in <module>
+    import mlflow
+ModuleNotFoundError: No module named 'mlflow'
+"
+pycryptodome__cryptography__secdev/scapy__c24298b9,secdev/scapy,Crypto,pycryptodome,cryptography,scapy/layers/ipsec.py,component_runtime,0,"Cannot parse setup.py dependency metadata 'setup.py': leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers (<unknown>, line 36)",True,False,pycryptodomex,pycryptodomex,alternative,1,True,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,dependency_recovery_incomplete,alternative,environment_incomplete,False,False,"Verification environment incomplete: Cannot parse setup.py dependency metadata 'setup.py': leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers (<unknown>, line 36)"
+pycryptodome__cryptography__secdev/scapy__c24298b9,secdev/scapy,Crypto,pycryptodome,cryptography,scapy/layers/tls/__init__.py,component_runtime,0,"Cannot parse setup.py dependency metadata 'setup.py': leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers (<unknown>, line 36)",True,False,pycryptodomex,pycryptodomex,alternative,1,True,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],True,environment_incomplete,dependency_recovery_incomplete,alternative,environment_incomplete,False,False,"Verification environment incomplete: Cannot parse setup.py dependency metadata 'setup.py': leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers (<unknown>, line 36)"
+raven__sentry-sdk__habitissimo/myaas__0a65bcc2,habitissimo/myaas,Logging/tracing,raven,sentry-sdk,src/runserver.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+pycryptodome__cryptography__spockbotmc/spockbot__4442170e,spockbotmc/spockbot,Crypto,pycryptodome,cryptography,spock/plugins/core/auth.py,component_runtime,2,,False,False,pycryptodomex,pycryptodomex,alternative,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/plugins/core/auth.py"", line 20, in <module>
+    from spock.mcp import yggdrasil
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/__init__.py"", line 3, in <module>
+    from spock.plugins.loader import PluginLoader
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/plugins/__init__.py"", line 1, in <module>
+    from spock.plugins.core import auth, event, net, ticker, timer
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/plugins/core/net.py"", line 15, in <module>
+    from spock.mcp import mcdata, mcpacket
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/mcp/mcpacket.py"", line 12, in <module>
+    from spock.mcp import datautils, mcdata
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/mcp/datautils.py"", line 5, in <module>
+    from spock.mcp import mcdata, nbt
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-2vez1s1m/project/spock/mcp/nbt.py"", line 12, in <module>
+    from collections import MutableMapping, MutableSequence, Sequence
+ImportError: cannot import name 'MutableMapping' from 'collections' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/collections/__init__.py)
+"
+pycryptodome__cryptography__spockbotmc/spockbot__4442170e,spockbotmc/spockbot,Crypto,pycryptodome,cryptography,spock/plugins/core/net.py,component_runtime,2,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+progressbar__tqdm__wkentaro/fcn__399069ac,wkentaro/fcn,Utility,progressbar,tqdm,scripts/fcn_train.py,component_runtime,24,,True,False,rich,rich,alternative,1,True,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-kz42g7ld/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-kz42g7ld/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 5, in <module>
+        File ""/private/tmp/pip-install-tjc7etmo/dask_509f469a194a4a57b2ae5041747cfec5/dask/__init__.py"", line 5
+          from .async import get_sync as get
+                ^^^^^
+      SyntaxError: invalid syntax
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; numpy: dule>
+          import imp
+      ModuleNotFoundError: No module named 'imp'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+"
+cheetah3__jinja2__openstack/ironic__cbf214b5,openstack/ironic,Web Framework,cheetah3,jinja2,ironic/drivers/modules/pxe.py,component_runtime,26,,True,False,Mako,Mako,alternative,1,True,proceed,0,[],{},5,3,60.0,3,"{""measured"": 3, ""unsupported"": 1}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:   error: subprocess-exited-with-error
+  
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [3 lines of output]
+      /private/tmp/pip-build-env-m8kmpagp/overlay/lib/python3.12/site-packages/setuptools/_distutils/dist.py:288: UserWarning: Unknown distribution option: 'test_suite'
+        warnings.warn(msg)
+      error in anyjson setup command: use_2to3 is invalid.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; Cheetah: SyntaxError: multiple exception types must be parenthesized
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+cheetah3__jinja2__openstack/ironic__cbf214b5,openstack/ironic,Web Framework,cheetah3,jinja2,ironic/nova/tilera.py,component_runtime,26,,True,False,Mako,Mako,alternative,1,True,proceed,0,[],{},4,3,75.0,3,"{""measured"": 3}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements:   error: subprocess-exited-with-error
+  
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [3 lines of output]
+      /private/tmp/pip-build-env-51dx72d3/overlay/lib/python3.12/site-packages/setuptools/_distutils/dist.py:288: UserWarning: Unknown distribution option: 'test_suite'
+        warnings.warn(msg)
+      error in anyjson setup command: use_2to3 is invalid.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; Cheetah: SyntaxError: multiple exception types must be parenthesized
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+logbook__loguru__thombashi/tcconfig__7ba8676b,thombashi/tcconfig,Logging/tracing,logbook,loguru,tcconfig/_logger.py,component_runtime,14,,True,True,loguru,loguru,exact_target,1,True,proceed,1,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""NOTSET\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_disable_logger\"" already defined on line 98  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""set_log_level\"" already defined on line 126  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""set_logger\"" already defined on line 108  [no-redef]""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 108""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 126""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'loguru' has no 'NOTSET' member""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""logging framework""], ""route"": ""connector""}]","{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""NOTSET\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_disable_logger\"" already defined on line 98  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""set_log_level\"" already defined on line 126  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""set_logger\"" already defined on line 108  [no-redef]""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 108""}, {""line"": 1, ""message"": ""New pylint finding after migration: function-redefined:function already defined line 126""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'loguru' has no 'NOTSET' member""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""logging framework""], ""route"": ""connector""}",3,0,0.0,0,"{""unsupported"": 3}",True,[],True,verified,ready,exact_target,ground_truth_verified,True,False,
+argparse__click__ansible-community/molecule__b7d7740d,ansible-community/molecule,Utility,argparse,click,contrib/convert.py,component_runtime,19,,True,False,cliff,cliff,alternative,1,True,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: base-requirements: , line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+        File ""/private/tmp/pip-install-cwpiqsh7/anyconfig_9f8e6c7ed36743e1b3604d90acd1f498/anyconfig/__init__.py"", line 20, in <module>
+          from .api import (
+        File ""/private/tmp/pip-install-cwpiqsh7/anyconfig_9f8e6c7ed36743e1b3604d90acd1f498/anyconfig/api.py"", line 64, in <module>
+          import anyconfig.backends
+        File ""/private/tmp/pip-install-cwpiqsh7/anyconfig_9f8e6c7ed36743e1b3604d90acd1f498/anyconfig/backends.py"", line 16, in <module>
+          import pkg_resources
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+raven__sentry-sdk__samuelcolvin/aiohttp-toolbox__3b7a2a33,samuelcolvin/aiohttp-toolbox,HTTP Clients,raven,sentry-sdk,atoolbox/logs.py,component_runtime,15,Out-of-scope or non-runtime requirement include 'tests/requirements.txt' from requirements.txt.,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+gunicorn__waitress__openphilology/nidaba__4bab2ee1,openphilology/nidaba,Web Framework,gunicorn,waitress,nidaba/cli.py,component_runtime,15,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+retrying__tenacity__openstack/ironic-inspector__f4648fac,openstack/ironic-inspector,Utility,retrying,tenacity,ironic_inspector/common/ironic.py,component_runtime,32,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+argparse__click__godaddy/tartufo__553dc5fb,godaddy/tartufo,Utility,argparse,click,tartufo/cli.py,component_runtime,5,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+raven__sentry-sdk__pokainc/cfn-cross-region-export__f1120d34,pokainc/cfn-cross-region-export,Logging/tracing,raven,sentry-sdk,exporter/lambda/cross_region_import_replication.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+raven__sentry-sdk__city-of-helsinki/respa__4fecb977,city-of-helsinki/respa,HTTP Clients,raven,sentry-sdk,resources/importer/kirjastot.py,component_runtime,87,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+raven__sentry-sdk__city-of-helsinki/respa__4fecb977,city-of-helsinki/respa,HTTP Clients,raven,sentry-sdk,resources/importer/kirjastot_v2.py,component_runtime,87,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+flask__quart__learningorchestra/learningorchestra__db7f1321,learningorchestra/learningorchestra,Development framework/extension,flask,quart,microservices/projection_image/server.py,component_runtime,0,,False,False,bottle,bottle,alternative,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ajsbjotr/project/microservices/projection_image/server.py"", line 3, in <module>
+    from projection import SparkManager, MongoOperations, \
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ajsbjotr/project/microservices/projection_image/projection.py"", line 1, in <module>
+    from pyspark.sql import SparkSession
+ModuleNotFoundError: No module named 'pyspark'
+"
+gevent__eventlet__thenetcircle/dino__119d922a,thenetcircle/dino,Utility,gevent,eventlet,app.py,component_runtime,53,,True,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+argparse__docopt__ceph/teuthology__fb321053,ceph/teuthology,Utility,argparse,docopt,scripts/results.py,component_runtime,19,,False,,,,no_migration,1,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+guzzle-sphinx-theme__sphinx-rtd-theme__jamesls/semidbm__aa0babac,jamesls/semidbm,Documentation,guzzle-sphinx-theme,sphinx-rtd-theme,docs/conf.py,component_runtime,1,,True,,,,no_migration,1,False,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 5}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,False,False,
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/ast_types.py,component_runtime,0,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-fi6y_rvu/project/src/ast_types.py"", line 14, in <module>
+    from pycparser import c_ast
+ModuleNotFoundError: No module named 'pycparser'
+"
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/candidate.py,component_runtime,0,,False,False,attr,attr,alternative,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-jyxatmeq/project/src/candidate.py"", line 7, in <module>
+    from pycparser import CParser, c_ast as ca
+ModuleNotFoundError: No module named 'pycparser'
+"
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/error.py,component_runtime,0,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,1,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""ib\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""s\""  [attr-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'dataclasses' has no 'ib' member""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'dataclasses' has no 's' member""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ctz3c8ok/project/src/error.py\"", line 3, in <module>\n    @dataclasses.s\n     ^^^^^^^^^^^^^\nAttributeError: module 'dataclasses' has no attribute 's'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class definition with class decorators and field descriptors""], ""route"": ""connector""}]","{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""ib\""  [attr-defined]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Module has no attribute \""s\""  [attr-defined]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'dataclasses' has no 'ib' member""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-member:Module 'dataclasses' has no 's' member""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ctz3c8ok/project/src/error.py\"", line 3, in <module>\n    @dataclasses.s\n     ^^^^^^^^^^^^^\nAttributeError: module 'dataclasses' has no attribute 's'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class definition with class decorators and field descriptors""], ""route"": ""connector""}",2,0,0.0,0,"{""unsupported"": 2}",True,[],True,verified,ready,exact_target,ground_truth_verified,True,False,
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/main.py,component_runtime,0,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xucmcs8f/project/src/main.py"", line 24, in <module>
+    from .candidate import CandidateResult
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xucmcs8f/project/src/candidate.py"", line 7, in <module>
+    from pycparser import CParser, c_ast as ca
+ModuleNotFoundError: No module named 'pycparser'
+"
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/perm/perm.py,component_runtime,0,,True,True,,dataclasses,exact_target,1,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""_attr_ib_factory_wrapper\"" already defined on line 6  [no-redef]""}, {""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured data definition""], ""route"": ""connector""}",2,0,0.0,0,"{""unsupported"": 2}",False,[],False,rejected,ready,no_migration,verification_rejected,False,False,"Verifier rejected generated adapter: line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function."
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/permuter.py,component_runtime,0,,True,True,dataclasses,dataclasses,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-u2pm1759/project/src/permuter.py"", line 19, in <module>
+    from .candidate import Candidate, CandidateResult
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-u2pm1759/project/src/candidate.py"", line 7, in <module>
+    from pycparser import CParser, c_ast as ca
+ModuleNotFoundError: No module named 'pycparser'
+"
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/randomizer.py,component_runtime,0,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064,simonlindholm/decomp-permuter,Utility,attrs,dataclasses,src/scorer.py,component_runtime,0,,True,True,,dataclasses,exact_target,1,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""_dataclass_diffasmline_decorator\"" already defined on line 9  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_field_line_wrapper\"" already defined on line 27  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_field_mnemonic_wrapper\"" already defined on line 38  [no-redef]""}, {""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""New mypy finding after migration: Name \""_dataclass_diffasmline_decorator\"" already defined on line 9  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_field_line_wrapper\"" already defined on line 27  [no-redef]""}, {""line"": 1, ""message"": ""New mypy finding after migration: Name \""_field_mnemonic_wrapper\"" already defined on line 38  [no-redef]""}, {""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""data class / structured record definition""], ""route"": ""connector""}",2,0,0.0,0,"{""unsupported"": 2}",False,[],False,rejected,ready,no_migration,verification_rejected,False,False,"Verifier rejected generated adapter: line 1: New mypy finding after migration: ""Scorer"" has no attribute ""PENALTY_DELETION""  [attr-defined]; line 1: New mypy finding after migration: ""Scorer"" has no attribute ""PENALTY_INSERTION""  [attr-defined]; line 1: New mypy finding after migration: ""Scorer"" has no attribute ""PENALTY_REGALLOC""  [attr-defined]; line 1: New mypy finding after migration: ""Scorer"" has no attribute ""PENALTY_REORDERING""  [attr-defined]; line 1: New mypy finding after migration: ""Scorer"" has no attribute ""PENALTY_STACKDIFF""  [attr-defined]; line 1: New mypy finding after migration: ""type[Scorer]"" has no attribute ""PENALTY_INF""  [attr-defined]; line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() function.; line 1: New pylint finding after migration: no-member:Class 'Scorer' has no 'PENALTY_INF' member; line 1: New pylint finding after migration: no-member:Instance of 'Scorer' has no 'PENALTY_DELETION' member; line 1: New pylint finding after migration: no-member:Instance of 'Scorer' has no 'PENALTY_INSERTION' member; line 1: New pylint finding after migration: no-member:Instance of 'Scorer' has no 'PENALTY_REGALLOC' member; line 1: New pylint finding after migration: no-member:Instance of 'Scorer' has no 'PENALTY_REORDERING' member; line 1: New pylint finding after migration: no-member:Instance of 'Scorer' has no 'PENALTY_STACKDIFF' member"
+neutron__neutron-lib__openstack/networking-nec__ff1695d5,openstack/networking-nec,Utility,neutron,neutron-lib,networking_nec/nwa/l2/models.py,component_runtime,17,,False,,,,no_decision,0,False,,0,[],{},0,0,,0,{},False,[],False,not_run,unknown,no_decision,resolver_miss,False,False,
+webapp2__flask__c4rlo/vimhelp__7a5fadfd,c4rlo/vimhelp,Web Framework,webapp2,flask,update.py,component_runtime,2,,True,,,,no_migration,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+pytorch-transformers__transformers__huggingface/transfer-learning-conv-ai__16074b20,huggingface/transfer-learning-conv-ai,Deep Learning,pytorch-transformers,transformers,convai_evaluation.py,component_runtime,5,,True,True,transformers,transformers,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: pylint: timed_out; baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+pytorch-transformers__transformers__huggingface/transfer-learning-conv-ai__16074b20,huggingface/transfer-learning-conv-ai,Deep Learning,pytorch-transformers,transformers,interact.py,component_runtime,5,,True,True,transformers,transformers,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: pylint: timed_out; baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+pytorch-transformers__transformers__huggingface/transfer-learning-conv-ai__16074b20,huggingface/transfer-learning-conv-ai,Deep Learning,pytorch-transformers,transformers,test_special_tokens.py,component_runtime,5,,True,True,transformers,transformers,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: pylint: timed_out; baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+pytorch-transformers__transformers__huggingface/transfer-learning-conv-ai__16074b20,huggingface/transfer-learning-conv-ai,Deep Learning,pytorch-transformers,transformers,train.py,component_runtime,5,,True,True,transformers,transformers,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: pylint: timed_out; baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+pytorch-transformers__transformers__huggingface/transfer-learning-conv-ai__16074b20,huggingface/transfer-learning-conv-ai,Deep Learning,pytorch-transformers,transformers,utils.py,component_runtime,5,,True,True,transformers,transformers,exact_target,1,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,Verification environment incomplete: pylint: timed_out; baseline import smoke failed: Timed out after 4s (inconclusive; not accepted as a successful import).
+characteristic__attrs__rackerlabs/mimic__5bb49466,rackerlabs/mimic,Utility,characteristic,attrs,mimic/model/clb_objects.py,component_runtime,0,,True,True,attr,attr,exact_target,1,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-55694nq9/project/mimic/model/clb_objects.py"", line 13, in <module>
+    import attr
+ModuleNotFoundError: No module named 'attr'
+"

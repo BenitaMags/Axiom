@@ -1,0 +1,39 @@
+{
+  "role": "Modbus TCP client for reading holding registers from a power meter",
+  "winner": "pyModbusTCP",
+  "original": "pymodbus",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.0,
+    "api_evidence": true,
+    "security": 0.82,
+    "security_evidence": true,
+    "maintenance": 0.4,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.606,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'pyModbusTCP' wins 'Modbus TCP client for reading holding registers from a power meter'. Confidence: MEDIUM. Total: 0.606 (speed=1.0, mem=1.0, sec=0.82, api=0.0). Migration note: pymodbus returns a response object with .isError() and .registers; pyModbusTCP's read_holding_registers returns a plain list or None on failure, requiring different error-handling logic",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "ModbusTcpClient",
+    "client.connect",
+    "client.read_holding_registers",
+    "result.isError",
+    "result.registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

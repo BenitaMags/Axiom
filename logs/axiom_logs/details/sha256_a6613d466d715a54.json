@@ -1,0 +1,40 @@
+{
+  "role": "synchronous HTTP client for REST API calls (SCADA endpoints)",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 0.838,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.9,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.902,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'httpx' wins 'synchronous HTTP client for REST API calls (SCADA endpoints)'. Confidence: MEDIUM. Total: 0.902 (speed=0.838, mem=0.624, sec=1.0, api=0.9). Migration note: httpx.Client vs requests.Session: exception types differ (httpx.HTTPStatusError vs requests.HTTPError raised by raise_for_status)",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "session.post",
+    "raise_for_status",
+    "json",
+    "status_code"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

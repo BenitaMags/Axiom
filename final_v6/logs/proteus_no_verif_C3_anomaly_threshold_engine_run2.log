@@ -1,0 +1,315 @@
+$ run_axiom_arms.py --config proteus_no_verif --program C3_anomaly_threshold_engine --runs 1 --start-run 2
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_c3_prompt.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-C3_anomaly_threshold_engine-21wgf61m/notifier.py
+                Discovered Imports                 
+┏━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module  ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│   10 │ smtplib │ —     │ —     │ SMTP           │
+└──────┴─────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                           Security Scan Results                                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ smtplib │ stdlib  │    — │ N/A  │   N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└─────────┴─────────┴──────┴──────┴──────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: (none — all stdlib)
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,200  output: 246  latency: 3564ms
+No overlapping dependencies — nothing to optimize.
+Discovery returned no group; using the mandated substitution smtplib -> apprise instead.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ apprise │ 1.13.1  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠇ ✓ apprise
+⠇ ✓ smtplib
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃                                                                      Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ smtplib │     ✓     │         23.9 ms │ UNMEASURED — No registered side-effect-free runtime probe for SMTP; an integration fixture is │         139 │       │
+│         │           │                 │                                                                 required for network, broker, │             │       │
+│ apprise │     ✓     │        471.0 ms │ UNMEASURED — No registered side-effect-free runtime probe for SMTP; an integration fixture is │        1215 │       │
+│         │           │                 │                                                                 required for network, broker, │             │       │
+└─────────┴───────────┴─────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: e17b5a33
+  API compat tokens — input: 235  output: 32  latency: 1453ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating missing data as a score.
+                                       AXIOM Optimization Decisions                                        
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ smtplib replacement │ smtplib  │ apprise │ HIGH  │ 0.051 │ 0.114  │ —        │ 0.0 │ 0.047 │ ✓          │
+└─────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  smtplib  →  apprise  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: smtplib → apprise
+  Found 1 call site(s):
+    L12: return smtplib.SMTP(host, port)
+  Tokens — in:1,896 out:3,253 latency:36750ms
+
+  Compatibility analysis:
+    ✗ L12: smtplib.SMTP(host, port)  — apprise has no equivalent class/method construct analogous to `smtplib.SMTP(host
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - apprise has no connection-oriented SMTP primitive: it is a stateless, URL/service-configuration based notification dispatcher, not a persistent host/port
+socket connection object like smtplib.SMTP. The dependency-injected `smtp` object in EmailNotifier is expected to behave like a live SMTP session (supporting 
+`.sendmail(sender, recipients, message)` with raw RFC822 semantics); apprise cannot genuinely provide this without inventing synthetic glue that no longer 
+reflects real SMTP transport behavior (e.g. requires guessing/fabricating credentials for the mailto:// URL scheme since only host/port are supplied, with no 
+user/pass, no auth context).
+    - The recipient/sender identity in smtplib.sendmail is fully dynamic per call, whereas apprise's URL-based service targets are typically configured up 
+front (at Apprise/service-URL construction time) rather than passed per-notify-call in the same flexible way — bridging this requires re-registering or 
+reconstructing service URLs on every sendmail() invocation, which is structurally different from smtplib's session model and cannot be considered a faithful 
+drop-in replacement, only an approximation via wrapper glue.
+    - Testability contract is weakened: the original design injects a raw SMTP-like object for unit testing (e.g. a mock with .sendmail). A wrapper around 
+apprise can technically satisfy the same interface, but doing so requires simulating a protocol apprise was never designed to expose, meaning the wrapper 
+effectively re-implements smtplib semantics on top of apprise rather than truly migrating to apprise's intended usage pattern (calling .notify() with 
+pre-configured service URLs).
+
+  1 call site(s) need a wrapper:
+    _apprise_smtp_wrapper  L12: Wrap an apprise.Apprise() instance in a shim object exposing a sendmai
+  Opening ACI edit session for smtplib → apprise...
+    · scope repair — __init__: added `import apprise` for `apprise`
+    wrapper reports a status it never checked; asking it to use the real result
+    · sendmail() line 73: discards the library's result and returns the constant `None`
+    · scope repair — sendmail: added `import apprise  # lazy import for testability` for `apprise`
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:27,268 out:4,464
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+  · removed dead source import — line 78: smtplib
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1 """notifier -- operator notification on alarm state changes.                                                                                           │
+│    2                                                                                                                                                        │
+│    3 The notification backend is the substitution target: `smtplib` (stdlib SMTP) ->                                                                        │
+│    4 `apprise` (multi-service notifications). The API differs (sendmail vs. notify), so a                                                                   │
+│    5 clone needs glue. The SMTP transport is dependency-injected for testing.                                                                               │
+│    6 """                                                                                                                                                    │
+│    7                                                                                                                                                        │
+│    8                                                                                                                                                        │
+│    9 def _apprise_smtp_wrapper(host: str = "localhost", port: int = 25, user=None, password=None):                                                          │
+│   10     """Build an smtplib.SMTP-like shim backed by an apprise.Apprise() instance.                                                                        │
+│   11                                                                                                                                                        │
+│   12     smtplib.SMTP.sendmail(from_addr, to_addrs, msg) sends a single RFC822                                                                              │
+│   13     message to all listed recipients over one already-open SMTP connection.                                                                            │
+│   14     It returns a dict mapping any *refused* recipients to their                                                                                        │
+│   15     (code, message) tuple -- empty when every recipient was accepted -- and                                                                            │
+│   16     raises smtplib.SMTPException subclasses for protocol-level failures.                                                                               │
+│   17                                                                                                                                                        │
+│   18     apprise has no notion of a live connection or per-recipient RCPT                                                                                   │
+│   19     acceptance: an Apprise() instance holds a list of parsed service URLs                                                                              │
+│   20     and .notify(title=, body=) pushes to every attached service, returning                                                                             │
+│   21     True only if *all* attached services reported success and False if                                                                                 │
+│   22     *any* of them failed. It never raises for an individual delivery                                                                                   │
+│   23     failure and gives no numeric status code.                                                                                                          │
+│   24                                                                                                                                                        │
+│   25     To keep sendmail()'s "dict of failures" contract meaningful, this shim                                                                             │
+│   26     builds one mailto:// service URL per recipient (so failures can be                                                                                 │
+│   27     attributed to the recipient that caused them), parses the subject/body                                                                             │
+│   28     out of the raw RFC822 `msg` string, and calls notify() once per                                                                                    │
+│   29     recipient. Recipients whose notify() call returned False are placed in                                                                             │
+│   30     the returned dict as {recipient: (0, "apprise notify reported                                                                                      │
+│   31     failure")} -- 0 is a placeholder since apprise gives no numeric code --                                                                            │
+│   32     and recipients that succeeded are simply omitted, exactly as smtplib's                                                                             │
+│   33     "no entry means accepted" convention works. Nothing here is guessed:                                                                               │
+│   34     the dict reflects apprise's own True/False result for each recipient,                                                                              │
+│   35     never a constant.                                                                                                                                  │
+│   36     """                                                                                                                                                │
+│   37     import apprise  # lazy import for testability                                                                                                      │
+│   38                                                                                                                                                        │
+│   39     class _AppriseSMTPShim:                                                                                                                            │
+│   40         def __init__(self, host, port, user=None, password=None):                                                                                      │
+│   41             self._host = host                                                                                                                          │
+│   42             self._port = port                                                                                                                          │
+│   43             self._user = user                                                                                                                          │
+│   44             self._password = password                                                                                                                  │
+│   45                                                                                                                                                        │
+│   46         def _service_url(self, recipient):                                                                                                             │
+│   47             auth = ""                                                                                                                                  │
+│   48             if self._user:                                                                                                                             │
+│   49                 auth = self._user                                                                                                                      │
+│   50                 if self._password:                                                                                                                     │
+│   51                     auth += f":{self._password}"                                                                                                       │
+│   52                 auth += "@"                                                                                                                            │
+│   53             return f"mailto://{auth}{self._host}:{self._port}/?to={recipient}"                                                                         │
+│   54                                                                                                                                                        │
+│   55         def sendmail(self, from_addr, to_addrs, msg):                                                                                                  │
+│   56             import apprise  # lazy import for testability  # connector: bound to this scope                                                            │
+│   57             subject = ""                                                                                                                               │
+│   58             body = msg                                                                                                                                 │
+│   59             if "\r\n\r\n" in msg:                                                                                                                      │
+│   60                 headers, body = msg.split("\r\n\r\n", 1)                                                                                               │
+│   61                 for line in headers.split("\r\n"):                                                                                                     │
+│   62                     if line.lower().startswith("subject:"):                                                                                            │
+│   63                         subject = line.split(":", 1)[1].strip()                                                                                        │
+│   64                                                                                                                                                        │
+│   65             failed = {}                                                                                                                                │
+│   66             for recipient in to_addrs:                                                                                                                 │
+│   67                 client = apprise.Apprise()                                                                                                             │
+│   68                 client.add(self._service_url(recipient))                                                                                               │
+│   69                 ok = client.notify(title=subject, body=body)                                                                                           │
+│   70                 if not ok:                                                                                                                             │
+│   71                     failed[recipient] = (0, "apprise notify reported failure")                                                                         │
+│   72             return failed                                                                                                                              │
+│   73                                                                                                                                                        │
+│   74     return _AppriseSMTPShim(host, port, user, password)                                                                                                │
+│   75                                                                                                                                                        │
+│   76                                                                                                                                                        │
+│   77 def _default_smtp(host: str = "localhost", port: int = 25):                                                                                            │
+│   78                                                                                                                                                        │
+│   79     return _apprise_smtp_wrapper(host, port)                                                                                                           │
+│   80                                                                                                                                                        │
+│   81                                                                                                                                                        │
+│   82 class EmailNotifier:                                                                                                                                   │
+│   83     def __init__(self, sender: str, recipients, smtp=None):                                                                                            │
+│   84         self.sender = sender                                                                                                                           │
+│   85         self.recipients = list(recipients)                                                                                                             │
+│   86         self.smtp = smtp if smtp is not None else _default_smtp()                                                                                      │
+│   87                                                                                                                                                        │
+│   88     def notify(self, subject: str, body: str) -> str:                                                                                                  │
+│   89         message = (                                                                                                                                    │
+│   90             f"From: {self.sender}\r\n"                                                                                                                 │
+│   91             f"To: {', '.join(self.recipients)}\r\n"                                                                                                    │
+│   92             f"Subject: {subject}\r\n\r\n{body}"                                                                                                        │
+│   93         )                                                                                                                                              │
+│   94         self.smtp.sendmail(self.sender, self.recipients, message)                                                                                      │
+│   95         return message                                                                                                                                 │
+│   96                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 95 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ notifier                                       │
+│ Lines (original → variant)  │ 95 → 62                                        │
+│ Requested lines             │ 62                                             │
+│ Achieved lines              │ 62                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:apprise_shim.py         │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.1904                                         │
+│ diversity: ast_structural   │ 0.6258  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.4815                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.3129  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 12.1s │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  wrote extracted module apprise_shim.py
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 38 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ engine                                         │
+│ Lines (original → variant)  │ 38 → 48                                        │
+│ Requested lines             │ 48                                             │
+│ Achieved lines              │ 48                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure                                │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.2622                                         │
+│ diversity: ast_structural   │ 0.3010  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6129                                         │
+│ diversity: cfg_shape        │ 0.4000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.3505  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 6.1s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 20 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ engine_config                                  │
+│ Lines (original → variant)  │ 20 → 21                                        │
+│ Requested lines             │ 21                                             │
+│ Achieved lines              │ 21                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:tag_config_utils.py     │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.3209                                         │
+│ diversity: ast_structural   │ 0.2124  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.5625                                         │
+│ diversity: cfg_shape        │ 0.6667  (rename-insensitive)                   │
+│ diversity: composite        │ 0.4395  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 4.7s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for C3_anomaly_threshold_engine (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 22 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ hysteresis                                     │
+│ Lines (original → variant)  │ 22 → 21                                        │
+│ Requested lines             │ 21                                             │
+│ Achieved lines              │ 21                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:transitions_table.py    │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4241                                         │
+│ diversity: ast_structural   │ 0.5161  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6389                                         │
+│ diversity: cfg_shape        │ 0.6000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.5581  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 5.8s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+C3_anomaly_threshold_engine      2       4/4     Y    Y      5     10  0.2455  153.2s
+
+migration_success 1/1 (100%)
+rows appended to results_c3_prompt.csv

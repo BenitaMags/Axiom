@@ -1,0 +1,696 @@
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=10, stopping collection.
+Built 10 evaluable case(s).
+→ [1/10] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                         ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ locust  │ is_installed        │  FAIL   │ HIGH       │ message=locust is not installed                │
+│ locust  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for locust           │
+│ locust  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ locust                                         │
+│ locust  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'               │
+│ time    │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable       │
+│ time    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time             │
+│ time    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time │
+│ time    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'               │
+│ kafka   │ is_installed        │  FAIL   │ HIGH       │ message=kafka is not installed                 │
+│ kafka   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for kafka            │
+│ kafka   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ kafka                                          │
+│ kafka   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka'                │
+└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): kafka, locust
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ confluent-kafka
+⠋ ✓ kafka          
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka'   │
+│ confluent-kafka │     ✗     │               — │           — │           — │ No module named           │
+│                 │           │                 │             │             │ 'confluent-kafka'         │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_kafka__confluent-kafka__sve
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                            ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ kafka -> confluent-kafka        │ kafka    │ kafka  │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ (seeded from PyMigBench ground  │          │        │       │       │        │          │     │       │
+│ truth)                          │          │        │       │       │        │          │     │       │
+└─────────────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_kafka__confluent-kafka__sve
+→ [2/10] alice-biometrics/petisco  slackclient→slack-sdk  
+(petisco/extra/slack/application/notifier/slack_notifier.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                         ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ is_installed        │  FAIL   │ HIGH       │ message=slack is not installed                 │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack            │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ slack                                          │
+│ slack   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'slack'                │
+│ typing  │ is_installed        │  PASS   │ HIGH       │ message=typing is installed and importable     │
+│ typing  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for typing           │
+│ typing  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ typing                                         │
+│ typing  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'slack'                │
+│ petisco │ is_installed        │  FAIL   │ HIGH       │ message=petisco is not installed               │
+│ petisco │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for petisco          │
+│ petisco │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ petisco                                        │
+│ petisco │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'petisco'              │
+└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): slack, petisco
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slack-sdk  
+⠋ ✓ slackclient
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_slackclient__slack-sdk__ali
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                    ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ slackclient ->          │ slackclient │ slackclient │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ slack-sdk (seeded from  │             │             │       │       │        │          │     │       │
+│ PyMigBench ground       │             │             │       │       │        │          │     │       │
+│ truth)                  │             │             │       │       │        │          │     │       │
+└─────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__ali
+→ [3/10] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/is_slack_available.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                         ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ is_installed        │  FAIL   │ HIGH       │ message=slack is not installed                 │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack            │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ slack                                          │
+│ slack   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No reference package provided          │
+└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────┘
+
+✓ Rules engine: 4 checks across 1 packages
+
+Disqualified (not installed): slack
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slack-sdk  
+⠋ ✓ slackclient
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_slackclient__slack-sdk__ali
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                    ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ slackclient ->          │ slackclient │ slackclient │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ slack-sdk (seeded from  │             │             │       │       │        │          │     │       │
+│ PyMigBench ground       │             │             │       │       │        │          │     │       │
+│ truth)                  │             │             │       │       │        │          │     │       │
+└─────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__ali
+→ [4/10] alice-biometrics/petisco  slackclient→slack-sdk  
+(petisco/legacy/notifier/infrastructure/slack/slack_notifier.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                         ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ is_installed        │  FAIL   │ HIGH       │ message=slack is not installed                 │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack            │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ slack                                          │
+│ slack   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'slack'                │
+│ petisco │ is_installed        │  FAIL   │ HIGH       │ message=petisco is not installed               │
+│ petisco │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for petisco          │
+│ petisco │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ petisco                                        │
+│ petisco │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'petisco'              │
+└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): slack, petisco
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slack-sdk  
+⠋ ✓ slackclient
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_slackclient__slack-sdk__ali
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                    ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ slackclient ->          │ slackclient │ slackclient │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ slack-sdk (seeded from  │             │             │       │       │        │          │     │       │
+│ PyMigBench ground       │             │             │       │       │        │          │     │       │
+│ truth)                  │             │             │       │       │        │          │     │       │
+└─────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__ali
+→ [5/10] phuks-co/throat  eventlet→gevent  (throat.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                        ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ app      │ is_installed        │  FAIL   │ HIGH       │ message=app is not installed                  │
+│ app      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for app             │
+│ app      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for app │
+│ app      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'app'                 │
+│ eventlet │ is_installed        │  FAIL   │ HIGH       │ message=eventlet is not installed             │
+│ eventlet │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for eventlet        │
+│ eventlet │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for     │
+│          │                     │         │            │ eventlet                                      │
+│ eventlet │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'eventlet'            │
+└──────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): app, eventlet
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ eventlet
+⠋ ✓ gevent  
+                                         Benchmark Results                                         
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                      ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ eventlet │     ✗     │               — │           — │           — │ No module named 'eventlet' │
+│ gevent   │     ✗     │               — │           — │           — │ No module named 'gevent'   │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_eventlet__gevent__phuks-co/
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                          ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ eventlet -> gevent (seeded    │ eventlet │ eventlet │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ from PyMigBench ground truth) │          │          │       │       │        │          │     │       │
+└───────────────────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Telemetry save failed: [Errno 2] No such file or directory: 
+'axiom_logs/sessions/eval_eventlet__gevent__phuks-co/.json'
+→ [6/10] hhyo/archery  pycrypto→pycryptodome  (sql/utils/aes_decryptor.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                        ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Crypto   │ is_installed        │  FAIL   │ HIGH       │ message=Crypto is not installed               │
+│ Crypto   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for Crypto          │
+│ Crypto   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for     │
+│          │                     │         │            │ Crypto                                        │
+│ Crypto   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'Crypto'              │
+│ binascii │ is_installed        │  PASS   │ HIGH       │ message=binascii is installed and importable  │
+│ binascii │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for binascii        │
+│ binascii │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for     │
+│          │                     │         │            │ binascii                                      │
+│ binascii │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'Crypto'              │
+│ sys      │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and importable       │
+│ sys      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys             │
+│ sys      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for sys │
+│ sys      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'Crypto'              │
+└──────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): Crypto
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ pycryptodome
+⠋ ✓ pycrypto    
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                        ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ pycryptodome │     ✗     │               — │           — │           — │ No module named              │
+│              │           │                 │             │             │ 'pycryptodome'               │
+│ pycrypto     │     ✗     │               — │           — │           — │ No module named 'pycrypto'   │
+└──────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_pycrypto__pycryptodome__hhy
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                          ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ pycrypto -> pycryptodome      │ pycrypto │ pycrypto │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ (seeded from PyMigBench       │          │          │       │       │        │          │     │       │
+│ ground truth)                 │          │          │       │       │        │          │     │       │
+└───────────────────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_pycrypto__pycryptodome__hhy
+→ [7/10] ethereum/py-evm  leveldb→plyvel  (evm/db/backends/level.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                         ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ leveldb │ is_installed        │  FAIL   │ HIGH       │ message=leveldb is not installed               │
+│ leveldb │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for leveldb          │
+│ leveldb │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for      │
+│         │                     │         │            │ leveldb                                        │
+│ leveldb │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'leveldb'              │
+│ base    │ is_installed        │  FAIL   │ HIGH       │ message=base is not installed                  │
+│ base    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base             │
+│ base    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base │
+│ base    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'base'                 │
+└─────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): leveldb, base
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ leveldb
+⠋ ✓ plyvel 
+                                        Benchmark Results                                        
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ plyvel  │     ✗     │               — │           — │           — │ No module named 'plyvel'  │
+│ leveldb │     ✗     │               — │           — │           — │ No module named 'leveldb' │
+└─────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_leveldb__plyvel__ethereum/p
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                           ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ leveldb -> plyvel (seeded from │ leveldb  │ leveldb │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ PyMigBench ground truth)       │          │         │       │       │        │          │     │       │
+└────────────────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Telemetry save failed: [Errno 2] No such file or directory: 
+'axiom_logs/sessions/eval_leveldb__plyvel__ethereum/p.json'
+→ [8/10] usergeteam/userge-plugins  requests→aiohttp  (plugins/info.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                       ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ datetime  │ is_installed        │  PASS   │ HIGH       │ message=datetime is installed and importable │
+│ datetime  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for datetime       │
+│ datetime  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ datetime                                     │
+│ datetime  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11,                    │
+│           │                     │         │            │ shared_names=['__all__', '__builtins__',     │
+│           │                     │         │            │ '__cached__', '__doc__', '__file__',         │
+│           │                     │         │            │ '__loader__', '__name__', '__package__',     │
+│           │                     │         │            │ '__spec__']                                  │
+│ requests  │ is_installed        │  PASS   │ HIGH       │ message=requests is installed and importable │
+│ requests  │ has_metadata        │  PASS   │ MEDIUM     │ version=2.34.2, license=Apache-2.0           │
+│ requests  │ license_permissive  │  PASS   │ MEDIUM     │ license=apache-2.0, permissive=True          │
+│ requests  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11,                    │
+│           │                     │         │            │ shared_names=['__all__', '__builtins__',     │
+│           │                     │         │            │ '__cached__', '__doc__', '__file__',         │
+│           │                     │         │            │ '__loader__', '__name__', '__package__',     │
+│           │                     │         │            │ '__spec__']                                  │
+│ spamwatch │ is_installed        │  FAIL   │ HIGH       │ message=spamwatch is not installed           │
+│ spamwatch │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for spamwatch      │
+│ spamwatch │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ spamwatch                                    │
+│ spamwatch │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'spamwatch'          │
+│ userge    │ is_installed        │  FAIL   │ HIGH       │ message=userge is not installed              │
+│ userge    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for userge         │
+│ userge    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ userge                                       │
+│ userge    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'userge'             │
+└───────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+Disqualified (not installed): userge, spamwatch
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠼ ✓ requests
+⠼ ✓ aiohttp 
+                              Benchmark Results                               
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ requests │     ✓     │         78.7 ms │           — │         566 │       │
+│ aiohttp  │     ✓     │        115.4 ms │           — │        2078 │       │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_requests__aiohttp__usergete
+  skipped: seeded pipeline raised: Error code: 400 - {'type': 'error', 'error': {'type': 
+'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please 
+go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ccxzdsqj2q9yFp9925ejc'}
+→ [9/10] miguelgrinberg/flask-socketio  gevent→eventlet  (example/app.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                       ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ threading │ is_installed        │  PASS   │ HIGH       │ message=threading is installed and           │
+│           │                     │         │            │ importable                                   │
+│ threading │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for threading      │
+│ threading │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ threading                                    │
+│ threading │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.06,                    │
+│           │                     │         │            │ shared_names=['__builtins__', '__cached__',  │
+│           │                     │         │            │ '__doc__', '__file__', '__loader__',         │
+│           │                     │         │            │ '__name__', '__package__', '__spec__']       │
+│ flask     │ is_installed        │  PASS   │ HIGH       │ message=flask is installed and importable    │
+│ flask     │ has_metadata        │  PASS   │ MEDIUM     │ version=3.1.3, license=unknown               │
+│ flask     │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                   │
+│ flask     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.06,                    │
+│           │                     │         │            │ shared_names=['__builtins__', '__cached__',  │
+│           │                     │         │            │ '__doc__', '__file__', '__loader__',         │
+│           │                     │         │            │ '__name__', '__package__', '__spec__']       │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable     │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time           │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ time                                         │
+│ time      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.044,                   │
+│           │                     │         │            │ shared_names=['__doc__', '__loader__',       │
+│           │                     │         │            │ '__name__', '__package__', '__spec__']       │
+│ gevent    │ is_installed        │  FAIL   │ HIGH       │ message=gevent is not installed              │
+│ gevent    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for gevent         │
+│ gevent    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for    │
+│           │                     │         │            │ gevent                                       │
+│ gevent    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'gevent'             │
+└───────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+Disqualified (not installed): gevent
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ eventlet
+⠋ ✓ gevent  
+                                         Benchmark Results                                         
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                      ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ gevent   │     ✗     │               — │           — │           — │ No module named 'gevent'   │
+│ eventlet │     ✗     │               — │           — │           — │ No module named 'eventlet' │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_gevent__eventlet__miguelgri
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                            ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ gevent -> eventlet (seeded from │ gevent   │ gevent │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ PyMigBench ground truth)        │          │        │       │       │        │          │     │       │
+└─────────────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_gevent__eventlet__miguelgri
+→ [10/10] paratoolsinc/taucmdr  lockfile→fasteners  (packages/tau/cf/software/installation.py)
+──────────────────────────────────────────── ⚙️  Rules Agent ────────────────────────────────────────────
+─────────────────────────────────────────── ⚙️  Rules Engine ────────────────────────────────────────────
+                                              Rule Results                                               
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                 ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hashlib         │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and       │
+│                 │                     │         │            │ importable                             │
+│ hashlib         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib  │
+│ hashlib         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for hashlib                            │
+│ hashlib         │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11,              │
+│                 │                     │         │            │ shared_names=['__all__',               │
+│                 │                     │         │            │ '__builtins__', '__cached__',          │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__',   │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ subprocess      │ is_installed        │  PASS   │ HIGH       │ message=subprocess is installed and    │
+│                 │                     │         │            │ importable                             │
+│ subprocess      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for          │
+│                 │                     │         │            │ subprocess                             │
+│ subprocess      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for subprocess                         │
+│ subprocess      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11,              │
+│                 │                     │         │            │ shared_names=['__all__',               │
+│                 │                     │         │            │ '__builtins__', '__cached__',          │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__',   │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ tempfile        │ is_installed        │  PASS   │ HIGH       │ message=tempfile is installed and      │
+│                 │                     │         │            │ importable                             │
+│ tempfile        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tempfile │
+│ tempfile        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for tempfile                           │
+│ tempfile        │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.117,             │
+│                 │                     │         │            │ shared_names=['__all__',               │
+│                 │                     │         │            │ '__builtins__', '__cached__',          │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__',   │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ multiprocessing │ is_installed        │  PASS   │ HIGH       │ message=multiprocessing is installed   │
+│                 │                     │         │            │ and importable                         │
+│ multiprocessing │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for          │
+│                 │                     │         │            │ multiprocessing                        │
+│ multiprocessing │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for multiprocessing                    │
+│ multiprocessing │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11,              │
+│                 │                     │         │            │ shared_names=['__all__',               │
+│                 │                     │         │            │ '__builtins__', '__cached__',          │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__',   │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ sys             │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and           │
+│                 │                     │         │            │ importable                             │
+│ sys             │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys      │
+│ sys             │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for sys                                │
+│ sys             │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.038,             │
+│                 │                     │         │            │ shared_names=['__doc__', '__loader__', │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ os              │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable │
+│ os              │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os       │
+│ os              │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for os                                 │
+│ os              │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024,             │
+│                 │                     │         │            │ shared_names=['__all__',               │
+│                 │                     │         │            │ '__builtins__', '__doc__', '__file__', │
+│                 │                     │         │            │ '__loader__', '__name__',              │
+│                 │                     │         │            │ '__package__', '__spec__']             │
+│ stat            │ is_installed        │  PASS   │ HIGH       │ message=stat is installed and          │
+│                 │                     │         │            │ importable                             │
+│ stat            │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for stat     │
+│ stat            │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for stat                               │
+│ stat            │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.061,             │
+│                 │                     │         │            │ shared_names=['__builtins__',          │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__',   │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__'] │
+│ lockfile        │ is_installed        │  FAIL   │ HIGH       │ message=lockfile is not installed      │
+│ lockfile        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for lockfile │
+│ lockfile        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for lockfile                           │
+│ lockfile        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'lockfile'     │
+│ tau             │ is_installed        │  FAIL   │ HIGH       │ message=tau is not installed           │
+│ tau             │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tau      │
+│ tau             │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found  │
+│                 │                     │         │            │ for tau                                │
+│ tau             │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tau'          │
+└─────────────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────┘
+
+✓ Rules engine: 36 checks across 9 packages
+
+Disqualified (not installed): lockfile, tau
+─────────────────────────────────────────── ⚡ Profiler Agent ───────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ fasteners
+⠋ ✓ lockfile 
+                                          Benchmark Results                                          
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                       ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ lockfile  │     ✗     │               — │           — │           — │ No module named 'lockfile'  │
+│ fasteners │     ✗     │               — │           — │           — │ No module named 'fasteners' │
+└───────────┴───────────┴─────────────────┴─────────────┴─────────────┴─────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: CLAUDE / claude-sonnet-4-6  |  Session: eval_lockfile__fasteners__parato
+                                      AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                          ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ lockfile -> fasteners (seeded │ lockfile │ lockfile │ LOW   │ —     │ —      │ —        │ —   │ —     │
+│ from PyMigBench ground truth) │          │          │       │       │        │          │     │       │
+└───────────────────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_lockfile__fasteners__parato
+
+Evaluation took 4.2s for 10 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                10
+Errored (skipped):          1
+Resolver detection rate:     0.0%  (n=0)
+Full-pipeline accuracy:      requested, but 0 cases were scoreable — usually means neither source nor 
+target package is pip-installed here (profiler_agent can't benchmark what it can't import), or resolver 
+never produced a decision. Try --seed-target to bypass resolver's own discovery, or pip install the 
+specific pair you're testing.
+           Detection Rate by Domain           
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain            ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ API wrapper       │     3 │              — │
+│ Utility           │     2 │              — │
+│ HTTP Clients      │     1 │              — │
+│ Cryptography      │     1 │              — │
+│ Database          │     1 │              — │
+│ Filesystem&Crypto │     1 │              — │
+└───────────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_eval_report.json, pymigbench_eval_report.csv

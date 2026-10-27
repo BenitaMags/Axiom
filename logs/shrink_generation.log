@@ -1,0 +1,58 @@
+designing 10 transformations with claude/claude-sonnet-5, 3 implementation attempt(s) each
+direction: shrink
+corpus: /Users/benz.mags/Desktop/axiom_v2_fixed 3/ics_corpus
+
+catalogue already holds 4 transformation(s): call_argument_extraction, and_chain_nesting, demorgan_branch_swap, independent_assignment_swap
+
+[design 1/10] single_use_temp_inlining (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 2/10] redundant_else_hoisting (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 3/10] boolean_return_collapsing (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 4/10] augmented_assignment_run_fusion (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 5/10] constant_branch_table_collapse (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 6/10] adjacent_if_condition_merging (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 7/10] adjacent_assignment_tuple_fusion (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: reward 0.876, applies to 4, mean Δlines -9.5
+    impl 3/3: reward 0.876, applies to 4, mean Δlines -9.5
+    ✓ kept (reward 0.876)
+[design 8/10] elif_identical_body_merging (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 9/10] conditional_assign_return_folding (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 10/10] guard_clause_disjunction_merging (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+
+designed 10, accepted 1 this run; catalogue now holds 5 -> /Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/isomorph/generated_spts.json
+
+catalogue contents:
+  adjacent_assignment_tuple_fusion   shrink   reward 0.876  Δlines -9.5  applies to 4/4
+  call_argument_extraction           grow     reward 0.548  Δlines +5.0  applies to 4/4
+  and_chain_nesting                  grow     reward 0.026  Δlines +1.0  applies to 1/4
+  demorgan_branch_swap               neutral  reward 0.018  Δlines +0.0  applies to 4/4
+  independent_assignment_swap        neutral  reward 0.005  Δlines +0.0  applies to 3/4
+
+shrink transformations in the catalogue: 1 (adjacent_assignment_tuple_fusion)

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "axiom"
+version = "2.1.0"
+requires-python = ">=3.10"
+dependencies = [
+  # Direct urllib security lookups need a current CA bundle on framework
+  # Python installations (especially macOS), without weakening TLS checks.
+  "certifi>=2023.7.22",
+  # Used to interpret historical Python/package constraints without executing
+  # an untrusted project's setup.py.
+  "packaging>=23.0",
+  "tomli>=2.0; python_version < '3.11'",
+  # Format-preserving concrete syntax tree for import/usage rewriting
+  # (core/ast_rewrite.py) -- keeps a migration patch a minimal diff instead
+  # of ast.unparse's whole-file reformat. Same tool class MigrateLib
+  # (arXiv 2510.08810) uses for its own source rewriter.
+  "libcst>=1.1",
+]
+
+[project.optional-dependencies]
+# Needed for non-isolated `axiom run` verification.  PyMigBench runs with
+# `--isolated-profiling` provision the same toolchain inside their disposable
+# sandbox automatically.
+verify = [
+  "pylint>=3.0,<4",
+  "bandit>=1.7,<2",
+  "mypy>=1.8,<2",
+]
+
+[project.scripts]
+axiom = "smart_loader.cli:main"
+
+[tool.setuptools]
+packages = ["smart_loader", "smart_loader.core", "smart_loader.agents", "smart_loader.eval"]

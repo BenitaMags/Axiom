@@ -1,0 +1,29 @@
+{
+  "role": "application logging",
+  "winner": "logger",
+  "original": "logger",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.906,
+    "installed": true
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 69: Stale source symbol 'Logger' is still referenced after its import was removed; rewrite this call site to the generated connector wrapper.; line 1: New mypy finding after migration: Name \"Logger\" is not defined  [name-defined]; line 1: New mypy finding after migration: Name \"pythonjsonlogger\" is not defined  [name-defined]; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'Logger'; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'pythonjsonlogger'",
+  "confidence": "LOW",
+  "used_apis": [
+    "Logger"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

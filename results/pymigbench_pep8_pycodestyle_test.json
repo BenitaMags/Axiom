@@ -1,0 +1,373 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 1,
+    "case_offset": 0,
+    "case_filter": "schlamar/flake8-todo"
+  },
+  "metrics": {
+    "total_cases": 1,
+    "errored_cases": 0,
+    "detection_rate_pct": 100.0,
+    "detection_n": 1,
+    "target_selection_rate_pct": 0.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 0,
+    "verified_ground_truth_rate_pct": 0.0,
+    "execution_ready_n": 1,
+    "verified_ground_truth_rate_ready_pct": 0.0,
+    "verified_alternative_n": 1,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "verified_alternative": 1
+    },
+    "result_categories": {
+      "verified_alternative": 1
+    },
+    "verified_alternative_efficiency_superior_n": 1,
+    "verified_alternative_efficiency_unproven_n": 0,
+    "connector_invoked_n": 1,
+    "verification_environment_incomplete_n": 0,
+    "verification_environment_incomplete_by_status": {},
+    "verifier_clean_rate_pct": 100.0,
+    "verifier_n": 1,
+    "repair_cases_n": 1,
+    "repair_cycle_total": 1,
+    "repair_cycles_per_case": 1.0,
+    "repair_cycles_per_repaired_case": 1.0,
+    "verified_after_repair_n": 1,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {
+      "connector": 1
+    },
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 4,
+    "runtime_measured_package_case_n": 0,
+    "runtime_measurement_coverage_pct": 0.0,
+    "runtime_measured_probe_n": 0,
+    "runtime_probe_status_counts": {
+      "unsupported": 4
+    },
+    "by_domain": {
+      "Codestyle": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 1,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "result_category_definitions": {
+    "pymigbench_exact_verified": "AXIOM produced and verified the same target migration recorded by PyMigBench.",
+    "verified_alternative": "AXIOM verified a different target for the same source role. Its alternative_efficiency record states whether real comparable measurements justify an efficiency-superior claim.",
+    "rejected_after_repair_budget": "A selected migration remained unaccepted after the globally bounded verifier repair budget was exhausted.",
+    "not_verified_or_not_adjudicated": "No verified migration claim is made. category_reason and detailed outcome distinguish no-change, environment, resolver, provider, and other causes."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 165.6865861415863,
+  "results": [
+    {
+      "migration_id": "pep8__pycodestyle__schlamar/flake8-todo__fcd59c6c",
+      "repo": "schlamar/flake8-todo",
+      "domain": "Codestyle",
+      "source": "pep8",
+      "target": "pycodestyle",
+      "file_path": "flake8_todo.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [],
+      "base_requirement_count": 0,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": false,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "ruff",
+      "attempted_axiom_winner": "ruff",
+      "attempted_selection_status": "alternative",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 1,
+      "repair_history": [
+        {
+          "cycle": 1,
+          "max_cycles": 5,
+          "route": "connector",
+          "failure_class": "patch_or_static",
+          "roles": [
+            "Python style guide checker / linter plugin base"
+          ],
+          "errors": [
+            {
+              "line": 1,
+              "message": "New pylint finding after migration: no-member:Module 'ruff' has no 'noqa' member"
+            }
+          ]
+        }
+      ],
+      "final_verifier_feedback": {
+        "cycle": 1,
+        "max_cycles": 5,
+        "route": "connector",
+        "failure_class": "patch_or_static",
+        "roles": [
+          "Python style guide checker / linter plugin base"
+        ],
+        "errors": [
+          {
+            "line": 1,
+            "message": "New pylint finding after migration: no-member:Module 'ruff' has no 'noqa' member"
+          }
+        ]
+      },
+      "profiler_evidence": {
+        "flake8": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 2.149,
+          "memory_kb": 458.7,
+          "profile_detail": "import module: flake8",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:noqa": {
+              "status": "unsupported",
+              "probe_id": "unsupported:noqa",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "noqa"
+              ]
+            }
+          }
+        },
+        "pep8": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 5.345,
+          "memory_kb": 814.0,
+          "profile_detail": "import module: pep8",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:noqa": {
+              "status": "unsupported",
+              "probe_id": "unsupported:noqa",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "noqa"
+              ]
+            }
+          }
+        },
+        "pycodestyle": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 5.369,
+          "memory_kb": 652.5,
+          "profile_detail": "import module: pycodestyle",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:noqa": {
+              "status": "unsupported",
+              "probe_id": "unsupported:noqa",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "noqa"
+              ]
+            }
+          }
+        },
+        "ruff": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 0.652,
+          "memory_kb": 121.2,
+          "profile_detail": "import module: ruff",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:noqa": {
+              "status": "unsupported",
+              "probe_id": "unsupported:noqa",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for noqa; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "noqa"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "pycodestyle",
+        "target_version": "auto",
+        "resolved_target_version": "2.14.0",
+        "target_requirement": "pycodestyle",
+        "requirement_count": 0,
+        "requirement_file_count": 0,
+        "python_evidence": [],
+        "warnings": [
+          "No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery."
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "flake8": {
+            "distribution": "flake8",
+            "version": "7.3.0",
+            "install_spec": "flake8==7.3.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "pycodestyle": {
+            "distribution": "pycodestyle",
+            "version": "2.14.0",
+            "install_spec": "pycodestyle==2.14.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          },
+          "ruff": {
+            "distribution": "ruff",
+            "version": "0.16.0",
+            "install_spec": "ruff==0.16.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.12",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": true,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "verified",
+      "verification_environment_status": "ready",
+      "selection_status": "alternative",
+      "outcome": "verified_alternative",
+      "verified_ground_truth": false,
+      "verified_alternative": true,
+      "result_category": "verified_alternative",
+      "category_reason": "A different target passed verification and is efficiency-superior to PyMigBench's target on comparable real profiler evidence.",
+      "alternative_efficiency": {
+        "reference_target": "pycodestyle",
+        "alternative": "ruff",
+        "measurement_source": "real_profiler",
+        "eligible": true,
+        "verdict": "efficiency_superior",
+        "reason": "At least one real metric improved by 10% or more and none regressed by more than 5%.",
+        "metrics": [
+          {
+            "metric": "import_time_ms",
+            "reference_value": 5.369,
+            "alternative_value": 0.652,
+            "improvement_pct": 87.86,
+            "lower_is_better": true
+          },
+          {
+            "metric": "memory_kb",
+            "reference_value": 652.5,
+            "alternative_value": 121.2,
+            "improvement_pct": 81.43,
+            "lower_is_better": true
+          }
+        ]
+      },
+      "repair_budget_exhausted": false,
+      "error": null
+    }
+  ]
+}

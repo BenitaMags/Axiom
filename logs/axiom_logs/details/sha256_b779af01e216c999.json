@@ -1,0 +1,35 @@
+{
+  "role": "JSON serialization backend for canonical/deterministic encoding",
+  "winner": "ujson",
+  "original": "json",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.3,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.7,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'ujson' wins 'JSON serialization backend for canonical/deterministic encoding'. Confidence: MEDIUM. Total: 0.7 (speed=1.0, mem=1.0, sec=None, api=0.3). Migration note: orjson.dumps returns bytes, not str, requiring a .decode() step to match current return type",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "dumps(record, sort_keys=True, separators=(',', ':'))"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

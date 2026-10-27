@@ -1,0 +1,549 @@
+$ run_axiom_arms.py --config proteus_full --program B3_mqtt_telemetry_bridge --runs 1 --start-run 1
+
+config   : proteus_full (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_fixed4.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-B3_mqtt_telemetry_bridge-coo1k8cr/bridge.py
+                            Discovered Imports                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names             ┃ API Calls Used    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│    7 │ mqtt_config      │ —     │ BridgeConfig      │ —                 │
+│    8 │ telemetry        │ —     │ encode, topic_for │ topic_for, encode │
+│   12 │ paho.mqtt.client │ mqtt  │ —                 │ Client            │
+└──────┴──────────────────┴───────┴───────────────────┴───────────────────┘
+
+✓ Found 3 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Skipping 2 first-party module(s), not dependencies: mqtt_config, telemetry
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                  Security Scan Results                                                   
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package          ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                        ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho → paho-mqtt │ 2.1.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ PyPI distribution: paho-mqtt │
+└──────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴──────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: mqtt_config, paho, telemetry
+Discovered candidates:
+  paho -> gmqtt, amqtt, aiomqtt
+  telemetry -> opentelemetry-sdk, sentry-sdk, prometheus-client
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,548  output: 1,039  latency: 10527ms
+Discovery leads not advanced to an equivalence group after file/API fit review: telemetry: opentelemetry-sdk, sentry-sdk, prometheus-client
+Equivalence Groups Found
+└── MQTT client for publishing telemetry to a broker
+    ├── Candidates : paho-mqtt, aiomqtt, gmqtt, amqtt
+    ├── Used APIs  : mqtt.Client, client.connect, client.publish
+    ├── Pitfalls   : paho-mqtt is synchronous/callback-based; aiomqtt and gmqtt are asyncio-based and require the whole call chain (publish_reading, 
+    │   publish_batch) to become async; aiomqtt uses an async context manager for the client lifecycle (`async with aiomqtt.Client(...) as client`), differing 
+    │   from paho's explicit connect()/disconnect() model; Return value of publish differs: paho returns a MessageInfo object with `.rc`; aiomqtt/gmqtt 
+    │   typically raise exceptions on failure instead of returning an rc code, requiring error-handling changes; amqtt (formerly hbmqtt) has a different API 
+    │   surface and is less actively maintained; verify project status before adopting; QoS and client_id parameter names/semantics may differ slightly across 
+    │   libraries
+    ├── Constraints: requires_connector
+    └── paho-mqtt is used here as a synchronous, callback-based MQTT client to connect and publish sensor readings. aiomqtt, gmqtt, and amqtt are all MQTT 
+        client libraries capable of connecting to a broker and publishing messages, making them functionally equivalent at the protocol/purpose level (MQTT 
+        pub/sub client). However, they use async/await and context-manager based connection lifecycles instead of paho's synchronous connect()/publish() calls.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Reusing pinned source security evidence: paho-mqtt ← paho_mqtt
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ aiomqtt │ 2.5.1   │ LOW  │ AVAILABLE │    1.00 │
+│ amqtt   │ 0.12.1  │ LOW  │ AVAILABLE │    1.00 │
+│ gmqtt   │ 0.7.0   │ LOW  │ AVAILABLE │    0.90 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠏ ✓ aiomqtt  
+⠏ ✓ amqtt    
+⠏ ✓ gmqtt    
+⠏ ✓ paho-mqtt
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃                                                                    Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ paho-mqtt │     ✓     │          0.3 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │           7 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ amqtt     │     ✓     │          0.3 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │           7 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ gmqtt     │     ✓     │         64.8 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │         321 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ aiomqtt   │     ✓     │        150.5 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │         213 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+└───────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 35994371
+  API compat tokens — input: 283  output: 79  latency: 1558ms
+                                                      AXIOM Optimization Decisions                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                             ┃ Original  ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ MQTT client for publishing telemetry to a broker │ paho-mqtt │ amqtt  │ MEDIUM │ 0.801 │ 1.0    │ 1.0      │ 0.1 │ 0.779 │ ✓          │
+└──────────────────────────────────────────────────┴───────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  paho-mqtt  →  amqtt  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: paho-mqtt → amqtt
+  Found 1 call site(s):
+    L14: client = mqtt.Client(client_id=cfg.client_id)
+  Tokens — in:2,285 out:3,323 latency:35169ms
+
+  Compatibility analysis:
+    ✗ L14: client = mqtt.Client(client_id=cfg.client_id)  — amqtt's client class (amqtt.client.MQTTClient) accepts a client_id-like paramete
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - amqtt's client API (MQTTClient) is asyncio-native: connect(), publish(), and disconnect() are coroutines that must be awaited inside a running event 
+loop, but TelemetryBridge.__init__, publish_reading, and publish_batch are all synchronous methods that callers invoke directly and expect immediate dict/list 
+return values -- converting this without changing the whole public API (making publish_reading/publish_batch async) is not achievable via wrapper glue alone.
+    - The dependency-injected client pattern (client if client is not None else _default_client(cfg)) assumes a single long-lived, already-connected 
+synchronous client object usable across repeated publish calls; amqtt's connection lifecycle is designed around an async context manager / explicit await 
+connect() that does not map cleanly onto a plain constructor-returns-ready-client synchronous pattern.
+    - paho's MessageInfo.rc-based error reporting model differs structurally from amqtt's exception-based failure reporting; bridging this cleanly requires 
+restructuring public error-handling contracts (dict['rc'] semantics) throughout publish_reading/publish_batch, not just wrapping a single call.
+    - amqtt is a lightly maintained fork (formerly hbmqtt) whose API surface for client-only telemetry publishing is not a drop-in analog of paho's Client, 
+compounding the structural async mismatch above.
+
+  1 call site(s) need a wrapper:
+    _amqtt_client_wrapper  L14: Would need to instantiate amqtt.client.MQTTClient, drive its async con
+  Opening ACI edit session for paho-mqtt → amqtt...
+  ACI session: 1 edit(s) applied over 4 tool call(s)  |  tokens in:42,619 out:7,865
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open(line_number=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """bridge -- publish sensor telemetry to an MQTT broker.                                                                                              │
+│     2                                                                                                                                                       │
+│     3 The MQTT client is the substitution target: `paho-mqtt` (synchronous, callback-based)                                                                 │
+│     4 -> `aiomqtt` (async context-managed). The connection/publish models differ enough to                                                                  │
+│     5 require glue -- hence Category B. The client is dependency-injected for testing.                                                                      │
+│     6 """                                                                                                                                                   │
+│     7 from mqtt_config import BridgeConfig                                                                                                                  │
+│     8 from telemetry import encode, topic_for                                                                                                               │
+│     9 import asyncio                                                                                                                                        │
+│    10 import threading                                                                                                                                      │
+│    11                                                                                                                                                       │
+│    12                                                                                                                                                       │
+│    13 class _PublishResult:                                                                                                                                 │
+│    14     """Mimics paho-mqtt's `MessageInfo` closely enough for `.rc` access.                                                                              │
+│    15                                                                                                                                                       │
+│    16     paho-mqtt's `Client.publish()` returns a `MessageInfo` object whose `.rc`                                                                         │
+│    17     reports the outcome (0 == `MQTT_ERR_SUCCESS`) without raising for most                                                                            │
+│    18     failures. amqtt's `publish()` coroutine instead returns `None` on                                                                                 │
+│    19     success and raises on failure. Because this object is only ever                                                                                   │
+│    20     constructed by `_SyncMQTTFacade.publish()` *after* the amqtt coroutine                                                                            │
+│    21     has completed without raising, `rc=0` here means "amqtt reported no                                                                               │
+│    22     error" -- for QoS 1/2 amqtt awaits the broker's ack before returning, so                                                                          │
+│    23     that really does correspond to confirmed delivery; for QoS 0 it only                                                                              │
+│    24     means the packet was handed to the transport, same as paho's rc=0 for                                                                             │
+│    25     QoS 0.                                                                                                                                            │
+│    26     """                                                                                                                                               │
+│    27                                                                                                                                                       │
+│    28     def __init__(self, rc: int):                                                                                                                      │
+│    29         self.rc = rc                                                                                                                                  │
+│    30                                                                                                                                                       │
+│    31                                                                                                                                                       │
+│    32 class _SyncMQTTFacade:                                                                                                                                │
+│    33     """Synchronous facade bridging amqtt's asyncio `MQTTClient` to the                                                                                │
+│    34     blocking `connect`/`publish`/`disconnect` API that `TelemetryBridge`                                                                              │
+│    35     was written against.                                                                                                                              │
+│    36                                                                                                                                                       │
+│    37     paho-mqtt's `Client.connect()`/`.publish()`/`.disconnect()` are plain                                                                             │
+│    38     blocking calls, and the `Client` instance keeps its socket/session state                                                                          │
+│    39     alive across many calls. amqtt only exposes coroutines                                                                                            │
+│    40     (`MQTTClient.connect()`, `.publish()`, `.disconnect()`), so this facade                                                                           │
+│    41     starts one persistent background event loop (on its own thread) for the                                                                           │
+│    42     lifetime of the instance and marshals every call onto that same loop via                                                                          │
+│    43     `asyncio.run_coroutine_threadsafe(...).result()`. A persistent loop is                                                                            │
+│    44     required rather than `asyncio.run()` per call: amqtt binds its                                                                                    │
+│    45     transport to the loop that created it, so a fresh loop per call would                                                                             │
+│    46     leave the connection attached to an already-closed loop by the next                                                                               │
+│    47     publish.                                                                                                                                          │
+│    48                                                                                                                                                       │
+│    49     Connection failures that paho-mqtt surfaces as `OSError` (connection                                                                              │
+│    50     refused, host unreachable, ...) are raised by amqtt as                                                                                            │
+│    51     `amqtt.client.ClientException` (its connection-error base, including                                                                              │
+│    52     `ConnectException`); those are translated into `ConnectionError` here so                                                                          │
+│    53     a caller written against paho's OSError-family failures still catches                                                                             │
+│    54     them. Publish failures are NOT caught here -- see `publish()`.                                                                                    │
+│    55     """                                                                                                                                               │
+│    56                                                                                                                                                       │
+│    57     def __init__(self, cfg: BridgeConfig):                                                                                                            │
+│    58         from amqtt.client import MQTTClient, ClientException                                                                                          │
+│    59                                                                                                                                                       │
+│    60         self._loop = asyncio.new_event_loop()                                                                                                         │
+│    61         threading.Thread(target=self._loop.run_forever, daemon=True).start()                                                                          │
+│    62         self._client = MQTTClient(client_id=cfg.client_id)                                                                                            │
+│    63         uri = f"mqtt://{cfg.host}:{cfg.port}/"                                                                                                        │
+│    64         try:                                                                                                                                          │
+│    65             self._run(self._client.connect(uri))                                                                                                      │
+│    66         except ClientException as exc:                                                                                                                │
+│    67             raise ConnectionError(                                                                                                                    │
+│    68                 f"amqtt failed to connect to {cfg.host}:{cfg.port}"                                                                                   │
+│    69             ) from exc                                                                                                                                │
+│    70                                                                                                                                                       │
+│    71     def _run(self, coro):                                                                                                                             │
+│    72         """Run `coro` to completion on the persistent background loop and                                                                             │
+│    73         block for its result, re-raising whatever the coroutine raised."""                                                                            │
+│    74         return asyncio.run_coroutine_threadsafe(coro, self._loop).result()                                                                            │
+│    75                                                                                                                                                       │
+│    76     def publish(self, topic: str, payload, qos: int = 0):                                                                                             │
+│    77         """Publish `payload` to `topic` at the given QoS.                                                                                             │
+│    78                                                                                                                                                       │
+│    79         paho-mqtt's `publish()` returns immediately with a `MessageInfo`                                                                              │
+│    80         whose `.rc` reports the outcome without raising for most failures,                                                                            │
+│    81         but it DOES raise (e.g. `ValueError`) for programmer errors such as                                                                           │
+│    82         a wildcard topic or an oversized payload. amqtt's `publish()`                                                                                 │
+│    83         coroutine raises on failure too (protocol/transport errors) and                                                                               │
+│    84         returns `None` on success. We deliberately do not wrap this call in                                                                           │
+│    85         try/except: any amqtt exception propagates uncaught, exactly as a                                                                             │
+│    86         paho exception would have reached the caller. Only once the                                                                                   │
+│    87         coroutine has completed without raising do we construct the                                                                                   │
+│    88         paho-shaped `_PublishResult(rc=0)`.                                                                                                           │
+│    89         """                                                                                                                                           │
+│    90         self._run(self._client.publish(topic, payload, qos=qos))                                                                                      │
+│    91         return _PublishResult(0)                                                                                                                      │
+│    92                                                                                                                                                       │
+│    93     def disconnect(self):                                                                                                                             │
+│    94         """Disconnect from the broker and stop the background loop."""                                                                                │
+│    95         self._run(self._client.disconnect())                                                                                                          │
+│    96         self._loop.call_soon_threadsafe(self._loop.stop)                                                                                              │
+│    97                                                                                                                                                       │
+│    98                                                                                                                                                       │
+│    99 def _amqtt_client_wrapper(cfg: BridgeConfig):                                                                                                         │
+│   100     """Build a synchronous facade around amqtt's asyncio `MQTTClient`.                                                                                │
+│   101                                                                                                                                                       │
+│   102     Call sites in this module were written against paho-mqtt's                                                                                        │
+│   103     `mqtt.Client(client_id=...)` followed by a blocking `.connect(host,                                                                               │
+│   104     port)`. amqtt has no equivalent synchronous constructor -- connecting is                                                                          │
+│   105     an `async def connect(uri)` coroutine on `amqtt.client.MQTTClient`. This                                                                          │
+│   106     wrapper hides that behind `_SyncMQTTFacade`, which starts a persistent                                                                            │
+│   107     background event loop, connects on it, and exposes the                                                                                            │
+│   108     `publish()`/`disconnect()` methods `TelemetryBridge` calls elsewhere in                                                                           │
+│   109     this module. See `_SyncMQTTFacade` for the connection/threading and                                                                               │
+│   110     exception-translation details.                                                                                                                    │
+│   111     """                                                                                                                                               │
+│   112     return _SyncMQTTFacade(cfg)                                                                                                                       │
+│   113                                                                                                                                                       │
+│   114                                                                                                                                                       │
+│   115 def _default_client(cfg: BridgeConfig):                                                                                                               │
+│   116     return _amqtt_client_wrapper(cfg)                                                                                                                 │
+│   117                                                                                                                                                       │
+│   118                                                                                                                                                       │
+│   119 class TelemetryBridge:                                                                                                                                │
+│   120     def __init__(self, cfg: BridgeConfig, client=None):                                                                                               │
+│   121         self.cfg = cfg                                                                                                                                │
+│   122         self.client = client if client is not None else _default_client(cfg)                                                                          │
+│   123                                                                                                                                                       │
+│   124     def publish_reading(self, tag: str, reading: dict) -> dict:                                                                                       │
+│   125         topic = topic_for(self.cfg.base_topic, tag)                                                                                                   │
+│   126         payload = encode(reading)                                                                                                                     │
+│   127         info = self.client.publish(topic, payload, qos=self.cfg.qos)                                                                                  │
+│   128         return {                                                                                                                                      │
+│   129             "topic": topic,                                                                                                                           │
+│   130             "payload": payload,                                                                                                                       │
+│   131             "qos": self.cfg.qos,                                                                                                                      │
+│   132             "rc": getattr(info, "rc", 0),                                                                                                             │
+│   133         }                                                                                                                                             │
+│   134                                                                                                                                                       │
+│   135     def publish_batch(self, readings: dict) -> list:                                                                                                  │
+│   136         """Publish {tag: reading} pairs, returning the per-message results."""                                                                        │
+│   137         return [self.publish_reading(tag, r) for tag, r in readings.items()]                                                                          │
+│   138                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                                            Stage 1 — Differential Static Analysis                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                                                                                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                                                                         │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                                                                       │
+│                        │                       │                  │     {                                                                                   │
+│                        │                       │                  │         "type": "error",                                                                │
+│                        │                       │                  │         "module": "bridge",                                                             │
+│                        │                       │                  │         "obj": "_SyncMQTTFacade.__init_                                                 │
+│ Bandit                 │         PASS          │       PASS       │ {                                                                                       │
+│                        │                       │                  │   "errors": [],                                                                         │
+│                        │                       │                  │   "generated_at": "2026-09-24T13:55:34Z",                                               │
+│                        │                       │                  │   "metrics": {                                                                          │
+│                        │                       │                  │     "/var/folders/_4/t4jx                                                               │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config file                                                   │
+│ Patch integrity        │           —           │       PASS       │                                                                                         │
+│ Adapter contracts      │           —           │       PASS       │                                                                                         │
+│ Stale source symbols   │           —           │       PASS       │                                                                                         │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten module symbols to probe.                             │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after migration: no-name-in-module:No name 'ClientException' in      │
+│                        │                       │                  │ module '<lib>.cli                                                                       │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                                                                         │
+│ Project tests          │         PASS          │       PASS       │ ...                                                                      [100%]         │
+│                        │                       │                  │ 3 passed in 0.02s                                                                       │
+└────────────────────────┴───────────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────────────────╮
+│ line 1: New pylint finding after migration: no-name-in-module:No name 'ClientException' in module '<lib>.client'                                            │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────── Full verifier repair evidence ───────────────────────────────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: no-name-in-module:No name 'ClientException' in module '<lib>.client'                           │
+│ • real_library_call (line 1): Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  ImportError: cannot import   │
+│ name 'ClientException' from 'amqtt.client' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/amqtt/client.py). The project   │
+│ tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Connector reported a possible structural incompatibility; sending the evidence to the Verifier reviewer instead of excluding the target immediately.
+↩ Repair cycle 1/5 → Connector (patch_or_static): line 1: New pylint finding after migration: no-name-in-module:No name 'ClientException' in module 
+'<lib>.client'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  ImportError: cannot import name 
+'ClientException' from 'amqtt.client' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/amqtt/client.py). The project tests pass
+because they inject a fake matching the OLD library's signature; fix the
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: New pylint finding after migration: no-name-in-module:No name 'ClientException' in module 
+'<lib>.client'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  ImportError: cannot import name 
+'ClientException' from 'amqtt.cl)
+
+Analyzing: paho-mqtt → amqtt
+  Found 1 call site(s):
+    L14: client = mqtt.Client(client_id=cfg.client_id)
+  Tokens — in:4,348 out:3,017 latency:32655ms
+
+  Compatibility analysis:
+    ✗ L14: client = mqtt.Client(client_id=cfg.client_id)  — paho's synchronous mqtt.Client(client_id=...) has no direct analogue in amqtt: a
+
+  1 call site(s) need a wrapper:
+    _amqtt_connect_exception_wrapper  L14: Fix the broken import inside `_SyncMQTTFacade.__init__` by importing t
+  Opening ACI edit session for paho-mqtt → amqtt...
+  ACI session: 1 edit(s) applied over 4 tool call(s)  |  tokens in:35,888 out:3,093
+    · open()
+    · scroll_down()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+  ⚠ wrapper(s) _amqtt_connect_exception_wrapper were defined but never called — the call site(s) they were meant to replace are still calling the old API 
+directly instead of going through the wrapper; reverting connector edit.
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """bridge -- publish sensor telemetry to an MQTT broker.                                                                                              │
+│     2                                                                                                                                                       │
+│     3 The MQTT client is the substitution target: `paho-mqtt` (synchronous, callback-based)                                                                 │
+│     4 -> `aiomqtt` (async context-managed). The connection/publish models differ enough to                                                                  │
+│     5 require glue -- hence Category B. The client is dependency-injected for testing.                                                                      │
+│     6 """                                                                                                                                                   │
+│     7 from mqtt_config import BridgeConfig                                                                                                                  │
+│     8 from telemetry import encode, topic_for                                                                                                               │
+│     9 import asyncio                                                                                                                                        │
+│    10 import threading                                                                                                                                      │
+│    11                                                                                                                                                       │
+│    12                                                                                                                                                       │
+│    13 class _PublishResult:                                                                                                                                 │
+│    14     """Mimics paho-mqtt's `MessageInfo` closely enough for `.rc` access.                                                                              │
+│    15                                                                                                                                                       │
+│    16     paho-mqtt's `Client.publish()` returns a `MessageInfo` object whose `.rc`                                                                         │
+│    17     reports the outcome (0 == `MQTT_ERR_SUCCESS`) without raising for most                                                                            │
+│    18     failures. amqtt's `publish()` coroutine instead returns `None` on                                                                                 │
+│    19     success and raises on failure. Because this object is only ever                                                                                   │
+│    20     constructed by `_SyncMQTTFacade.publish()` *after* the amqtt coroutine                                                                            │
+│    21     has completed without raising, `rc=0` here means "amqtt reported no                                                                               │
+│    22     error" -- for QoS 1/2 amqtt awaits the broker's ack before returning, so                                                                          │
+│    23     that really does correspond to confirmed delivery; for QoS 0 it only                                                                              │
+│    24     means the packet was handed to the transport, same as paho's rc=0 for                                                                             │
+│    25     QoS 0.                                                                                                                                            │
+│    26     """                                                                                                                                               │
+│    27                                                                                                                                                       │
+│    28     def __init__(self, rc: int):                                                                                                                      │
+│    29         self.rc = rc                                                                                                                                  │
+│    30                                                                                                                                                       │
+│    31                                                                                                                                                       │
+│    32 class _SyncMQTTFacade:                                                                                                                                │
+│    33     """Synchronous facade bridging amqtt's asyncio `MQTTClient` to the                                                                                │
+│    34     blocking `connect`/`publish`/`disconnect` API that `TelemetryBridge`                                                                              │
+│    35     was written against.                                                                                                                              │
+│    36                                                                                                                                                       │
+│    37     paho-mqtt's `Client.connect()`/`.publish()`/`.disconnect()` are plain                                                                             │
+│    38     blocking calls, and the `Client` instance keeps its socket/session state                                                                          │
+│    39     alive across many calls. amqtt only exposes coroutines                                                                                            │
+│    40     (`MQTTClient.connect()`, `.publish()`, `.disconnect()`), so this facade                                                                           │
+│    41     starts one persistent background event loop (on its own thread) for the                                                                           │
+│    42     lifetime of the instance and marshals every call onto that same loop via                                                                          │
+│    43     `asyncio.run_coroutine_threadsafe(...).result()`. A persistent loop is                                                                            │
+│    44     required rather than `asyncio.run()` per call: amqtt binds its                                                                                    │
+│    45     transport to the loop that created it, so a fresh loop per call would                                                                             │
+│    46     leave the connection attached to an already-closed loop by the next                                                                               │
+│    47     publish.                                                                                                                                          │
+│    48                                                                                                                                                       │
+│    49     Connection failures that paho-mqtt surfaces as `OSError` (connection                                                                              │
+│    50     refused, host unreachable, ...) are raised by amqtt as                                                                                            │
+│    51     `amqtt.client.ClientException` (its connection-error base, including                                                                              │
+│    52     `ConnectException`); those are translated into `ConnectionError` here so                                                                          │
+│    53     a caller written against paho's OSError-family failures still catches                                                                             │
+│    54     them. Publish failures are NOT caught here -- see `publish()`.                                                                                    │
+│    55     """                                                                                                                                               │
+│    56                                                                                                                                                       │
+│    57     def __init__(self, cfg: BridgeConfig):                                                                                                            │
+│    58         from amqtt.client import MQTTClient, ClientException                                                                                          │
+│    59                                                                                                                                                       │
+│    60         self._loop = asyncio.new_event_loop()                                                                                                         │
+│    61         threading.Thread(target=self._loop.run_forever, daemon=True).start()                                                                          │
+│    62         self._client = MQTTClient(client_id=cfg.client_id)                                                                                            │
+│    63         uri = f"mqtt://{cfg.host}:{cfg.port}/"                                                                                                        │
+│    64         try:                                                                                                                                          │
+│    65             self._run(self._client.connect(uri))                                                                                                      │
+│    66         except ClientException as exc:                                                                                                                │
+│    67             raise ConnectionError(                                                                                                                    │
+│    68                 f"amqtt failed to connect to {cfg.host}:{cfg.port}"                                                                                   │
+│    69             ) from exc                                                                                                                                │
+│    70                                                                                                                                                       │
+│    71     def _run(self, coro):                                                                                                                             │
+│    72         """Run `coro` to completion on the persistent background loop and                                                                             │
+│    73         block for its result, re-raising whatever the coroutine raised."""                                                                            │
+│    74         return asyncio.run_coroutine_threadsafe(coro, self._loop).result()                                                                            │
+│    75                                                                                                                                                       │
+│    76     def publish(self, topic: str, payload, qos: int = 0):                                                                                             │
+│    77         """Publish `payload` to `topic` at the given QoS.                                                                                             │
+│    78                                                                                                                                                       │
+│    79         paho-mqtt's `publish()` returns immediately with a `MessageInfo`                                                                              │
+│    80         whose `.rc` reports the outcome without raising for most failures,                                                                            │
+│    81         but it DOES raise (e.g. `ValueError`) for programmer errors such as                                                                           │
+│    82         a wildcard topic or an oversized payload. amqtt's `publish()`                                                                                 │
+│    83         coroutine raises on failure too (protocol/transport errors) and                                                                               │
+│    84         returns `None` on success. We deliberately do not wrap this call in                                                                           │
+│    85         try/except: any amqtt exception propagates uncaught, exactly as a                                                                             │
+│    86         paho exception would have reached the caller. Only once the                                                                                   │
+│    87         coroutine has completed without raising do we construct the                                                                                   │
+│    88         paho-shaped `_PublishResult(rc=0)`.                                                                                                           │
+│    89         """                                                                                                                                           │
+│    90         self._run(self._client.publish(topic, payload, qos=qos))                                                                                      │
+│    91         return _PublishResult(0)                                                                                                                      │
+│    92                                                                                                                                                       │
+│    93     def disconnect(self):                                                                                                                             │
+│    94         """Disconnect from the broker and stop the background loop."""                                                                                │
+│    95         self._run(self._client.disconnect())                                                                                                          │
+│    96         self._loop.call_soon_threadsafe(self._loop.stop)                                                                                              │
+│    97                                                                                                                                                       │
+│    98                                                                                                                                                       │
+│    99 def _amqtt_client_wrapper(cfg: BridgeConfig):                                                                                                         │
+│   100     """Build a synchronous facade around amqtt's asyncio `MQTTClient`.                                                                                │
+│   101                                                                                                                                                       │
+│   102     Call sites in this module were written against paho-mqtt's                                                                                        │
+│   103     `mqtt.Client(client_id=...)` followed by a blocking `.connect(host,                                                                               │
+│   104     port)`. amqtt has no equivalent synchronous constructor -- connecting is                                                                          │
+│   105     an `async def connect(uri)` coroutine on `amqtt.client.MQTTClient`. This                                                                          │
+│   106     wrapper hides that behind `_SyncMQTTFacade`, which starts a persistent                                                                            │
+│   107     background event loop, connects on it, and exposes the                                                                                            │
+│   108     `publish()`/`disconnect()` methods `TelemetryBridge` calls elsewhere in                                                                           │
+│   109     this module. See `_SyncMQTTFacade` for the connection/threading and                                                                               │
+│   110     exception-translation details.                                                                                                                    │
+│   111     """                                                                                                                                               │
+│   112     return _SyncMQTTFacade(cfg)                                                                                                                       │
+│   113                                                                                                                                                       │
+│   114                                                                                                                                                       │
+│   115 def _default_client(cfg: BridgeConfig):                                                                                                               │
+│   116     return _amqtt_client_wrapper(cfg)                                                                                                                 │
+│   117                                                                                                                                                       │
+│   118                                                                                                                                                       │
+│   119 class TelemetryBridge:                                                                                                                                │
+│   120     def __init__(self, cfg: BridgeConfig, client=None):                                                                                               │
+│   121         self.cfg = cfg                                                                                                                                │
+│   122         self.client = client if client is not None else _default_client(cfg)                                                                          │
+│   123                                                                                                                                                       │
+│   124     def publish_reading(self, tag: str, reading: dict) -> dict:                                                                                       │
+│   125         topic = topic_for(self.cfg.base_topic, tag)                                                                                                   │
+│   126         payload = encode(reading)                                                                                                                     │
+│   127         info = self.client.publish(topic, payload, qos=self.cfg.qos)                                                                                  │
+│   128         return {                                                                                                                                      │
+│   129             "topic": topic,                                                                                                                           │
+│   130             "payload": payload,                                                                                                                       │
+│   131             "qos": self.cfg.qos,                                                                                                                      │
+│   132             "rc": getattr(info, "rc", 0),                                                                                                             │
+│   133         }                                                                                                                                             │
+│   134                                                                                                                                                       │
+│   135     def publish_batch(self, readings: dict) -> list:                                                                                                  │
+│   136         """Publish {tag: reading} pairs, returning the per-message results."""                                                                        │
+│   137         return [self.publish_reading(tag, r) for tag, r in readings.items()]                                                                          │
+│   138                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing static-analysis toolchain for this case.
+                                                            Stage 1 — Differential Static Analysis                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                                                                                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                                                                         │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                                                                       │
+│                        │                       │                  │     {                                                                                   │
+│                        │                       │                  │         "type": "error",                                                                │
+│                        │                       │                  │         "module": "bridge",                                                             │
+│                        │                       │                  │         "obj": "_SyncMQTTFacade.__init_                                                 │
+│ Bandit                 │         PASS          │       PASS       │ {                                                                                       │
+│                        │                       │                  │   "errors": [],                                                                         │
+│                        │                       │                  │   "generated_at": "2026-09-24T13:58:07Z",                                               │
+│                        │                       │                  │   "metrics": {                                                                          │
+│                        │                       │                  │     "/var/folders/_4/t4jx                                                               │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config file                                                   │
+│ Patch integrity        │           —           │       PASS       │                                                                                         │
+│ Adapter contracts      │           —           │       PASS       │                                                                                         │
+│ Stale source symbols   │           —           │       PASS       │                                                                                         │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten module symbols to probe.                             │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after migration: no-name-in-module:No name 'ClientException' in      │
+│                        │                       │                  │ module '<lib>.cli                                                                       │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                                                                         │
+│ Project tests          │         PASS          │       PASS       │ ...                                                                      [100%]         │
+│                        │                       │                  │ 3 passed in 0.02s                                                                       │
+└────────────────────────┴───────────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────────────────╮
+│ line 1: New pylint finding after migration: no-name-in-module:No name 'ClientException' in module '<lib>.client'                                            │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────── Full verifier repair evidence ───────────────────────────────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: no-name-in-module:No name 'ClientException' in module '<lib>.client'                           │
+│ • real_library_call (line 1): Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  ImportError: cannot import   │
+│ name 'ClientException' from 'amqtt.client' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/amqtt/client.py). The project   │
+│ tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Repair cycle 2 would report the same findings as cycle 1 — the previous repair changed nothing the verifier can see. Stopping instead of spending the remaining
+4 cycle(s).
+Known adapter contract violation remains after Connector retries; reverting to the original source.
+Session saved: 35994371
+B3_mqtt_telemetry_bridge         1       3/3     N    Y      3     13     1.0  323.9s
+
+migration_success 0/1 (0%)
+rows appended to results_fixed4.csv

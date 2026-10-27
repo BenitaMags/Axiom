@@ -1,0 +1,125 @@
+{
+  "session_id": "4aeda78f",
+  "timestamp": "2026-09-24T06:10:02.023415",
+  "source_file": "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-C3_anomaly_threshold_engine-ncr1n6cg/notifier.py",
+  "llm_provider": "claude",
+  "model": "claude-sonnet-5",
+  "verdict": {
+    "decisions_made": 1,
+    "packages_replaced": 0,
+    "summary": "smtplib replacement: smtplib\u2192smtplib"
+  },
+  "detail_hashes": [
+    "sha256:b93d9d6fb1ad99a1"
+  ],
+  "integrity": "sha256:574140cf2fd7399a",
+  "metrics": {
+    "verified": null,
+    "failing_stage": "verifier",
+    "repair_cycles": 0,
+    "connector_retries": 0,
+    "axiom_retries": 0,
+    "diversified": true,
+    "transformations": [
+      "llm_restructure",
+      "added:mime_message.py"
+    ],
+    "diversity": {
+      "ncd": 0.2034,
+      "ast_structural": 0.3019,
+      "du_chain": 0.4368,
+      "cfg_shape": 0.0,
+      "composite": 0.1509
+    },
+    "lines_before": 115,
+    "lines_after": 112,
+    "equivalence": "full",
+    "equivalence_detail": "all four layers passed (golden, invariants, tests, imports)",
+    "vulnerabilities": null,
+    "stages_run": [
+      "axiom",
+      "candidate_security",
+      "connector",
+      "logic_substitution",
+      "parser",
+      "profiler",
+      "resolver",
+      "security",
+      "verifier"
+    ]
+  },
+  "events": [
+    {
+      "stage": "parser",
+      "event": "started"
+    },
+    {
+      "stage": "parser",
+      "event": "completed"
+    },
+    {
+      "stage": "security",
+      "event": "started"
+    },
+    {
+      "stage": "security",
+      "event": "completed"
+    },
+    {
+      "stage": "resolver",
+      "event": "started"
+    },
+    {
+      "stage": "resolver",
+      "event": "mandate_fallback"
+    },
+    {
+      "stage": "resolver",
+      "event": "completed"
+    },
+    {
+      "stage": "candidate_security",
+      "event": "started"
+    },
+    {
+      "stage": "candidate_security",
+      "event": "completed"
+    },
+    {
+      "stage": "profiler",
+      "event": "started"
+    },
+    {
+      "stage": "profiler",
+      "event": "completed"
+    },
+    {
+      "stage": "axiom",
+      "event": "started"
+    },
+    {
+      "stage": "axiom",
+      "event": "completed"
+    },
+    {
+      "stage": "connector",
+      "event": "started"
+    },
+    {
+      "stage": "connector",
+      "event": "completed"
+    },
+    {
+      "stage": "logic_substitution",
+      "event": "completed"
+    },
+    {
+      "stage": "verifier",
+      "event": "started"
+    },
+    {
+      "stage": "verifier",
+      "event": "blocked"
+    }
+  ]
+}

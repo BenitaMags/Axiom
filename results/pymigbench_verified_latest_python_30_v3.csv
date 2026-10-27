@@ -1,0 +1,1074 @@
+migration_id,repo,domain,source,target,file_path,verification_scope,base_requirement_count,base_requirement_recovery_errors,detected_group,recommended_target,axiom_winner,attempted_axiom_winner,attempted_selection_status,attempted_selection_count,connector_ran,connector_ever_ran,verifier_route,repair_cycle_count,repair_history,final_verifier_feedback,profiler_package_count,runtime_measured_package_count,runtime_measurement_coverage_pct,runtime_measured_probe_count,runtime_probe_status_counts,environment_plan_status,environment_backend,environment_selected_python,environment_selected_python_version,environment_detected_python,environment_target_version,environment_resolved_target_version,environment_plan_diagnostics,verifier_passed_clean,target_infeasibility_evidence,patch_changed,verification_status,verification_environment_status,selection_status,outcome,result_category,category_reason,alternative_efficiency,adapter_runtime,repair_budget_exhausted,verified_ground_truth,verified_alternative,error
+kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5,svenskaspel/locust-plugins,HTTP Clients,kafka,confluent-kafka,locust_plugins/kafka.py,component_runtime,7,,True,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Users/benz.mags/.local/bin/python3.8,3.8,3.6,auto,2.15.0,"{""python_evidence"": [""setup.py python_requires: >=3.6, <4""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""confluent-kafka"": {""distribution"": ""confluent-kafka"", ""install_spec"": ""confluent-kafka==2.15.0"", ""python"": ""3.8"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.15.0""}}, ""warnings"": []}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/application/notifier/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,3.43.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""slack-sdk"": {""distribution"": ""slack-sdk"", ""install_spec"": ""slack-sdk==3.43.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""3.43.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-rswga4w_/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-rswga4w_/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-2wum_zpf/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-2wum_zpf/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-ndj85wxe/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-ndj85wxe/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: ay/lib/python3.10/site-packages/setuptools/command/sdist.py"", line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-sfpac3hj/overlay/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-sfpac3hj/overlay/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed: erlay/lib/python3.9/site-packages/setuptools/command/sdist.py"", line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-l3doyp_i/overlay/lib/python3.9/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-l3doyp_i/overlay/lib/python3.9/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: vate/tmp/pip-build-env-ihjad4cn/overlay/lib/python3.8/site-packages/setuptools/_distutils/command/sdist.py"", line 238, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-ihjad4cn/overlay/lib/python3.8/site-packages/setuptools/_distutils/command/sdist.py"", line 323, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+        File ""/private/tmp/pip-build-env-ihjad4cn/overlay/lib/python3.8/site-packages/setuptools/_distutils/cmd.py"", line 107, in __getattr__
+          raise AttributeError(attr)
+      AttributeError: cython_sources
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/is_slack_available.py,component_runtime,15,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": []}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/legacy/notifier/infrastructure/slack/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,3.43.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""slack-sdk"": {""distribution"": ""slack-sdk"", ""install_spec"": ""slack-sdk==3.43.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""3.43.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-s0kpr11n/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-s0kpr11n/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-9qk4iu6p/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-9qk4iu6p/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-j8m9evna/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-j8m9evna/overlay/lib/python3.11/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: ay/lib/python3.10/site-packages/setuptools/command/sdist.py"", line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-_r8us6j2/overlay/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-_r8us6j2/overlay/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed: erlay/lib/python3.9/site-packages/setuptools/command/sdist.py"", line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-o1kf325x/overlay/lib/python3.9/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-o1kf325x/overlay/lib/python3.9/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: vate/tmp/pip-build-env-iel_i2vg/overlay/lib/python3.8/site-packages/setuptools/_distutils/command/sdist.py"", line 238, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-iel_i2vg/overlay/lib/python3.8/site-packages/setuptools/_distutils/command/sdist.py"", line 323, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+        File ""<string>"", line 201, in get_source_files
+        File ""/private/tmp/pip-build-env-iel_i2vg/overlay/lib/python3.8/site-packages/setuptools/_distutils/cmd.py"", line 107, in __getattr__
+          raise AttributeError(attr)
+      AttributeError: cython_sources
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+eventlet__gevent__phuks-co/throat__9a289609,phuks-co/throat,Utility,eventlet,gevent,throat.py,component_runtime,35,,True,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,26.7.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""gevent"": {""distribution"": ""gevent"", ""install_spec"": ""gevent==26.7.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""26.7.0""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pycrypto__pycryptodome__hhyo/archery__e192ca69,hhyo/archery,Cryptography,pycrypto,pycryptodome,sql/utils/aes_decryptor.py,component_runtime,16,,True,True,pycryptodome,pycryptodome,exact_target,1,True,True,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,3.23.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""cryptography"": {""distribution"": ""cryptography"", ""install_spec"": ""cryptography==49.0.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""49.0.0""}, ""pycryptodome"": {""distribution"": ""pycryptodome"", ""install_spec"": ""pycryptodome==3.23.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""3.23.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements:  ""/private/tmp/pip-build-env-e2vc87oa/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 18, in <module>
+        File ""/private/tmp/pip-install-0qbr7xsd/mysqlclient_7c34d6e981df4aa092908c380a13109f/setup_posix.py"", line 53, in get_config
+          libs = mysql_config(""libs_r"")
+                 ^^^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-install-0qbr7xsd/mysqlclient_7c34d6e981df4aa092908c380a13109f/setup_posix.py"", line 28, in mysql_config
+          raise EnvironmentError(""%s not found"" % (mysql_config.path,))
+      OSError: mysql_config not found
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: ile ""/private/tmp/pip-build-env-g685kdg2/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 16, in <module>
+        File ""/private/tmp/pip-install-qqlw5ad4/mysqlclient_dcb65608aaaa4578baff7e23755078b8/setup_posix.py"", line 61, in get_config
+          libs = mysql_config(""libs"")
+                 ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-install-qqlw5ad4/mysqlclient_dcb65608aaaa4578baff7e23755078b8/setup_posix.py"", line 29, in mysql_config
+          raise EnvironmentError(""%s not found"" % (_mysql_config_path,))
+      OSError: mysql_config not found
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+leveldb__plyvel__ethereum/py-evm__5c273fff,ethereum/py-evm,Database,leveldb,plyvel,evm/db/backends/level.py,component_runtime,13,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,docker,docker://python:3.5-slim,3.5,3.5,auto,1.5.1,"{""python_evidence"": [""tox.ini envlist: py35""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""plyvel"": {""distribution"": ""plyvel"", ""install_spec"": ""plyvel==1.5.1"", ""python"": ""3.5"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""1.5.1""}, ""pylmdb"": {""distribution"": ""pylmdb"", ""error"": ""Target release selection for Python 3.5: HTTP 404 Not Found"", ""python"": ""3.5"", ""security_status"": ""not_found"", ""selection"": ""unresolved""}, ""python-rocksdb"": {""distribution"": ""python-rocksdb"", ""install_spec"": ""python-rocksdb==0.7.0"", ""python"": ""3.5"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.7.0""}}, ""warnings"": [""No local interpreter satisfied Python >=3.5,<3.6; auto-provisioned a python:3.5-slim container for this historical project.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: pylmdb: Target release selection for Python 3.5: HTTP 404 Not Found
+requests__aiohttp__usergeteam/userge-plugins__80a54344,usergeteam/userge-plugins,HTTP Clients,requests,aiohttp,plugins/info.py,component_runtime,20,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}}, ""warnings"": []}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+gevent__eventlet__miguelgrinberg/flask-socketio__883e73e5,miguelgrinberg/flask-socketio,Utility,gevent,eventlet,example/app.py,component_runtime,3,,True,True,eventlet,eventlet,exact_target,1,True,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,0.41.1,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""eventlet"": {""distribution"": ""eventlet"", ""install_spec"": ""eventlet==0.41.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.41.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline:gevent: unsupported operand type(s) for >>: 'builtin_function_or_method' and '_io.TextIOWrapper'. Did you mean ""print(<message>, file=<output_stream>)""?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for gevent
+ERROR: Could not build wheels for gevent, which is required to install pyproject.toml-based projects
+
+[same-major-version fallback also failed: Compiler.Errors.CompileError: src/gevent/libev/corecext.pyx
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/cli.py,component_runtime,85,,True,True,pyyaml,pyyaml,exact_target,1,False,False,proceed,0,[],{},3,1,33.33,1,"{""measured"": 1, ""not_comparable"": 1}",ready,local,/Users/benz.mags/.local/bin/python3.8,3.8,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.8"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: ruamel:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+
+[same-major-version fallback also failed:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/replay.py,component_runtime,85,,True,True,pyyaml,pyyaml,exact_target,1,False,False,proceed,0,[],{},3,1,33.33,1,"{""measured"": 1, ""not_comparable"": 1}",ready,local,/Users/benz.mags/.local/bin/python3.8,3.8,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.8"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: ruamel:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+
+[same-major-version fallback also failed:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/utils.py,component_runtime,85,,True,True,pyyaml,pyyaml,exact_target,1,False,False,proceed,0,[],{},4,2,50.0,2,"{""measured"": 2, ""not_comparable"": 1}",ready,local,/Users/benz.mags/.local/bin/python3.8,3.8,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""oyaml"": {""distribution"": ""oyaml"", ""install_spec"": ""oyaml==1.0"", ""python"": ""3.8"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""1.0""}, ""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.8"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: ruamel:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+
+[same-major-version fallback also failed:  errors generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> ruamel.yaml.clib
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+argparse__click__grahame/sedge__3badf078,grahame/sedge,Utility,argparse,click,sedge/cli.py,component_runtime,1,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,2,50.0,2,"{""measured"": 2, ""unsupported"": 1}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,8.4.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""click"": {""distribution"": ""click"", ""install_spec"": ""click==8.4.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""8.4.2""}, ""typer"": {""distribution"": ""typer"", ""install_spec"": ""typer==0.27.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.27.0""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+requests__aiohttp__talkpython/async-techniques-python-course__ab4e5fdd,talkpython/async-techniques-python-course,HTTP client/server,requests,aiohttp,src/04-asyncio/web_scraping/async_scrape/program.py,component_runtime,0,,False,False,httpx,httpx,alternative,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}}, ""warnings"": [""No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery.""]}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-dnguvota/project/src/04-asyncio/web_scraping/async_scrape/program.py"", line 2, in <module>
+    import bs4
+ModuleNotFoundError: No module named 'bs4'
+"
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,src/onixcheck/__main__.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""typer"": {""distribution"": ""typer"", ""install_spec"": ""typer==0.27.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.27.0""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,tests/test_onixcheck.py,component_runtime,3,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": []}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+pycurl__requests__upstox/upstox-python__dce87602,upstox/upstox-python,HTTP Clients,pycurl,requests,upstox_api/api.py,component_runtime,5,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,2.34.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}, ""requests"": {""distribution"": ""requests"", ""install_spec"": ""requests==2.34.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.34.2""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/base/model/Version.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-zk6lijhz/numpy_3c35a20cbde146c99786f439a0d1e71a/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-zk6lijhz/numpy_3c35a20cbde146c99786f439a0d1e71a/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-yit7567e/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-yit7567e/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-ok_lj8e4/numpy_da2b79f9c8094497a5459684b3d25f3f/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-ok_lj8e4/numpy_da2b79f9c8094497a5459684b3d25f3f/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-gea2zwat/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-gea2zwat/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-gea2zwat/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/commons/model/Slot.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-p0qugdit/numpy_2758d06ff0e24076bf204c183dd22691/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-p0qugdit/numpy_2758d06ff0e24076bf204c183dd22691/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-x8m941st/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-x8m941st/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-3568lowk/numpy_26a2d8bf2d5d4919a1ec3996ce7b82f6/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-3568lowk/numpy_26a2d8bf2d5d4919a1ec3996ce7b82f6/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4ni5v3pv/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4ni5v3pv/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4ni5v3pv/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/device/model/Device.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-25ryp0db/numpy_b977cb284ce94f89bc98b2719621f546/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-25ryp0db/numpy_b977cb284ce94f89bc98b2719621f546/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-pz2m51eu/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-pz2m51eu/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-ko6pz3pe/numpy_a77d025f98c046b883e4f4edd3483362/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-ko6pz3pe/numpy_a77d025f98c046b883e4f4edd3483362/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-e8uccak3/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-e8uccak3/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-e8uccak3/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/DialogSession.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},3,2,66.67,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-30j77i27/numpy_428026622a99499e8b2893227c9872dd/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-30j77i27/numpy_428026622a99499e8b2893227c9872dd/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-z02ehdjq/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-z02ehdjq/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-53ia_dr7/numpy_a37b07b9c02242a88facf9e3286fa4a9/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-53ia_dr7/numpy_a37b07b9c02242a88facf9e3286fa4a9/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-wa337dw7/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-wa337dw7/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-wa337dw7/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]; paho: ERROR: Could not find a version that satisfies the requirement paho (from versions: none)
+ERROR: No matching distribution found for paho
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/MultiIntent.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-o51rxpfl/numpy_c313f004863146dcb78370bbbf78351f/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-o51rxpfl/numpy_c313f004863146dcb78370bbbf78351f/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-l2lufz3n/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-l2lufz3n/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-q2lrrdma/numpy_b6807b5f808646e58054121a51341740/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-q2lrrdma/numpy_b6807b5f808646e58054121a51341740/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-ucobsqde/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-ucobsqde/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-ucobsqde/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/util/model/ThreadTimer.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-zs05dpp3/numpy_a51436806aad42ea9c77b408820484d8/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-zs05dpp3/numpy_a51436806aad42ea9c77b408820484d8/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-aatnssml/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-aatnssml/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]
+[retry under /Users/benz.mags/.local/bin/python3.11 also failed: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-s0mro0pi/numpy_6526fcbe9d2b44d1b4c85415dac296e9/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-s0mro0pi/numpy_6526fcbe9d2b44d1b4c85415dac296e9/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+]
+[retry under /Users/benz.mags/.local/bin/python3.10 also failed: no-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -O3 -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-6z1_13ac/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.10.19-macos-aarch64-none/include/python3.10 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-310/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.9 also failed:   cc -Wno-unused-result -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-6z1_13ac/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.9.25-macos-aarch64-none/include/python3.9 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-cpython-39/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/cc' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]
+[retry under /Users/benz.mags/.local/bin/python3.8 also failed: lt -Wsign-compare -Wunreachable-code -DNDEBUG -g -fwrapv -O3 -Wall -arch arm64 -mmacosx-version-min=11.0 -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-undef-prefix -fPIC -Werror=unguarded-availability-new -I/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-6z1_13ac/include -I/Users/benz.mags/.local/share/uv/python/cpython-3.8.20-macos-aarch64-none/include/python3.8 -c alsaaudio.c -o build/temp.macosx-11.0-arm64-3.8/alsaaudio.o
+      alsaaudio.c:28:10: fatal error: 'alsa/asoundlib.h' file not found
+      #include <alsa/asoundlib.h>
+               ^~~~~~~~~~~~~~~~~~
+      1 error generated.
+      error: command 'cc' failed with exit status 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: legacy-install-failure
+
+× Encountered error while trying to install package.
+╰─> pyalsaaudio
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for output from the failure.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_base.py,component_runtime,17,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_behavior.py,component_runtime,17,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ecephys.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_general.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_misc.py,component_runtime,17,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ophys.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/tabs.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,

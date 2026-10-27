@@ -1,0 +1,113 @@
+# CHOSEN-TARGET: python-statemachine
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `transitions` library in the original.
+"""
+from alarms import interlock_ok
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        from statemachine import StateMachine, State
+
+        controller = self
+
+        class _TankMachine(StateMachine):
+            IDLE = State("IDLE", initial=True)
+            FILLING = State("FILLING")
+            HOLDING = State("HOLDING")
+            DRAINING = State("DRAINING")
+            FAULT = State("FAULT")
+
+            start_fill = IDLE.to(FILLING, cond="can_fill")
+            level_reached = FILLING.to(HOLDING)
+            start_drain = HOLDING.to(DRAINING) | FILLING.to(DRAINING)
+            empty = DRAINING.to(IDLE)
+            trip = (
+                IDLE.to(FAULT)
+                | FILLING.to(FAULT)
+                | HOLDING.to(FAULT)
+                | DRAINING.to(FAULT)
+                | FAULT.to(FAULT)
+            )
+
+            def can_fill(self):
+                return controller.can_fill()
+
+            def on_start_fill(self):
+                controller.open_inlet()
+
+            def on_level_reached(self):
+                controller.close_inlet()
+
+            def on_start_drain(self):
+                controller.open_outlet()
+
+            def on_empty(self):
+                controller.close_outlet()
+
+            def on_trip(self):
+                controller.safe_all()
+
+        self.machine = _TankMachine()
+
+    @property
+    def state(self):
+        return self.machine.current_state.id
+
+    def start_fill(self):
+        self.machine.start_fill()
+
+    def level_reached(self):
+        self.machine.level_reached()
+
+    def start_drain(self):
+        self.machine.start_drain()
+
+    def empty(self):
+        self.machine.empty()
+
+    def trip(self):
+        self.machine.trip()
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()

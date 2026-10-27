@@ -1,0 +1,203 @@
+$ run_axiom_arms.py --config proteus_no_verif --program D3_telemetry_gateway --runs 1 --start-run 1
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_fixed4.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-D3_telemetry_gateway-jps07skz/sink.py
+                     Discovered Imports                     
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    6 │ json             │ —     │ —     │ dumps          │
+│   10 │ paho.mqtt.client │ mqtt  │ —     │ Client         │
+└──────┴──────────────────┴───────┴───────┴────────────────┘
+
+✓ Found 2 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                                Security Scan Results                                                                
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package          ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho → paho-mqtt │ 2.1.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ PyPI distribution: paho-mqtt                            │
+│ json             │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└──────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: paho
+Discovered candidates:
+  paho -> gmqtt, amqtt, aiomqtt
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,244  output: 756  latency: 8539ms
+Equivalence Groups Found
+└── MQTT client for publishing telemetry messages
+    ├── Candidates : paho-mqtt, gmqtt, amqtt, aiomqtt
+    ├── Used APIs  : Client, connect, publish
+    ├── Pitfalls   : paho-mqtt is synchronous and callback-based; aiomqtt and gmqtt are async and require `async def`/`await` and event-loop integration; 
+    │   aiomqtt uses async context managers (`async with Client(...) as client`) instead of explicit connect()/disconnect() calls; Return value semantics 
+    │   differ: paho's publish() returns an MQTTMessageInfo with `.rc` and `.mid`; gmqtt/amqtt publish() calls do not return the same info object, so 
+    │   `getattr(info, 'rc', 0)` logic would break; amqtt is unmaintained/deprecated in favor of newer forks; verify current maintenance status before 
+    │   adopting; Client construction signatures differ significantly (e.g., gmqtt.Client requires a client_id argument up front)
+    ├── Constraints: requires_connector
+    └── The file explicitly documents paho-mqtt as substitutable for async MQTT clients like aiomqtt, and gmqtt/amqtt serve the same core purpose (connecting 
+        to a broker and publishing messages to a topic). All are alternative MQTT client implementations that could serve the same 'publish a payload to a 
+        topic' role used in MqttSink.publish.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Reusing pinned source security evidence: paho-mqtt ← paho_mqtt
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ aiomqtt │ 2.5.1   │ LOW  │ AVAILABLE │    1.00 │
+│ amqtt   │ 0.12.1  │ LOW  │ AVAILABLE │    1.00 │
+│ gmqtt   │ 0.7.0   │ LOW  │ AVAILABLE │    0.90 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠋ ✓ aiomqtt  
+⠋ ✓ amqtt    
+⠋ ✓ gmqtt    
+⠋ ✓ paho-mqtt
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃                                                                    Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ paho-mqtt │     ✓     │          0.6 ms │  UNMEASURED — No registered side-effect-free runtime probe for Client, connect, publish; an │           7 │       │
+│           │           │                 │                                                             integration fixture is required │             │       │
+│ amqtt     │     ✓     │          0.9 ms │  UNMEASURED — No registered side-effect-free runtime probe for Client, connect, publish; an │           7 │       │
+│           │           │                 │                                                             integration fixture is required │             │       │
+│ gmqtt     │     ✓     │         76.2 ms │  UNMEASURED — No registered side-effect-free runtime probe for Client, connect, publish; an │         321 │       │
+│           │           │                 │                                                             integration fixture is required │             │       │
+│ aiomqtt   │     ✓     │        149.6 ms │  UNMEASURED — No registered side-effect-free runtime probe for Client, connect, publish; an │         213 │       │
+│           │           │                 │                                                             integration fixture is required │             │       │
+└───────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 58124bb9
+  API compat tokens — input: 272  output: 443  latency: 5939ms
+                                                     AXIOM Optimization Decisions                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                          ┃ Original  ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ MQTT client for publishing telemetry messages │ paho-mqtt │ amqtt  │ MEDIUM │ 0.652 │ 1.0    │ 1.0      │ 0.2 │ 0.779 │ ✓          │
+└───────────────────────────────────────────────┴───────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  paho-mqtt  →  amqtt  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: paho-mqtt → amqtt
+  Found 1 call site(s):
+    L12: client = mqtt.Client()
+  Tokens — in:2,065 out:2,838 latency:31740ms
+
+  Compatibility analysis:
+    ✗ L12: client = mqtt.Client()  — paho.mqtt.client.Client() constructs a synchronous, callback-driven client whose
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - amqtt's client API is asyncio-based (coroutine connect()/publish()/disconnect()); the source code's synchronous, callback-style lifecycle (mqtt.Client() 
+-> client.connect(host, port) -> client.publish(...) returning an object with .rc) has no synchronous counterpart in amqtt.
+    - MqttSink.publish() is defined as a synchronous method returning an int (getattr(info, 'rc', 0)); amqtt.publish() returns a coroutine/awaitable, not an 
+object with an .rc attribute, so the return-value semantics cannot be reproduced without making the entire call chain async.
+    - There is no non-structural glue code that converts a fire-and-forget async coroutine library into the synchronous drop-in replacement the rest of the 
+codebase (MqttSink, _default_client) is written against; achieving compatibility would require rewriting MqttSink and its callers to be async, which is outside
+the scope of wrapper-only glue.
+    - amqtt is noted as unmaintained/deprecated, raising additional risk for adopting it as the production MQTT client, independent of the async/sync 
+structural mismatch.
+  ✓ All paho-mqtt call sites are fully compatible — no wrappers needed
+  Migration incomplete: 'paho-mqtt' is still imported and in use after the edit — line 10: import paho.mqtt.client as mqtt  # lazy import for testability
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 25 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ sink                                           │
+│ Lines (original → variant)  │ 25 → 31                                        │
+│ Requested lines             │ 31                                             │
+│ Achieved lines              │ 31                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:mqtt_client_factory.py  │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.3597                                         │
+│ diversity: ast_structural   │ 0.3540  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6078                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1770  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 4.8s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  verifier reverted sink.py; discarding the isomorph variant of the rejected patch
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D3_telemetry_gateway (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 25 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ estimator                                      │
+│ Lines (original → variant)  │ 25 → 61                                        │
+│ Requested lines             │ 61                                             │
+│ Achieved lines              │ 61                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:moving_window.py        │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.5075                                         │
+│ diversity: ast_structural   │ 0.5539  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.8235                                         │
+│ diversity: cfg_shape        │ 0.5000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.5270  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 8.0s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D3_telemetry_gateway (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 35 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ gateway                                        │
+│ Lines (original → variant)  │ 35 → 53                                        │
+│ Requested lines             │ 53                                             │
+│ Achieved lines              │ 53                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:gateway_support.py      │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4479                                         │
+│ diversity: ast_structural   │ 0.3759  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.5507                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1879  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 9.7s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+D3_telemetry_gateway             1       4/4     N    Y      4      4  0.3586   92.9s
+
+migration_success 0/1 (0%)
+rows appended to results_fixed4.csv

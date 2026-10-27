@@ -1,0 +1,2973 @@
+{
+ "module": "protective_relay",
+ "original_lines": 134,
+ "requested_lines": 114,
+ "achieved_lines": 134,
+ "length_error": 20,
+ "ranking_metric": "ast_structural",
+ "beam_size": 3,
+ "max_iterations": 6,
+ "iterations_used": 6,
+ "candidates_generated": 129,
+ "candidates_equivalent": 129,
+ "duration_s": 20.44,
+ "winner": {
+  "file": "winner.py",
+  "chain": [
+   "demorgan_branch_swap",
+   "expand_aug_assign",
+   "independent_assignment_swap",
+   "expand_chained_compare"
+  ],
+  "lines": 134,
+  "metrics": {
+   "ncd": 0.117572,
+   "ast_structural": 0.084833,
+   "du_chain": 0.0,
+   "cfg_shape": 0.0,
+   "composite": 0.042416
+  },
+  "oracle_passed": true,
+  "oracle_detail": "all layers passed (incl. __main__ output)"
+ },
+ "candidates": [
+  {
+   "index": 1,
+   "file": "001_expand_aug_assign.py",
+   "chain": [
+    "expand_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.049904,
+    "ast_structural": 0.017212,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.008606
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 2,
+   "file": "002_expand_chained_compare.py",
+   "chain": [
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.044728,
+    "ast_structural": 0.006061,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.00303
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 3,
+   "file": "003_split_return_expression.py",
+   "chain": [
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.04917,
+    "ast_structural": 0.006061,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.00303
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.147
+  },
+  {
+   "index": 4,
+   "file": "004_for_range_to_while.py",
+   "chain": [
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.05414,
+    "ast_structural": 0.014617,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.062864
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.067
+  },
+  {
+   "index": 5,
+   "file": "005_invert_if_else.py",
+   "chain": [
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.080666,
+    "ast_structural": 0.046632,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.023316
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.067
+  },
+  {
+   "index": 6,
+   "file": "006_rename_locals.py",
+   "chain": [
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.207196,
+    "ast_structural": 0.0,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.067
+  },
+  {
+   "index": 7,
+   "file": "007_call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.075032,
+    "ast_structural": 0.038298,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.019149
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.07
+  },
+  {
+   "index": 8,
+   "file": "008_demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.079589,
+    "ast_structural": 0.046957,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.023478
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  },
+  {
+   "index": 9,
+   "file": "009_independent_assignment_swap.py",
+   "chain": [
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.067394,
+    "ast_structural": 0.012174,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.006087
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.068
+  },
+  {
+   "index": 10,
+   "file": "010_demorgan_branch_swap+expand_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.089217,
+    "ast_structural": 0.065404,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032702
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 11,
+   "file": "011_demorgan_branch_swap+expand_chained_compare.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.082639,
+    "ast_structural": 0.052814,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.026407
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.068
+  },
+  {
+   "index": 12,
+   "file": "012_demorgan_branch_swap+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.085202,
+    "ast_structural": 0.052814,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.026407
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.067
+  },
+  {
+   "index": 13,
+   "file": "013_demorgan_branch_swap+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.092593,
+    "ast_structural": 0.061049,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.08608
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.067
+  },
+  {
+   "index": 14,
+   "file": "014_demorgan_branch_swap+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.063299,
+    "ast_structural": 0.013817,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.006908
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.071
+  },
+  {
+   "index": 15,
+   "file": "015_demorgan_branch_swap+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.215576,
+    "ast_structural": 0.046957,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.023478
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 16,
+   "file": "016_demorgan_branch_swap+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.111884,
+    "ast_structural": 0.084255,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.042128
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.076
+  },
+  {
+   "index": 17,
+   "file": "017_demorgan_branch_swap+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.036585,
+    "ast_structural": 0.0,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 18,
+   "file": "018_demorgan_branch_swap+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.10077,
+    "ast_structural": 0.05913,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.029565
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 19,
+   "file": "019_invert_if_else+expand_aug_assign.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.095026,
+    "ast_structural": 0.064957,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032479
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.072
+  },
+  {
+   "index": 20,
+   "file": "020_invert_if_else+expand_chained_compare.py",
+   "chain": [
+    "invert_if_else",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.087372,
+    "ast_structural": 0.052451,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.026225
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 21,
+   "file": "021_invert_if_else+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.089752,
+    "ast_structural": 0.052451,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.026225
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 22,
+   "file": "022_invert_if_else+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.097716,
+    "ast_structural": 0.060632,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.085872
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 23,
+   "file": "023_invert_if_else+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.054452,
+    "ast_structural": 0.0,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 24,
+   "file": "024_invert_if_else+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.221398,
+    "ast_structural": 0.046632,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.023316
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 25,
+   "file": "025_invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.116206,
+    "ast_structural": 0.083686,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.041843
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 26,
+   "file": "026_invert_if_else+independent_assignment_swap.py",
+   "chain": [
+    "invert_if_else",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.100706,
+    "ast_structural": 0.058722,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.029361
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 27,
+   "file": "027_expand_aug_assign+expand_chained_compare.py",
+   "chain": [
+    "expand_aug_assign",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.057288,
+    "ast_structural": 0.023136,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.011568
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 28,
+   "file": "028_expand_aug_assign+split_return_expression.py",
+   "chain": [
+    "expand_aug_assign",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.061705,
+    "ast_structural": 0.023136,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.011568
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 29,
+   "file": "029_expand_aug_assign+for_range_to_while.py",
+   "chain": [
+    "expand_aug_assign",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.067807,
+    "ast_structural": 0.031489,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.0713
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 30,
+   "file": "030_expand_aug_assign+rename_locals.py",
+   "chain": [
+    "expand_aug_assign",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.212477,
+    "ast_structural": 0.017212,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.008606
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 31,
+   "file": "031_expand_aug_assign+call_argument_extraction.py",
+   "chain": [
+    "expand_aug_assign",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.087257,
+    "ast_structural": 0.05476,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.02738
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 32,
+   "file": "032_expand_aug_assign+independent_assignment_swap.py",
+   "chain": [
+    "expand_aug_assign",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.078745,
+    "ast_structural": 0.030981,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.015491
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 33,
+   "file": "033_demorgan_branch_swap+expand_aug_assign+expand_chained_compare.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.09834,
+    "ast_structural": 0.071123,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035561
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.076
+  },
+  {
+   "index": 34,
+   "file": "034_demorgan_branch_swap+expand_aug_assign+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.100191,
+    "ast_structural": 0.071123,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.035561
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 35,
+   "file": "035_demorgan_branch_swap+expand_aug_assign+collapse_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.079589,
+    "ast_structural": 0.046957,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.023478
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 36,
+   "file": "036_demorgan_branch_swap+expand_aug_assign+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.106802,
+    "ast_structural": 0.079149,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.09513
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.118
+  },
+  {
+   "index": 37,
+   "file": "037_demorgan_branch_swap+expand_aug_assign+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.077707,
+    "ast_structural": 0.030769,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.015385
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 38,
+   "file": "038_demorgan_branch_swap+expand_aug_assign+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.220844,
+    "ast_structural": 0.065404,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.032702
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 39,
+   "file": "039_demorgan_branch_swap+expand_aug_assign+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.125315,
+    "ast_structural": 0.101938,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.050969
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 40,
+   "file": "040_demorgan_branch_swap+expand_aug_assign+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.049904,
+    "ast_structural": 0.017212,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.008606
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 41,
+   "file": "041_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.110398,
+    "ast_structural": 0.079174,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.039587
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 42,
+   "file": "042_invert_if_else+expand_aug_assign+expand_chained_compare.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.103558,
+    "ast_structural": 0.070638,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035319
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 43,
+   "file": "043_invert_if_else+expand_aug_assign+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.105897,
+    "ast_structural": 0.070638,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.035319
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.089
+  },
+  {
+   "index": 44,
+   "file": "044_invert_if_else+expand_aug_assign+collapse_aug_assign.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.080666,
+    "ast_structural": 0.046632,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.023316
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 45,
+   "file": "045_invert_if_else+expand_aug_assign+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.112374,
+    "ast_structural": 0.078614,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.094862
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 46,
+   "file": "046_invert_if_else+expand_aug_assign+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.068922,
+    "ast_structural": 0.017212,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.008606
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 47,
+   "file": "047_invert_if_else+expand_aug_assign+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.227357,
+    "ast_structural": 0.064957,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.032479
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 48,
+   "file": "048_invert_if_else+expand_aug_assign+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.130788,
+    "ast_structural": 0.101255,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.050628
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 49,
+   "file": "049_invert_if_else+expand_aug_assign+independent_assignment_swap.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.114869,
+    "ast_structural": 0.078632,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.039316
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 50,
+   "file": "050_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.112323,
+    "ast_structural": 0.077453,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.038726
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 51,
+   "file": "051_demorgan_branch_swap+independent_assignment_swap+expand_chained_compare.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.104621,
+    "ast_structural": 0.064935,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032468
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 52,
+   "file": "052_demorgan_branch_swap+independent_assignment_swap+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.107831,
+    "ast_structural": 0.064935,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.032468
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 53,
+   "file": "053_demorgan_branch_swap+independent_assignment_swap+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.112036,
+    "ast_structural": 0.069647,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.090379
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 54,
+   "file": "054_demorgan_branch_swap+independent_assignment_swap+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.090327,
+    "ast_structural": 0.025907,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.012953
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 55,
+   "file": "055_demorgan_branch_swap+independent_assignment_swap+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.21674,
+    "ast_structural": 0.05913,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.029565
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 56,
+   "file": "056_demorgan_branch_swap+independent_assignment_swap+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.131812,
+    "ast_structural": 0.09617,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.048085
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 57,
+   "file": "057_demorgan_branch_swap+independent_assignment_swap+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.067394,
+    "ast_structural": 0.012174,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.006087
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.099
+  },
+  {
+   "index": 58,
+   "file": "058_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.117572,
+    "ast_structural": 0.084833,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.042416
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 59,
+   "file": "059_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.12069,
+    "ast_structural": 0.084833,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.042416
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 60,
+   "file": "060_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+collapse_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.099487,
+    "ast_structural": 0.066087,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.033043
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 61,
+   "file": "061_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.124682,
+    "ast_structural": 0.089362,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.100236
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 62,
+   "file": "062_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.104592,
+    "ast_structural": 0.044444,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.022222
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 63,
+   "file": "063_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.22312,
+    "ast_structural": 0.079174,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.039587
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 64,
+   "file": "064_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.145019,
+    "ast_structural": 0.115417,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.057709
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 65,
+   "file": "065_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.078745,
+    "ast_structural": 0.030981,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.015491
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  },
+  {
+   "index": 66,
+   "file": "066_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.089217,
+    "ast_structural": 0.065404,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032702
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.097
+  },
+  {
+   "index": 67,
+   "file": "067_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.123331,
+    "ast_structural": 0.084255,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.042128
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.111
+  },
+  {
+   "index": 68,
+   "file": "068_invert_if_else+expand_aug_assign+independent_assignment_swap+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.125714,
+    "ast_structural": 0.084255,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.042128
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.095
+  },
+  {
+   "index": 69,
+   "file": "069_invert_if_else+expand_aug_assign+independent_assignment_swap+collapse_aug_assign.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.099936,
+    "ast_structural": 0.06563,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032815
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.102
+  },
+  {
+   "index": 70,
+   "file": "070_invert_if_else+expand_aug_assign+independent_assignment_swap+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.129583,
+    "ast_structural": 0.088757,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.099934
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 71,
+   "file": "071_invert_if_else+expand_aug_assign+independent_assignment_swap+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.095208,
+    "ast_structural": 0.030981,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.015491
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 72,
+   "file": "072_invert_if_else+expand_aug_assign+independent_assignment_swap+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.229012,
+    "ast_structural": 0.078632,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.039316
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 73,
+   "file": "073_invert_if_else+expand_aug_assign+independent_assignment_swap+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.150376,
+    "ast_structural": 0.114644,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.057322
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 74,
+   "file": "074_invert_if_else+expand_aug_assign+independent_assignment_swap+independent_assignment_swap.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.095026,
+    "ast_structural": 0.064957,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032479
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 75,
+   "file": "075_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.118362,
+    "ast_structural": 0.083119,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.04156
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 76,
+   "file": "076_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.121483,
+    "ast_structural": 0.083119,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.04156
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 77,
+   "file": "077_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+collapse_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.10077,
+    "ast_structural": 0.05913,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.029565
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 78,
+   "file": "078_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.126195,
+    "ast_structural": 0.08766,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.099385
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 79,
+   "file": "079_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.105297,
+    "ast_structural": 0.042735,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.021368
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 80,
+   "file": "080_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.222015,
+    "ast_structural": 0.077453,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.038726
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 81,
+   "file": "081_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.145741,
+    "ast_structural": 0.113732,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.056866
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 82,
+   "file": "082_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.080128,
+    "ast_structural": 0.02926,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.01463
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.097
+  },
+  {
+   "index": 83,
+   "file": "083_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.096277,
+    "ast_structural": 0.067126,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.033563
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 84,
+   "file": "084_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.128971,
+    "ast_structural": 0.090444,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.045222
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.095
+  },
+  {
+   "index": 85,
+   "file": "085_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+collapse_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.103913,
+    "ast_structural": 0.071861,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035931
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 86,
+   "file": "086_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.132911,
+    "ast_structural": 0.094915,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.103013
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 87,
+   "file": "087_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.113088,
+    "ast_structural": 0.050213,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.025106
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.076
+  },
+  {
+   "index": 88,
+   "file": "088_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.22896,
+    "ast_structural": 0.084833,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.042416
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 89,
+   "file": "089_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.152978,
+    "ast_structural": 0.120805,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.060403
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 90,
+   "file": "090_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.086042,
+    "ast_structural": 0.036847,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.018423
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.076
+  },
+  {
+   "index": 91,
+   "file": "091_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.09834,
+    "ast_structural": 0.071123,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035561
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 92,
+   "file": "092_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.134092,
+    "ast_structural": 0.089831,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.044915
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 93,
+   "file": "093_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+collapse_aug_assign.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.108488,
+    "ast_structural": 0.071367,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035684
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.104
+  },
+  {
+   "index": 94,
+   "file": "094_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.138539,
+    "ast_structural": 0.094276,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.102694
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 95,
+   "file": "095_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.103756,
+    "ast_structural": 0.036847,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.018423
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 96,
+   "file": "096_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.234317,
+    "ast_structural": 0.084255,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.042128
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 97,
+   "file": "097_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.157829,
+    "ast_structural": 0.12,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.06
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 98,
+   "file": "098_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+independent_assignment_swap.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.103558,
+    "ast_structural": 0.070638,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.035319
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 99,
+   "file": "099_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.129771,
+    "ast_structural": 0.088737,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.044369
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 100,
+   "file": "100_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+collapse_aug_assign.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.104621,
+    "ast_structural": 0.064935,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.032468
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 101,
+   "file": "101_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.134262,
+    "ast_structural": 0.09322,
+    "du_chain": 0.045455,
+    "cfg_shape": 0.111111,
+    "composite": 0.102166
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 102,
+   "file": "102_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.114431,
+    "ast_structural": 0.048511,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.024255
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 103,
+   "file": "103_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.228483,
+    "ast_structural": 0.083119,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.04156
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 104,
+   "file": "104_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.15317,
+    "ast_structural": 0.119128,
+    "du_chain": 0.022727,
+    "cfg_shape": 0.0,
+    "composite": 0.059564
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 105,
+   "file": "105_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.087372,
+    "ast_structural": 0.035133,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.017566
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 106,
+   "file": "106_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+independent_assignment_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.103514,
+    "ast_structural": 0.072836,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.036418
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 107,
+   "file": "107_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+split_return_exp--c4c8048e.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.235692,
+    "ast_structural": 0.090444,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.045222
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 108,
+   "file": "108_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+collapse_aug_ass--049f9c46.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.223602,
+    "ast_structural": 0.071861,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.035931
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.078
+  },
+  {
+   "index": 109,
+   "file": "109_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+for_range_to_whi--ac85c531.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.243409,
+    "ast_structural": 0.094915,
+    "du_chain": 0.448276,
+    "cfg_shape": 0.111111,
+    "composite": 0.103013
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 110,
+   "file": "110_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.238154,
+    "ast_structural": 0.050213,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.025106
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 111,
+   "file": "111_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.236906,
+    "ast_structural": 0.084833,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.042416
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 112,
+   "file": "112_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+call_argument_ex--b062a9df.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.258202,
+    "ast_structural": 0.120805,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.060403
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 113,
+   "file": "113_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+demorgan_branch_--1c757630.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.220579,
+    "ast_structural": 0.036847,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.018423
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.111
+  },
+  {
+   "index": 114,
+   "file": "114_demorgan_branch_swap+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+independent_assi--df189f11.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.226065,
+    "ast_structural": 0.071123,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.035561
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 115,
+   "file": "115_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+split_return_expressio--0cd615a2.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.239902,
+    "ast_structural": 0.089831,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.044915
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.181
+  },
+  {
+   "index": 116,
+   "file": "116_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+collapse_aug_assign.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.22963,
+    "ast_structural": 0.071367,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.035684
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 117,
+   "file": "117_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.24939,
+    "ast_structural": 0.094276,
+    "du_chain": 0.448276,
+    "cfg_shape": 0.111111,
+    "composite": 0.102694
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 118,
+   "file": "118_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.22968,
+    "ast_structural": 0.036847,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.018423
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 119,
+   "file": "119_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.242736,
+    "ast_structural": 0.084255,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.042128
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 120,
+   "file": "120_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+call_argument_extracti--5934f1f3.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.262236,
+    "ast_structural": 0.12,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.06
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 121,
+   "file": "121_invert_if_else+expand_aug_assign+independent_assignment_swap+expand_chained_compare+rename_locals+independent_assignment--15c9fa44.py",
+   "chain": [
+    "invert_if_else",
+    "expand_aug_assign",
+    "independent_assignment_swap",
+    "expand_chained_compare",
+    "rename_locals",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.232187,
+    "ast_structural": 0.070638,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.035319
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 122,
+   "file": "122_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+split_return_exp--fa500e92.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 135,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.234606,
+    "ast_structural": 0.088737,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.044369
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.125
+  },
+  {
+   "index": 123,
+   "file": "123_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+collapse_aug_ass--73471ea0.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "collapse_aug_assign"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.222498,
+    "ast_structural": 0.064935,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.032468
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 124,
+   "file": "124_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+for_range_to_whi--99f769d7.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 137,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.242945,
+    "ast_structural": 0.09322,
+    "du_chain": 0.448276,
+    "cfg_shape": 0.111111,
+    "composite": 0.102166
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.093
+  },
+  {
+   "index": 125,
+   "file": "125_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "invert_if_else"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.237069,
+    "ast_structural": 0.048511,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.024255
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 126,
+   "file": "126_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.235832,
+    "ast_structural": 0.083119,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.04156
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 127,
+   "file": "127_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+call_argument_ex--443a3a07.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 139,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.257143,
+    "ast_structural": 0.119128,
+    "du_chain": 0.431034,
+    "cfg_shape": 0.0,
+    "composite": 0.059564
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 128,
+   "file": "128_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+demorgan_branch_--66b2262e.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "demorgan_branch_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.220099,
+    "ast_structural": 0.035133,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.017566
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 129,
+   "file": "129_demorgan_branch_swap+independent_assignment_swap+expand_aug_assign+expand_chained_compare+rename_locals+independent_assi--86ebf5aa.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "independent_assignment_swap",
+    "expand_aug_assign",
+    "expand_chained_compare",
+    "rename_locals",
+    "independent_assignment_swap"
+   ],
+   "lines": 134,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.226065,
+    "ast_structural": 0.072836,
+    "du_chain": 0.421053,
+    "cfg_shape": 0.0,
+    "composite": 0.036418
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  }
+ ]
+}

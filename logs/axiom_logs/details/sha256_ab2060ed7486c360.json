@@ -1,0 +1,30 @@
+{
+  "role": "WSGI HTTP server",
+  "winner": "gunicorn",
+  "original": "gunicorn",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 1.0,
+    "installed": true
+  },
+  "rationale": "'gunicorn' wins 'WSGI HTTP server'. Confidence: HIGH. Total: 1.0 (speed=1.0, mem=1.0, sec=1.0, api=1.0). Migration note: Gunicorn uses a pre-fork worker model; waitress uses a thread pool \u2014 different concurrency characteristics",
+  "confidence": "HIGH",
+  "used_apis": [
+    "gunicorn.app.base",
+    "gunicorn.six.iteritems"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

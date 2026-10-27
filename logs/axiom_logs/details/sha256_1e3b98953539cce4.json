@@ -1,0 +1,25 @@
+{
+  "role": "AES symmetric encryption (CBC mode with PKCS#7-like padding)",
+  "winner": "pycryptodome",
+  "original": "pycrypto",
+  "score": {
+    "speed": 0.867,
+    "memory": 1.0,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "security": 0.76,
+    "total": 0.905,
+    "installed": true
+  },
+  "rationale": "'pycryptodome' wins 'AES symmetric encryption (CBC mode with PKCS#7-like padding)'. Confidence: HIGH. Total: 0.905 (speed=0.867, mem=1.0, sec=0.76, api=1.0). Migration note: PyCrypto/pycryptodome use null-byte padding; cryptography requires explicit PKCS7 padding via padding.PKCS7",
+  "confidence": "HIGH",
+  "used_apis": [
+    "AES.new",
+    "AES.MODE_CBC",
+    "encrypt",
+    "decrypt"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

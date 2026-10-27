@@ -1,0 +1,90 @@
+# parsed 1 file(s): ['notifier.py']
+# expected: ['engine.py', 'engine_config.py', 'hysteresis.py', 'notifier.py']
+# reply length: 2766 chars
+======================================================================
+### FILENAME: notifier.py
+```python
+# CHOSEN-TARGET: envelope
+"""notifier -- operator notification on alarm state changes.
+
+
+
+clone needs glue. The SMTP transport is dependency-injected for testing.
+"""
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    from envelope import SMTP  # lazy import for testability
+
+    return SMTP(host, port)
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        message = (
+            f"From: {self.sender}\r\n"
+            f"To: {', '.join(self.recipients)}\r\n"
+            f"Subject: {subject}\r\n\r\n{body}"
+        )
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message
+```
+
+Note: `envelope` does not actually provide a class named `SMTP` with a `sendmail(from, to, message)` method compatible with `smtplib.SMTP`, so a thin adapter is required to preserve the exact public API (`smtp.sendmail(sender, recipients, message)`) that the test suite depends on via dependency injection. Below is the corrected, functionally-equivalent rewrite using `envelope` (an actively maintained library for composing/sending email) with adapter glue code.
+
+### FILENAME: notifier.py
+```python
+# CHOSEN-TARGET: envelope
+"""notifier -- operator notification on alarm state changes.
+
+
+
+clone needs glue. The SMTP transport is dependency-injected for testing.
+"""
+
+
+class _EnvelopeSMTPAdapter:
+    """Adapts envelope's Envelope/send API to the smtplib.SMTP-style
+    sendmail(from, to, message) interface expected by EmailNotifier.
+    """
+
+    def __init__(self, host: str = "localhost", port: int = 25):
+        self.host = host
+        self.port = port
+
+    def sendmail(self, from_addr, to_addrs, msg):
+        from envelope import Envelope
+
+        (
+            Envelope(msg)
+            .from_(from_addr)
+            .to(list(to_addrs))
+            .smtp(host=self.host, port=self.port)
+            .send()
+        )
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    return _EnvelopeSMTPAdapter(host, port)
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        message = (
+            f"From: {self.sender}\r\n"
+            f"To: {', '.join(self.recipients)}\r\n"
+            f"Subject: {subject}\r\n\r\n{body}"
+        )
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message
+```

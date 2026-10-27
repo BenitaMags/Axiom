@@ -1,0 +1,37 @@
+{
+  "role": "MQTT client for publishing telemetry messages",
+  "winner": "paho.mqtt.client",
+  "original": "paho.mqtt.client",
+  "score": {
+    "speed": 0.734,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.3,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.624,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: New mypy finding after migration: Name \"aiomqtt\" is not defined  [name-defined]; line 1: New mypy finding after migration: Name \"asyncio\" is not defined  [name-defined]; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'aiomqtt'; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'asyncio'; line 1: Patched project tests failed: FF                                                                     [100%]\n=================================== FAILURES ===================================\n____________________ test_gateway_reads_estimates_publishes ____________________\n\n    def test_gateway_reads_estimates_publishes():\n        readings = {\"PT101\": [100, 105, 400]}  # last is an anomalous jump\n        seq = {k: iter(v) for k, v in readings.items()}\n        mqtt = FakeMqtt()\n        gw = TelemetryGateway(reader=lambda tag: next(seq[tag]),\n                              sink=MqttSink(topic_base=\"plant/est\", client=mqtt),\n                              scale=0.1, window=5, roc_limit=5.0)\n>       r1 = gw.process(\"PT101\")\n             ^^^^^^^^^^^^^^^^^^^\n\ntest_gateway.py:41: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ngateway.py:31: in process\n    self.sink.publish(tag, record)\nsink.py:155: in publish\n    info = publish_via_aiomqtt_client_v2(self.client, f\"{self.topic_base}/{tag}\", payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsink.py:78: in publish_via_aiomqtt_client_v2\n    asyncio.run(_do_publish())\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py:194: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py:118: in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py:687: in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    async def _do_publish():\n>       async with aiomqtt.Client(client.host, client.port) as conn:\n                                  ^^^^^^^^^^^\nE       AttributeError: 'FakeMqtt' object has no attribute 'host'\n\nsink.py:74: AttributeError\n_______________________ test_gateway_keeps_per_tag_state _______________________\n\n    def test_gateway_keeps_per_tag_state():\n        mqtt = FakeMqtt()\n        values = {\"A\": iter([100, 110]), \"B\": iter([900])}\n        gw = TelemetryGateway(reader=lambda t: next(values[t]),\n                              sink=MqttSink(client=mqtt), scale=0.1, roc_limit=100.0)\n>       gw.process(\"A\"); gw.process(\"B\"); gw.process(\"A\")\n        ^^^^^^^^^^^^^^^\n\ntest_gateway.py:55: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ngateway.py:31: in process\n    self.sink.publish(tag, record)\nsink.py:155: in publish\n    info = publish_via_aiomqtt_client_v2(self.client, f\"{self.topic_base}/{tag}\", payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsink.py:78: in publish_via_aiomqtt_client_v2\n    asyncio.run(_do_publish())\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py:194: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py:118: in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py:687: in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\n    async def _do_publish():\n>       async with aiomqtt.Client(client.host, client.port) as conn:\n                                  ^^^^^^^^^^^\nE       AttributeError: 'FakeMqtt' object has no attribute 'host'\n\nsink.py:74: AttributeError\n=========================== short test summary info ============================\nFAILED test_gateway.py::test_gateway_reads_estimates_publishes - AttributeErr...\nFAILED test_gateway.py::test_gateway_keeps_per_tag_state - AttributeError: 'F...\n2 failed, 2 passed in 0.14s",
+  "confidence": "LOW",
+  "used_apis": [
+    "Client",
+    "connect",
+    "publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,38 @@
+{
+  "role": "synchronous HTTP client for polling REST endpoints",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 0.901,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.4,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.804,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'httpx' wins 'synchronous HTTP client for polling REST endpoints'. Confidence: HIGH. Total: 0.804 (speed=0.901, mem=0.624, sec=1.0, api=0.4). Migration note: requests.Session() vs httpx.Client(): different session object construction and lifecycle (httpx.Client benefits from context-manager usage / explicit close())",
+  "confidence": "HIGH",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "resp.raise_for_status",
+    "resp.json"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

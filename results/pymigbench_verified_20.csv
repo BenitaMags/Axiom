@@ -1,0 +1,925 @@
+migration_id,repo,domain,source,target,file_path,detected_group,recommended_target,axiom_winner,connector_ran,verifier_route,verifier_passed_clean,patch_changed,verification_status,verification_environment_status,selection_status,outcome,verified_ground_truth,verified_alternative,error
+kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5,svenskaspel/locust-plugins,HTTP Clients,kafka,confluent-kafka,locust_plugins/kafka.py,True,True,confluent-kafka,True,proceed,False,True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: locustio: ERROR: Cannot install locustio>=1.0 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/application/notifier/slack_notifier.py,True,True,slack-sdk,True,proceed,False,True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed:  3, in <module>
+    from petisco.base.application.notifier.notifier_exception_message import (
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-8y_dihu4/project/petisco/base/application/notifier/notifier_exception_message.py"", line 1, in <module>
+    from petisco.legacy.notifier.domain.notifier_message import NotifierMessage
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-8y_dihu4/project/petisco/legacy/__init__.py"", line 8, in <module>
+    from petisco.legacy.application.config.config import Config
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-8y_dihu4/project/petisco/legacy/application/config/config.py"", line 21, in <module>
+    from petisco.legacy.application.config.events.config_events import ConfigEvents
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-8y_dihu4/project/petisco/legacy/application/config/events/config_events.py"", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1275, in dataclass
+    return wrap(cls)
+           ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1265, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 994, in _process_class
+    cls_fields.append(_get_field(cls, name, type, kw_only))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 852, in _get_field
+    raise ValueError(f'mutable default {type(f.default)} for field '
+ValueError: mutable default <class 'petisco.legacy.application.config.events.config_event_publisher.ConfigEventsPublisher'> for field config_event_publisher is not allowed: use default_factory
+"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/is_slack_available.py,False,,,False,,False,False,not_run,unknown,no_decision,resolver_miss,False,False,
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/legacy/notifier/infrastructure/slack/slack_notifier.py,False,False,slack-bolt,True,proceed,False,True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed:  3, in <module>
+    from petisco.base.application.notifier.notifier_exception_message import (
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-qi3_siel/project/petisco/base/application/notifier/notifier_exception_message.py"", line 1, in <module>
+    from petisco.legacy.notifier.domain.notifier_message import NotifierMessage
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-qi3_siel/project/petisco/legacy/__init__.py"", line 8, in <module>
+    from petisco.legacy.application.config.config import Config
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-qi3_siel/project/petisco/legacy/application/config/config.py"", line 21, in <module>
+    from petisco.legacy.application.config.events.config_events import ConfigEvents
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-qi3_siel/project/petisco/legacy/application/config/events/config_events.py"", line 13, in <module>
+    @dataclass
+     ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1275, in dataclass
+    return wrap(cls)
+           ^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 1265, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 994, in _process_class
+    cls_fields.append(_get_field(cls, name, type, kw_only))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py"", line 852, in _get_field
+    raise ValueError(f'mutable default {type(f.default)} for field '
+ValueError: mutable default <class 'petisco.legacy.application.config.events.config_event_publisher.ConfigEventsPublisher'> for field config_event_publisher is not allowed: use default_factory
+"
+eventlet__gevent__phuks-co/throat__9a289609,phuks-co/throat,Utility,eventlet,gevent,throat.py,True,True,gevent,True,proceed,False,True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: misaka:     import pycparser
+      ModuleNotFoundError: No module named 'pycparser'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+; pygobject: above, not pip.
+      hint: See above for details.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× pip subprocess to install build dependencies did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+pycrypto__pycryptodome__hhyo/archery__e192ca69,hhyo/archery,Cryptography,pycrypto,pycryptodome,sql/utils/aes_decryptor.py,True,False,cryptography,True,proceed,False,True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: mysqlclient: (mysql_config.path,))
+      OSError: mysql_config not found
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; pyecharts: harts-jupyter-installer']' returned non-zero exit status 1.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+leveldb__plyvel__ethereum/py-evm__5c273fff,ethereum/py-evm,Database,leveldb,plyvel,evm/db/backends/level.py,True,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: cryptography: 
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+requests__aiohttp__usergeteam/userge-plugins__80a54344,usergeteam/userge-plugins,HTTP Clients,requests,aiohttp,plugins/info.py,False,,,False,proceed,False,False,not_applicable,ready,no_migration,no_migration_selected,False,False,
+gevent__eventlet__miguelgrinberg/flask-socketio__883e73e5,miguelgrinberg/flask-socketio,Utility,gevent,eventlet,example/app.py,True,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: flask: verlay/lib/python3.12/site-packages/setuptools/__init__.py)
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; gevent-socketio: Compiler.Errors.CompileError: src/gevent/libev/corecext.pyx
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; flask-socketio: verlay/lib/python3.12/site-packages/setuptools/__init__.py)
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; jinja2: verlay/lib/python3.12/site-packages/setuptools/__init__.py)
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; markupsafe: verlay/lib/python3.12/site-packages/setuptools/__init__.py)
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; gevent-websocket: Compiler.Errors.CompileError: src/gevent/libev/corecext.pyx
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+; greenlet: TAL;
+                              ^
+      4 warnings and 17 errors generated.
+      error: command '/usr/bin/clang' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for greenlet
+ERROR: Could not build wheels for greenlet, which is required to install pyproject.toml-based projects
+; ujson: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      4 errors generated.
+      error: command '/usr/bin/clang' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for ujson
+ERROR: Could not build wheels for ujson, which is required to install pyproject.toml-based projects
+"
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/installation.py,True,False,portalocker,True,proceed,False,True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: codecov: ERROR: Cannot install codecov==1.6.3 because these package versions have conflicting dependencies.
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+"
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/tau_installation.py,False,,,False,,False,False,not_run,unknown,no_decision,resolver_miss,False,False,
+cheetah3__jinja2__shingetsu/saku__d1ad50a9,shingetsu/saku,Web Framework,cheetah3,jinja2,shingetsu/template.py,True,False,Mako,True,proceed,False,True,environment_incomplete,blocked,alternative,environment_incomplete,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-iho415sp/project/shingetsu/template.py"", line 34, in <module>
+    import Cheetah.Template
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-iho415sp/project/Cheetah/__init__.py"", line 20, in <module>
+    from Version import *
+ModuleNotFoundError: No module named 'Version'
+"
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/fields.py,False,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: psycopg2: 
+      <https://www.psycopg.org/docs/install.html>).
+      
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/forms.py,False,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: psycopg2: 
+      <https://www.psycopg.org/docs/install.html>).
+      
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/managers.py,False,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: psycopg2: 
+      <https://www.psycopg.org/docs/install.html>).
+      
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/cli.py,True,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: boto3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jsonschema: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; argcomplete: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; python-dateutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; tabulate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; importlib-metadata: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-authorization: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-apimanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-batch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-cognitiveservices: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-cosmosdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-costmanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-containerinstance: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-compute: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-cdn: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-containerregistry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-containerservice: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-databricks: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-datalake-store: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-datafactory: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-dns: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-eventgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-eventhub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-hdinsight: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-iothub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-managementgroups: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-network: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-resourcegraph: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-resource: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-rdbms: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-search: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-sql: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-storage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-subscription: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-web: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-logic: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-storage-blob: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-storage-queue: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cosmosdb-table: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; apscheduler: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; distlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jsonpickle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; requests: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyjwt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cli-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; adal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-graphrbac: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; netaddr: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-storage-file: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-policyinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-monitor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; click: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cosmos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; retrying: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-api-python-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-cloud-logging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-auth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; ratelimiter: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-cloud-monitoring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; c7n: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; kubernetes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jinja2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sendgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; datadog: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; ldap3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pygit2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jmespath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; rq: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinx: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pygments: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinx-rtd-theme: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; recommonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinx-markdown-tables: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; influxdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; elasticsearch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; botocore: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sqlalchemy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; humanize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; c7n-org: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; ipaddress: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; apipkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; appdirs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; atomicwrites: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; attrs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; aws-xray-sdk: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; bleach: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; certifi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; cffi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; chardet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; colorama: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; coverage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; cryptography: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; docutils: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; entrypoints: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; execnet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; filelock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; flake8: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; future: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; idna: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; importlib-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jeepney: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jsonpatch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; jsonpointer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; keyring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; mccabe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; mock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; more-itertools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; multidict: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; packaging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pkginfo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; placebo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pluggy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; psutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; py: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pycodestyle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pycparser: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyflakes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyparsing: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyrsistent: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pytest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pytest-cov: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pytest-forked: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pytest-xdist: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pywin32-ctypes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; readme-renderer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; requests-toolbelt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; s3transfer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; secretstorage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; six: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; toml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; tox: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; tqdm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; twine: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; urllib3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; vcrpy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; virtualenv: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; wcwidth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; webencodings: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; wrapt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; yarl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; zipp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; antlr4-python3-runtime: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cli-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cli-telemetry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-cosmosdb-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-functions: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-datalake-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-mgmt-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; azure-storage-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; bcrypt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; humanfriendly: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; isodate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; knack: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; msrest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; msrestazure: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; paramiko: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; portalocker: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pynacl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyopenssl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyreadline: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pytz: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pywin32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; requests-oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; tzlocal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; wheel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; cachetools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-api-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-auth-httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; google-cloud-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; googleapis-common-protos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; protobuf: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyasn1: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pyasn1-modules: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; rsa: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; uritemplate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; websocket-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; decorator: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; markupsafe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; python-http-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; ruamel.yaml.clib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; argparse: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; setuptools-scm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; arrow: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; flask: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; functools32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; futures: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; itsdangerous: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; rq-dashboard: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; supervisor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; werkzeug: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; wsgiref: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; procname: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; msgpack-python: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; lz4: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; alabaster: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; babel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; commonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; imagesize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; markdown: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; snowballstemmer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-applehelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-devhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-htmlhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-jsmath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-qthelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; sphinxcontrib-serializinghtml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; awscli: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; awslogs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; pkg-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+; ruamel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-i1rwykmq/axiom-base-constraints.txt)
+"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/replay.py,True,,,False,proceed,False,False,environment_incomplete,blocked,no_migration,environment_incomplete,False,False,"Verification environment incomplete: boto3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jsonschema: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; argcomplete: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; python-dateutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; tabulate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; importlib-metadata: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-authorization: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-apimanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-batch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-cognitiveservices: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-cosmosdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-costmanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-containerinstance: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-compute: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-cdn: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-containerregistry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-containerservice: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-databricks: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-datalake-store: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-datafactory: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-dns: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-eventgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-eventhub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-hdinsight: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-iothub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-managementgroups: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-network: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-resourcegraph: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-resource: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-rdbms: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-search: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-sql: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-storage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-subscription: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-web: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-logic: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-storage-blob: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-storage-queue: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cosmosdb-table: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; apscheduler: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; distlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jsonpickle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; requests: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyjwt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cli-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; adal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-graphrbac: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; netaddr: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-storage-file: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-policyinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-monitor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; click: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cosmos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; retrying: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-api-python-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-cloud-logging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-auth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; ratelimiter: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-cloud-monitoring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; c7n: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; kubernetes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jinja2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sendgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; datadog: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; ldap3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pygit2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jmespath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; rq: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinx: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pygments: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinx-rtd-theme: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; recommonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinx-markdown-tables: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; influxdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; elasticsearch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; botocore: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sqlalchemy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; humanize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; c7n-org: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; ipaddress: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; apipkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; appdirs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; atomicwrites: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; attrs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; aws-xray-sdk: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; bleach: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; certifi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; cffi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; chardet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; colorama: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; coverage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; cryptography: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; docutils: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; entrypoints: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; execnet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; filelock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; flake8: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; future: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; idna: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; importlib-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jeepney: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jsonpatch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; jsonpointer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; keyring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; mccabe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; mock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; more-itertools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; multidict: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; packaging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pkginfo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; placebo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pluggy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; psutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; py: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pycodestyle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pycparser: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyflakes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyparsing: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyrsistent: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pytest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pytest-cov: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pytest-forked: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pytest-xdist: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pywin32-ctypes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; readme-renderer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; requests-toolbelt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; s3transfer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; secretstorage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; six: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; toml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; tox: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; tqdm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; twine: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; urllib3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; vcrpy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; virtualenv: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; wcwidth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; webencodings: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; wrapt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; yarl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; zipp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; antlr4-python3-runtime: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cli-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cli-telemetry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-cosmosdb-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-functions: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-datalake-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-mgmt-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; azure-storage-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; bcrypt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; humanfriendly: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; isodate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; knack: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; msrest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; msrestazure: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; paramiko: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; portalocker: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pynacl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyopenssl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyreadline: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pytz: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pywin32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; requests-oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; tzlocal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; wheel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; cachetools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-api-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-auth-httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; google-cloud-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; googleapis-common-protos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; protobuf: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyasn1: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pyasn1-modules: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; rsa: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; uritemplate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; websocket-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; decorator: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; markupsafe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; python-http-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; ruamel.yaml.clib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; argparse: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; setuptools-scm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; arrow: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; flask: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; functools32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; futures: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; itsdangerous: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; rq-dashboard: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; supervisor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; werkzeug: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; wsgiref: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; procname: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; msgpack-python: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; lz4: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; alabaster: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; babel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; commonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; imagesize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; markdown: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; snowballstemmer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-applehelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-devhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-htmlhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-jsmath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-qthelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; sphinxcontrib-serializinghtml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; awscli: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; awslogs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; pkg-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+; ruamel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-dv7zbgxu/axiom-base-constraints.txt)
+"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/utils.py,True,True,pyyaml,False,proceed,False,True,environment_incomplete,blocked,exact_target,environment_incomplete,False,False,"Verification environment incomplete: boto3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jsonschema: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; argcomplete: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; python-dateutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; tabulate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; importlib-metadata: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-authorization: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-apimanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-batch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-cognitiveservices: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-cosmosdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-costmanagement: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-containerinstance: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-compute: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-cdn: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-containerregistry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-containerservice: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-databricks: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-datalake-store: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-datafactory: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-dns: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-eventgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-eventhub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-hdinsight: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-iothub: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-managementgroups: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-network: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-resourcegraph: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-resource: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-rdbms: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-search: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-sql: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-storage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-subscription: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-web: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-logic: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-keyvault1.1.0: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-storage-blob: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-storage-queue: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cosmosdb-table: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; applicationinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; apscheduler: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; distlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jsonpickle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; requests: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyjwt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cli-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; adal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-graphrbac: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; netaddr: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-storage-file: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-policyinsights: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-monitor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; click: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cosmos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; retrying: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-api-python-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-cloud-logging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-auth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; ratelimiter: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-cloud-monitoring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; c7n: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; kubernetes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jinja2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sendgrid: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; datadog: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; ldap3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; redis: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pygit2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jmespath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; rq: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinx: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pygments: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinx-rtd-theme: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; recommonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinx-markdown-tables: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; influxdb: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; elasticsearch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; botocore: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sqlalchemy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; humanize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; c7n-org: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; ipaddress: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; apipkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; appdirs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; atomicwrites: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; attrs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; aws-xray-sdk: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; bleach: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; certifi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; cffi: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; chardet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; colorama: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; coverage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; cryptography: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; docutils: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; entrypoints: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; execnet: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; filelock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; flake8: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; future: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; idna: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; importlib-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jeepney: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jsonpatch: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; jsonpointer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; keyring: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; mccabe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; mock: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; more-itertools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; multidict: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; packaging: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pkginfo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; placebo: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pluggy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; psutil: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; py: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pycodestyle: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pycparser: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyflakes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyparsing: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyrsistent: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pytest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pytest-cov: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pytest-forked: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pytest-xdist: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pywin32-ctypes: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; readme-renderer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; requests-toolbelt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; s3transfer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; secretstorage: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; six: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; toml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; tox: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; tqdm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; twine: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; urllib3: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; vcrpy: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; virtualenv: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; wcwidth: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; webencodings: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; wrapt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; yarl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; zipp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; antlr4-python3-runtime: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cli-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cli-telemetry: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-cosmosdb-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-functions: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-datalake-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-keyvault: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-mgmt-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-nspkg: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; azure-storage-common: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; bcrypt: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; humanfriendly: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; isodate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; knack: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; msrest: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; msrestazure: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; paramiko: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; portalocker: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pynacl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyopenssl: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyreadline: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pytz: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pywin32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; requests-oauthlib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; tzlocal: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; wheel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; cachetools: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-api-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-auth-httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; google-cloud-core: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; googleapis-common-protos: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; httplib2: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; protobuf: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyasn1: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pyasn1-modules: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; rsa: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; uritemplate: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; websocket-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; decorator: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; markupsafe: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; python-http-client: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; ruamel.yaml.clib: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; argparse: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; setuptools-scm: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; arrow: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; flask: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; functools32: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; futures: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; itsdangerous: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; rq-dashboard: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; supervisor: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; werkzeug: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; wsgiref: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; procname: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; msgpack-python: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; lz4: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; alabaster: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; babel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; commonmark: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; imagesize: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; markdown: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; snowballstemmer: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-applehelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-devhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-htmlhelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-jsmath: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-qthelp: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; sphinxcontrib-serializinghtml: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; awscli: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; awslogs: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; pkg-resources: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+; ruamel: ERROR: Invalid requirement: 'boto3^1.12.31' (from line 1 of /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-profile-4u7b5t5z/axiom-base-constraints.txt)
+"
+pil__pillow__shoebot/shoebot__0171fb9f,shoebot/shoebot,Image processing,pil,pillow,shoebot/data/img.py,False,,,False,,False,False,not_run,unknown,no_decision,resolver_miss,False,False,
+argparse__click__grahame/sedge__3badf078,grahame/sedge,Utility,argparse,click,sedge/cli.py,True,True,click,True,proceed,False,False,rejected,ready,exact_target,verification_rejected,False,False,AXIOM selected a replacement but Connector/AST rewrite produced no source change.

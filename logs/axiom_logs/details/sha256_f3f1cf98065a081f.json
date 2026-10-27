@@ -1,0 +1,35 @@
+{
+  "role": "CRC-32 checksum computation",
+  "winner": "fastcrc",
+  "original": "zlib",
+  "score": {
+    "speed": 0.063,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.122,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.267,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'fastcrc' wins 'CRC-32 checksum computation'. Confidence: HIGH. Total: 0.267 (speed=0.063, mem=0.122, sec=None, api=0.5). Migration note: Need to confirm fastcrc's exact function name/signature (e.g. fastcrc.crc32.iso_hdlc or similar) matches zlib.crc32's bytes->int contract",
+  "confidence": "HIGH",
+  "used_apis": [
+    "zlib.crc32"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

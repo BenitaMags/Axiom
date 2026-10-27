@@ -1,0 +1,401 @@
+You previously rewrote a Python program to remove its dependency on `transitions`
+while keeping it FUNCTIONALLY EQUIVALENT to the original. Your rewrite was
+executed and checked, and it did not pass. You are now going to correct it.
+
+You are given three things: the ORIGINAL program, YOUR PREVIOUS ATTEMPT, and the
+EVIDENCE from running it.
+
+Work from the evidence. Each item names something concrete that went wrong. Fix
+those things. Do not restart from scratch and do not redesign parts of your
+attempt the evidence does not implicate — a rewrite that fixes the reported
+problems and changes nothing else is the goal.
+
+If the evidence shows that the library you chose cannot do what this program
+needs — a fundamentally different execution model, a missing transport, an API
+that cannot express the original's behaviour — then choosing a different library
+IS the correct fix. Say so and switch. Do not build increasingly elaborate
+adapters around a library that does not fit.
+
+Exactly one of these two conditions applies, as before. Read the program —
+including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable,
+actively-maintained third-party library yourself and migrate to it. Write
+whatever adapter or glue code the difference in API requires. Do not write your
+own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the
+program's own documentation states that the dependency is to be removed and its
+behaviour written as first-party code. If the documentation does not say that,
+condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class
+names, same signatures, same return types. The existing test suite must pass
+against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and
+your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1,
+or `# CHOSEN-TARGET: first-party` for condition 2. If you are switching to a
+different library, this line must name the new one.
+
+Return ONLY the corrected file(s), complete. For each file use exactly this
+format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+=== ORIGINAL PROGRAM ===
+### FILENAME: alarms.py
+```python
+"""alarms -- level alarm evaluation and interlocks (first-party logic)."""
+
+LOLO = 0.2
+LOW = 1.0
+HIGH = 8.0
+HIHI = 9.5
+
+
+def evaluate(level: float) -> set:
+    """Return the set of active alarm labels for a tank level."""
+    active = set()
+    if level >= HIHI:
+        active.add("HIHI")
+    if level >= HIGH:
+        active.add("HIGH")
+    if level <= LOLO:
+        active.add("LOLO")
+    if level <= LOW:
+        active.add("LOW")
+    return active
+
+
+def interlock_ok(level: float) -> bool:
+    """Filling is permitted only below the HIHI trip point."""
+    return level < HIHI
+```
+
+### FILENAME: fsm.py
+```python
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `transitions` library in the original.
+"""
+from alarms import interlock_ok
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+        from transitions import Machine  # lazy import; see test's importorskip
+
+        self.machine = Machine(model=self, states=STATES, initial="IDLE")
+        self.machine.add_transition("start_fill", "IDLE", "FILLING",
+                                    conditions="can_fill", after="open_inlet")
+        self.machine.add_transition("level_reached", "FILLING", "HOLDING",
+                                    after="close_inlet")
+        self.machine.add_transition("start_drain", ["HOLDING", "FILLING"], "DRAINING",
+                                    after="open_outlet")
+        self.machine.add_transition("empty", "DRAINING", "IDLE", after="close_outlet")
+        self.machine.add_transition("trip", "*", "FAULT", after="safe_all")
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+### FILENAME: process.py
+```python
+"""process -- physical process variables and a simple update model."""
+from dataclasses import dataclass
+
+
+@dataclass
+class Process:
+    level: float = 0.0
+    inlet: bool = False
+    outlet: bool = False
+
+    def apply(self, dt: float = 1.0, fill_rate: float = 0.5, drain_rate: float = 0.4) -> float:
+        """Advance the level given the current valve commands."""
+        delta = 0.0
+        if self.inlet:
+            delta += fill_rate
+        if self.outlet:
+            delta -= drain_rate
+        self.level = max(0.0, self.level + delta * dt)
+        return self.level
+```
+
+=== YOUR PREVIOUS ATTEMPT ===
+### FILENAME: alarms.py
+```python
+"""alarms -- level alarm evaluation and interlocks (first-party logic)."""
+
+LOLO = 0.2
+LOW = 1.0
+HIGH = 8.0
+HIHI = 9.5
+
+
+def evaluate(level: float) -> set:
+    """Return the set of active alarm labels for a tank level."""
+    active = set()
+    if level >= HIHI:
+        active.add("HIHI")
+    if level >= HIGH:
+        active.add("HIGH")
+    if level <= LOLO:
+        active.add("LOLO")
+    if level <= LOW:
+        active.add("LOW")
+    return active
+
+
+def interlock_ok(level: float) -> bool:
+    """Filling is permitted only below the HIHI trip point."""
+    return level < HIHI
+```
+
+### FILENAME: fsm.py
+```python
+# CHOSEN-TARGET: python-statemachine
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping uses the `transitions` library in the original.
+"""
+from alarms import interlock_ok
+from statemachine import StateMachine, State
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class _TankStateMachine(StateMachine):
+    IDLE = State("IDLE", initial=True)
+    FILLING = State("FILLING")
+    HOLDING = State("HOLDING")
+    DRAINING = State("DRAINING")
+    FAULT = State("FAULT")
+
+    start_fill = IDLE.to(FILLING, cond="can_fill")
+    level_reached = FILLING.to(HOLDING)
+    start_drain = HOLDING.to(DRAINING) | FILLING.to(DRAINING)
+    empty = DRAINING.to(IDLE)
+    trip = (
+        IDLE.to(FAULT)
+        | FILLING.to(FAULT)
+        | HOLDING.to(FAULT)
+        | DRAINING.to(FAULT)
+        | FAULT.to(FAULT)
+    )
+
+    def __init__(self, controller):
+        self._controller = controller
+        super().__init__()
+
+    def can_fill(self):
+        return self._controller.can_fill()
+
+    def on_start_fill(self):
+        self._controller.open_inlet()
+
+    def on_level_reached(self):
+        self._controller.close_inlet()
+
+    def on_start_drain(self):
+        self._controller.open_outlet()
+
+    def on_empty(self):
+        self._controller.close_outlet()
+
+    def on_trip(self):
+        self._controller.safe_all()
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        self._sm = _TankStateMachine(self)
+
+    # --- state property, mirrors `transitions`-style `.state` attribute -----
+    @property
+    def state(self):
+        return self._sm.current_state.id
+
+    # --- transition triggers, mirroring the original `transitions` API ------
+    def start_fill(self):
+        self._sm.start_fill()
+
+    def level_reached(self):
+        self._sm.level_reached()
+
+    def start_drain(self):
+        self._sm.start_drain()
+
+    def empty(self):
+        self._sm.empty()
+
+    def trip(self):
+        self._sm.trip()
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+### FILENAME: process.py
+```python
+"""process -- physical process variables and a simple update model."""
+from dataclasses import dataclass
+
+
+@dataclass
+class Process:
+    level: float = 0.0
+    inlet: bool = False
+    outlet: bool = False
+
+    def apply(self, dt: float = 1.0, fill_rate: float = 0.5, drain_rate: float = 0.4) -> float:
+        """Advance the level given the current valve commands."""
+        delta = 0.0
+        if self.inlet:
+            delta += fill_rate
+        if self.outlet:
+            delta -= drain_rate
+        self.level = max(0.0, self.level + delta * dt)
+        return self.level
+```
+
+=== EVIDENCE FROM RUNNING YOUR ATTEMPT ===
+[PYTEST OUTPUT]
+...FF                                                                    [100%]
+=================================== FAILURES ===================================
+______________________ test_machine_fill_hold_drain_cycle ______________________
+
+    def test_machine_fill_hold_drain_cycle():
+        if not _has_transitions():
+            print("skip test_machine_fill_hold_drain_cycle: 'transitions' not installed")
+            return
+>       from fsm import TankController
+
+test_fsm.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # CHOSEN-TARGET: python-statemachine
+    """fsm -- finite-state controller for a fill/drain tank process.
+    
+    
+    FSM. The transition guards, valve commands, and interlocks are first-party logic that
+    the LMA must re-encode into an equivalent but structurally different machine -- hence
+    Category C. State bookkeeping uses the `transitions` library in the original.
+    """
+    from alarms import interlock_ok
+>   from statemachine import StateMachine, State
+E   ModuleNotFoundError: No module named 'statemachine'
+
+fsm.py:10: ModuleNotFoundError
+____________________ test_machine_interlock_trips_to_fault _____________________
+
+    def test_machine_interlock_trips_to_fault():
+        if not _has_transitions():
+            print("skip test_machine_interlock_trips_to_fault: 'transitions' not installed")
+            return
+>       from fsm import TankController
+
+test_fsm.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    # CHOSEN-TARGET: python-statemachine
+    """fsm -- finite-state controller for a fill/drain tank process.
+    
+    
+    FSM. The transition guards, valve commands, and interlocks are first-party logic that
+    the LMA must re-encode into an equivalent but structurally different machine -- hence
+    Category C. State bookkeeping uses the `transitions` library in the original.
+    """
+    from alarms import interlock_ok
+>   from statemachine import StateMachine, State
+E   ModuleNotFoundError: No module named 'statemachine'
+
+fsm.py:10: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED test_fsm.py::test_machine_fill_hold_drain_cycle - ModuleNotFoundError:...
+FAILED test_fsm.py::test_machine_interlock_trips_to_fault - ModuleNotFoundErr...
+2 failed, 3 passed in 0.03s
+
+[EQUIVALENCE CHECK — failing layer]
+import fsm failed: ModuleNotFoundError: No module named 'statemachine'

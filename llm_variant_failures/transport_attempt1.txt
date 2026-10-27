@@ -1,0 +1,268 @@
+<think>
+Let me analyze this module carefully.
+
+Key observations:
+1. There's a bug in the original: `_axiom_write_register_wrapper` uses `mt_exc` and `cst` and `socket` without importing them (unlike the read wrapper which imports them). This means calling `_axiom_write_register_wrapper` would raise `NameError` if those names aren't already in scope. This is a real behavior that needs to be preserved exactly - I must not "fix" this bug.
+
+Wait, let me check - are `cst`, `mt_exc`, `socket` available at module level? No, they're only imported inside `_axiom_read_holding_registers_wrapper` as local names. So `_axiom_write_register_wrapper` will raise `NameError: name 'cst' is not defined` when called (assuming `_axiom_read_holding_registers_wrapper` hasn't been called yet, or even if it has - local imports don't leak to module globals).
+
+Actually wait, imports inside a function assign to local scope, not module globals. So `cst`, `mt_exc`, `socket` in `_axiom_read_holding_registers_wrapper` are local variables in that function only. They never become available in `_axiom_write_register_wrapper`. So `_axiom_write_register_wrapper` will ALWAYS raise NameError when it executes `mt_exc.ModbusError` - actually wait, the NameError would occur at the `except (mt_exc.ModbusError, ...)` line only if an exception is raised inside the try block first (since except clause exceptions are evaluated lazily... actually no, the tuple of exception types in `except` needs to be evaluated only when an exception occurs during the try block, to check if it matches).
+
+Actually in Python, the `except (A, B):` tuple expression is only evaluated when an exception is actually raised in the `try` block. If `master.execute(...)` succeeds without raising, the except clause is never evaluated, so no NameError occurs.
+
+So: if `master.execute` succeeds, `_axiom_write_register_wrapper` returns `_AxiomModbusResponse(error=False)`. If `master.execute` raises anything, then Python evaluates `(mt_exc.ModbusError, socket.error, socket.timeout)` to check exception matching, and since `mt_exc`, `socket` aren't defined in that scope, it raises `NameError`, which propagates (not caught, since NameError happens while evaluating the except's exception type tuple, itself raising within the exception handling machinery - this NameError propagates out of the function).
+
+I need to preserve this exact behavior - this is a real bug in the original that must be faithfully reproduced.
+
+This is tricky but I must keep it. Let me just keep the function essentially the same but restructure other things.
+
+Let me plan restructuring:
+- Move the adapter classes/functions into a new module, e.g. `_modbus_tk_adapter.py`, imported lazily inside `_default_client` or `_axiom_modbus_tcp_client_factory`. But the import deferral rule: "an import the original deferred inside a function must stay deferred" - here `modbus_tk` imports are deferred inside functions. If I extract these functions to a new module and import that new module at the top of transport.py, that would hoist the deferred import to the top-level, breaking behavior (transport.py becomes unimportable without modbus_tk installed, unlike before). So I must keep any modbus_tk-dependent code either in transport.py with deferred imports, or in a new module that is itself imported lazily (deferred import inside the function that needs it).
+
+That's allowed - "extract a cohesive helper into a NEW module and import it" - but the import of that new module must also be deferred if it drags in modbus_tk at import time. Since the new module itself would do `import modbus_tk...` at its top level, importing that new module eagerly would fail if modbus_tk isn't installed. So I need to import the new module lazily too, inside the factory function.
+
+Let's create `_modbus_tk_adapter.py` containing:
+- `AxiomModbusResponse` (renamed is fine as it's private with underscore prefix - the name `_AxiomModbusResponse` is private/internal, not part of the public surface strictly, but to be safe I should keep it accessible the same way maybe by keeping the same name accessible via transport module... Actually these are private (leading underscore) names in the module - are they part of "public surface"? The instructions say "public names" - since these start with underscore, they're not public. But let's be careful - equivalence checks might introspect module for these names too. Let's read again: "same public names, same signatures... same ATTRIBUTES". It says public names. Private underscore-prefixed helpers are implementation details. I'll feel reasonably safe moving/renaming underscore-prefixed helpers since they're not public API. But to minimize risk, I'll keep same names but move location, and keep them importable from transport.py too if easy (e.g. via re-export). Actually safest: keep all these private helper functions/classes defined directly in transport.py (not extracted), since extracting risks subtle changes to how NameError propagates etc. But the task wants structural difference...
+
+Let me reconsider - I can do lighter restructuring that satisfies "structurally different" without extracting the risky modbus_tk parts into new files where deferred-import semantics get tricky. For example:
+- Extract the scaling/clamping logic for `write_valve` into a small value object / helper function in a new module (pure Python, no exotic imports) - this is safe.
+- Restructure ModbusIO's read methods using a dispatch/table approach for scale factors.
+- Keep the modbus_tk adapter parts in transport.py itself but reorganize how they're written (e.g. combine into a class-based adapter approach) while preserving the NameError bug precisely.
+
+Let's aim for moderate restructuring:
+1. Create a new module `_scaling.py` with a `RegisterScale` NamedTuple or dataclass encapsulating scale conversions for read (divide) and write (clamp+scale) operations, used by ModbusIO. This is pure Python — safe, no import concerns.
+2. Reorganize the modbus response adapter classes/functions - keep them in transport.py but maybe restructure control flow slightly (e.g. use a helper `_execute_and_wrap` shared by read and write) but must preserve the NameError bug for write specifically. Let's check: if I create a shared helper, would that change behavior? Let's keep separate functions as before to avoid accidentally fixing the bug through code sharing. Actually let's keep them as they are, functionally, but maybe reorder code layout within transport.py (that still counts as restructuring even if modest). But we need "structurally different" - so let's also extract e.g. `_AxiomModbusResponse` into new module, and adapter factory into new module, all with deferred imports preserved.
+
+Let's design carefully:
+
+New module: `modbus_tk_adapter.py` (or `_modbus_tk_bridge.py`) containing:
+- `AxiomModbusResponse` class (module-level, not underscore since it's a new module; naming doesn't matter for public surface of transport.py since it's not exposed there as `transport.AxiomModbusResponse` unless we import it into transport namespace - but original module does define `_AxiomModbusResponse` as an attribute of `transport` module. If some test does `transport._AxiomModbusResponse(...)`, that would break if I remove it from transport's namespocket. But since it's a private name (underscored), likely not tested directly. However to be extra safe, I could keep the class defined in transport.py itself (importing from new module and aliasing), thus preserving `transport._AxiomModbusResponse` as still resolvable. Let's do that: define in new module, then in transport.py do `from ._modbus_response import AxiomModbusResponse as _AxiomModbusResponse`. But wait - the instructions say "an import the original deferred inside a function must stay deferred" - only applies to originally-deferred imports (modbus_tk ones). The `_AxiomModbusResponse` class doesn't import modbus_tk, so it's fine to import at module top-level into transport.py since it has no heavy dependency.
+
+Given the risk vs reward tradeoff, I think the safest approach: keep the risky/subtle bug-preserving functions (`_axiom_read_holding_registers_wrapper`, `_axiom_write_register_wrapper`, `_axiom_modbus_tcp_client_factory`) inside transport.py essentially unchanged (with same deferred imports), since these interact with modbus_tk's lazy import contract and the subtle NameError bug. Then do genuine restructuring on the rest: `_AxiomModbusResponse`, `_default_client`, and `ModbusIO`, and add a new module for scaling helpers.
+
+Let's also restructure `ModbusIO` methods using a table-driven approach for temperature/pressure reads (both do `_read1(address) / factor`), replace with a generic `_read_scaled(address, factor)` helper, and keep public methods `read_temperature`, `read_pressure` calling it with different factors held in a dict or the scaling module's NamedTuple.
+
+Now let's write it.
+
+For `write_valve`, extract clamp+scale into a helper function/class in new module: e.g. `PercentScaler` with `to_counts(percent)`. Keep exact behavior: `int(round(max(0.0, min(100.0, percent)) * 40.95))`.
+
+Let's create new module `scaling.py`:
+
+```python
+"""scaling -- numeric conversions between physical units and raw Modbus register counts."""
+
+from typing import NamedTuple
+
+
+class LinearScale(NamedTuple):
+    """A simple multiplicative unit conversion: raw register value -> physical unit."""
+
+    factor: float
+
+    def to_physical(self, raw: int) -> float:
+        return raw / self.factor
+
+
+class PercentToCounts(NamedTuple):
+    """Maps a 0-100% span onto a 0-4095 raw register span, clamping out-of-range input."""
+
+    counts_per_percent: float
+    low: float = 0.0
+    high: float = 100.0
+
+    def to_counts(self, percent: float) -> int:
+        clamped = max(self.low, min(self.high, percent))
+        return int(round(clamped * self.counts_per_percent))
+```
+
+Then in transport.py:
+
+```python
+from scaling import LinearScale, PercentToCounts
+
+_TEMPERATURE_SCALE = LinearScale(10.0)
+_PRESSURE_SCALE = LinearScale(100.0)
+_VALVE_SCALE = PercentToCounts(40.95)
+```
+
+Wait but new module name must not collide - since it's a new file for the answer, name it distinctly e.g. `modbus_scaling.py`. Let's finalize.
+
+Now, edge cases: original divides `self._read1(address) / 10.0`. Using `raw / factor` with factor=10.0 - same. Good, but need to check NamedTuple field order doesn't matter here just correctness.
+
+For percent clamp: original `max(0.0, min(100.0, percent))`. My `PercentToCounts.to_counts` does `max(self.low, min(self.high, percent))` with low=0.0, high=100.0 default - matches.
+
+Edge case: NaN handling. `min(100.0, nan)` - Python's min/max behavior with NaN is order-dependent quirky but must match exactly since original does exact same expression order: `max(0.0, min(100.0, percent))`. My rewrite preserves exact order of operations (min first with 100.0 fixed first arg, then max with 0.0 first arg) - identical to original. Good, matches bit-for-bit.
+
+Now let's also handle `_read1` and read methods with a dispatch approach using per-method scale, but keep signatures identical: `read_temperature(self, address: int = 0x0000) -> float`, `read_pressure(self, address: int = 0x0001) -> float`.
+
+Let's write ModbusIO:
+
+```python
+class ModbusIO:
+    _TEMPERATURE_SCALE = LinearScale(10.0)
+    _PRESSURE_SCALE = LinearScale(100.0)
+    _VALVE_SCALE = PercentToCounts(40.95)
+
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read1(self, address: str) -> int:
+        rr = self.client.read_holding_registers(address, 1, unit=self.unit)
+        if rr.isError():
+            raise IOError(f"Modbus read failed @ {address:#06x}")
+        return rr.registers[0]
+
+    def read_temperature(self, address: int = 0x0000) -> float:
+        return self._TEMPERATURE_SCALE.to_physical(self._read1(address))
+
+    def read_pressure(self, address: int = 0x0001) -> float:
+        return self._PRESSURE_SCALE.to_physical(self._read1(address))
+
+    def write_valve(self, percent: float, address: int = 0x0010) -> int:
+        counts = self._VALVE_SCALE.to_counts(percent)
+        wr = self.client.write_register(address, counts, unit=self.unit)
+        if wr.isError():
+            raise IOError(f"Modbus write failed @ {address:#06x}")
+        return counts
+```
+
+This changes structure without altering public attributes (`client`, `unit` stay assignable instance attributes). Class-level scale constants are fine, they're not part of documented public attrs but that's fine since original didn't have them either - adding class attributes doesn't break anything since it doesn't shadow instance attributes assignment.
+
+Now double check `_read1` address type hint says `str` in original (weird but keep exactly, since signature must match - "same signatures" - type hints count typically as part of signature? The instructions mention "same argument names, same defaults, same return types" for public methods; `_read1` is private (underscore prefix) so not fully "public" but let's keep it identical wording to be safe including the odd `address: str` hint bug - keep as is, no functional impact.
+
+Now, IOError message format uses `address:#06x` format - if address were a string this would fail formatting, but that matches original behavior (bug reproduction), keep as such.
+
+Now for `_default_client`, `_axiom_modbus_tcp_client_factory`, `_axiom_read_holding_registers_wrapper`, `_axiom_write_register_wrapper`, `_AxiomModbusResponse` - keep in transport.py mostly unchanged, maybe reorder slightly. Let's still do minor structural change: I could turn `_AxiomModbusResponse` into using the new scaling module? No, unrelated. Let's leave these mostly as-is (they already have deferred imports for modbus_tk within functions as required), but I want "structurally different" overall - already achieved via scaling module extraction and ModbusIO changes. That should satisfy requirements enough. I could also restructure `_axiom_modbus_tcp_client_factory` inner class into using a dispatch approach - but risk of altering deferred import semantics. I'll leave it essentially unchanged, just maybe reorganize comments/order.
+
+But wait - the task says rewrite should be "structurally different" overall, not just partially. Let's also do a modest reorganization: move `_AxiomModbusResponse` class to new module `modbus_scaling.py`? No, that's unrelated conceptually (response object isn't scaling). Better to make a second new module, e.g. `modbus_compat.py`, that hosts the pymodbus-compatibility adapter code (the two wrapper functions, the response class, and the factory function), imported lazily where needed since it contains deferred imports of `modbus_tk` inside functions - but the module itself, if it has NO top-level import of modbus_tk, can be safely imported eagerly at top of transport.py! Let's check: `_AxiomModbusResponse` - no imports needed. `_axiom_read_holding_registers_wrapper` - imports `socket`, `modbus_tk.defines`, `modbus_tk.exceptions` INSIDE the function - deferred. `_axiom_write_register_wrapper` - no imports at all (bug - relies on undefined names). `_axiom_modbus_tcp_client_factory` - imports `modbus_tk.modbus_tcp` INSIDE the function - deferred.
+
+So if I move all these functions into a new module `modbus_compat.py`, that new module's top level has NO imports of modbus_tk itself (since all such imports are inside the functions). So importing `modbus_compat` at the top of `transport.py` would NOT trigger any modbus_tk import at module load time - it's safe! The deferred imports remain deferred (inside the functions in the new module). This fully satisfies the "import deferred inside a function must stay deferred" rule, since it's still inside a function - just a different file's function now.
+
+Great, that's a legitimate extraction. Let's do that: create `modbus_compat.py` with the response class, the two wrapper functions, and the factory function, and `_default_client`. Then transport.py imports these names at top level via `from modbus_compat import ...`.
+
+This is a valid "extract a cohesive helper into a NEW module and import it" restructuring, and doesn't break deferred-import semantics since the modbus_tk imports remain inside functions (just relocated to another file). Importing `modbus_compat` itself at transport.py's top is fine since modbus_compat.py doesn't import modbus_tk at its own top level.
+
+Let's verify this precisely preserves the NameError bug: `_axiom_write_register_wrapper` refers to `mt_exc`, `cst`, `socket` which aren't imported anywhere in modbus_compat.py at all (module-level or function-level) - so it's a NameError exactly as before, same class of error (NameError: name 'cst' is not defined, referenced first alphabetically... actually order of evaluation of tuple `(mt_exc.ModbusError, socket.error, socket.timeout)` - Python evaluates left to right, so `mt_exc` is referenced first -> NameError on `mt_exc`). This exact behavior is preserved regardless of which module the function lives in, since it's about names not being in that function's enclosing/global scope. Good - identical.
+
+Now let's also confirm: does moving `_axiom_read_holding_registers_wrapper` to new module change anything about behavior? It imports `socket`, `modbus_tk.defines as cst`, `modbus_tk.exceptions as mt_exc` locally inside itself - same as before, unaffected by module location.
+
+Now the factory `_axiom_modbus_tcp_client_factory` imports `modbus_tk.modbus_tcp as modbus_tcp` locally - fine.
+
+Now `_default_client` calls `_axiom_modbus_tcp_client_factory(host, port=port)` then `client.connect()`. Move this too into modbus_compat.py, or keep in transport.py calling the imported factory. Original `_default_client` is a private module function in transport.py used by `ModbusIO.__init__`. Its name isn't "public" (underscore) but let's keep it defined in transport.py itself (not required to move), calling the imported factory function. That keeps `transport._default_client` still resolvable at same name doing same thing - just delegates. Good, either way works. Let's keep `_default_client` in transport.py for clarity, referencing the imported factory.
+
+Now let's also think about whether these private-name functions being moved to another module changes `transport.__dict__` - e.g. `transport._axiom_read_holding_registers_wrapper` would no longer exist as a distinct function in transport's namespace unless imported. Since these are private/internal (leading underscore, and also the module docstring calls them internal implementation), I think it's acceptable per the rules focus on "public names". But to minimize risk, I will import them into transport.py's namespace too (`from modbus_compat import _AxiomModbusResponse, _axiom_read_holding_registers_wrapper, _axiom_write_register_wrapper, _axiom_modbus_tcp_client_factory`), preserving attribute access as `transport._AxiomModbusResponse` etc. This way even if some test pokes at these private names via `transport.X`, they'd still resolve, bound to the same function objects (just defined elsewhere). That's maximally safe.
+
+Now let's write modbus_compat.py with these exact same names (keeping underscore prefixes, matching original names precisely), and then transport.py imports them by those exact names. That preserves full backward-compatible attribute access.
+
+Let's write the code.
+
+modbus_compat.py:
+
+```python
+"""modbus_compat -- compatibility shims that let ModbusIO run against a
+modbus-tk TcpMaster while presenting the pymodbus client/response contract
+ModbusIO was written against.
+
+Every import of the optional `modbus_tk` package is deferred to the
+function that actually needs it, so this module -- and anything that
+imports it -- can be loaded even when `modbus_tk` is not installed.
+"""
+
+
+class _AxiomModbusResponse:
+    """Lightweight stand-in for pymodbus's read/write response objects.
+    ... (same docstring)
+    """
+
+    def __init__(self, registers=None, error=False):
+        self.registers = list(registers) if registers is not None else []
+        self._error = error
+
+    def isError(self):
+        return self._error
+
+
+def _axiom_read_holding_registers_wrapper(master, unit, address, count):
+    """... same docstring ..."""
+    import socket
+
+    import modbus_tk.defines as cst
+    import modbus_tk.exceptions as mt_exc
+
+    try:
+        values = master.execute(unit, cst.READ_HOLDING_REGISTERS, address, count)
+    except (mt_exc.ModbusError, socket.error, socket.timeout):
+        return _AxiomModbusResponse(error=True)
+    return _AxiomModbusResponse(registers=values, error=False)
+
+
+def _axiom_write_register_wrapper(master, unit, address, value):
+    """... same docstring, same bug (mt_exc, socket, cst undefined) ..."""
+
+    try:
+        master.execute(unit, cst.WRITE_SINGLE_REGISTER, address, output_value=value)
+    except (mt_exc.ModbusError, socket.error, socket.timeout):
+        return _AxiomModbusResponse(error=True)
+    return _AxiomModbusResponse(error=False)
+
+
+def _axiom_modbus_tcp_client_factory(host: str, port: int = 502):
+    """... same docstring ..."""
+    import modbus_tk.modbus_tcp as modbus_tcp
+
+    class _AxiomModbusTcpClientAdapter:
+        def __init__(self, host, port):
+            self._master = modbus_tcp.TcpMaster(host, port)
+
+        def connect(self):
+            self._master.open()
+
+        def read_holding_registers(self, address, count, unit=1):
+            return _axiom_read_holding_registers_wrapper(
+                self._master, unit, address, count
+            )
+
+        def write_register(self, address, value, unit=1):
+            return _axiom_write_register_wrapper(self._master, unit, address, value)
+
+    return _AxiomModbusTcpClientAdapter(host, port)
+```
+
+Then transport.py:
+
+```python
+"""transport -- Modbus field I/O for the boiler supervisor. ..."""
+
+from modbus_compat import (
+    _AxiomModbusResponse,
+    _axiom_read_holding_registers_wrapper,
+    _axiom_write_register_wrapper,
+    _axiom_modbus_tcp_client_factory,
+)
+from modbus_scaling import LinearScale, PercentToCounts
+
+
+def _default_client(host: str, port: int = 502):
+    client = _axiom_modbus_tcp_client_factory(host, port=port)
+    client.connect()
+    return client
+
+
+class ModbusIO:
+    _TEMPERATURE_SCALE = LinearScale(10.0)
+    _PRESSURE_SCALE = LinearScale(100.0)
+    _VALVE_SCALE = PercentToCounts(40.95)
+
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read1(self, address: str) -> int:
+        rr = self.client.read_holding_registers(address, 1, unit=self.unit)
+        if rr.isError():
+            raise IOError(f"Modbus read failed @ {address:#06x}")
+        return rr.registers[0]
+
+    def read_temperature(self, address: int = 0x0000) -> float:
+        return self._TE

@@ -1,0 +1,37 @@
+{
+  "role": "MQTT client for publishing sensor telemetry to a broker",
+  "winner": "paho.mqtt.client",
+  "original": "paho.mqtt.client",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.2,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.829,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: New pylint finding after migration: not-callable:mqtt.Client is not callable; line 1: Calling this program's own API with the real library -- nothing injected -- fails in bridge.py: [publish_reading] AttributeError: module 'amqtt' has no attribute 'Client'. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.",
+  "confidence": "LOW",
+  "used_apis": [
+    "Client",
+    "connect",
+    "publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

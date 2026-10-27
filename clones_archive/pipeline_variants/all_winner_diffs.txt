@@ -1,0 +1,304 @@
+================================================================
+  pid_governor   89 -> 98 lines
+================================================================
+--- ../ics_corpus/pid_governor.py	2026-08-06 10:30:22.652864234 -0400
++++ pid_governor.py	2026-08-12 16:06:14.898397617 -0400
+@@ -44,14 +44,17 @@
+                   gains: PIDGains, load: float, dt: float) -> tuple:
+     """Advance controller + plant by one step. Returns (new_state, command)."""
+     error = setpoint - state.rpm
++    _t0 = state.integral + error * dt
+ 
+     # Integral term with symmetric anti-windup clamp.
+-    integral = clamp(state.integral + error * dt, -2500.0, 2500.0)
++    integral = clamp(_t0, -2500.0, 2500.0)
++    _spt_t1 = (error - state.prev_error)
+ 
+     # Derivative on the error signal.
+-    derivative = (error - state.prev_error) / dt
++    derivative = _spt_t1 / dt
++    _spt_t2 = gains.kp * error + gains.ki * integral
+ 
+-    command = gains.kp * error + gains.ki * integral + gains.kd * derivative
++    command = _spt_t2 + gains.kd * derivative
+     command = clamp(command, 0.0, 100.0)  # fuel valve is 0-100 %
+ 
+     # First-order engine: fuel raises RPM, friction + load remove it.
+@@ -70,7 +73,9 @@
+     dt = 0.05
+ 
+     samples = []
+-    for step in range(600):
++    _lv0 = 0
++    while _lv0 < 600:
++        step = _lv0
+         # A load is applied partway through, then partly removed later.
+         if step < 200:
+             load = 0.0
+@@ -79,11 +84,15 @@
+         else:
+             load = 300.0
+         state, command = governor_step(state, setpoint, gains, load, dt)
+-        samples.append((state.rpm, command))
++        _t2 = (state.rpm, command)
++        samples.append(_t2)
++        _lv0 += 1
+     return samples
+ 
+ 
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print(f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}")
++    _t3 = f"steps={len(out)}"
++    print(_t3)
++    _t4 = f"final rpm={out[-1][0]:.3f}  command={out[-1][1]:.3f}"
++    print(_t4)
+
+================================================================
+  pump_controller   96 -> 105 lines
+================================================================
+--- ../ics_corpus/pump_controller.py	2026-08-06 10:30:22.654522968 -0400
++++ pump_controller.py	2026-08-12 16:06:22.546843972 -0400
+@@ -48,9 +48,10 @@
+         if level <= cfg.low:
+             mode = "ON"
+             runtime = 0.0
+-
+-    # --- Plant update ---
+-    inflow = cfg.pump_rate if mode == "ON" else 0.0
++    if mode == "ON":
++        inflow = cfg.pump_rate
++    else:
++        inflow = 0.0
+     level = level + dt * (inflow - demand)
+     if level < 0.0:
+         level = 0.0
+@@ -63,8 +64,9 @@
+ 
+     if level > cfg.overflow:
+         level = cfg.overflow
++    _spt_r1 = PumpState(level, mode, runtime)
+ 
+-    return PumpState(level, mode, runtime)
++    return _spt_r1
+ 
+ 
+ def run_scenario() -> list:
+@@ -75,7 +77,9 @@
+     dt = 0.5
+ 
+     samples = []
+-    for step in range(400):
++    _lv0 = 0
++    while _lv0 < 400:
++        step = _lv0
+         # Demand rises and falls in phases; a heavy-draw phase stresses the pump.
+         phase = step % 200
+         if phase < 60:
+@@ -85,12 +89,17 @@
+         else:
+             demand = 2.0
+         state = pump_step(state, demand, cfg, dt)
+-        samples.append((state.level, state.mode))
++        _t0 = (state.level, state.mode)
++        samples.append(_t0)
++        _lv0 += 1
+     return samples
+ 
+ 
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print(f"final level={out[-1][0]:.3f}  mode={out[-1][1]}")
+-    print("modes seen:", sorted({m for _, m in out}))
++    _t1 = f"steps={len(out)}"
++    print(_t1)
++    _t2 = f"final level={out[-1][0]:.3f}  mode={out[-1][1]}"
++    print(_t2)
++    _t3 = sorted({m for _, m in out})
++    print("modes seen:", _t3)
+
+================================================================
+  protective_relay   134 -> 144 lines
+================================================================
+--- ../ics_corpus/protective_relay.py	2026-08-06 10:30:22.657845561 -0400
++++ protective_relay.py	2026-08-12 16:06:33.079896835 -0400
+@@ -53,19 +53,19 @@
+         trip = False
+ 
+         # Instantaneous overcurrent.
+-        if current >= cfg.inst_current:
+-            trip = True
+-        else:
++        if current < cfg.inst_current:
+             # Inverse-time accumulation with decay when below pickup.
+-            if current > cfg.pickup_current:
+-                ratio = current / cfg.pickup_current
+-                accum += dt * ratio * ratio
+-            else:
+-                accum -= dt * 0.5
++            if current <= cfg.pickup_current:
++                accum = accum - dt * 0.5
+                 if accum < 0.0:
+                     accum = 0.0
++            else:
++                ratio = current / cfg.pickup_current
++                accum = accum + dt * ratio * ratio
+             if accum >= cfg.trip_energy:
+                 trip = True
++        else:
++            trip = True
+ 
+         # Voltage / frequency protection.
+         if voltage >= cfg.nominal_voltage * (1.0 + cfg.ov_pct):
+@@ -79,23 +79,24 @@
+             accum = 0.0
+ 
+     elif mode == "TRIPPED":
+-        timer += dt
++        timer = timer + dt
+         if timer >= cfg.reclose_delay:
+-            if reclose_count < cfg.max_reclose:
++            if reclose_count >= cfg.max_reclose:
++                mode = "LOCKOUT"
++            else:
+                 mode = "RECLOSING"
+                 timer = 0.0
+-            else:
+-                mode = "LOCKOUT"
+ 
+     elif mode == "RECLOSING":
+-        reclose_count += 1
++        reclose_count = reclose_count + 1
+         accum = 0.0
+         mode = "CLOSED"   # re-energize; a persistent fault will re-trip next step
+ 
+     elif mode == "LOCKOUT":
+         pass  # latched until a manual reset (not modeled)
++    _spt_r1 = RelayState(mode, accum, timer, reclose_count)
+ 
+-    return RelayState(mode, accum, timer, reclose_count)
++    return _spt_r1
+ 
+ 
+ def run_scenario() -> list:
+@@ -111,24 +112,33 @@
+     dt = 0.05
+ 
+     samples = []
+-    for step in range(400):
++    _lv0 = 0
++    while _lv0 < 400:
++        step = _lv0
+         t = step * dt
+         voltage = 230.0
+         frequency = 50.0
+         # Temporary overload 2.0-3.0 s (clears on its own), permanent from 10 s.
+         if 2.0 <= t < 3.0:
+             current = 260.0
+-        elif t >= 10.0:
+-            current = 300.0
+-        else:
++        elif t < 10.0:
+             current = 60.0
++        else:
++            current = 300.0
+         state = relay_step(state, current, voltage, frequency, cfg, dt)
+-        samples.append((state.mode, round(state.accum, 4), state.reclose_count))
++        _t0 = (state.mode, round(state.accum, 4), state.reclose_count)
++        samples.append(_t0)
++        _lv0 = _lv0 + 1
+     return samples
+ 
+ 
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print("final mode:", out[-1][0], " reclose_count:", out[-1][2])
+-    print("modes seen:", sorted({m for m, _, _ in out}))
++    _t1 = f"steps={len(out)}"
++    print(_t1)
++    _t2 = out[-1][0]
++    _t3 = out[-1][2]
++    print("final mode:", _t2, " reclose_count:", _t3)
++    _t5 = {m for m, _, _ in out}
++    _t4 = sorted(_t5)
++    print("modes seen:", _t4)
+
+================================================================
+  sensor_pipeline   114 -> 126 lines
+================================================================
+--- ../ics_corpus/sensor_pipeline.py	2026-08-06 10:30:22.660703325 -0400
++++ sensor_pipeline.py	2026-08-12 16:06:38.120583413 -0400
+@@ -49,8 +49,9 @@
+ 
+ def process(sample: float, state: SensorState, cfg: SensorConfig) -> tuple:
+     """Run one raw sample through the pipeline. Returns (new_state, avg, status)."""
++    _spt_t1 = sample * cfg.gain
+     # Stage 1: calibration.
+-    calibrated = sample * cfg.gain + cfg.offset
++    calibrated = _spt_t1 + cfg.offset
+ 
+     # Stage 2: clamp into the instrument's measurable range.
+     calibrated = clamp(calibrated, cfg.range_lo, cfg.range_hi)
+@@ -64,7 +65,8 @@
+     # Stage 4: moving-average filter over a ring buffer.
+     buf = list(state.buf)
+     buf[state.idx] = reported
+-    idx = (state.idx + 1) % cfg.window
++    _spt_t2 = (state.idx + 1)
++    idx = _spt_t2 % cfg.window
+     avg = sum(buf) / cfg.window
+ 
+     # Stage 5: threshold classification.
+@@ -82,7 +84,8 @@
+     """Tiny deterministic PRNG so raw samples are reproducible everywhere."""
+     state = seed & 0xFFFFFFFF
+     while True:
+-        state = (1664525 * state + 1013904223) & 0xFFFFFFFF
++        _spt_t3 = (1664525 * state + 1013904223)
++        state = _spt_t3 & 0xFFFFFFFF
+         yield state / 0xFFFFFFFF
+ 
+ 
+@@ -93,22 +96,31 @@
+         deadband=0.8, window=8,
+         warn_lo=20.0, warn_hi=180.0, alarm_lo=5.0, alarm_hi=230.0,
+     )
+-    state = SensorState(reported=0.0, buf=[0.0] * cfg.window, idx=0)
++    _t1 = [0.0] * cfg.window
++    state = SensorState(reported=0.0, buf=_t1, idx=0)
+     rng = _lcg(seed=20260727)
+ 
+     samples = []
+-    for step in range(500):
++    _lv0 = 0
++    while _lv0 < 500:
++        step = _lv0
+         # Slow ramp up then down, with bounded pseudo-random noise on top.
+         base = 30.0 + 70.0 * (1.0 - abs((step % 400) - 200) / 200.0)
+-        noise = (next(rng) - 0.5) * 6.0
++        _spt_t4 = (next(rng) - 0.5)
++        noise = _spt_t4 * 6.0
+         raw = base + noise
+         state, avg, status = process(raw, state, cfg)
+-        samples.append((round(avg, 4), status))
++        _t2 = (round(avg, 4), status)
++        samples.append(_t2)
++        _lv0 += 1
+     return samples
+ 
+ 
+ if __name__ == "__main__":
+     out = run_scenario()
+-    print(f"steps={len(out)}")
+-    print("final:", out[-1])
+-    print("statuses seen:", sorted({s for _, s in out}))
++    _t3 = f"steps={len(out)}"
++    print(_t3)
++    _t4 = out[-1]
++    print("final:", _t4)
++    _t5 = sorted({s for _, s in out})
++    print("statuses seen:", _t5)
+

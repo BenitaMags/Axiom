@@ -1,0 +1,37 @@
+{
+  "role": "PID controller implementation",
+  "winner": "simple_pid",
+  "original": "simple_pid",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.82,
+    "security_evidence": true,
+    "maintenance": 0.4,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.748,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'simple_pid' wins 'PID controller implementation'. Confidence: LOW. Total: 0.748 (speed=None, mem=None, sec=0.82, api=1.0). Migration note: API differences in how output_limits/anti-windup are configured (constructor arg vs setter method)",
+  "confidence": "LOW",
+  "used_apis": [
+    "PID(kp, ki, kd, setpoint=setpoint, output_limits=(0.0, 100.0))",
+    "pid.setpoint",
+    "pid(level)"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

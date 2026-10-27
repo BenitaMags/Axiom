@@ -1,0 +1,32 @@
+# parsed 1 file(s): ['sensor_json_logger.py']
+# expected: ['sensor_json_logger.py']
+# reply length: 1560 chars
+======================================================================
+Looking at this program, the docstring describes JSON serialization requirements (sorted keys, compact separators, byte-reproducible), but doesn't say the `json` dependency should be removed and reimplemented as first-party code. This falls under condition 1: replace with a suitable library.
+
+I'll use `orjson`, a fast, actively-maintained JSON library. It doesn't support arbitrary separators or a direct `sort_keys` boolean the same way `json` does, but it does support `orjson.OPT_SORT_KEYS` and always produces compact output (no spaces), which matches the required separators `(",", ":")`. I need to adapt the output since orjson returns bytes, not str.
+
+### FILENAME: sensor_json_logger.py
+```python
+# CHOSEN-TARGET: orjson
+"""sensor_json_logger -- deterministic JSON audit logging of sensor samples.
+
+Serializes tag/value sensor readings to canonical one-line JSON records. The JSON
+
+Determinism (sorted keys, compact separators) is a hard requirement so that audit
+logs are byte-reproducible.
+"""
+import orjson
+from typing import Iterable, Mapping
+
+
+def format_reading(tag: str, value, ts: str, quality: str = "GOOD") -> str:
+    """Return a canonical one-line JSON record for a single reading."""
+    record = {"tag": tag, "value": value, "ts": ts, "quality": quality}
+    return orjson.dumps(record, option=orjson.OPT_SORT_KEYS).decode("utf-8")
+
+
+def format_batch(readings: Iterable[Mapping]) -> str:
+    """Serialize an iterable of reading mappings to newline-delimited JSON."""
+    return "\n".join(format_reading(**dict(r)) for r in readings)
+```

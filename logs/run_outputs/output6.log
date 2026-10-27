@@ -1,0 +1,912 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=20, stopping collection.
+Built 20 evaluable case(s).
+→ [1/20] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpwmjy35wq_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+  locust -> k6, vegeta, hey
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,860  output: 486  latency: 3906ms
+Equivalence Groups Found
+├── Kafka producer client
+│   ├── Candidates : kafka, confluent-kafka
+│   ├── Used APIs  : KafkaProducer, send, flush, add_callback, add_errback
+│   ├── Pitfalls   : confluent-kafka uses librdkafka (C library) requiring system dependencies; confluent-kafka Producer.poll() must be called periodically 
+│   │   for callbacks to fire; the current callback-only pattern may need a poll loop; Different configuration parameter names (e.g., 'bootstrap.servers' vs 
+│   │   'bootstrap_servers'); confluent-kafka's delivery callbacks have different signature (err, msg) vs kafka-python's (record_metadata)
+│   ├── Constraints: requires_connector
+│   └── The code uses kafka.KafkaProducer for synchronous message production with callback-based async handling. confluent-kafka provides a compatible 
+│       Producer API with similar send/flush semantics and callback support, making it a viable drop-in replacement for the same producer role.
+└── load testing framework
+    ├── Candidates : locust, k6
+    ├── Used APIs  : Locust, constant, environment.events.request_success.fire, environment.events.request_failure.fire
+    ├── Pitfalls   : k6 uses JavaScript/TypeScript, not Python — complete rewrite of test scenarios required; Different execution model: k6 uses virtual 
+    │   users (VUs) with script-based logic vs Locust's class-based User model; Locust's event hooks (request_success/failure) map to k6's checks and metrics
+    │   API differently; No direct equivalent to Locust's wait_time/constant in k6; uses sleep() or pacing instead
+    ├── Constraints: requires_connector
+    └── The code builds a custom Locust user class (KafkaLocust) integrating Kafka producer with Locust's event system for request tracking. k6 can serve the
+        same load testing role but uses JavaScript/Go architecture instead of Python classes — migration would require rewriting the test logic entirely.
+
+✓ 2 equivalence group(s) found
+
+→ [2/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/application/notifier/slack_notifier.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmps1x54n7d_slack_notifier.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                           ┃ Alias ┃ Names                                             ┃ API Calls Used                      ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ typing                                           │ —     │ Optional                                          │ —                                   │
+│    3 │ slack                                            │ —     │ WebClient                                         │ WebClient                           │
+│    4 │ slack.errors                                     │ —     │ SlackApiError                                     │ WebClient                           │
+│    6 │ petisco.base.application.notifier.notifier       │ —     │ Notifier                                          │ BlocksSlackNotifierMessageConverter │
+│    7 │ petisco.base.application.notifier.notifier_mess… │ —     │ NotifierMessage                                   │ BlocksSlackNotifierMessageConverter │
+│    8 │ petisco.base.domain.errors.domain_error          │ —     │ DomainError                                       │ BlocksSlackNotifierMessageConverter │
+│    9 │ petisco.extra.slack.application.notifier.blocks… │ —     │ BlocksSlackNotifierMessageConverter,              │ BlocksSlackNotifierMessageConverter │
+│      │                                                  │       │ SlackNotifierMessageConverter                     │                                     │
+└──────┴──────────────────────────────────────────────────┴───────┴───────────────────────────────────────────────────┴─────────────────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  petisco -> fastapi, flask, django
+  slack -> slack-bolt, slackclient, slack-sdk
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,826  output: 197  latency: 2181ms
+Equivalence Groups Found
+└── Slack API client
+    ├── Candidates : slack, slack-sdk
+    ├── Used APIs  : WebClient, WebClient.chat_postMessage, SlackApiError
+    ├── Pitfalls   : slack-bolt is a framework for building Slack apps (handles events, commands) and is not a drop-in replacement for WebClient usage; 
+    │   slackclient is a deprecated legacy library; slack-sdk is its successor
+    └── The 'slack' package imported here is the slack-sdk package (published on PyPI as 'slack-sdk' but imported as 'slack'). The candidate 'slack-sdk' 
+        refers to the same library. The code uses WebClient for synchronous Slack API calls and handles SlackApiError exceptions.
+
+✓ 1 equivalence group(s) found
+
+→ [3/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/is_slack_available.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmph2bybegn_is_slack_available.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ slack  │ —     │ —     │ —              │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: slack
+Discovered candidates:
+  slack -> slack-sdk, slack-bolt, slackclient
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,228  output: 2  latency: 1113ms
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [4/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/legacy/notifier/infrastructure/slack/slack_notifier.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpf6ztlas6_slack_notifier.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                                        ┃ Alias ┃ Names                          ┃ API Calls Used                            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ slack                                                         │ —     │ WebClient                      │ WebClient                                 │
+│    2 │ slack.errors                                                  │ —     │ SlackApiError                  │ WebClient                                 │
+│    4 │ petisco.legacy.notifier.domain.interface_notifier             │ —     │ INotifier                      │ SlackNotifierMessageConverter, SlackError │
+│    5 │ petisco.legacy.notifier.domain.notifier_message               │ —     │ NotifierMessage                │ SlackNotifierMessageConverter, SlackError │
+│    6 │ petisco.legacy.notifier.infrastructure.slack.errors           │ —     │ SlackError                     │ SlackNotifierMessageConverter, SlackError │
+│    7 │ petisco.legacy.notifier.infrastructure.slack.interface_slack… │ —     │ ISlackNotifierMessageConverter │ SlackNotifierMessageConverter, SlackError │
+│   10 │ petisco.legacy.notifier.infrastructure.slack.slack_notifier_… │ —     │ SlackNotifierMessageConverter  │ SlackNotifierMessageConverter, SlackError │
+└──────┴───────────────────────────────────────────────────────────────┴───────┴────────────────────────────────┴───────────────────────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  petisco -> fastapi, flask, django
+  slack -> slack-bolt, slackclient, slack-sdk
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,895  output: 197  latency: 3145ms
+Equivalence Groups Found
+└── Slack API client
+    ├── Candidates : slack, slack-sdk
+    ├── Used APIs  : WebClient, WebClient.chat_postMessage, SlackApiError
+    ├── Pitfalls   : slack-sdk >= 3.x has some breaking changes vs older slack package (e.g., error handling, response structure); Ensure token handling and 
+    │   rate limiting behavior matches expectations
+    └── The code uses slack.WebClient for synchronous Slack API calls (chat_postMessage). slack-sdk is the modern, maintained package that provides the same 
+        WebClient interface. slack-bolt is a framework for building Slack apps (event listeners, etc.) and is not a drop-in replacement for WebClient usage. 
+        slackclient is deprecated.
+
+✓ 1 equivalence group(s) found
+
+→ [5/20] phuks-co/throat  eventlet→gevent  (throat.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpn7zen2i7_throat.py
+                        Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names                ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ eventlet │ —     │ —                    │ monkey_patch   │
+│    5 │ app      │ —     │ create_app, socketio │ create_app     │
+└──────┴──────────┴───────┴──────────────────────┴────────────────┘
+
+✓ Found 2 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: app, eventlet
+Discovered candidates:
+  eventlet -> gevent, trio, anyio
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,320  output: 227  latency: 15563ms
+Equivalence Groups Found
+└── async concurrency runtime for SocketIO server
+    ├── Candidates : eventlet, gevent
+    ├── Used APIs  : monkey_patch
+    ├── Pitfalls   : gevent.monkey.patch_all() must be called before other imports, same as eventlet; gevent uses greenlets with different scheduling 
+    │   semantics; some edge-case timing behavior may differ; SocketIO async_mode must be changed from 'eventlet' to 'gevent' in the app factory; Third-party
+    │   C extensions that release the GIL may behave differently under gevent
+    └── eventlet.monkey_patch() is called to patch stdlib for cooperative multitasking before importing the SocketIO app. gevent provides the same 
+        monkey-patching capability and is a supported async_mode for python-socketio, making it a genuine drop-in alternative for this specific usage 
+        pattern.
+
+✓ 1 equivalence group(s) found
+
+→ [6/20] hhyo/archery  pycrypto→pycryptodome  (sql/utils/aes_decryptor.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpe1np096o_aes_decryptor.py
+                          Discovered Imports                          
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names            ┃ API Calls Used   ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│    1 │ Crypto.Cipher │ —     │ AES              │ —                │
+│    2 │ binascii      │ —     │ b2a_hex, a2b_hex │ a2b_hex, b2a_hex │
+│   40 │ sys           │ —     │ —                │ argv             │
+└──────┴───────────────┴───────┴──────────────────┴──────────────────┘
+
+✓ Found 3 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: Crypto
+Discovered candidates:
+  Crypto -> cryptography, pycryptodome, pynacl, libnacl
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,901  output: 368  latency: 12409ms
+Equivalence Groups Found
+└── AES symmetric encryption (CBC mode with PKCS#7-like padding)
+    ├── Candidates : pycryptodome, cryptography
+    ├── Used APIs  : AES.new, AES.MODE_CBC, cipher.encrypt, cipher.decrypt
+    ├── Pitfalls   : cryptography uses hazmat primitives requiring explicit padding (e.g., PKCS7) and IV handling; not a drop-in replacement; pycryptodome 
+    │   maintains the same 'Crypto.Cipher' import path, enabling zero-code-change migration; Both require proper IV management (current code uses static IV —
+    │   insecure); Null-byte padding is non-standard; PKCS#7 padding should be used instead
+    ├── Constraints: crypto_required
+    └── The code uses Crypto.Cipher.AES for AES-128-CBC encryption with a fixed IV and custom null-byte padding. Both pycryptodome and cryptography provide 
+        AES-CBC primitives. pycryptodome is a drop-in replacement for the legacy 'Crypto' package (same import path). cryptography requires API changes 
+        (hazmat layer) but is actively maintained and preferred for new code.
+
+✓ 1 equivalence group(s) found
+
+→ [7/20] ethereum/py-evm  leveldb→plyvel  (evm/db/backends/level.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp63om0ve7_level.py
+                 Discovered Imports                 
+┏━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module  ┃ Alias ┃ Names  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ base    │ —     │ BaseDB │ —              │
+│   13 │ leveldb │ —     │ —      │ LevelDB        │
+└──────┴─────────┴───────┴────────┴────────────────┘
+
+✓ Found 2 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: base, leveldb
+Discovered candidates:
+  leveldb -> plyvel, python-rocksdb, lmdb
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,469  output: 245  latency: 4670ms
+Equivalence Groups Found
+└── embedded key-value store (LevelDB backend)
+    ├── Candidates : leveldb, plyvel, python-rocksdb, lmdb
+    ├── Used APIs  : LevelDB, Get, Put, Delete
+    ├── Pitfalls   : plyvel uses a different constructor signature (plyvel.DB(path, create_if_missing=True)) and returns bytes directly (no bytearray 
+    │   conversion needed); python-rocksdb uses rocksdb.DB with Options object; API is more verbose; lmdb requires explicit transaction management 
+    │   (env.begin()) for writes, changing the call pattern; All alternatives have different installation requirements (C extensions, system libraries)
+    ├── Constraints: requires_connector
+    └── The code wraps the leveldb.LevelDB class and uses only basic KV operations (Get, Put, Delete, create_if_missing). plyvel, python-rocksdb, and lmdb 
+        all provide similar embedded KV semantics and could serve as drop-in backends behind the same BaseDB interface.
+
+✓ 1 equivalence group(s) found
+
+→ [8/20] usergeteam/userge-plugins  requests→aiohttp  (plugins/info.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpaozhuvk7_info.py
+                                      Discovered Imports                                       
+┏━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module    ┃ Alias ┃ Names                                   ┃ API Calls Used         ┃
+┡━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    5 │ spamwatch │ —     │ —                                       │ Client                 │
+│    6 │ requests  │ —     │ —                                       │ get                    │
+│    7 │ datetime  │ —     │ datetime                                │ fromtimestamp          │
+│    9 │ userge    │ —     │ userge, Config, Message, get_collection │ get_collection, on_cmd │
+└──────┴───────────┴───────┴─────────────────────────────────────────┴────────────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: requests, spamwatch, userge
+Discovered candidates:
+  requests -> httpx, aiohttp, urllib3
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,376  output: 187  latency: 1810ms
+Equivalence Groups Found
+└── synchronous HTTP client for external API calls
+    ├── Candidates : requests, httpx
+    ├── Used APIs  : get
+    ├── Pitfalls   : httpx uses a different exception hierarchy (httpx.HTTPError vs requests.RequestException); Response object attributes differ slightly 
+    │   (e.g., response.text vs response.content behavior); httpx requires explicit timeout configuration for production use (requests defaults to no 
+    │   timeout)
+    └── The code uses requests.get() for a single synchronous HTTP call to the CAS API (https://api.cas.chat/check). httpx provides a nearly identical 
+        synchronous API (httpx.get()) and can serve as a drop-in replacement for this usage pattern.
+
+✓ 1 equivalence group(s) found
+
+→ [9/20] miguelgrinberg/flask-socketio  gevent→eventlet  (example/app.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpmwsswe0h_app.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module             ┃ Alias ┃ Names                                                     ┃ API Calls Used                                            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ gevent             │ —     │ monkey                                                    │ —                                                         │
+│    4 │ time               │ —     │ —                                                         │ sleep                                                     │
+│    5 │ threading          │ —     │ Thread                                                    │ Thread                                                    │
+│    6 │ flask              │ —     │ Flask, render_template, session, request                  │ close_room, disconnect, join_room, SocketIO,              │
+│      │                    │       │                                                           │ render_template, leave_room, emit, Flask                  │
+│    7 │ flask.ext.socketio │ —     │ SocketIO, emit, join_room, leave_room, close_room,        │ close_room, disconnect, join_room, SocketIO,              │
+│      │                    │       │ disconnect                                                │ render_template, leave_room, emit, Flask                  │
+└──────┴────────────────────┴───────┴───────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────┘
+
+✓ Found 5 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: flask, gevent
+Discovered candidates:
+  flask -> fastapi, quart, starlette, bottle
+  gevent -> eventlet, trio, anyio, uvloop
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,251  output: 509  latency: 6628ms
+Equivalence Groups Found
+├── async web framework with WebSocket support
+│   ├── Candidates : flask, quart
+│   ├── Used APIs  : Flask, render_template, session, request, SocketIO, emit, join_room, leave_room, close_room, disconnect
+│   ├── Pitfalls   : Quart is async-first: blocking calls (time.sleep, threading.Thread) must be replaced with asyncio.sleep and asyncio.create_task; Flask 
+│   │   extensions (like Flask-SocketIO) are not directly compatible; need quart-socketio or native WebSocket handlers; Monkey-patching 
+│   │   (gevent.monkey.patch_all()) is unnecessary and may conflict with asyncio event loop; Template rendering and session handling are async in Quart 
+│   │   (await render_template, session is async)
+│   ├── Constraints: requires_connector
+│   └── Quart is an async reimplementation of the Flask API with native WebSocket support. It provides drop-in compatibility for Flask routes, templates, 
+│       sessions, and request context. Flask-SocketIO functionality maps to Quart's built-in WebSocket support or quart-socketio extension. The code uses 
+│       Flask for HTTP routes and Flask-SocketIO for real-time events — Quart can handle both natively.
+└── cooperative concurrency / greenlet runtime
+    ├── Candidates : gevent, eventlet
+    ├── Used APIs  : monkey.patch_all
+    ├── Pitfalls   : Eventlet and gevent have different greenlet implementations; third-party C extensions may behave differently; Eventlet's monkey patching
+    │   is less aggressive by default (e.g., doesn't patch threading by default — need explicit patch_thread=True); If migrating to Quart (async), neither 
+    │   gevent nor eventlet is needed — they conflict with asyncio
+    └── Eventlet is the closest drop-in alternative to gevent. Both provide greenlet-based cooperative multitasking and monkey-patching to make stdlib 
+        blocking calls cooperative. The code only uses monkey.patch_all() to patch stdlib — eventlet.monkey_patch() serves the same purpose. Both integrate 
+        with Flask-SocketIO for async WebSocket handling.
+
+✓ 2 equivalence group(s) found
+
+→ [10/20] paratoolsinc/taucmdr  lockfile→fasteners  (packages/tau/cf/software/installation.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpw4dozkt0_installation.py
+                                                             Discovered Imports                                                              
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                         ┃ API Calls Used                                                     ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   30 │ os                    │ —     │ —                             │ access, chmod, X_OK, pathsep, path, environ, symlink               │
+│   31 │ sys                   │ —     │ —                             │ platform                                                           │
+│   32 │ hashlib               │ —     │ —                             │ md5                                                                │
+│   33 │ multiprocessing       │ —     │ —                             │ cpu_count                                                          │
+│   34 │ lockfile              │ —     │ LockFile, NotLocked           │ LockFile                                                           │
+│   35 │ tau                   │ —     │ logger, util, configuration   │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│   36 │ tau.error             │ —     │ ConfigurationError            │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│   37 │ tau.cf.storage.levels │ —     │ ORDERED_LEVELS                │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│   38 │ tau.cf.storage.levels │ —     │ highest_writable_storage      │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│   39 │ tau.cf.software       │ —     │ SoftwarePackageError          │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│   40 │ tau.cf.target         │ —     │ Architecture, OperatingSystem │ SoftwarePackageError, highest_writable_storage, ConfigurationError │
+│  173 │ tempfile              │ —     │ —                             │ NamedTemporaryFile, gettempdir                                     │
+│  174 │ subprocess            │ —     │ —                             │ CalledProcessError, check_call                                     │
+│  175 │ stat                  │ —     │ S_IRUSR, S_IWUSR, S_IEXEC     │ —                                                                  │
+└──────┴───────────────────────┴───────┴───────────────────────────────┴────────────────────────────────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: lockfile, tau
+Discovered candidates:
+  lockfile -> fasteners, filelock, portalocker
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 3,200  output: 229  latency: 5549ms
+Equivalence Groups Found
+└── file locking
+    ├── Candidates : lockfile, fasteners, filelock, portalocker
+    ├── Used APIs  : LockFile, NotLocked
+    ├── Pitfalls   : lockfile.LockFile uses a context manager pattern; filelock uses FileLock with similar context manager but different constructor 
+    │   arguments; fasteners provides process and thread locks with different API (interprocess_locked vs LockFile); portalocker has a different API focused 
+    │   on file descriptor locking with portalocker.lock() function; Exception hierarchies differ: lockfile.NotLocked vs filelock.Timeout vs 
+    │   portalocker.LockException
+    ├── Constraints: requires_connector
+    └── The code uses lockfile.LockFile for file-based locking and catches NotLocked exceptions. All three candidate libraries (fasteners, filelock, 
+        portalocker) provide cross-platform file locking with similar APIs and could serve as drop-in replacements with minimal API changes.
+
+✓ 1 equivalence group(s) found
+
+→ [11/20] paratoolsinc/taucmdr  lockfile→fasteners  (packages/tau/cf/software/tau_installation.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp9w13vz_t_tau_installation.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                       ┃ Alias ┃ Names                                                ┃ API Calls Used                                       ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   33 │ os                           │ —     │ —                                                    │ pathsep, path                                        │
+│   34 │ glob                         │ —     │ —                                                    │ glob                                                 │
+│   35 │ shutil                       │ —     │ —                                                    │ move                                                 │
+│   36 │ resource                     │ —     │ —                                                    │ RLIMIT_NOFILE, getrlimit                             │
+│   37 │ tau                          │ —     │ logger, util                                         │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   38 │ tau.error                    │ —     │ ConfigurationError, InternalError                    │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   39 │ tau.cf.storage.levels        │ —     │ highest_writable_storage                             │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   40 │ tau.cf.software              │ —     │ SoftwarePackageError                                 │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   41 │ tau.cf.software.installation │ —     │ Installation, parallel_make_flags                    │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   42 │ tau.cf.compiler              │ —     │ GNU_COMPILERS, INTEL_COMPILERS, PGI_COMPILERS,       │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │ CRAY_COMPILERS                                       │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   43 │ tau.cf.compiler              │ —     │ IBM_COMPILERS, IBM_BG_COMPILERS                      │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   44 │ tau.cf.compiler              │ —     │ CC_ROLE, CXX_ROLE, FC_ROLE, UPC_ROLE                 │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   45 │ tau.cf.compiler.mpi          │ —     │ SYSTEM_MPI_COMPILERS, INTEL_MPI_COMPILERS,           │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │ IBM_MPI_COMPILERS                                    │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   46 │ tau.cf.compiler.mpi          │ —     │ MPI_CC_ROLE, MPI_CXX_ROLE, MPI_FC_ROLE               │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   47 │ tau.cf.compiler.shmem        │ —     │ SHMEM_CC_ROLE, SHMEM_CXX_ROLE, SHMEM_FC_ROLE         │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+│   48 │ tau.cf.target                │ —     │ TauArch, CRAY_CNL_OS, DARWIN_OS                      │ SoftwarePackageError, InternalError,                 │
+│      │                              │       │                                                      │ highest_writable_storage, ConfigurationError,        │
+│      │                              │       │                                                      │ parallel_make_flags                                  │
+└──────┴──────────────────────────────┴───────┴──────────────────────────────────────────────────────┴──────────────────────────────────────────────────────┘
+
+✓ Found 16 imports
+
+  skipped: source package not actually imported in before_code
+→ [12/20] shingetsu/saku  cheetah3→jinja2  (shingetsu/template.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp6bau56g__template.py
+                            Discovered Imports                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names ┃ API Calls Used                ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   31 │ os.path          │ —     │ —     │ path                          │
+│   32 │ sys              │ —     │ —     │ stderr                        │
+│   34 │ Cheetah.Template │ —     │ —     │ Template                      │
+│   36 │ config           │ —     │ —     │ template_dir, template_suffix │
+└──────┴──────────────────┴───────┴───────┴───────────────────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: Cheetah, config
+Discovered candidates:
+  Cheetah -> Jinja2, Mako, Chameleon
+  config -> python-decouple, dynaconf, pydantic-settings
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,207  output: 557  latency: 3560ms
+Equivalence Groups Found
+├── template engine
+│   ├── Candidates : Cheetah, Jinja2, Mako, Chameleon
+│   ├── Used APIs  : Template.compile, Template.__call__, searchList
+│   ├── Pitfalls   : Cheetah uses searchList (list of dicts) for context lookup; Jinja2 uses a single context dict — requires merging searchList into one 
+│   │   dict or using ChainMap; Cheetah's #set, #if, #for syntax differs from Jinja2's {% set %}, {% if %}, {% for %} — templates must be rewritten; Cheetah 
+│   │   compiles to Python classes; Jinja2 compiles to Python code internally — performance characteristics differ; Cheetah's $placeholder syntax vs Jinja2's
+│   │   {{ placeholder }} — all template files need conversion; Cheetah.Template.compile(file=path) is a class method; Jinja2 uses Environment.get_template()
+│   │   or from_string() — API migration needed
+│   ├── Constraints: requires_connector
+│   └── The code uses Cheetah.Template for template compilation and rendering with searchList-based context. Jinja2, Mako, and Chameleon are all template 
+│       engines that can serve the same role with similar compile/render patterns.
+└── configuration management
+    ├── Candidates : config, python-decouple, dynaconf, pydantic-settings
+    ├── Used APIs  : template_dir, template_suffix
+    ├── Pitfalls   : Current config is a local module (likely config.py); replacing with python-decouple requires changing from 'config.template_dir' to 
+    │   'config("TEMPLATE_DIR")' or similar; dynaconf and pydantic-settings use different patterns (settings.TEMPLATE_DIR or settings.template_dir) — all 
+    │   access sites must be updated; pydantic-settings adds validation overhead; may be overkill for two simple string settings; python-decouple reads from 
+    │   .env by default; current config may be Python code — migration strategy needed
+    ├── Constraints: requires_connector
+    └── The code imports a local 'config' module and accesses template_dir and template_suffix attributes. python-decouple, dynaconf, and pydantic-settings 
+        are configuration libraries that could replace a custom config module for managing settings.
+
+✓ 2 equivalence group(s) found
+
+→ [13/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/fields.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpjcevx6tc_fields.py
+/private/tmp/tmpjcevx6tc_fields.py:153: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.InetAddressField",
+/private/tmp/tmpjcevx6tc_fields.py:154: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.CidrAddressField",
+/private/tmp/tmpjcevx6tc_fields.py:155: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.MACAddressField",
+                                                             Discovered Imports                                                              
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                 ┃ Alias ┃ Names                                                           ┃ API Calls Used                  ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                │ —     │ IPAddress, IPNetwork, EUI                                       │ EUI, IPAddress, IPNetwork       │
+│    2 │ netaddr.core           │ —     │ AddrFormatError                                                 │ EUI, IPAddress, IPNetwork       │
+│    4 │ django                 │ —     │ VERSION                                                         │ ValidationError, with_metaclass │
+│    5 │ django.db              │ —     │ models                                                          │ ValidationError, with_metaclass │
+│    6 │ django.core.exceptions │ —     │ ValidationError                                                 │ ValidationError, with_metaclass │
+│    7 │ django.utils.six       │ —     │ with_metaclass                                                  │ ValidationError, with_metaclass │
+│    9 │ netfields.managers     │ —     │ NET_OPERATORS, NET_TEXT_OPERATORS                               │ validate_ipnetwork              │
+│   10 │ netfields.forms        │ —     │ InetAddressFormField, CidrAddressFormField, MACAddressFormField │ validate_ipnetwork              │
+│   11 │ netfields.mac          │ —     │ mac_unix_common                                                 │ validate_ipnetwork              │
+│   12 │ netfields.validators   │ —     │ validate_ipnetwork                                              │ validate_ipnetwork              │
+│  151 │ south.modelsinspector  │ —     │ add_introspection_rules                                         │ add_introspection_rules         │
+└──────┴────────────────────────┴───────┴─────────────────────────────────────────────────────────────────┴─────────────────────────────────┘
+
+✓ Found 11 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: django, netaddr, netfields, south
+Discovered candidates:
+  django -> flask, fastapi, starlette, tornado
+  netaddr -> ipaddress, netifaces, cidr-trie, ipcalc
+  netfields -> django-netfields, django-ipware, django-ipfield, django-inet
+  south -> django-migrations, alembic, django-db-migrations, yoyo-migrations
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,663  output: 1,150  latency: 9974ms
+Equivalence Groups Found
+├── IP address/network manipulation and validation
+│   ├── Candidates : netaddr, ipaddress
+│   ├── Used APIs  : IPAddress, IPNetwork, EUI, AddrFormatError
+│   ├── Pitfalls   : ipaddress uses IPv4Address/IPv6Address and IPv4Network/IPv6Network classes instead of unified IPAddress/IPNetwork; ipaddress raises 
+│   │   AddressValueError/NetmaskValueError instead of AddrFormatError; ipaddress does not support MAC address (EUI) parsing - would need netifaces or keep 
+│   │   netaddr for that; ipaddress network objects are immutable; netaddr's are mutable; Different constructor signatures and property names (e.g., .network
+│   │   vs .ip)
+│   ├── Constraints: requires_connector
+│   └── The code uses netaddr's IPAddress, IPNetwork, EUI, and AddrFormatError for parsing, validating, and manipulating IP addresses, CIDR networks, and MAC
+│       addresses. Python's standard library ipaddress module (3.3+) provides IPAddress, IPv4Address, IPv6Address, IPv4Network, IPv6Network, and 
+│       AddressValueError/NetmaskValueError equivalents. EUI (MAC address) handling would require netaddr or a separate library like netifaces, but core IP 
+│       functionality is covered by ipaddress.
+├── Django ORM field base classes and model utilities
+│   ├── Candidates : django.db.models, django
+│   ├── Used APIs  : models.Field, models.SubfieldBase, ValidationError, with_metaclass
+│   ├── Pitfalls   : SubfieldBase is deprecated since Django 1.8; modern Django uses Field.from_db_value() instead; with_metaclass from six is only needed 
+│   │   for Python 2 compatibility; Python 3 uses native metaclass syntax; No third-party library provides Django ORM field base classes
+│   └── The code uses django.db.models.Field as base class, models.SubfieldBase metaclass (deprecated in Django 1.8+), 
+│       django.core.exceptions.ValidationError, and django.utils.six.with_metaclass. These are all internal Django components with no drop-in third-party 
+│       alternatives. The candidate alternatives (flask, fastapi, starlette, tornado) are web frameworks, not ORM field implementations.
+├── PostgreSQL-specific network field implementations for Django
+│   ├── Candidates : netfields, django-netfields, django-ipfield, django-inet
+│   ├── Used APIs  : NET_OPERATORS, NET_TEXT_OPERATORS, InetAddressFormField, CidrAddressFormField, MACAddressFormField, mac_unix_common, validate_ipnetwork
+│   ├── Pitfalls   : API compatibility between netfields and alternatives may vary - field names, lookup operators, and form field classes may differ; 
+│   │   django-ipfield and django-inet may not support MAC address fields; Migration would require updating all model field references, form fields, and 
+│   │   query lookups; South migration rules (add_introspection_rules) would need rewriting for Django's built-in migrations
+│   ├── Constraints: requires_connector
+│   └── The code imports and uses netfields' managers, forms, mac utilities, and validators to implement PostgreSQL INET/CIDR/MACADDR model fields with 
+│       custom lookups, form fields, and validation. django-netfields appears to be the same or a fork of this package. django-ipfield and django-inet are 
+│       alternative packages providing similar PostgreSQL network field functionality for Django.
+└── Database schema migration framework for Django
+    ├── Candidates : south, django-migrations, alembic, yoyo-migrations
+    ├── Used APIs  : add_introspection_rules
+    ├── Pitfalls   : South is unmaintained and incompatible with Django 1.7+; Django's built-in migrations use a completely different API (no 
+    │   add_introspection_rules); Migrating from South to Django migrations requires running 'django-admin migrate --fake-initial' and converting migration 
+    │   files; Alembic requires SQLAlchemy models, not Django ORM models; Custom field deconstruct() methods (present in the code) are used by Django's 
+    │   migration framework instead of South's introspection rules
+    ├── Constraints: requires_connector
+    └── The code uses South's add_introspection_rules to register custom field introspection for migrations. South was the de facto migration tool for Django
+        <1.7. Django 1.7+ includes built-in migrations (django.db.migrations). Alembic is SQLAlchemy's migration tool but can work with Django via 
+        django-alembic. yoyo-migrations is a standalone migration tool. Since Django 1.7+, South is obsolete.
+
+✓ 4 equivalence group(s) found
+
+→ [14/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/forms.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpa0t5nzkx_forms.py
+                                                    Discovered Imports                                                     
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                           ┃ API Calls Used                               ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                 │ —     │ IPNetwork, EUI, AddrFormatError │ EUI, IPNetwork                               │
+│    3 │ django                  │ —     │ forms                           │ flatatt, VERSION, ValidationError, mark_safe │
+│    4 │ django                  │ —     │ —                               │ flatatt, VERSION, ValidationError, mark_safe │
+│    6 │ django.forms.utils      │ —     │ flatatt                         │ flatatt, VERSION, ValidationError, mark_safe │
+│    8 │ django.forms.util       │ —     │ flatatt                         │ flatatt, VERSION, ValidationError, mark_safe │
+│    9 │ django.utils.safestring │ —     │ mark_safe                       │ flatatt, VERSION, ValidationError, mark_safe │
+│   10 │ django.core.exceptions  │ —     │ ValidationError                 │ flatatt, VERSION, ValidationError, mark_safe │
+│   12 │ netfields.mac           │ —     │ mac_unix_common                 │ validate_ipnetwork                           │
+│   13 │ netfields.validators    │ —     │ validate_ipnetwork              │ validate_ipnetwork                           │
+└──────┴─────────────────────────┴───────┴─────────────────────────────────┴──────────────────────────────────────────────┘
+
+✓ Found 9 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: django, netaddr, netfields
+Discovered candidates:
+  django -> flask, fastapi, starlette, tornado
+  netaddr -> ipaddress, netaddr2, cidr-trie, ipcalc
+  netfields -> django-netfields, django-ipware, django-ipfield, django-cidr-fields
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,426  output: 737  latency: 259924ms
+Equivalence Groups Found
+├── IP network parsing and validation
+│   ├── Candidates : netaddr, ipaddress
+│   ├── Used APIs  : IPNetwork, AddrFormatError
+│   ├── Pitfalls   : ipaddress uses ValueError/AddressValueError instead of AddrFormatError - exception handling must be updated; ipaddress.IPNetwork is a 
+│   │   factory returning IPv4Network/IPv6Network, not a single class - isinstance checks need adjustment; netaddr supports more flexible input formats 
+│   │   (e.g., '192.168.1.1/24' vs strict CIDR) - validation behavior may differ; netaddr's IPNetwork has .cidr, .netmask, .broadcast properties; ipaddress 
+│   │   uses .network_address, .broadcast_address, .netmask - property access differs
+│   ├── Constraints: requires_connector
+│   └── The code uses netaddr.IPNetwork for parsing IP addresses and CIDR notation, and catches netaddr.AddrFormatError for validation errors. Python's 
+│       standard library ipaddress module provides ipaddress.IPv4Network, ipaddress.IPv6Network, and ipaddress.IPNetwork (factory) with similar parsing 
+│       capabilities and raises ValueError/AddressValueError on invalid input. This is a functional overlap for the IP address handling in 
+│       InetAddressFormField and CidrAddressFormField.
+├── MAC address parsing and formatting
+│   ├── Candidates : netaddr, netaddr2
+│   ├── Used APIs  : EUI, AddrFormatError
+│   ├── Pitfalls   : netaddr2 is a fork with limited adoption - verify long-term maintenance; Dialect behavior (mac_unix_common) must be verified identical 
+│   │   in netaddr2
+│   └── The code uses netaddr.EUI with mac_unix_common dialect for MAC address parsing in MACAddressFormField. netaddr2 is a maintained fork of netaddr with 
+│       API compatibility and could serve as a drop-in replacement for EUI functionality.
+└── Django form field validation and widgets
+    ├── Candidates : django, django-netfields
+    ├── Used APIs  : forms.Field, forms.Widget, ValidationError, flatatt, mark_safe, build_attrs
+    ├── Pitfalls   : django-netfields fields may have different validation behavior or API surface; Custom widget (NetInput) and error messages would need 
+    │   migration; validate_ipnetwork from netfields.validators is already used - suggests partial adoption
+    ├── Constraints: requires_connector
+    └── The code implements custom Django form fields (InetAddressFormField, CidrAddressFormField, MACAddressFormField) inheriting from forms.Field and using
+        forms.Widget. django-netfields is a third-party package providing similar IP/MAC/CIDR form fields for Django. Since the code already imports 
+        netfields.validators and netfields.mac, it appears to be using or compatible with the django-netfields ecosystem. The custom fields here could 
+        potentially be replaced by django-netfields' built-in fields.
+
+✓ 3 equivalence group(s) found
+
+→ [15/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/managers.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpn0skmbe6_managers.py
+                                         Discovered Imports                                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                      ┃ Alias ┃ Names              ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                                     │ —     │ IPNetwork          │ —              │
+│    3 │ django                                      │ —     │ VERSION            │ —              │
+│    4 │ django.db                                   │ —     │ models, connection │ —              │
+│    5 │ django.db.backends.postgresql_psycopg2.base │ —     │ DatabaseWrapper    │ —              │
+│    6 │ django.db.models.fields                     │ —     │ DateTimeField      │ —              │
+│    7 │ django.db.models                            │ —     │ sql, query         │ —              │
+│    8 │ django.db.models.query_utils                │ —     │ QueryWrapper       │ —              │
+│    9 │ django.utils                                │ —     │ tree               │ —              │
+│   11 │ datetime                                    │ —     │ —                  │ datetime       │
+└──────┴─────────────────────────────────────────────┴───────┴────────────────────┴────────────────┘
+
+✓ Found 9 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: django, netaddr
+Discovered candidates:
+  django -> flask, fastapi, starlette, tornado
+  netaddr -> ipaddress, netifaces, ipcalc, cidr-trie
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,512  output: 219  latency: 2661ms
+Equivalence Groups Found
+└── IP network/CIDR manipulation
+    ├── Candidates : netaddr, ipaddress
+    ├── Used APIs  : IPNetwork
+    ├── Pitfalls   : ipaddress uses IPv4Network/IPv6Network classes instead of a unified IPNetwork; ipaddress doesn't support netaddr's EUI/MAC address 
+    │   handling; netaddr has more flexible parsing (e.g., '192.168.1.0/24' vs strict CIDR); Migration requires updating all IPNetwork instantiations and 
+    │   method calls
+    └── The code uses netaddr.IPNetwork for IP network operations (CIDR containment checks like <<, <<=, >>, >>=). Python's standard library ipaddress module
+        (IPv4Network/IPv6Network) provides equivalent functionality and is a well-established drop-in replacement for most netaddr use cases.
+
+✓ 1 equivalence group(s) found
+
+→ [16/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/cli.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpa1417vpy_cli.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                       ┃ Alias ┃ Names                                        ┃ API Calls Used                               ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ __future__                                   │ —     │ absolute_import, division, print_function,   │ —                                            │
+│      │                                              │       │ unicode_literals                             │                                              │
+│    3 │ argparse                                     │ —     │ —                                            │ ArgumentParser                               │
+│    4 │ functools                                    │ —     │ —                                            │ partial                                      │
+│    5 │ logging                                      │ —     │ —                                            │ DEBUG, getLogger, WARNING, basicConfig, INFO │
+│    6 │ os                                           │ —     │ path                                         │ —                                            │
+│    8 │ boto3                                        │ —     │ —                                            │ Session                                      │
+│    9 │ jsonschema                                   │ —     │ —                                            │ validate                                     │
+│   10 │ c7n_mailer                                   │ —     │ deploy, utils                                │ MailerAzureQueueProcessor, get_provider,     │
+│      │                                              │       │                                              │ MailerSqsQueueProcessor                      │
+│   11 │ c7n_mailer.azure_mailer.azure_queue_process… │ —     │ MailerAzureQueueProcessor                    │ MailerAzureQueueProcessor, get_provider,     │
+│      │                                              │       │                                              │ MailerSqsQueueProcessor                      │
+│   12 │ c7n_mailer.azure_mailer                      │ —     │ deploy                                       │ MailerAzureQueueProcessor, get_provider,     │
+│      │                                              │       │                                              │ MailerSqsQueueProcessor                      │
+│   13 │ c7n_mailer.sqs_queue_processor               │ —     │ MailerSqsQueueProcessor                      │ MailerAzureQueueProcessor, get_provider,     │
+│      │                                              │       │                                              │ MailerSqsQueueProcessor                      │
+│   14 │ c7n_mailer.utils                             │ —     │ get_provider, Providers                      │ MailerAzureQueueProcessor, get_provider,     │
+│      │                                              │       │                                              │ MailerSqsQueueProcessor                      │
+│   15 │ ruamel                                       │ —     │ yaml                                         │ —                                            │
+└──────┴──────────────────────────────────────────────┴───────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┘
+
+✓ Found 13 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: boto3, c7n_mailer, jsonschema, ruamel
+Discovered candidates:
+  boto3 -> aiobotocore, botocore
+  jsonschema -> fastjsonschema, pydantic, msgspec
+  ruamel -> ruamel.yaml, PyYAML, yaml
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,709  output: 372  latency: 13308ms
+Equivalence Groups Found
+├── YAML parsing and serialization
+│   ├── Candidates : ruamel.yaml, PyYAML
+│   ├── Used APIs  : none detected
+│   ├── Pitfalls   : ruamel.yaml preserves comments and formatting by default; PyYAML does not; API differences: ruamel.yaml uses YAML() instance with 
+│   │   .load/.dump, PyYAML uses yaml.safe_load/yaml.safe_dump; PyYAML's default Loader is unsafe; must use SafeLoader explicitly
+│   └── The code imports 'ruamel.yaml' (via 'from ruamel import yaml') for YAML handling. PyYAML is a widely-used alternative with a similar API for 
+│       load/dump operations. The candidate list includes both 'ruamel.yaml' and 'PyYAML' as alternatives.
+└── JSON schema validation
+    ├── Candidates : jsonschema, fastjsonschema
+    ├── Used APIs  : validate
+    ├── Pitfalls   : fastjsonschema may not support all JSON Schema draft-07 features used in CONFIG_SCHEMA; Error message formats differ between libraries; 
+    │   fastjsonschema compiles schemas to Python code; first validation slower, subsequent faster
+    └── The code uses jsonschema.validate() for validating configuration against JSON schemas (CONFIG_SCHEMA, AZURE_KV_SECRET_SCHEMA, SECURED_STRING_SCHEMA).
+        fastjsonschema is a faster, drop-in alternative for the validate() API with similar schema support.
+
+✓ 2 equivalence group(s) found
+
+→ [17/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/replay.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpkn92tlcd_replay.py
+                                                                     Discovered Imports                                                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                    ┃ Alias ┃ Names                                                    ┃ API Calls Used                                      ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   10 │ __future__                │ —     │ absolute_import, division, print_function,               │ —                                                   │
+│      │                           │       │ unicode_literals                                         │                                                     │
+│   12 │ argparse                  │ —     │ —                                                        │ ArgumentParser                                      │
+│   13 │ base64                    │ —     │ —                                                        │ b64decode                                           │
+│   14 │ json                      │ —     │ —                                                        │ loads                                               │
+│   15 │ logging                   │ —     │ —                                                        │ DEBUG, getLogger, basicConfig, WARNING              │
+│   16 │ os                        │ —     │ —                                                        │ path                                                │
+│   17 │ zlib                      │ —     │ —                                                        │ decompress                                          │
+│   19 │ boto3                     │ —     │ —                                                        │ Session                                             │
+│   20 │ jsonschema                │ —     │ —                                                        │ validate                                            │
+│   21 │ c7n_mailer.cli            │ —     │ CONFIG_SCHEMA                                            │ EmailDelivery, setup_defaults, get_mimetext_message │
+│   22 │ c7n_mailer.email_delivery │ —     │ EmailDelivery                                            │ EmailDelivery, setup_defaults, get_mimetext_message │
+│   23 │ c7n_mailer.utils          │ —     │ setup_defaults                                           │ EmailDelivery, setup_defaults, get_mimetext_message │
+│   24 │ c7n_mailer.utils_email    │ —     │ get_mimetext_message                                     │ EmailDelivery, setup_defaults, get_mimetext_message │
+│   25 │ ruamel                    │ —     │ yaml                                                     │ —                                                   │
+└──────┴───────────────────────────┴───────┴──────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: boto3, c7n_mailer, jsonschema, ruamel
+Discovered candidates:
+  boto3 -> aiobotocore, botocore
+  jsonschema -> fastjsonschema, pydantic, msgspec
+  ruamel -> ruamel.yaml, PyYAML, yaml
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,930  output: 366  latency: 2690ms
+Equivalence Groups Found
+├── YAML configuration parsing
+│   ├── Candidates : ruamel.yaml, PyYAML
+│   ├── Used APIs  : none detected
+│   ├── Pitfalls   : ruamel.yaml preserves YAML comments and key order; PyYAML does not by default; API differences: ruamel.yaml uses YAML(typ='safe') vs 
+│   │   yaml.safe_load(); ruamel.yaml is a superset of PyYAML functionality
+│   └── The code imports 'from ruamel import yaml' but doesn't use it in the visible source. Both ruamel.yaml and PyYAML provide YAML parsing with similar 
+│       load/dump APIs. ruamel.yaml preserves comments and ordering; PyYAML is more widely used but doesn't preserve comments by default.
+└── JSON schema validation
+    ├── Candidates : jsonschema, fastjsonschema
+    ├── Used APIs  : validate
+    ├── Pitfalls   : fastjsonschema compiles schemas at import time; may have different error message formatting; Some advanced jsonschema features (format 
+    │   validation, custom validators) may not be fully supported; fastjsonschema is significantly faster for repeated validation
+    └── The code uses jsonschema.validate() for configuration validation. fastjsonschema is a faster, mostly API-compatible alternative that compiles schemas
+        to Python code. Both support Draft 4/6/7 validation.
+
+✓ 2 equivalence group(s) found
+
+→ [18/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/utils.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpv1ych4i6_utils.py
+                                                                   Discovered Imports                                                                    
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                        ┃ Alias ┃ Names                                                       ┃ API Calls Used                           ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   14 │ __future__                    │ —     │ absolute_import, division, print_function, unicode_literals │ —                                        │
+│   16 │ base64                        │ —     │ —                                                           │ binascii, b64decode                      │
+│   17 │ datetime                      │ —     │ datetime, timedelta                                         │ timedelta, utcfromtimestamp, now, utcnow │
+│   18 │ functools                     │ —     │ —                                                           │ partial                                  │
+│   19 │ json                          │ —     │ —                                                           │ dumps, loads                             │
+│   20 │ os                            │ —     │ —                                                           │ path                                     │
+│   21 │ time                          │ —     │ —                                                           │ mktime                                   │
+│   23 │ jinja2                        │ —     │ —                                                           │ Environment, Template, FileSystemLoader  │
+│   24 │ jmespath                      │ —     │ —                                                           │ search                                   │
+│   25 │ botocore.exceptions           │ —     │ ClientError                                                 │ —                                        │
+│   26 │ dateutil                      │ —     │ parser                                                      │ gettz, tzutc                             │
+│   27 │ dateutil.tz                   │ —     │ gettz, tzutc                                                │ gettz, tzutc                             │
+│   28 │ ruamel                        │ —     │ yaml                                                        │ —                                        │
+│  395 │ c7n_mailer.azure_mailer.utils │ —     │ azure_decrypt                                               │ azure_decrypt                            │
+└──────┴───────────────────────────────┴───────┴─────────────────────────────────────────────────────────────┴──────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: botocore, c7n_mailer, dateutil, jinja2, jmespath, ruamel
+Discovered candidates:
+  botocore -> aiobotocore, boto3
+  dateutil -> pendulum, arrow, python-dateutil
+  jinja2 -> mako, chameleon, django-template
+  jmespath -> jsonpath-ng, jsonpath-rw
+  ruamel -> ruamel.yaml, pyyaml, oyaml
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,855  output: 531  latency: 20175ms
+Equivalence Groups Found
+├── YAML serialization
+│   ├── Candidates : ruamel.yaml, pyyaml, oyaml
+│   ├── Used APIs  : safe_dump
+│   ├── Pitfalls   : ruamel.yaml preserves YAML formatting and comments; pyyaml does not; oyaml is a thin wrapper around pyyaml that preserves key order but 
+│   │   not comments; ruamel.yaml's safe_dump default_flow_style behavior may differ slightly
+│   └── The code uses ruamel.yaml only for safe_dump via a Jinja2 filter. All three candidates provide safe_dump with compatible signatures for this use 
+│       case.
+├── JSONPath querying
+│   ├── Candidates : jmespath, jsonpath-ng, jsonpath-rw
+│   ├── Used APIs  : search
+│   ├── Pitfalls   : jmespath uses JMESPath syntax; jsonpath-ng and jsonpath-rw use JSONPath syntax — expressions are NOT portable; jsonpath-ng is more 
+│   │   actively maintained than jsonpath-rw; Migration requires rewriting all query expressions in templates
+│   └── The code exposes jmespath.search as a Jinja2 global. All three libraries provide a search/query function for extracting data from JSON structures.
+└── Template engine
+    ├── Candidates : jinja2, mako, chameleon, django-template
+    ├── Used APIs  : Environment, Template, FileSystemLoader, get_template, render
+    ├── Pitfalls   : Mako uses <% %> syntax and Python blocks; not compatible with Jinja2's {{ }} / {% %}; Chameleon uses ZPT/TALES syntax; completely 
+    │   different template language; Django templates have different filter/extension mechanisms and no native async support; All alternatives would require 
+    │   rewriting every template file and custom filter registration
+    ├── Constraints: requires_connector
+    └── The code uses Jinja2's Environment, FileSystemLoader, template loading, rendering, and custom filters/globals extensively.
+
+✓ 3 equivalence group(s) found
+
+→ [19/20] shoebot/shoebot  pil→pillow  (shoebot/data/img.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpsl9_e0rz_img.py
+                                     Discovered Imports                                     
+┏━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module       ┃ Alias    ┃ Names            ┃ API Calls Used                       ┃
+┡━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ shoebot.data │ —        │ _copy_attrs      │ RecordingSurface, _copy_attrs        │
+│    3 │ array        │ —        │ —                │ array                                │
+│    4 │ StringIO     │ —        │ StringIO         │ StringIO                             │
+│    5 │ os.path      │ —        │ —                │ path                                 │
+│    6 │ sys          │ —        │ platform         │ —                                    │
+│    8 │ cairo        │ —        │ —                │ FORMAT_ARGB32, ImageSurface, Context │
+│    9 │ Image        │ PILImage │ —                │ open                                 │
+│   10 │ gtk          │ —        │ —                │ gdk                                  │
+│   13 │ rsvg         │ —        │ —                │ Handle                               │
+│   15 │ shoebot.data │ —        │ Grob, ColorMixin │ RecordingSurface, _copy_attrs        │
+│   16 │ shoebot.util │ —        │ RecordingSurface │ RecordingSurface, _copy_attrs        │
+└──────┴──────────────┴──────────┴──────────────────┴──────────────────────────────────────┘
+
+✓ Found 11 imports
+
+  skipped: source package not actually imported in before_code
+→ [20/20] grahame/sedge  argparse→click  (sedge/cli.py)
+────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmppx7m6n0x_cli.py
+                                           Discovered Imports                                           
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names                                     ┃ API Calls Used            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ argparse      │ —     │ —                                         │ ArgumentParser            │
+│    2 │ difflib       │ —     │ —                                         │ unified_diff              │
+│    3 │ os.path       │ —     │ —                                         │ unlink, rename, path      │
+│    4 │ sys           │ —     │ —                                         │ stdout, exit, stderr      │
+│    5 │ tempfile      │ —     │ NamedTemporaryFile                        │ NamedTemporaryFile        │
+│    6 │ engine        │ —     │ SedgeEngine, SedgeException, ConfigOutput │ SedgeEngine, ConfigOutput │
+│    7 │ keylib        │ —     │ KeyLibrary                                │ KeyLibrary                │
+│  134 │ pkg_resources │ —     │ —                                         │ require                   │
+└──────┴───────────────┴───────┴───────────────────────────────────────────┴───────────────────────────┘
+
+✓ Found 8 imports
+
+───────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: engine, keylib, pkg_resources
+Discovered candidates:
+  pkg_resources -> importlib_metadata, importlib_resources
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,248  output: 199  latency: 268716ms
+Equivalence Groups Found
+└── package metadata/version introspection
+    ├── Candidates : pkg_resources, importlib_metadata
+    ├── Used APIs  : require
+    ├── Pitfalls   : importlib_metadata API differs: use importlib_metadata.version() or importlib_metadata.distribution() instead of require(); require() 
+    │   raises DistributionNotFound/VersionConflict; importlib_metadata raises PackageNotFoundError; importlib_metadata is stdlib (importlib.metadata) in 
+    │   Python 3.8+, backport package for older versions
+    └── pkg_resources.require() is used for version checking/dependency verification. importlib_metadata (stdlib in Python 3.8+) provides equivalent 
+        functionality for querying installed package metadata and versions. This is a well-established modern replacement.
+
+✓ 1 equivalence group(s) found
+
+
+Evaluation took 720.9s for 20 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                20
+Errored (skipped):          2
+Resolver detection rate:     61.11%  (n=18)
+Full-pipeline accuracy:      not run (use --full-pipeline)
+           Detection Rate by Domain            
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain             ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients       │     5 │          20.0% │
+│ API wrapper        │     3 │         66.67% │
+│ Utility            │     3 │         66.67% │
+│ File reader/writer │     3 │         100.0% │
+│ Cryptography       │     1 │           0.0% │
+│ Database           │     1 │         100.0% │
+│ Filesystem&Crypto  │     1 │         100.0% │
+│ Web Framework      │     1 │         100.0% │
+└────────────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_eval_report.json, pymigbench_eval_report.csv

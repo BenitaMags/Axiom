@@ -1,0 +1,920 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] simonlindholm/decomp-permuter  attrs→dataclasses  (src/error.py)
+──────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────
+Resolved path: /private/tmp/tmpgclhez1u_error.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ attr   │ —     │ —     │ ib, s          │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+─────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                          Security Scan Results                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                 ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ attr    │ 0.3.2   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 4y  │
+│         │         │      │      │           │            │           │         │ 0mo                   │
+└─────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴───────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────
+Discovering alternative libraries for: attr
+Discovered candidates:
+  attr -> dataclasses, pydantic, msgspec, attrs
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,244  output: 223  latency: 3265ms
+Discovery leads not advanced to an equivalence group after file/API fit review: attr: pydantic, msgspec
+Equivalence Groups Found
+└── declarative class definition with type annotations
+    ├── Candidates : attrs, dataclasses
+    ├── Used APIs  : attr.s, attr.ib
+    ├── Pitfalls   : dataclasses uses @dataclass decorator instead of @attr.s; dataclasses.field() 
+    │   replaces attr.ib() with slightly different parameters (default_factory vs factory); attr.ib() 
+    │   supports validators and converters which require __post_init__ in dataclasses; attr provides 
+    │   slots=True by default in newer versions; dataclasses requires explicit slots=True parameter 
+    │   (Python 3.10+)
+    └── The code uses attr.s as a class decorator and attr.ib for field definition with type annotations. 
+        Python's standard library dataclasses provides equivalent functionality with @dataclass decorator 
+        and field() function, making it a direct drop-in replacement for this usage pattern.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────
+Reusing pinned source security evidence: attrs ← attr
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+               Candidate Security Scan               
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package     ┃ Version ┃ Risk ┃ Evidence ┃ Overall ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+│ dataclasses │ stdlib  │ N/A  │   N/A    │       — │
+└─────────────┴─────────┴──────┴──────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+─────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case 
+finishes.
+Project-local or undeclared imports supplied from the project checkout: attr
+Runtime API benchmarks (10 warmups + 50 samples; fixed local fixtures)...
+                                            Benchmark Results                                             
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃     Runtime API (real ┃             ┃                      ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃                probe) ┃ Memory (KB) ┃ Notes                ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ dataclasses │     ✓     │          6.6 ms │     0.000 ms median / │         141 │                      │
+│             │           │                 │          0.000 ms p95 │             │                      │
+│             │           │                 │ (call:record_constru… │             │                      │
+│ attrs       │     ✓     │          6.9 ms │     0.000 ms median / │         949 │ import module: attrs │
+│             │           │                 │          0.000 ms p95 │             │                      │
+│             │           │                 │ (call:record_constru… │             │                      │
+└─────────────┴───────────┴─────────────────┴───────────────────────┴─────────────┴──────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 2 with measured runtime probes, 0 explicitly unmeasured
+
+─────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 0df22226
+  API compat tokens — input: 164  output: 31  latency: 1081ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating 
+missing data as a score.
+                                       AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role          ┃ Original ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ declarative   │ attrs    │ dataclasses │ MEDIUM │ 1.0   │ 1.0    │ —        │ 0.5 │ 0.875 │ ✓          │
+│ class         │          │             │        │       │        │          │     │       │            │
+│ definition    │          │             │        │       │        │          │     │       │            │
+│ with type     │          │             │        │       │        │          │     │       │            │
+│ annotations   │          │             │        │       │        │          │     │       │            │
+└───────────────┴──────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  attrs  →  dataclasses  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+
+Analyzing: attrs → dataclasses
+  Found 1 call site(s):
+    L6: message: str = attr.ib()
+  Tokens — in:898 out:158 latency:2060ms
+
+  Compatibility analysis:
+    ✗ L6: attr.ib()  — attr.ib() is not available in dataclasses; must be replaced with dataclasses.fie
+
+  1 call site(s) need a wrapper:
+    _attr_ib_to_dataclass_field  L6: Convert attr.ib() call to dataclasses.field() equivalent, handling 
+def
+  Opening ACI edit session for attrs → dataclasses...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:5,151 out:493
+    · open(line_number=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'attr': 'dataclasses'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 import dataclasses                                                                                │
+│    2                                                                                                   │
+│    3 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    4     """                                                                                           │
+│    5     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    6                                                                                                   │
+│    7     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    8     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    9     object with a more limited parameter set (default, default_factory, init,                     │
+│   10     repr, hash, compare, metadata, kw_only).                                                      │
+│   11                                                                                                   │
+│   12     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   13     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   14     in the class body instead.                                                                    │
+│   15     """                                                                                           │
+│   16     mapped_kwargs = {}                                                                            │
+│   17     if 'default' in kwargs:                                                                       │
+│   18         mapped_kwargs['default'] = kwargs['default']                                              │
+│   19     elif 'factory' in kwargs:                                                                     │
+│   20         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   21     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   22         if param in kwargs:                                                                       │
+│   23             mapped_kwargs[param] = kwargs[param]                                                  │
+│   24     return dataclasses.field(**mapped_kwargs)                                                     │
+│   25                                                                                                   │
+│   26 @dataclasses.dataclass                                                                            │
+│   27 class CandidateConstructionFailure(Exception):                                                    │
+│   28     message: str = _attr_ib_to_dataclass_field()                                                  │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "src.error",     │
+│                        │                       │                  │         "obj":                     │
+│                        │                       │                  │ "_attr_ib_to_dataclas              │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T05:36:15Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config   │
+│                        │                       │                  │ file                               │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after           │
+│                        │                       │                  │ migration:                         │
+│                        │                       │                  │ invalid-field-call:Invalid usage   │
+│                        │                       │                  │ of field(), it should be used w    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                    │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be  │
+│ used within a dataclass or the make_dataclass() function.                                              │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: invalid-field-call:Invalid usage of       │
+│ field(), it should be used within a dataclass or the make_dataclass() function.                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 1/5 → Connector (patch_or_static): line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.)
+
+Analyzing: attrs → dataclasses
+  Found 1 call site(s):
+    L6: message: str = attr.ib()
+  Tokens — in:1,211 out:202 latency:1996ms
+
+  Compatibility analysis:
+    ✗ L6: _attr_ib_to_dataclass_field()  — The wrapper function _attr_ib_to_dataclass_field() is called at
+module level dur
+
+  1 call site(s) need a wrapper:
+    _attr_ib_to_dataclass_field_wrapper  L6: Return a sentinel object or marker that the class decorator 
+can recogn
+  Opening ACI edit session for attrs → dataclasses...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:6,437 out:700
+    · open(line_number=...)
+    · edit(replacement_text=..., end_line=..., start_line=...)
+    · submit(note=...)
+  ACI session result failed integrity check (removed source structure or returned an empty file) — falling
+back.
+  Falling back to one-shot wrapper generation for attrs...
+    _attr_ib_to_dataclass_field  replaces: _attr_ib_to_dataclass_field()
+╭───────────────────────────────────── _attr_ib_to_dataclass_field ──────────────────────────────────────╮
+│    1 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    2     """                                                                                           │
+│    3     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    4                                                                                                   │
+│    5     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    6     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    7     object with a more limited parameter set (default, default_factory, init,                     │
+│    8     repr, hash, compare, metadata, kw_only).                                                      │
+│    9                                                                                                   │
+│   10     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   11     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   12     in the class body instead.                                                                    │
+│   13     """                                                                                           │
+│   14     mapped_kwargs = {}                                                                            │
+│   15     if 'default' in kwargs:                                                                       │
+│   16         mapped_kwargs['default'] = kwargs['default']                                              │
+│   17     elif 'factory' in kwargs:                                                                     │
+│   18         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   19     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   20         if param in kwargs:                                                                       │
+│   21             mapped_kwargs[param] = kwargs[param]                                                  │
+│   22     return dataclasses.field(**mapped_kwargs)                                                     │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ✓ AST-based replacement applied (1 matches)
+
+Applying migration import rewrites: {'attr': 'dataclasses'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 import dataclasses                                                                                │
+│    2                                                                                                   │
+│    3 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    4     """                                                                                           │
+│    5     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    6                                                                                                   │
+│    7     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    8     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    9     object with a more limited parameter set (default, default_factory, init,                     │
+│   10     repr, hash, compare, metadata, kw_only).                                                      │
+│   11                                                                                                   │
+│   12     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   13     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   14     in the class body instead.                                                                    │
+│   15     """                                                                                           │
+│   16     mapped_kwargs = {}                                                                            │
+│   17     if 'default' in kwargs:                                                                       │
+│   18         mapped_kwargs['default'] = kwargs['default']                                              │
+│   19     elif 'factory' in kwargs:                                                                     │
+│   20         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   21     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   22         if param in kwargs:                                                                       │
+│   23             mapped_kwargs[param] = kwargs[param]                                                  │
+│   24     return dataclasses.field(**mapped_kwargs)                                                     │
+│   25                                                                                                   │
+│   26 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│   27     """                                                                                           │
+│   28     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│   29                                                                                                   │
+│   30     attrs returns an attr.Attribute object with support for validators, converters,               │
+│   31     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│   32     object with a more limited parameter set (default, default_factory, init,                     │
+│   33     repr, hash, compare, metadata, kw_only).                                                      │
+│   34                                                                                                   │
+│   35     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   36     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   37     in the class body instead.                                                                    │
+│   38     """                                                                                           │
+│   39     mapped_kwargs = {}                                                                            │
+│   40     if 'default' in kwargs:                                                                       │
+│   41         mapped_kwargs['default'] = kwargs['default']                                              │
+│   42     elif 'factory' in kwargs:                                                                     │
+│   43         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   44     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   45         if param in kwargs:                                                                       │
+│   46             mapped_kwargs[param] = kwargs[param]                                                  │
+│   47     return dataclasses.field(**mapped_kwargs)                                                     │
+│   48                                                                                                   │
+│   49 @dataclasses.dataclass                                                                            │
+│   50 class CandidateConstructionFailure(Exception):                                                    │
+│   51     message: str = _attr_ib_to_dataclass_field()                                                  │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing baseline sandbox for this case.
+Verifier: reusing target sandbox for this case.
+Verifier: reusing static-analysis toolchain for this case.
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   2 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "src.error",     │
+│                        │                       │                  │         "obj":                     │
+│                        │                       │                  │ "_attr_ib_to_dataclas              │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T05:36:34Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │         PASS          │   1 finding(s)   │ /var/folders/_4/t4jxnllx1fsf__wwq… │
+│                        │                       │                  │ erro                               │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 2 new finding(s) │ New mypy finding after migration:  │
+│                        │                       │                  │ Name "_attr_ib_to_dataclass_field" │
+│                        │                       │                  │ already defined on line 3  [no-    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                    │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New mypy finding after migration: Name "_attr_ib_to_dataclass_field" already defined on line 3 │
+│ line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be  │
+│ used within a dataclass or the make_dataclass() function.                                              │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New mypy finding after migration: Name "_attr_ib_to_dataclass_field" already  │
+│ defined on line 3                                                                                      │
+│ • verification (line 1): New pylint finding after migration: invalid-field-call:Invalid usage of       │
+│ field(), it should be used within a dataclass or the make_dataclass() function.                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 2/5 → Connector (patch_or_static): line 1: New mypy finding after migration: Name 
+"_attr_ib_to_dataclass_field" already defined on line 3  ; line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 2: line 1: New mypy finding after migration: Name 
+"_attr_ib_to_dataclass_field" already defined on line 3  ; line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.)
+
+Analyzing: attrs → dataclasses
+  Found 1 call site(s):
+    L6: message: str = attr.ib()
+  Tokens — in:1,480 out:192 latency:2164ms
+
+  Compatibility analysis:
+    ✗ L6: message: str = _attr_ib_to_dataclass_field()  — dataclasses.field() cannot be used as a default 
+value in a type-annotated field 
+
+  1 call site(s) need a wrapper:
+    _attr_ib_to_dataclass_field  L6: Replace the wrapper call with direct dataclasses.field() usage in the
+  Opening ACI edit session for attrs → dataclasses...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:6,013 out:198
+    · open(line_number=...)
+    · edit(end_line=..., replacement_text=..., start_line=...)
+    · submit(note=...)
+  ACI session result failed integrity check (removed source structure or returned an empty file) — falling
+back.
+  Falling back to one-shot wrapper generation for attrs...
+    _attr_ib_to_dataclass_field  replaces: message: str = _attr_ib_to_dataclass_field()
+╭───────────────────────────────────── _attr_ib_to_dataclass_field ──────────────────────────────────────╮
+│    1 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    2     """                                                                                           │
+│    3     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    4                                                                                                   │
+│    5     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    6     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    7     object with a more limited parameter set (default, default_factory, init,                     │
+│    8     repr, hash, compare, metadata, kw_only).                                                      │
+│    9                                                                                                   │
+│   10     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   11     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   12     in the class body instead.                                                                    │
+│   13     """                                                                                           │
+│   14     mapped_kwargs = {}                                                                            │
+│   15     if 'default' in kwargs:                                                                       │
+│   16         mapped_kwargs['default'] = kwargs['default']                                              │
+│   17     elif 'factory' in kwargs:                                                                     │
+│   18         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   19     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   20         if param in kwargs:                                                                       │
+│   21             mapped_kwargs[param] = kwargs[param]                                                  │
+│   22     return dataclasses.field(**mapped_kwargs)                                                     │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  String Replaced: message: str = _attr_ib_to_dataclass_field() → message: str = dataclasses.field()
+
+Applying migration import rewrites: {'attr': 'dataclasses'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 import dataclasses                                                                                │
+│    2                                                                                                   │
+│    3 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    4     """                                                                                           │
+│    5     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    6                                                                                                   │
+│    7     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    8     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    9     object with a more limited parameter set (default, default_factory, init,                     │
+│   10     repr, hash, compare, metadata, kw_only).                                                      │
+│   11                                                                                                   │
+│   12     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   13     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   14     in the class body instead.                                                                    │
+│   15     """                                                                                           │
+│   16     mapped_kwargs = {}                                                                            │
+│   17     if 'default' in kwargs:                                                                       │
+│   18         mapped_kwargs['default'] = kwargs['default']                                              │
+│   19     elif 'factory' in kwargs:                                                                     │
+│   20         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   21     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   22         if param in kwargs:                                                                       │
+│   23             mapped_kwargs[param] = kwargs[param]                                                  │
+│   24     return dataclasses.field(**mapped_kwargs)                                                     │
+│   25                                                                                                   │
+│   26 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│   27     """                                                                                           │
+│   28     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│   29                                                                                                   │
+│   30     attrs returns an attr.Attribute object with support for validators, converters,               │
+│   31     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│   32     object with a more limited parameter set (default, default_factory, init,                     │
+│   33     repr, hash, compare, metadata, kw_only).                                                      │
+│   34                                                                                                   │
+│   35     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   36     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   37     in the class body instead.                                                                    │
+│   38     """                                                                                           │
+│   39     mapped_kwargs = {}                                                                            │
+│   40     if 'default' in kwargs:                                                                       │
+│   41         mapped_kwargs['default'] = kwargs['default']                                              │
+│   42     elif 'factory' in kwargs:                                                                     │
+│   43         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   44     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   45         if param in kwargs:                                                                       │
+│   46             mapped_kwargs[param] = kwargs[param]                                                  │
+│   47     return dataclasses.field(**mapped_kwargs)                                                     │
+│   48                                                                                                   │
+│   49 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│   50     """                                                                                           │
+│   51     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│   52                                                                                                   │
+│   53     attrs returns an attr.Attribute object with support for validators, converters,               │
+│   54     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│   55     object with a more limited parameter set (default, default_factory, init,                     │
+│   56     repr, hash, compare, metadata, kw_only).                                                      │
+│   57                                                                                                   │
+│   58     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   59     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   60     in the class body instead.                                                                    │
+│   61     """                                                                                           │
+│   62     mapped_kwargs = {}                                                                            │
+│   63     if 'default' in kwargs:                                                                       │
+│   64         mapped_kwargs['default'] = kwargs['default']                                              │
+│   65     elif 'factory' in kwargs:                                                                     │
+│   66         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   67     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   68         if param in kwargs:                                                                       │
+│   69             mapped_kwargs[param] = kwargs[param]                                                  │
+│   70     return dataclasses.field(**mapped_kwargs)                                                     │
+│   71                                                                                                   │
+│   72 @dataclasses.dataclass                                                                            │
+│   73 class CandidateConstructionFailure(Exception):                                                    │
+│   74     message: str = dataclasses.field()                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing baseline sandbox for this case.
+Verifier: reusing target sandbox for this case.
+Verifier: reusing static-analysis toolchain for this case.
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   3 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "src.error",     │
+│                        │                       │                  │         "obj":                     │
+│                        │                       │                  │ "_attr_ib_to_dataclas              │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T05:36:55Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │         PASS          │   2 finding(s)   │ /var/folders/_4/t4jxnllx1fsf__wwq… │
+│                        │                       │                  │ erro                               │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 2 new finding(s) │ New mypy finding after migration:  │
+│                        │                       │                  │ Name "_attr_ib_to_dataclass_field" │
+│                        │                       │                  │ already defined on line 3  [no-    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                    │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New mypy finding after migration: Name "_attr_ib_to_dataclass_field" already defined on line 3 │
+│ line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be  │
+│ used within a dataclass or the make_dataclass() function.                                              │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New mypy finding after migration: Name "_attr_ib_to_dataclass_field" already  │
+│ defined on line 3                                                                                      │
+│ • verification (line 1): New pylint finding after migration: invalid-field-call:Invalid usage of       │
+│ field(), it should be used within a dataclass or the make_dataclass() function.                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 3/5 → Connector (patch_or_static): line 1: New mypy finding after migration: Name 
+"_attr_ib_to_dataclass_field" already defined on line 3  ; line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 3: line 1: New mypy finding after migration: Name 
+"_attr_ib_to_dataclass_field" already defined on line 3  ; line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.)
+
+Analyzing: attrs → dataclasses
+  Found 1 call site(s):
+    L6: message: str = attr.ib()
+  Tokens — in:1,708 out:195 latency:3243ms
+
+  Compatibility analysis:
+    ✗ L6: attr.ib()  — attr.ib() is from the attrs package, but the code has been migrated to use datac
+
+  1 call site(s) need a wrapper:
+    _attr_ib_to_dataclass_field  L6: Convert attr.ib() call to dataclasses.field() by mapping compatible 
+pa
+  Opening ACI edit session for attrs → dataclasses...
+  ACI session: 2 edit(s) applied over 5 tool call(s)  |  tokens in:15,347 out:779
+    · open(line_number=...)
+    · edit(end_line=..., replacement_text=..., start_line=...)
+    · open(line_number=...)
+    · edit(end_line=..., replacement_text=..., start_line=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'attr': 'dataclasses'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 import dataclasses                                                                                │
+│    2                                                                                                   │
+│    3 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│    4     """                                                                                           │
+│    5     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│    6                                                                                                   │
+│    7     attrs returns an attr.Attribute object with support for validators, converters,               │
+│    8     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│    9     object with a more limited parameter set (default, default_factory, init,                     │
+│   10     repr, hash, compare, metadata, kw_only).                                                      │
+│   11                                                                                                   │
+│   12     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   13     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   14     in the class body instead.                                                                    │
+│   15     """                                                                                           │
+│   16     mapped_kwargs = {}                                                                            │
+│   17     if 'default' in kwargs:                                                                       │
+│   18         mapped_kwargs['default'] = kwargs['default']                                              │
+│   19     elif 'factory' in kwargs:                                                                     │
+│   20         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   21     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   22         if param in kwargs:                                                                       │
+│   23             mapped_kwargs[param] = kwargs[param]                                                  │
+│   24     return dataclasses.field(**mapped_kwargs)                                                     │
+│   25                                                                                                   │
+│   26 @dataclasses.dataclass                                                                            │
+│   27 class CandidateConstructionFailure(Exception):                                                    │
+│   28     message: str = _attr_ib_to_dataclass_field()                                                  │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing baseline sandbox for this case.
+Verifier: reusing target sandbox for this case.
+Verifier: reusing static-analysis toolchain for this case.
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "src.error",     │
+│                        │                       │                  │         "obj":                     │
+│                        │                       │                  │ "_attr_ib_to_dataclas              │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T05:37:56Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config   │
+│                        │                       │                  │ file                               │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after           │
+│                        │                       │                  │ migration:                         │
+│                        │                       │                  │ invalid-field-call:Invalid usage   │
+│                        │                       │                  │ of field(), it should be used w    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                    │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be  │
+│ used within a dataclass or the make_dataclass() function.                                              │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: invalid-field-call:Invalid usage of       │
+│ field(), it should be used within a dataclass or the make_dataclass() function.                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 4/5 → Connector (patch_or_static): line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 4: line 1: New pylint finding after migration: 
+invalid-field-call:Invalid usage of field(), it should be used within a dataclass or the make_dataclass() 
+function.)
+
+Analyzing: attrs → dataclasses
+  Found 1 call site(s):
+    L6: message: str = attr.ib()
+  Tokens — in:1,211 out:360 latency:2899ms
+
+  Compatibility analysis:
+    ✗ L6: _attr_ib_to_dataclass_field()  — The wrapper function _attr_ib_to_dataclass_field() calls 
+dataclasses.field() at 
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - dataclasses.field() cannot be called at module level — it must appear inside a @dataclass class body
+or make_dataclass(). The current wrapper pattern calls it at import time, which is structurally 
+incompatible with dataclasses. A fix requires either (a) rewriting the class to use native dataclass 
+syntax directly, or (b) implementing a class decorator/metaclass that post-processes sentinel objects into
+real field() calls, which is a significant structural change beyond a simple wrapper.
+
+  1 call site(s) need a wrapper:
+    _attr_ib_to_dataclass_field_wrapper  L6: Return a sentinel/marker object capturing field parameters 
+(default, d
+  Opening ACI edit session for attrs → dataclasses...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:6,753 out:806
+    · open(line_number=...)
+    · edit(replacement_text=..., start_line=..., end_line=...)
+    · submit(note=...)
+  ACI session result failed integrity check (removed source structure or returned an empty file) — falling
+back.
+  Falling back to one-shot wrapper generation for attrs...
+    _attr_ib_to_dataclass_field_sentinel  replaces: _attr_ib_to_dataclass_field()
+╭───────────────────────────────── _attr_ib_to_dataclass_field_sentinel ─────────────────────────────────╮
+│    1 def _attr_ib_to_dataclass_field_sentinel(*args, **kwargs):                                        │
+│    2     """                                                                                           │
+│    3     Sentinel wrapper for attr.ib() -> dataclasses.field() migration.                              │
+│    4                                                                                                   │
+│    5     Original function returned a dataclasses.Field object by calling dataclasses.field().         │
+│    6     This wrapper returns a sentinel dict capturing the field parameters so that a                 │
+│    7     post-processor (class decorator or metaclass) can later replace the sentinel                  │
+│    8     with a real dataclasses.field() call in the class body.                                       │
+│    9                                                                                                   │
+│   10     Supported parameters (mapped from attrs to dataclasses):                                      │
+│   11       - default -> default                                                                        │
+│   12       - factory -> default_factory                                                                │
+│   13       - init, repr, hash, compare, metadata, kw_only -> passed through                            │
+│   14     Unsupported attrs parameters (validator, converter, on_setattr) are dropped;                  │
+│   15     they must be handled in __post_init__ instead.                                                │
+│   16     """                                                                                           │
+│   17     mapped_kwargs = {}                                                                            │
+│   18     if 'default' in kwargs:                                                                       │
+│   19         mapped_kwargs['default'] = kwargs['default']                                              │
+│   20     elif 'factory' in kwargs:                                                                     │
+│   21         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   22     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   23         if param in kwargs:                                                                       │
+│   24             mapped_kwargs[param] = kwargs[param]                                                  │
+│   25     # Return a sentinel marker that the post-processor will recognize                             │
+│   26     return {'__dataclass_field_sentinel__': True, 'params': mapped_kwargs}                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ✓ AST-based replacement applied (1 matches)
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 import dataclasses                                                                                │
+│    2                                                                                                   │
+│    3                                                                                                   │
+│    4 # ──────────────────────────────────────────────────────────────────────                          │
+│    5 # AXIOM CONNECTOR: attrs → dataclasses                                                            │
+│    6 # The following functions bridge API incompatibilities between                                    │
+│    7 # attrs and dataclasses. They are injected by the AXIOM                                           │
+│    8 # connector agent and called in place of the original API.                                        │
+│    9 # ──────────────────────────────────────────────────────────────────────                          │
+│   10 def _attr_ib_to_dataclass_field_sentinel(*args, **kwargs):                                        │
+│   11     """                                                                                           │
+│   12     Sentinel wrapper for attr.ib() -> dataclasses.field() migration.                              │
+│   13                                                                                                   │
+│   14     Original function returned a dataclasses.Field object by calling dataclasses.field().         │
+│   15     This wrapper returns a sentinel dict capturing the field parameters so that a                 │
+│   16     post-processor (class decorator or metaclass) can later replace the sentinel                  │
+│   17     with a real dataclasses.field() call in the class body.                                       │
+│   18                                                                                                   │
+│   19     Supported parameters (mapped from attrs to dataclasses):                                      │
+│   20       - default -> default                                                                        │
+│   21       - factory -> default_factory                                                                │
+│   22       - init, repr, hash, compare, metadata, kw_only -> passed through                            │
+│   23     Unsupported attrs parameters (validator, converter, on_setattr) are dropped;                  │
+│   24     they must be handled in __post_init__ instead.                                                │
+│   25     """                                                                                           │
+│   26     mapped_kwargs = {}                                                                            │
+│   27     if 'default' in kwargs:                                                                       │
+│   28         mapped_kwargs['default'] = kwargs['default']                                              │
+│   29     elif 'factory' in kwargs:                                                                     │
+│   30         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   31     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   32         if param in kwargs:                                                                       │
+│   33             mapped_kwargs[param] = kwargs[param]                                                  │
+│   34     # Return a sentinel marker that the post-processor will recognize                             │
+│   35     return {'__dataclass_field_sentinel__': True, 'params': mapped_kwargs}                        │
+│   36                                                                                                   │
+│   37                                                                                                   │
+│   38 def _attr_ib_to_dataclass_field(*args, **kwargs):                                                 │
+│   39     """                                                                                           │
+│   40     Convert attr.ib() call to dataclasses.field() equivalent.                                     │
+│   41                                                                                                   │
+│   42     attrs returns an attr.Attribute object with support for validators, converters,               │
+│   43     and other advanced features. dataclasses.field() returns a dataclasses.Field                  │
+│   44     object with a more limited parameter set (default, default_factory, init,                     │
+│   45     repr, hash, compare, metadata, kw_only).                                                      │
+│   46                                                                                                   │
+│   47     This wrapper maps compatible parameters directly and drops unsupported ones                   │
+│   48     (validator, converter, on_setattr) which would need __post_init__ handling                    │
+│   49     in the class body instead.                                                                    │
+│   50     """                                                                                           │
+│   51     mapped_kwargs = {}                                                                            │
+│   52     if 'default' in kwargs:                                                                       │
+│   53         mapped_kwargs['default'] = kwargs['default']                                              │
+│   54     elif 'factory' in kwargs:                                                                     │
+│   55         mapped_kwargs['default_factory'] = kwargs['factory']                                      │
+│   56     for param in ('init', 'repr', 'hash', 'compare', 'metadata', 'kw_only'):                      │
+│   57         if param in kwargs:                                                                       │
+│   58             mapped_kwargs[param] = kwargs[param]                                                  │
+│   59     return dataclasses.field(**mapped_kwargs)                                                     │
+│   60                                                                                                   │
+│   61 @dataclasses.dataclass                                                                            │
+│   62 class CandidateConstructionFailure(Exception):                                                    │
+│   63     message: str = _attr_ib_to_dataclass_field_sentinel()                                         │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing baseline sandbox for this case.
+Verifier: reusing target sandbox for this case.
+Verifier: reusing static-analysis toolchain for this case.
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "src.error",     │
+│                        │                       │                  │         "obj":                     │
+│                        │                       │                  │ "_attr_ib_to_dataclas              │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T05:38:43Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config   │
+│                        │                       │                  │ file                               │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after           │
+│                        │                       │                  │ migration:                         │
+│                        │                       │                  │ invalid-field-call:Invalid usage   │
+│                        │                       │                  │ of field(), it should be used w    │
+│ Import smoke test      │         PASS          │       FAIL       │ Traceback (most recent call last): │
+│                        │                       │                  │   File "<string>", line 14, in     │
+│                        │                       │                  │ <module>                           │
+│                        │                       │                  │   File "/var/folders/_4/t          │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New pylint finding after migration: invalid-field-call:Invalid usage of field(), it should be  │
+│ used within a dataclass or the make_dataclass() function.                                              │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: invalid-field-call:Invalid usage of       │
+│ field(), it should be used within a dataclass or the make_dataclass() function.                        │
+│ • verification (line 1): Patched import smoke test failed: Traceback (most recent call last):          │
+│   File "<string>", line 14, in <module>                                                                │
+│   File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_ircjh_7/project/src/error.py",  │
+│ line 61, in <module>                                                                                   │
+│     @dataclasses.dataclass                                                                             │
+│      ^^^^^^^^^^^^^^^^^^^^^                                                                             │
+│   File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py", line 1275,  │
+│ in dataclass                                                                                           │
+│     return wrap(cls)                                                                                   │
+│            ^^^^^^^^^                                                                                   │
+│   File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py", line 1265,  │
+│ in wrap                                                                                                │
+│     return _process_class(cls, init, repr, eq, order, unsafe_hash,                                     │
+│            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                     │
+│   File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py", line 994,   │
+│ in _process_class                                                                                      │
+│     cls_fields.append(_get_field(cls, name, type, kw_only))                                            │
+│                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│   File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/dataclasses.py", line 852,   │
+│ in _get_field                                                                                          │
+│     raise ValueError(f'mutable default {type(f.default)} for field '                                   │
+│ ValueError: mutable default <class 'dict'> for field message is not allowed: use default_factory       │
+│                                                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 5/5 → Axiom (decision_level): line 1: attrs → dataclasses: Connector marked this candidate 
+structurally infeasible.
+─────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 0df22226
+↩ Re-scoring after verifier rejection — excluded candidates: {'declarative class definition with type 
+annotations': ['dataclasses']}
+↩ Repair cycle 5/5: AXIOM received verifier evidence — attrs → dataclasses: Connector marked this 
+candidate structurally infeasible.
+  Verifier veto: excluded dataclasses from 'declarative class definition with type annotations' (failed 
+verification on a prior pass)
+  API compat tokens — input: 159  output: 20  latency: 559ms
+                                       AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ declarative class   │ attrs    │ attrs  │ LOW   │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.94  │ ✓          │
+│ definition with     │          │        │       │       │        │          │     │       │            │
+│ type annotations    │          │        │       │       │        │          │     │       │            │
+└─────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: 0df22226
+
+Evaluation took 210.8s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     100.0%  (n=1)
+Target selection rate:        100.0%  (n=1; selection only)
+Verified exact PyMigBench migrations: 0.0%  (0/1)
+Verification environments incomplete: 0
+Proven target-infeasible migrations: 1
+No selected patch reached a deterministic verification verdict; do not interpret environment-incomplete 
+cases as failed migrations.
+Verified alternatives (not scored as exact target): 0
+Connector invoked on:        0 case(s)
+Verifier repair cycles:      5 across 1 case(s)
+Verified after repair:       0  (budget exhausted: 0)
+Real runtime-probe coverage: 100.0%  (2/2 package-case profiles; 2 measured probe(s))
+      Terminal Outcomes      
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome           ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ target_infeasible │     1 │
+└───────────────────┴───────┘
+      Detection / Verified Exact Rate by Domain      
+┏━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain  ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Utility │     1 │         100.0% │           0.0% │
+└─────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_attrs_dataclasses_smoke.json, pymigbench_attrs_dataclasses_smoke.csv

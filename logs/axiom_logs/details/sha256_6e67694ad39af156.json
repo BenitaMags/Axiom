@@ -1,0 +1,35 @@
+{
+  "role": "CRC-32 checksum computation for frame integrity",
+  "winner": "fastcrc",
+  "original": "zlib",
+  "score": {
+    "speed": 0.064,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.122,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.268,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'fastcrc' wins 'CRC-32 checksum computation for frame integrity'. Confidence: HIGH. Total: 0.268 (speed=0.064, mem=0.122, sec=None, api=0.5). Migration note: fastcrc's API surface differs from zlib (e.g., may require fastcrc.crc32.iso_hdlc(payload) or similar submodule/function naming rather than a flat crc32() call) so call sites must be adapted, not just the import line",
+  "confidence": "HIGH",
+  "used_apis": [
+    "zlib.crc32"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

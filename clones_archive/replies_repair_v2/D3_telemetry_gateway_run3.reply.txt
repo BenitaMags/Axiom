@@ -1,0 +1,136 @@
+# parsed 3 file(s): ['estimator.py', 'gateway.py', 'sink.py']
+# expected: ['estimator.py', 'gateway.py', 'sink.py']
+# reply length: 4270 chars
+======================================================================
+### FILENAME: sink.py
+```python
+# CHOSEN-TARGET: gmqtt
+"""sink -- MQTT publication of estimated telemetry records.
+
+
+
+"""
+import asyncio
+import json
+
+
+def _default_client(host: str = "localhost", port: int = 1883):
+    from gmqtt import Client as GmqttClient  # lazy import for testability
+
+    client = GmqttClient(client_id=None)
+
+    async def _connect():
+        await client.connect(host, port)
+
+    _run_coro(_connect())
+    return client
+
+
+def _run_coro(coro):
+    """Run *coro* to completion, working whether or not a loop is already running."""
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    if loop.is_running():
+        # If a loop is already running we cannot use run_until_complete; schedule
+        # and wait via a fresh loop in a thread-free manner is out of scope here,
+        # so fall back to creating a task and running a nested loop via asyncio.run
+        # is not possible. Use ensure_future + run in a new loop instead.
+        new_loop = asyncio.new_event_loop()
+        try:
+            return new_loop.run_until_complete(coro)
+        finally:
+            new_loop.close()
+    else:
+        return loop.run_until_complete(coro)
+
+
+class MqttSink:
+    def __init__(self, topic_base: str = "plant/est", client=None):
+        self.topic_base = topic_base
+        self.client = client if client is not None else _default_client()
+
+    def publish(self, tag: str, record: dict) -> int:
+        payload = json.dumps(record, separators=(",", ":")).encode("utf-8")
+        topic = f"{self.topic_base}/{tag}"
+
+        result = self.client.publish(topic, payload)
+
+        if asyncio.iscoroutine(result):
+            info = _run_coro(result)
+        else:
+            info = result
+
+        return getattr(info, "rc", 0) if info is not None else 0
+```
+
+### FILENAME: estimator.py
+```python
+"""estimator -- first-party engineering-unit estimation with anomaly flagging.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. It scales raw counts to engineering units, smooths with a
+moving average, and flags a rate-of-change anomaly when consecutive samples jump too far.
+"""
+
+
+class Estimator:
+    def __init__(self, scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.scale = scale
+        self.window = window
+        self.roc_limit = roc_limit
+        self.buffer = []
+        self.last = None
+
+    def update(self, raw_counts: float) -> dict:
+        value = raw_counts * self.scale
+        self.buffer.append(value)
+        if len(self.buffer) > self.window:
+            self.buffer.pop(0)
+        smoothed = sum(self.buffer) / len(self.buffer)
+        roc = 0.0 if self.last is None else abs(value - self.last)
+        self.last = value
+        return {"value": value, "smoothed": smoothed, "anomaly": roc > self.roc_limit}
+```
+
+### FILENAME: gateway.py
+```python
+"""gateway -- telemetry gateway: read raw counts, estimate, publish.
+
+Combines all three transformations in one program:
+
+  * LMA: rewrite the first-party estimation/anomaly logic in `estimator.py`.
+
+`reader` is an injected callable `tag -> raw_counts` (the field acquisition source).
+"""
+from estimator import Estimator
+from sink import MqttSink
+
+
+class TelemetryGateway:
+    def __init__(self, reader, sink: MqttSink, estimators: dict = None,
+                 scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.reader = reader
+        self.sink = sink
+        self.estimators = estimators if estimators is not None else {}
+        self._cfg = dict(scale=scale, window=window, roc_limit=roc_limit)
+
+    def _estimator(self, tag: str) -> Estimator:
+        if tag not in self.estimators:
+            self.estimators[tag] = Estimator(**self._cfg)
+        return self.estimators[tag]
+
+    def process(self, tag: str) -> dict:
+        """Acquire one sample for *tag*, estimate, publish, and return the record."""
+        raw = self.reader(tag)
+        record = self._estimator(tag).update(raw)
+        record["tag"] = tag
+        self.sink.publish(tag, record)
+        return record
+
+    def process_all(self, tags) -> list:
+        return [self.process(t) for t in tags]
+```

@@ -1,0 +1,35 @@
+{
+  "role": "JSON serialization backend for deterministic audit records",
+  "winner": "json",
+  "original": "json",
+  "score": {
+    "speed": 0.664,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.583,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.9,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.742,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: New mypy finding after migration: Library stubs not installed for \"simplejson\"  [import-untyped]",
+  "confidence": "LOW",
+  "used_apis": [
+    "json.dumps(record, sort_keys=True, separators=_SEPARATORS)"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

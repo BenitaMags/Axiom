@@ -1,0 +1,35 @@
+{
+  "role": "logging framework",
+  "winner": "loguru",
+  "original": "logbook",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.362,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.3,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.763,
+    "installed": true
+  },
+  "rationale": "'loguru' wins 'logging framework'. Confidence: MEDIUM. Total: 0.763 (speed=1.0, mem=0.362, sec=0.895, api=0.3). Migration note: logbook uses Logger.enable()/disable() methods; structlog uses configure() and loguru uses logger.enable()/disable() - API differs significantly",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "Logger",
+    "get_level_name",
+    "NOTSET",
+    "enable",
+    "disable",
+    "disabled",
+    "level"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,54 @@
+You are given a Python program that depends on `datetime`. Rewrite it so the dependency on `datetime` is gone and the program remains FUNCTIONALLY EQUIVALENT.
+
+Exactly one of these two conditions applies. Read the program — including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable, actively-maintained third-party library yourself and migrate to it. Write whatever adapter or glue code the difference in API requires. Do not write your own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the program's own documentation states that the dependency is to be removed and its behaviour written as first-party code. If the documentation does not say that, condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1, or `# CHOSEN-TARGET: first-party` for condition 2.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: iso_ts_parser.py
+```python
+"""iso_ts_parser -- ISO-8601 timestamp parsing for event/alarm logs.
+
+Parses ISO-8601 timestamps into timezone-aware datetimes and epoch seconds. Naive
+timestamps are assumed UTC (a common RTU convention). The parser backend is the
+
+tolerant of the trailing 'Z' zulu suffix).
+"""
+from datetime import datetime, timezone
+
+
+def _normalize(text: str) -> str:
+
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def parse(ts: str) -> datetime:
+    """Parse an ISO-8601 timestamp into a timezone-aware datetime (UTC if naive)."""
+    dt = datetime.fromisoformat(_normalize(ts))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def to_epoch(ts: str) -> float:
+    """Return POSIX epoch seconds for an ISO-8601 timestamp."""
+    return parse(ts).timestamp()
+```

@@ -1,0 +1,40 @@
+{
+  "role": "Modbus TCP/RTU client for industrial field I/O (reading holding registers, writing registers)",
+  "winner": "modbus-tk",
+  "original": "pymodbus",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.702,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'modbus-tk' wins 'Modbus TCP/RTU client for industrial field I/O (reading holding registers, writing registers)'. Confidence: MEDIUM. Total: 0.702 (speed=1.0, mem=1.0, sec=0.895, api=0.1). Migration note: minimalmodbus is primarily RTU/serial-oriented and uses an Instrument object with read_register/write_register methods instead of a TCP client with unit= keyword args and result objects",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "ModbusTcpClient",
+    "client.connect",
+    "client.read_holding_registers",
+    "client.write_register",
+    "rr.isError",
+    "rr.registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

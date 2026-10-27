@@ -1,0 +1,33 @@
+{
+  "role": "async concurrency backend for SocketIO",
+  "winner": "eventlet",
+  "original": "eventlet",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.72,
+    "security_evidence": true,
+    "evidence_weight": 0.35,
+    "total": 0.84,
+    "installed": false,
+    "profile_status": "hard_environment_failure",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'eventlet' wins 'async concurrency backend for SocketIO'. Confidence: LOW. Total: 0.84 (speed=None, mem=None, sec=0.72, api=1.0) [Security:MEDIUM]. Profiler veto: gevent (hard_environment_failure). Migration note: gevent.monkey.patch_all() patches a slightly different set of stdlib modules than eventlet.monkey_patch(); some edge-case timing behavior may differ",
+  "confidence": "LOW",
+  "used_apis": [
+    "monkey_patch"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

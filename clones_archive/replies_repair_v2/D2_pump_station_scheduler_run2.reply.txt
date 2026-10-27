@@ -1,0 +1,100 @@
+# parsed 3 file(s): ['client.py', 'scheduler.py', 'station.py']
+# expected: ['client.py', 'scheduler.py', 'station.py']
+# reply length: 3202 chars
+======================================================================
+### FILENAME: client.py
+```python
+# CHOSEN-TARGET: httpx
+"""client -- SCADA HTTP client for the pump station.
+
+
+identical sessions/timeouts/exceptions -> glue required). Session is injected.
+"""
+
+
+def _default_session():
+    import httpx  # lazy import for testability
+
+    return httpx.Client()
+
+
+class ScadaClient:
+    def __init__(self, base_url: str, session=None, timeout: float = 2.0):
+        self.base = base_url.rstrip("/")
+        self.session = session if session is not None else _default_session()
+        self.timeout = timeout
+
+    def get_demand(self) -> float:
+        r = self.session.get(f"{self.base}/demand", timeout=self.timeout)
+        r.raise_for_status()
+        return r.json()["demand"]
+
+    def get_runtimes(self) -> list:
+        r = self.session.get(f"{self.base}/runtimes", timeout=self.timeout)
+        r.raise_for_status()
+        return r.json()["runtimes"]
+
+    def command(self, pump: int, on: bool) -> int:
+        r = self.session.post(f"{self.base}/pump/{pump}", json={"on": on},
+                              timeout=self.timeout)
+        r.raise_for_status()
+        return getattr(r, "status_code", 200)
+```
+
+### FILENAME: scheduler.py
+```python
+"""scheduler -- first-party lead-lag pump staging with runtime balancing.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. Given a flow demand and per-pump accumulated runtimes,
+it decides how many pumps to stage and rotates duty to the least-run pumps.
+"""
+import math
+
+
+class PumpScheduler:
+    def __init__(self, n_pumps: int = 3, pump_capacity: float = 50.0):
+        self.n = n_pumps
+        self.capacity = pump_capacity
+
+    def required_count(self, demand: float) -> int:
+        """Number of pumps needed to meet *demand* (capacity-staged)."""
+        if demand <= 0:
+            return 0
+        return min(self.n, math.ceil(demand / self.capacity))
+
+    def select(self, demand: float, runtimes) -> dict:
+        """Return {pump_index: on?} staging the least-run pumps first (lead-lag)."""
+        k = self.required_count(demand)
+        # Rotate duty to balance wear: prefer pumps with the least accumulated runtime.
+        order = sorted(range(self.n), key=lambda i: (runtimes[i], i))
+        on = set(order[:k])
+        return {i: (i in on) for i in range(self.n)}
+```
+
+### FILENAME: station.py
+```python
+"""station -- pump-station orchestration: poll, schedule, command.
+
+Combines all three transformations in one program:
+
+  * LMA: rewrite the first-party lead-lag staging logic in `scheduler.py`.
+"""
+from client import ScadaClient
+from scheduler import PumpScheduler
+
+
+class PumpStation:
+    def __init__(self, client: ScadaClient, scheduler: PumpScheduler = None):
+        self.client = client
+        self.scheduler = scheduler if scheduler is not None else PumpScheduler()
+
+    def cycle(self) -> dict:
+        """Poll demand/runtimes, compute the staging plan, and issue commands."""
+        demand = self.client.get_demand()
+        runtimes = self.client.get_runtimes()
+        plan = self.scheduler.select(demand, runtimes)
+        for pump, on in plan.items():
+            self.client.command(pump, on)
+        return plan
+```

@@ -1,0 +1,255 @@
+You previously rewrote a Python program to remove its dependency on `pymodbus`
+while keeping it FUNCTIONALLY EQUIVALENT to the original. Your rewrite was
+executed and checked, and it did not pass. You are now going to correct it.
+
+You are given three things: the ORIGINAL program, YOUR PREVIOUS ATTEMPT, and the
+EVIDENCE from running it.
+
+Work from the evidence. Each item names something concrete that went wrong. Fix
+those things. Do not restart from scratch and do not redesign parts of your
+attempt the evidence does not implicate — a rewrite that fixes the reported
+problems and changes nothing else is the goal.
+
+If the evidence shows that the library you chose cannot do what this program
+needs — a fundamentally different execution model, a missing transport, an API
+that cannot express the original's behaviour — then choosing a different library
+IS the correct fix. Say so and switch. Do not build increasingly elaborate
+adapters around a library that does not fit.
+
+Switching means moving to ANOTHER library. Unless condition 2 below applies,
+dropping the third-party dependency and writing the behaviour yourself is not a
+repair — it abandons the task. Neither is restoring the original program, or
+any part of it, to its pre-migration state: the original already fails the
+requirement, so reverting cannot satisfy it. If the evidence says a package
+could not be found or installed, name a real, existing replacement rather than
+removing the dependency.
+
+Exactly one of these two conditions applies, as before. Read the program —
+including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable,
+actively-maintained third-party library yourself and migrate to it. Write
+whatever adapter or glue code the difference in API requires. Do not write your
+own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the
+program's own documentation states that the dependency is to be removed and its
+behaviour written as first-party code. If the documentation does not say that,
+condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class
+names, same signatures, same return types. The existing test suite must pass
+against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and
+your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1,
+or `# CHOSEN-TARGET: first-party` for condition 2. If you are switching to a
+different library, this line must name the new one.
+
+Return ONLY the corrected file(s), complete. For each file use exactly this
+format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+=== ORIGINAL PROGRAM ===
+### FILENAME: modbus_meter_reader.py
+```python
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+
+read APIs and result objects differ (pymodbus returns a response object with
+
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+"""
+from registers import REGISTERS, decode
+
+
+def _default_client(host: str, port: int = 502):
+    from pymodbus.client import ModbusTcpClient  # lazy import for testability
+
+    client = ModbusTcpClient(host, port=port)
+    client.connect()
+    return client
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self.client.read_holding_registers(address, count, unit=self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record
+```
+
+### FILENAME: registers.py
+```python
+"""registers -- register map and word decoding for a Modbus power meter.
+
+Decodes big-endian 16-bit register words into engineering values. Kept separate from
+the transport so that decoding is reusable and independently testable.
+"""
+import struct
+
+# name -> (start address, word count, encoding, scale)
+REGISTERS = {
+    "voltage": (0x0000, 2, "f32", 1.0),
+    "current": (0x0002, 2, "f32", 1.0),
+    "power":   (0x0004, 2, "f32", 1.0),
+    "energy":  (0x0006, 2, "u32", 0.001),  # Wh -> kWh
+}
+
+
+def decode(encoding: str, words, scale: float) -> float:
+    """Decode a sequence of 16-bit words into a scaled engineering value."""
+    raw = b"".join(struct.pack(">H", w & 0xFFFF) for w in words)
+    if encoding == "f32":
+        value = struct.unpack(">f", raw)[0]
+    elif encoding == "u32":
+        value = struct.unpack(">I", raw)[0]
+    else:
+        raise ValueError(f"unknown encoding: {encoding}")
+    return value * scale
+```
+
+=== YOUR PREVIOUS ATTEMPT ===
+### FILENAME: modbus_meter_reader.py
+```python
+# CHOSEN-TARGET: pyModbusTCP
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+
+read APIs and result objects differ (pymodbus returns a response object with
+
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+"""
+from registers import REGISTERS, decode
+
+
+def _default_client(host: str, port: int = 502):
+    from pyModbusTCP.client import ModbusClient  # lazy import for testability
+
+    client = ModbusClient(host=host, port=port, unit_id=1, auto_open=True)
+    return client
+
+
+class _ReadResult:
+    """Adapter object exposing an `isError()`/`.registers` interface similar to
+    what pymodbus's response objects provided, so decoding code stays the same."""
+
+    def __init__(self, registers):
+        self._registers = registers
+
+    def isError(self):
+        return self._registers is None
+
+    @property
+    def registers(self):
+        return self._registers
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read_holding_registers(self, address, count, unit):
+        """Call the underlying client's read API, normalizing to a
+        `_ReadResult`-like object regardless of whether the injected client is
+        a pyModbusTCP client (returns a list or None) or a test double already
+        providing `.isError()`/`.registers`."""
+        # Support pyModbusTCP-style clients: set unit id if supported, then read.
+        set_unit = getattr(self.client, "unit_id", None)
+        if hasattr(self.client, "unit_id"):
+            try:
+                self.client.unit_id = unit
+            except Exception:
+                pass
+
+        raw = self.client.read_holding_registers(address, count)
+
+        if isinstance(raw, list) or raw is None:
+            return _ReadResult(raw)
+
+        # Already an object exposing isError()/registers (e.g. test doubles).
+        return raw
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self._read_holding_registers(address, count, self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record
+```
+
+### FILENAME: registers.py
+```python
+"""registers -- register map and word decoding for a Modbus power meter.
+
+Decodes big-endian 16-bit register words into engineering values. Kept separate from
+the transport so that decoding is reusable and independently testable.
+"""
+import struct
+
+# name -> (start address, word count, encoding, scale)
+REGISTERS = {
+    "voltage": (0x0000, 2, "f32", 1.0),
+    "current": (0x0002, 2, "f32", 1.0),
+    "power":   (0x0004, 2, "f32", 1.0),
+    "energy":  (0x0006, 2, "u32", 0.001),  # Wh -> kWh
+}
+
+
+def decode(encoding: str, words, scale: float) -> float:
+    """Decode a sequence of 16-bit words into a scaled engineering value."""
+    raw = b"".join(struct.pack(">H", w & 0xFFFF) for w in words)
+    if encoding == "f32":
+        value = struct.unpack(">f", raw)[0]
+    elif encoding == "u32":
+        value = struct.unpack(">I", raw)[0]
+    else:
+        raise ValueError(f"unknown encoding: {encoding}")
+    return value * scale
+```
+
+=== EVIDENCE FROM RUNNING YOUR ATTEMPT ===
+[PYTEST OUTPUT]
+.F.                                                                      [100%]
+=================================== FAILURES ===================================
+_________________________ test_reads_full_measurement __________________________
+
+    def test_reads_full_measurement():
+        client = FakeClient({
+            0x0000: _words(">f", 230.0),   # voltage
+            0x0002: _words(">f", 5.0),     # current
+            0x0004: _words(">f", 1150.0),  # power
+            0x0006: _words(">I", 42000),   # energy Wh -> 42.0 kWh
+        })
+        rec = MeterReader(client=client, unit=3).read_measurement()
+        assert abs(rec["voltage"] - 230.0) < 1e-6
+        assert abs(rec["energy"] - 42.0) < 1e-6
+>       assert client.reads[0] == (0x0000, 2, 3)  # unit threaded through
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (0, 2, 1) == (0, 2, 3)
+E         
+E         At index 2 diff: 1 != 3
+E         Use -v to get more diff
+
+test_modbus_meter_reader.py:50: AssertionError
+=========================== short test summary info ============================
+FAILED test_modbus_meter_reader.py::test_reads_full_measurement - assert (0, ...
+1 failed, 2 passed in 0.03s

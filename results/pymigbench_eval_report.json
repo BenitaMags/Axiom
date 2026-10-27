@@ -1,0 +1,56 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": false,
+    "seed_target": true,
+    "require_approval": false,
+    "max_cases": 20
+  },
+  "metrics": {
+    "total_cases": 20,
+    "errored_cases": 2,
+    "detection_rate_pct": 61.11,
+    "detection_n": 18,
+    "recommendation_accuracy_pct": null,
+    "recommendation_scoreable_n": 0,
+    "connector_invoked_n": 0,
+    "verifier_clean_rate_pct": null,
+    "verifier_n": 0,
+    "by_domain": {
+      "HTTP Clients": {
+        "n": 5,
+        "detection_rate_pct": 20.0
+      },
+      "API wrapper": {
+        "n": 3,
+        "detection_rate_pct": 66.67
+      },
+      "Utility": {
+        "n": 3,
+        "detection_rate_pct": 66.67
+      },
+      "Cryptography": {
+        "n": 1,
+        "detection_rate_pct": 0.0
+      },
+      "Database": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "Filesystem&Crypto": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "Web Framework": {
+        "n": 1,
+        "detection_rate_pct": 100.0
+      },
+      "File reader/writer": {
+        "n": 3,
+        "detection_rate_pct": 100.0
+      }
+    }
+  },
+  "elapsed_seconds": 720.850282907486
+}

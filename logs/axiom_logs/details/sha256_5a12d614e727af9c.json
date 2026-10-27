@@ -1,0 +1,36 @@
+{
+  "role": "email/notification sending backend",
+  "winner": "apprise",
+  "original": "smtplib",
+  "score": {
+    "speed": 0.049,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.114,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.089,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'apprise' wins 'email/notification sending backend'. Confidence: HIGH. Total: 0.089 (speed=0.049, mem=0.114, sec=None, api=0.1). Migration note: smtplib.SMTP().sendmail(sender, recipients, message) is a raw MIME/RFC822 string send; apprise.notify() takes structured title/body arguments and does not accept a preformatted raw email string, so message construction logic must be rewritten",
+  "confidence": "HIGH",
+  "used_apis": [
+    "SMTP",
+    "sendmail"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

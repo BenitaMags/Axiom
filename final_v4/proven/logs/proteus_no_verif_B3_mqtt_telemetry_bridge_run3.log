@@ -1,0 +1,149 @@
+$ run_axiom_arms.py --config proteus_no_verif --program B3_mqtt_telemetry_bridge --runs 1 --start-run 3
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_proven.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-B3_mqtt_telemetry_bridge-t8y911rj/bridge.py
+                            Discovered Imports                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names             ┃ API Calls Used    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│    7 │ mqtt_config      │ —     │ BridgeConfig      │ —                 │
+│    8 │ telemetry        │ —     │ encode, topic_for │ topic_for, encode │
+│   12 │ paho.mqtt.client │ mqtt  │ —                 │ Client            │
+└──────┴──────────────────┴───────┴───────────────────┴───────────────────┘
+
+✓ Found 3 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Skipping 2 first-party module(s), not dependencies: mqtt_config, telemetry
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                  Security Scan Results                                                   
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package          ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                        ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho → paho-mqtt │ 2.1.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ PyPI distribution: paho-mqtt │
+└──────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴──────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: mqtt_config, paho, telemetry
+Discovered candidates:
+  paho -> gmqtt, amqtt, asyncio-mqtt
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,518  output: 806  latency: 8475ms
+Discovery leads not advanced to an equivalence group after file/API fit review: paho: amqtt
+Equivalence Groups Found
+└── MQTT client for publishing telemetry over MQTT broker
+    ├── Candidates : paho-mqtt, asyncio-mqtt, gmqtt
+    ├── Used APIs  : mqtt.Client, client.connect, client.publish
+    ├── Pitfalls   : paho-mqtt is synchronous and callback/thread-driven; asyncio-mqtt and gmqtt require an asyncio event loop and async/await syntax 
+    │   throughout the calling code; Connection lifecycle differs: asyncio-mqtt uses 'async with Client(...) as client' context managers instead of explicit 
+    │   connect()/disconnect(); publish() return values differ: paho returns a MQTTMessageInfo with .rc, async clients often return None or raise on failure 
+    │   instead of exposing an rc code; The current code calls the MQTT client synchronously inside publish_reading/publish_batch, so migrating requires 
+    │   converting these methods to async and updating all call sites; Dependency injection pattern (client=None -> _default_client) needs to be adapted for an
+    │   async client factory (e.g., async context manager instead of eager construction)
+    ├── Constraints: requires_connector
+    └── paho-mqtt is used here as a synchronous, callback-based MQTT client to connect and publish telemetry readings. asyncio-mqtt (built on paho-mqtt but 
+        exposing an async context-manager API) and gmqtt (a native asyncio MQTT client) serve the same functional role of publishing MQTT messages to a broker 
+        and could substitute for paho-mqtt at the architectural level, though not as a drop-in without an async rewrite. amqtt is excluded as it is primarily 
+        geared toward broker/server implementations rather than being a common client substitute in this pattern, though it could still serve a similar purpose
+        if verified.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Reusing pinned source security evidence: paho-mqtt ← paho_mqtt
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+                Candidate Security Scan                
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package      ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ asyncio-mqtt │ 0.16.2  │ LOW  │ AVAILABLE │    0.82 │
+│ gmqtt        │ 0.7.0   │ LOW  │ AVAILABLE │    0.90 │
+└──────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠦ ✓ asyncio-mqtt
+⠦ ✓ gmqtt       
+⠦ ✓ paho-mqtt   
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Available ┃ Import (3 runs) ┃                                        Runtime API (real probe) ┃ Memory (KB) ┃ Notes                          ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho-mqtt    │     ✓     │          0.6 ms │   UNMEASURED — No registered side-effect-free runtime probe for │           7 │                                │
+│              │           │                 │   mqtt.Client, client.connect, client.publish; an integration f │             │                                │
+│ gmqtt        │     ✓     │         62.1 ms │   UNMEASURED — No registered side-effect-free runtime probe for │         321 │                                │
+│              │           │                 │   mqtt.Client, client.connect, client.publish; an integration f │             │                                │
+│ asyncio-mqtt │     ✗     │               — │   UNMEASURED — No registered side-effect-free runtime probe for │           — │ No module named 'asyncio-mqtt' │
+│              │           │                 │   mqtt.Client, client.connect, client.publish; an integration f │             │                                │
+└──────────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────────────────┴─────────────┴────────────────────────────────┘
+
+✓ Profiled 3 package(s), 2 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: baca679f
+  Performance evidence omitted for this group; no real, comparable isolated measurement exists for: asyncio-mqtt (neutral_unattempted).
+  API compat tokens — input: 282  output: 69  latency: 1598ms
+                                                        AXIOM Optimization Decisions                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                  ┃ Original  ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ MQTT client for publishing telemetry over MQTT broker │ paho-mqtt │ gmqtt  │ LOW   │ —     │ —      │ 0.895    │ 0.1 │ 0.583 │ ✓          │
+└───────────────────────────────────────────────────────┴───────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  paho-mqtt  →  gmqtt  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: paho-mqtt → gmqtt
+  Found 1 call site(s):
+    L14: client = mqtt.Client(client_id=cfg.client_id)
+  Tokens — in:2,295 out:1,836 latency:20676ms
+  ⚠ connector analysis cited unselected candidate(s) asyncio-mqtt while the locked target is gmqtt (import gmqtt); rejecting this analysis.
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 37 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ bridge                                         │
+│ Lines (original → variant)  │ 37 → 29                                        │
+│ Requested lines             │ 29                                             │
+│ Achieved lines              │ 29                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:bridge_support.py       │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.2328                                         │
+│ diversity: ast_structural   │ 0.3682  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.5424                                         │
+│ diversity: cfg_shape        │ 1.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.6841  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 5.2s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  verifier reverted bridge.py; discarding the isomorph variant of the rejected patch
+B3_mqtt_telemetry_bridge         3       3/3     N    Y      2      4     1.0   53.7s
+
+migration_success 0/1 (0%)
+rows appended to results_proven.csv

@@ -1,0 +1,22 @@
+{
+  "role": "non-cryptographic checksumming",
+  "winner": "hashlib",
+  "original": "hashlib",
+  "score": {
+    "speed": 1.0,
+    "memory": 1.0,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "security": 0.76,
+    "total": 0.952
+  },
+  "rationale": "'hashlib' wins 'non-cryptographic checksumming'. Confidence: LOW. Total: 0.952 (speed=1.0, mem=1.0, sec=0.76, api=1.0). Crypto veto: excluded xxhash (non-cryptographic hash, but role requires crypto-grade hashing).. Migration note: xxhash has different API: xxhash.xxh64(data).hexdigest() vs hashlib.md5(data).hexdigest()",
+  "confidence": "LOW",
+  "used_apis": [
+    "md5"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [
+    "xxhash"
+  ]
+}

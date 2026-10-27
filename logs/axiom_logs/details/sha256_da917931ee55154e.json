@@ -1,0 +1,40 @@
+{
+  "role": "finite-state machine engine for managing states/transitions",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.853,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state machine engine for managing states/transitions'. Confidence: LOW. Total: 0.853 (speed=None, mem=None, sec=0.895, api=1.0). Migration note: transitions' Machine(model=self,...) dynamically attaches methods (start_fill, trip, etc.) to the instance; python-statemachine and automat require states/transitions to be declared as class attributes/decorators on the owning class itself, not injected post-hoc",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine",
+    "add_transition",
+    "model injection (state, trip, etc.)",
+    "conditions=",
+    "after=",
+    "wildcard '*' transitions"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,346 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": null,
+    "case_offset": 0,
+    "case_filter": "kafka"
+  },
+  "metrics": {
+    "total_cases": 2,
+    "errored_cases": 0,
+    "detection_rate_pct": 50.0,
+    "detection_n": 2,
+    "target_selection_rate_pct": 100.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 0,
+    "verified_ground_truth_rate_pct": 0.0,
+    "execution_ready_n": 0,
+    "verified_ground_truth_rate_ready_pct": null,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "environment_incomplete": 1,
+      "resolver_miss": 1
+    },
+    "result_categories": {
+      "not_verified_or_not_adjudicated": 2
+    },
+    "verified_alternative_runtime_efficiency_superior_n": 0,
+    "verified_alternative_runtime_efficiency_unproven_n": 0,
+    "connector_invoked_n": 1,
+    "verification_environment_incomplete_n": 1,
+    "verification_environment_incomplete_by_status": {
+      "blocked": 1
+    },
+    "verifier_clean_rate_pct": null,
+    "verifier_n": 0,
+    "repair_cases_n": 0,
+    "repair_cycle_total": 0,
+    "repair_cycles_per_case": 0.0,
+    "repair_cycles_per_repaired_case": null,
+    "verified_after_repair_n": 0,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {},
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 2,
+    "runtime_measured_package_case_n": 0,
+    "runtime_measurement_coverage_pct": 0.0,
+    "runtime_measured_probe_n": 0,
+    "runtime_probe_status_counts": {
+      "unsupported": 2
+    },
+    "by_domain": {
+      "HTTP Clients": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      },
+      "API wrapper": {
+        "n": 1,
+        "detection_rate_pct": 0.0,
+        "verified_ground_truth_rate_pct": 0.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 2,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "result_category_definitions": {
+    "pymigbench_exact_verified": "AXIOM produced and verified the same target migration recorded by PyMigBench.",
+    "verified_alternative": "AXIOM verified a different target for the same source role. A runtime-efficiency claim additionally requires actual selected-target API use and one shared measured semantic runtime probe across source, reference target, and alternative.",
+    "rejected_after_repair_budget": "A selected migration remained unaccepted after the globally bounded verifier repair budget was exhausted.",
+    "not_verified_or_not_adjudicated": "No verified migration claim is made. category_reason and detailed outcome distinguish no-change, environment, resolver, provider, and other causes."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "adapter_runtime": "Optional timing of a recognised, side-effect-free Connector wrapper. scope='adapter_only' measures generated application glue and is never used as selected-package runtime evidence.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 172.79038071632385,
+  "results": [
+    {
+      "migration_id": "kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5",
+      "repo": "svenskaspel/locust-plugins",
+      "domain": "HTTP Clients",
+      "source": "kafka",
+      "target": "confluent-kafka",
+      "file_path": "locust_plugins/kafka.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "locustio>=1.0",
+        "psycogreen",
+        "psycopg2-binary",
+        "websocket-client",
+        "python-dateutil",
+        "pymongo",
+        "kafka-python"
+      ],
+      "base_requirement_count": 7,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "confluent-kafka",
+      "attempted_axiom_winner": "confluent-kafka",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "confluent-kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 132.268,
+          "memory_kb": 523.9,
+          "profile_detail": "import module: confluent_kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "send",
+                "flush",
+                "add_callback",
+                "add_errback"
+              ]
+            }
+          }
+        },
+        "kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 461.017,
+          "memory_kb": 11997.3,
+          "profile_detail": "import module: kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "send",
+                "flush",
+                "add_callback",
+                "add_errback"
+              ]
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": "3.6",
+        "python_constraint": ">=3.6, <4",
+        "selected_python": "/usr/bin/python3",
+        "selected_python_version": "3.9",
+        "target_distribution": "confluent-kafka",
+        "target_version": "auto",
+        "resolved_target_version": "2.15.0",
+        "target_requirement": "confluent-kafka",
+        "requirement_count": 7,
+        "requirement_file_count": 0,
+        "python_evidence": [
+          "setup.py python_requires: >=3.6, <4"
+        ],
+        "warnings": [],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "confluent-kafka": {
+            "distribution": "confluent-kafka",
+            "version": "2.15.0",
+            "install_spec": "confluent-kafka==2.15.0",
+            "selection": "latest_compatible_non_yanked",
+            "python": "3.9",
+            "security_status": "available",
+            "risk_level": "LOW"
+          }
+        }
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": "Verification environment incomplete: baseline import smoke failed: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-0d_2u5ca/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(\nTraceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-c3n71afp/project/locust_plugins/kafka.py\", line 5, in <module>\n    from locust.wait_time import constant\nModuleNotFoundError: No module named 'locust.wait_time'\n"
+    },
+    {
+      "migration_id": "kafka-python__confluent-kafka__openstack/oslo.messaging__5a842ae1",
+      "repo": "openstack/oslo.messaging",
+      "domain": "API wrapper",
+      "source": "kafka-python",
+      "target": "confluent-kafka",
+      "file_path": "oslo_messaging/_drivers/impl_kafka.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "pbr!=2.1.0,>=2.0.0",
+        "futurist>=1.2.0",
+        "oslo.config>=5.2.0",
+        "oslo.log>=3.36.0",
+        "oslo.utils>=3.33.0",
+        "oslo.serialization!=2.19.1,>=2.18.0",
+        "oslo.service!=1.28.1,>=1.24.0",
+        "oslo.i18n>=3.15.3",
+        "stevedore>=1.20.0",
+        "debtcollector>=1.2.0",
+        "monotonic>=0.6;python_version<'3.3'",
+        "six>=1.10.0",
+        "cachetools>=2.0.0",
+        "WebOb>=1.7.1",
+        "PyYAML>=3.12",
+        "amqp>=2.3.0",
+        "kombu!=4.0.2,>=4.0.0",
+        "oslo.middleware>=3.31.0"
+      ],
+      "base_requirement_count": 18,
+      "base_requirement_recovery_errors": [],
+      "detected_group": false,
+      "recommended_target": null,
+      "scoreable_full_pipeline": false,
+      "axiom_winner": null,
+      "attempted_axiom_winner": null,
+      "attempted_selection_status": "no_decision",
+      "attempted_selection_count": 0,
+      "connector_ran": false,
+      "connector_ever_ran": false,
+      "verifier_route": null,
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {},
+      "environment_plan": {
+        "interpreter_status": "interpreter_unavailable",
+        "environment_backend": "docker_recommended",
+        "requested_python": "auto",
+        "detected_python": "3.5",
+        "python_constraint": ">=3.5,<3.6",
+        "selected_python": null,
+        "selected_python_version": null,
+        "target_distribution": "confluent-kafka",
+        "target_version": "auto",
+        "resolved_target_version": null,
+        "target_requirement": "confluent-kafka",
+        "requirement_count": 18,
+        "requirement_file_count": 1,
+        "python_evidence": [
+          "tox.ini envlist: py35"
+        ],
+        "warnings": [
+          "Project declares Python >=3.5,<3.6, but no matching local interpreter was found. Docker is available for an isolated fallback."
+        ],
+        "recovery_hints": [
+          "Run AXIOM inside a matching container image, or install the declared local interpreter before retrying.",
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {}
+      },
+      "verifier_passed_clean": false,
+      "target_infeasibility_evidence": [],
+      "patch_changed": false,
+      "verification_status": "not_run",
+      "verification_environment_status": "unknown",
+      "selection_status": "no_decision",
+      "outcome": "resolver_miss",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "result_category": "not_verified_or_not_adjudicated",
+      "category_reason": "Terminal outcome: resolver_miss.",
+      "alternative_efficiency": {},
+      "adapter_runtime": [],
+      "repair_budget_exhausted": false,
+      "error": null
+    }
+  ]
+}

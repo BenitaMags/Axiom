@@ -1,0 +1,751 @@
+migration_id,repo,domain,source,target,file_path,verification_scope,base_requirement_count,base_requirement_recovery_errors,detected_group,recommended_target,axiom_winner,attempted_axiom_winner,attempted_selection_status,attempted_selection_count,connector_ran,connector_ever_ran,verifier_route,repair_cycle_count,repair_history,final_verifier_feedback,profiler_package_count,runtime_measured_package_count,runtime_measurement_coverage_pct,runtime_measured_probe_count,runtime_probe_status_counts,environment_plan_status,environment_backend,environment_selected_python,environment_selected_python_version,environment_detected_python,environment_target_version,environment_resolved_target_version,environment_plan_diagnostics,verifier_passed_clean,target_infeasibility_evidence,patch_changed,verification_status,verification_environment_status,selection_status,outcome,result_category,category_reason,alternative_efficiency,adapter_runtime,repair_budget_exhausted,verified_ground_truth,verified_alternative,error
+kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5,svenskaspel/locust-plugins,HTTP Clients,kafka,confluent-kafka,locust_plugins/kafka.py,component_runtime,7,,True,True,confluent-kafka,confluent-kafka,exact_target,1,True,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/usr/bin/python3,3.9,3.6,auto,2.15.0,"{""python_evidence"": [""setup.py python_requires: >=3.6, <4""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""confluent-kafka"": {""distribution"": ""confluent-kafka"", ""install_spec"": ""confluent-kafka==2.15.0"", ""python"": ""3.9"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.15.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline import smoke failed: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-w7qp8fph/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-c54soxol/project/locust_plugins/kafka.py"", line 5, in <module>
+    from locust.wait_time import constant
+ModuleNotFoundError: No module named 'locust.wait_time'
+"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/application/notifier/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,3.43.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""slack-sdk"": {""distribution"": ""slack-sdk"", ""install_spec"": ""slack-sdk==3.43.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""3.43.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-t_l9lf_x/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-t_l9lf_x/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-oa_4hps6/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-oa_4hps6/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/extra/slack/is_slack_available.py,component_runtime,15,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": []}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+slackclient__slack-sdk__alice-biometrics/petisco__9abf7b1f,alice-biometrics/petisco,API wrapper,slackclient,slack-sdk,petisco/legacy/notifier/infrastructure/slack/slack_notifier.py,component_runtime,15,,True,True,slack-sdk,slack-sdk,exact_target,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,3.43.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""slack-sdk"": {""distribution"": ""slack-sdk"", ""install_spec"": ""slack-sdk==3.43.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""3.43.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-auatz9vu/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-auatz9vu/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-2khvbzej/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-2khvbzej/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+eventlet__gevent__phuks-co/throat__9a289609,phuks-co/throat,Utility,eventlet,gevent,throat.py,component_runtime,35,,True,True,gevent,gevent,exact_target,1,True,True,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,26.7.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""gevent"": {""distribution"": ""gevent"", ""install_spec"": ""gevent==26.7.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""26.7.0""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: kup for cairo with method 'pkg-config' failed: Pkg-config for machine host machine not found. Giving up.
+      
+            A full log can be found at /private/tmp/pip-install-rg1c0tdp/pycairo_3d36a34604a54344b9f49cce7894568d/.mesonpy-38xknhii/meson-logs/meson-log.txt
+            [end of output]
+      
+        note: This error originates from a subprocess, and is likely not a problem with pip.
+      error: metadata-generation-failed
+      
+      × Encountered error while generating package metadata.
+      ╰─> See above for output.
+      
+      note: This is an issue with the package mentioned above, not pip.
+      hint: See above for details.
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× pip subprocess to install build dependencies did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-tl2dn1tl/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-tl2dn1tl/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pycrypto__pycryptodome__hhyo/archery__e192ca69,hhyo/archery,Cryptography,pycrypto,pycryptodome,sql/utils/aes_decryptor.py,component_runtime,16,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": []}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+leveldb__plyvel__ethereum/py-evm__5c273fff,ethereum/py-evm,Database,leveldb,plyvel,evm/db/backends/level.py,component_runtime,13,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",interpreter_unavailable,docker_recommended,,,3.5,auto,,"{""python_evidence"": [""tox.ini envlist: py35""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""lmdb"": {""distribution"": ""lmdb"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""plyvel"": {""distribution"": ""plyvel"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""python-rocksdb"": {""distribution"": ""python-rocksdb"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Project declares Python >=3.5,<3.6, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: lmdb: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; plyvel: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; python-rocksdb: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+requests__aiohttp__usergeteam/userge-plugins__80a54344,usergeteam/userge-plugins,HTTP Clients,requests,aiohttp,plugins/info.py,component_runtime,20,,False,False,httpx,httpx,alternative,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: pylint: unavailable; bandit: unavailable; pylint: unavailable; bandit: unavailable; baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-xvb9wcso/project/plugins/info.py"", line 5, in <module>
+    import spamwatch
+ModuleNotFoundError: No module named 'spamwatch'
+"
+gevent__eventlet__miguelgrinberg/flask-socketio__883e73e5,miguelgrinberg/flask-socketio,Utility,gevent,eventlet,example/app.py,component_runtime,3,,True,True,eventlet,eventlet,exact_target,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,0.41.1,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""eventlet"": {""distribution"": ""eventlet"", ""install_spec"": ""eventlet==0.41.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.41.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline:gevent: unsupported operand type(s) for >>: 'builtin_function_or_method' and '_io.TextIOWrapper'. Did you mean ""print(<message>, file=<output_stream>)""?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for gevent
+ERROR: Could not build wheels for gevent, which is required to install pyproject.toml-based projects
+
+[same-major-version fallback also failed: Compiler.Errors.CompileError: src/gevent/libev/corecext.pyx
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/installation.py,component_runtime,4,"Cannot parse setup.py dependency metadata 'setup.py': Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 200)",True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""fasteners"": {""distribution"": ""fasteners"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""filelock"": {""distribution"": ""filelock"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""portalocker"": {""distribution"": ""portalocker"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in setup.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: fasteners: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; filelock: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; portalocker: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+lockfile__fasteners__paratoolsinc/taucmdr__2a2c28ae,paratoolsinc/taucmdr,Filesystem&Crypto,lockfile,fasteners,packages/tau/cf/software/tau_installation.py,component_runtime,4,"Cannot parse setup.py dependency metadata 'setup.py': Missing parentheses in call to 'print'. Did you mean print(...)? (<unknown>, line 200)",False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Python-2-style syntax detected in setup.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+cheetah3__jinja2__shingetsu/saku__d1ad50a9,shingetsu/saku,Web Framework,cheetah3,jinja2,shingetsu/template.py,component_runtime,0,,True,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""Genshi"": {""distribution"": ""Genshi"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""Jinja2"": {""distribution"": ""Jinja2"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""Mako"": {""distribution"": ""Mako"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in shingetsu/thread_cgi.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback."", ""No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: Genshi: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; Jinja2: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; Mako: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/fields.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""not_comparable"": 2}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""ipaddress"": {""distribution"": ""ipaddress"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: ipaddress: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/forms.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""not_comparable"": 2}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""ipaddress"": {""distribution"": ""ipaddress"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: ipaddress: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+netaddr__py2-ipaddress__jimfunk/django-postgresql-netfields__a5a11184,jimfunk/django-postgresql-netfields,HTTP Clients,netaddr,py2-ipaddress,netfields/managers.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""not_comparable"": 2}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""ipaddress"": {""distribution"": ""ipaddress"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: ipaddress: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/cli.py,component_runtime,85,,True,True,,pyyaml,exact_target,1,True,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-anyk3lp2/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 8, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-anyk3lp2/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _fix_yaml_import were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-m7lk6qsu/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 8, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-m7lk6qsu/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-fgo25pdf/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 8, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-fgo25pdf/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cb4llvnq/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 8, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cb4llvnq/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cb4llvnq/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 8, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cb4llvnq/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML parsing and loading""], ""route"": ""connector""}",2,1,50.0,1,"{""measured"": 1, ""not_comparable"": 1}",ready,local,/usr/bin/python3,3.9,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.9"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],False,rejected,ready,no_migration,verification_rejected,rejected_after_repair_budget,The migration was not accepted after the verifier's bounded repair budget was exhausted.,{},[],True,False,False,"Verifier rejected generated adapter: line 1: New bandit finding after migration: B506:Use of unsafe yaml load. Allows instantiation of arbitrary objects. Consider yaml.safe_load().; line 1: Patched import smoke test failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-gsg8jfq1/project/tools/c7n_mailer/c7n_mailer/cli.py"", line 8, in <module>
+    from c7n_mailer import deploy, utils
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-gsg8jfq1/project/tools/c7n_mailer/c7n_mailer/utils.py"", line 28, in <module>
+    from ruamel import yaml
+ModuleNotFoundError: No module named 'ruamel'
+"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/replay.py,component_runtime,85,,True,True,,pyyaml,exact_target,1,True,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-74bhfpk6/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-74bhfpk6/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-74bhfpk6/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-nq1onoz6/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-nq1onoz6/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-nq1onoz6/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-1u06t2rt/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-1u06t2rt/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-1u06t2rt/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cosssa46/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cosssa46/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-cosssa46/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/replay.py\"", line 19, in <module>\n    from c7n_mailer.cli import CONFIG_SCHEMA\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/cli.py\"", line 10, in <module>\n    from c7n_mailer import deploy, utils\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0yxp64pn/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 28, in <module>\n    from ruamel import yaml\nModuleNotFoundError: No module named 'ruamel'\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML configuration parsing""], ""route"": ""connector""}",3,2,66.67,2,"{""measured"": 2, ""not_comparable"": 1}",ready,local,/usr/bin/python3,3.9,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""oyaml"": {""distribution"": ""oyaml"", ""install_spec"": ""oyaml==1.0"", ""python"": ""3.9"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""1.0""}, ""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.9"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],False,rejected,ready,no_migration,verification_rejected,rejected_after_repair_budget,The migration was not accepted after the verifier's bounded repair budget was exhausted.,{},[],True,False,False,"Verifier rejected generated adapter: line 1: yaml does not expose yaml; line 1: New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'; line 1: Patched import smoke test failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0_1akk3x/project/tools/c7n_mailer/c7n_mailer/replay.py"", line 19, in <module>
+    from c7n_mailer.cli import CONFIG_SCHEMA
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0_1akk3x/project/tools/c7n_mailer/c7n_mailer/cli.py"", line 10, in <module>
+    from c7n_mailer import deploy, utils
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-0_1akk3x/project/tools/c7n_mailer/c7n_mailer/utils.py"", line 28, in <module>
+    from ruamel import yaml
+ModuleNotFoundError: No module named 'ruamel'
+"
+ruamel.yaml__pyyaml__cloud-custodian/cloud-custodian__12e3e808,cloud-custodian/cloud-custodian,File reader/writer,ruamel.yaml,pyyaml,tools/c7n_mailer/c7n_mailer/utils.py,component_runtime,85,,True,True,,pyyaml,exact_target,1,True,True,proceed,5,"[{""cycle"": 1, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-rodvd_nu/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-nt1eqcgw/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-197lhqn5/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-n93z0cqf/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}, {""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ie4hzr_a/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}]","{""cycle"": 5, ""errors"": [{""line"": 1, ""message"": ""yaml does not expose yaml""}, {""line"": 1, ""message"": ""New mypy finding after migration: Library stubs not installed for \""yaml\""  [import-untyped]""}, {""line"": 1, ""message"": ""New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'""}, {""line"": 1, ""message"": ""Patched import smoke test failed: Traceback (most recent call last):\n  File \""<string>\"", line 14, in <module>\n  File \""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-ie4hzr_a/project/tools/c7n_mailer/c7n_mailer/utils.py\"", line 13, in <module>\n    from yaml import yaml\nImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)\n""}], ""failure_class"": ""patch_or_static"", ""max_cycles"": 5, ""roles"": [""YAML serialization""], ""route"": ""connector""}",2,1,50.0,1,"{""measured"": 1, ""not_comparable"": 1}",ready,local,/usr/bin/python3,3.9,3.6,auto,6.0.3,"{""python_evidence"": [""pyproject Poetry python: ^3.6"", ""tox.ini envlist: py27"", ""Dockerfile Python image: 3.8"", "".github/workflows/ci-master.yml python-version: 3.6""], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""pyyaml"": {""distribution"": ""pyyaml"", ""install_spec"": ""pyyaml==6.0.3"", ""python"": ""3.9"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.0.3""}}, ""warnings"": [""Conflicting Python evidence: tox.ini envlist: py27""]}",False,[],False,rejected,ready,no_migration,verification_rejected,rejected_after_repair_budget,The migration was not accepted after the verifier's bounded repair budget was exhausted.,{},[],True,False,False,"Verifier rejected generated adapter: line 1: yaml does not expose yaml; line 1: New mypy finding after migration: Library stubs not installed for ""yaml""  [import-untyped]; line 1: New pylint finding after migration: no-name-in-module:No name 'yaml' in module 'yaml'; line 1: Patched import smoke test failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-phd103fq/project/tools/c7n_mailer/c7n_mailer/utils.py"", line 13, in <module>
+    from yaml import yaml
+ImportError: cannot import name 'yaml' from 'yaml' (/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-hwtdahgm/lib/python3.9/site-packages/yaml/__init__.py)
+"
+pil__pillow__shoebot/shoebot__0171fb9f,shoebot/shoebot,Image processing,pil,pillow,shoebot/data/img.py,component_runtime,6,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Python-2-style syntax detected in shoebot/kgp.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+argparse__click__grahame/sedge__3badf078,grahame/sedge,Utility,argparse,click,sedge/cli.py,component_runtime,1,,True,,,,no_migration,1,False,False,proceed,0,[],{},3,2,66.67,2,"{""measured"": 2, ""unsupported"": 1}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,8.4.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""click"": {""distribution"": ""click"", ""install_spec"": ""click==8.4.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""8.4.2""}, ""typer"": {""distribution"": ""typer"", ""install_spec"": ""typer==0.27.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.27.0""}}, ""warnings"": []}",False,[],False,not_applicable,ready,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+requests__aiohttp__talkpython/async-techniques-python-course__ab4e5fdd,talkpython/async-techniques-python-course,HTTP client/server,requests,aiohttp,src/04-asyncio/web_scraping/async_scrape/program.py,component_runtime,0,,False,False,httpx,httpx,alternative,1,True,True,proceed,4,"[{""cycle"": 1, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_requests_get_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client""], ""route"": ""connector""}, {""cycle"": 2, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: connector edit removed source import 'requests' while injecting the wrapper; import replacement is reserved for Connector's own post-processing rewrite \u2014 leave the import statement unchanged and only add/modify the wrapper function(s)""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client""], ""route"": ""connector""}, {""cycle"": 3, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_requests_get_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client""], ""route"": ""connector""}, {""cycle"": 4, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_requests_get_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client""], ""route"": ""connector""}]","{""cycle"": 4, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_requests_get_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client""], ""route"": ""connector""}",3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}, ""urllib3"": {""distribution"": ""urllib3"", ""install_spec"": ""urllib3==2.7.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.7.0""}}, ""warnings"": [""No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery.""]}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-un_f8tbi/project/src/04-asyncio/web_scraping/async_scrape/program.py"", line 2, in <module>
+    import bs4
+ModuleNotFoundError: No module named 'bs4'
+"
+ipaddr__netaddr__openstack/deb-designate__eb16b1e1,openstack/deb-designate,HTTP Clients,ipaddr,netaddr,designate/schema.py,component_runtime,19,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",interpreter_unavailable,docker_recommended,,,2.6,auto,,"{""python_evidence"": [""tox.ini envlist: py26"", ""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""ipaddress"": {""distribution"": ""ipaddress"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in tools/install_venv.py; use a Python 2 container/interpreter."", ""Conflicting Python evidence: legacy Python-2 syntax evidence"", ""Project declares Python >=2.6,<2.7, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: ipaddress: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+urllib3__requests__canonical/cloud-init__0fc887d9,canonical/cloud-init,HTTP Clients,urllib3,requests,cloudinit/url_helper.py,component_runtime,0,,True,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""requests"": {""distribution"": ""requests"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in tools/hacking.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback."", ""No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: requests: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,src/onixcheck/__main__.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""typer"": {""distribution"": ""typer"", ""install_spec"": ""typer==0.27.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.27.0""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+click__argparse__titusz/onixcheck__f17d1861,titusz/onixcheck,Utility,click,argparse,tests/test_onixcheck.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},2,0,0.0,0,"{""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""typer"": {""distribution"": ""typer"", ""install_spec"": ""typer==0.27.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.27.0""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/cpuload.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 5}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""logbook"": {""distribution"": ""logbook"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""loguru"": {""distribution"": ""loguru"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""python-json-logger"": {""distribution"": ""python-json-logger"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""structlog"": {""distribution"": ""structlog"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in probe_installer.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: logbook: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; loguru: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; python-json-logger: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; structlog: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/diskspace.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""loguru"": {""distribution"": ""loguru"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""python-json-logger"": {""distribution"": ""python-json-logger"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""structlog"": {""distribution"": ""structlog"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in probe_installer.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: loguru: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; python-json-logger: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; structlog: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/memory.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""loguru"": {""distribution"": ""loguru"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""python-json-logger"": {""distribution"": ""python-json-logger"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""structlog"": {""distribution"": ""structlog"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in probe_installer.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: loguru: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; python-json-logger: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; structlog: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/ping.py,component_runtime,3,,False,,,,no_migration,1,False,False,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 5}",interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""logbook"": {""distribution"": ""logbook"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""loguru"": {""distribution"": ""loguru"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""python-json-logger"": {""distribution"": ""python-json-logger"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}, ""structlog"": {""distribution"": ""structlog"", ""error"": ""Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend."", ""python"": null, ""security_status"": ""not_run"", ""selection"": ""blocked_environment_plan""}}, ""warnings"": [""Python-2-style syntax detected in probe_installer.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,environment_incomplete,target_version_unresolved,no_migration,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,Verification environment incomplete: target release unresolved: logbook: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; loguru: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; python-json-logger: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.; structlog: Cannot resolve target releases because the environment plan is interpreter_unavailable. Install/select a compatible project Python or use the declared container backend.
+logger__logging__prtg/pythonminiprobe__2b6a1aeb,prtg/pythonminiprobe,Logging,logger,logging,sensors/snmptraffic.py,component_runtime,3,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""legacy Python-2 syntax evidence""], ""recovery_hints"": [""Use a Python 2 container; a Python 3 virtual environment cannot reproduce this baseline."", ""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Python-2-style syntax detected in probe_installer.py; use a Python 2 container/interpreter."", ""Project declares Python >=2.7,<3, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+pycurl__requests__upstox/upstox-python__dce87602,upstox/upstox-python,HTTP Clients,pycurl,requests,upstox_api/api.py,component_runtime,5,,True,False,httpx,httpx,alternative,1,True,True,proceed,1,"[{""cycle"": 1, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_pycurl_post_token_wrapper, _axiom_pycurl_api_call_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client for REST API calls""], ""route"": ""connector""}]","{""cycle"": 1, ""errors"": [{""check"": ""patch_integrity"", ""line"": 1, ""message"": ""AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_pycurl_post_token_wrapper, _axiom_pycurl_api_call_wrapper were defined but never called \u2014 the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper""}], ""failure_class"": ""patch_generation"", ""max_cycles"": 5, ""roles"": [""synchronous HTTP client for REST API calls""], ""route"": ""connector""}",3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,2.34.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""httpx"": {""distribution"": ""httpx"", ""install_spec"": ""httpx==0.28.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.28.1""}, ""requests"": {""distribution"": ""requests"", ""install_spec"": ""requests==2.34.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.34.2""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: baseline import smoke failed: ders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:589: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[2] is not '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:598: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[5] is not '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:604: SyntaxWarning: ""is"" with 'str' literal. Did you mean ""==""?
+  if item[6] is '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:608: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[7] is not '' and item[7] is not '0':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:608: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[7] is not '' and item[7] is not '0':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:614: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[8] is not '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:620: SyntaxWarning: ""is not"" with 'str' literal. Did you mean ""!=""?
+  if item[9] is not '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:626: SyntaxWarning: ""is"" with 'str' literal. Did you mean ""==""?
+  if item[10] is '':
+/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py:630: SyntaxWarning: ""is"" with 'str' literal. Did you mean ""==""?
+  if item[11] is '':
+Traceback (most recent call last):
+  File ""<string>"", line 14, in <module>
+  File ""/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-h1jsurxp/project/upstox_api/api.py"", line 5, in <module>
+    import websocket, threading
+ModuleNotFoundError: No module named 'websocket'
+"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/base/model/Version.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-atzk3mdc/numpy_0d0fbe954de74a1eb172ccb0288cabee/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-atzk3mdc/numpy_0d0fbe954de74a1eb172ccb0288cabee/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-z3xaauy7/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-z3xaauy7/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/commons/model/Slot.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-cmw8ctfx/numpy_aaf19434c6c94221826a4541c29ba3b2/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-cmw8ctfx/numpy_aaf19434c6c94221826a4541c29ba3b2/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-z416167r/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-z416167r/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/device/model/Device.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-cpyio08z/numpy_b1f504dc1839417eb11d37e796bccd5f/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-cpyio08z/numpy_b1f504dc1839417eb11d37e796bccd5f/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-vy9dlpu1/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-vy9dlpu1/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/DialogSession.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-y727lr6c/numpy_39d444e4137d4c4cbea642ea1ced63ad/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-y727lr6c/numpy_39d444e4137d4c4cbea642ea1ced63ad/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-lt40h0ux/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-lt40h0ux/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/dialog/model/MultiIntent.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-u8q3xzmq/numpy_9580825f0e354754b7b95002105fc19b/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-u8q3xzmq/numpy_9580825f0e354754b7b95002105fc19b/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-4a50ei5y/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-4a50ei5y/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+attrs__dataclasses__project-alice-assistant/projectalice__f1fe8cb8,project-alice-assistant/projectalice,Utility,attrs,dataclasses,core/util/model/ThreadTimer.py,component_runtime,24,,True,True,dataclasses,dataclasses,exact_target,1,True,True,proceed,0,[],{},2,2,100.0,2,"{""measured"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""dataclasses"": {""distribution"": ""dataclasses"", ""python"": ""3.12"", ""risk_level"": ""N/A"", ""security_status"": ""not_applicable"", ""selection"": ""stdlib""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,exact_target,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 415, in <module>
+        File ""<string>"", line 394, in setup_package
+        File ""/private/tmp/pip-install-boscgkyo/numpy_42afd4dd636441dc8621f2af47617cf2/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-boscgkyo/numpy_42afd4dd636441dc8621f2af47617cf2/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: , line 110, in add_defaults
+          super().add_defaults()
+        File ""/private/tmp/pip-build-env-7rsefn54/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 245, in add_defaults
+          self._add_defaults_ext()
+        File ""/private/tmp/pip-build-env-7rsefn54/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py"", line 330, in _add_defaults_ext
+          self.filelist.extend(build_ext.get_source_files())
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        File ""<string>"", line 201, in get_source_files
+      AttributeError: 'build_ext' object has no attribute 'cython_sources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_base.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-fuur2y5s/numpy_785ff84d48cc475ab16b1ceb8d1e1f2b/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-fuur2y5s/numpy_785ff84d48cc475ab16b1ceb8d1e1f2b/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-r4rxtrx3/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-r4rxtrx3/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-r4rxtrx3/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_behavior.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ecephys.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-fza_8pwf/numpy_989c7fa813fe496f9fdc12e9a76da533/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-fza_8pwf/numpy_989c7fa813fe496f9fdc12e9a76da533/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-nfipozru/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-nfipozru/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-nfipozru/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_general.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-4tbx0jfz/numpy_b68b5883f3c348e1a8ad0628cb84b323/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-4tbx0jfz/numpy_b68b5883f3c348e1a8ad0628cb84b323/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-vfnsdn76/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-vfnsdn76/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-vfnsdn76/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_misc.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-sptgnoyc/numpy_aab7444bc7a644fca63e7d6b425da522/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-sptgnoyc/numpy_aab7444bc7a644fca63e7d6b425da522/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-z94vgwnz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-z94vgwnz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-z94vgwnz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/forms_ophys.py,component_runtime,17,,True,False,PyQt6,PyQt6,alternative,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 4}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,5.13.2,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide2"": {""distribution"": ""PySide2"", ""install_spec"": ""PySide2==5.13.2"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""5.13.2""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-3eq_8cyt/numpy_b2733a84ac86432dbd817d9f4c303ac0/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-3eq_8cyt/numpy_b2733a84ac86432dbd817d9f4c303ac0/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-g3lrdlyz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-g3lrdlyz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-g3lrdlyz/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/classes/tabs.py,component_runtime,17,,False,,,,no_migration,1,False,False,proceed,0,[],{},4,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],False,not_applicable,blocked,no_migration,no_migration_selected,not_verified_or_not_adjudicated,"AXIOM kept the original library; this is a deliberate no-change decision, not a rejected patch.",{},[],False,False,False,
+pyqt5__pyside2__catalystneuro/nwb-conversion-tools__a2ef3358,catalystneuro/nwb-conversion-tools,Utility,pyqt5,pyside2,nwbn_conversion_tools/gui/nwbn_conversion_gui.py,component_runtime,17,,False,False,PyQt6,PyQt6,alternative,1,True,True,proceed,0,[],{},3,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""PyQt6"": {""distribution"": ""PyQt6"", ""install_spec"": ""PyQt6==6.11.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.0""}, ""PySide6"": {""distribution"": ""PySide6"", ""install_spec"": ""PySide6==6.11.1"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""6.11.1""}}, ""warnings"": []}",False,[],True,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: base-requirements: build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 443, in <module>
+        File ""<string>"", line 422, in setup_package
+        File ""/private/tmp/pip-install-ypgpp501/numpy_a22546ba95074768b15873ea330857eb/numpy/distutils/__init__.py"", line 6, in <module>
+          from . import ccompiler
+        File ""/private/tmp/pip-install-ypgpp501/numpy_a22546ba95074768b15873ea330857eb/numpy/distutils/ccompiler.py"", line 111, in <module>
+          replace_method(CCompiler, 'find_executables', CCompiler_find_executables)
+                         ^^^^^^^^^
+      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+
+[same-major-version retry also failed: ^^^^^^^^^^^^^^^^^^^^
+        File ""/private/tmp/pip-build-env-w8un_s9f/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 301, in _get_build_requires
+          self.run_setup()
+        File ""/private/tmp/pip-build-env-w8un_s9f/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 520, in run_setup
+          super().run_setup(setup_script=setup_script)
+        File ""/private/tmp/pip-build-env-w8un_s9f/overlay/lib/python3.12/site-packages/setuptools/build_meta.py"", line 317, in run_setup
+          exec(code, locals())
+        File ""<string>"", line 12, in <module>
+      ModuleNotFoundError: No module named 'pkg_resources'
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+]"
+pep8__pycodestyle__schlamar/flake8-todo__fcd59c6c,schlamar/flake8-todo,Codestyle,pep8,pycodestyle,flake8_todo.py,component_runtime,0,,True,False,pycodestyle,ruff,alternative,3,True,True,proceed,2,"[{""cycle"": 1, ""errors"": [{""check"": ""target_identity"", ""line"": 1, ""message"": ""pep8\u2192ruff: connector analysis cited unselected candidate(s) pycodestyle while the locked target is ruff (import ruff)""}], ""failure_class"": ""decision_level"", ""max_cycles"": 5, ""roles"": [""Python style guide checker / linter plugin base""], ""route"": ""axiom""}, {""cycle"": 2, ""errors"": [{""check"": ""target_identity"", ""line"": 1, ""message"": ""pep8\u2192flake8: connector analysis cited unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)""}], ""failure_class"": ""decision_level"", ""max_cycles"": 5, ""roles"": [""Python style guide checker / linter plugin base""], ""route"": ""axiom""}]","{""cycle"": 2, ""errors"": [{""check"": ""target_identity"", ""line"": 1, ""message"": ""pep8\u2192flake8: connector analysis cited unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)""}], ""failure_class"": ""decision_level"", ""max_cycles"": 5, ""roles"": [""Python style guide checker / linter plugin base""], ""route"": ""axiom""}",4,2,50.0,2,"{""measured"": 2, ""unsupported"": 2}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,2.14.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""flake8"": {""distribution"": ""flake8"", ""install_spec"": ""flake8==7.3.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""7.3.0""}, ""pycodestyle"": {""distribution"": ""pycodestyle"", ""install_spec"": ""pycodestyle==2.14.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""2.14.0""}, ""ruff"": {""distribution"": ""ruff"", ""install_spec"": ""ruff==0.16.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.16.0""}}, ""warnings"": [""No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery.""]}",True,[],True,verified,ready,exact_target,ground_truth_verified,pymigbench_exact_verified,AXIOM selected PyMigBench's target and the final patch passed verification.,{},[],False,True,False,
+prettytable__tabulate__educationaltestingservice/skll__f870a659,educationaltestingservice/skll,Utility,prettytable,tabulate,skll/experiments.py,component_runtime,11,,True,False,rich,rich,alternative,1,True,True,proceed,0,[],{},5,0,0.0,0,"{""unsupported"": 3}",ready,local,/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12,3.12,,auto,0.10.0,"{""python_evidence"": [], ""recovery_hints"": [""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {""rich"": {""distribution"": ""rich"", ""install_spec"": ""rich==15.0.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""15.0.0""}, ""tabulate"": {""distribution"": ""tabulate"", ""install_spec"": ""tabulate==0.10.0"", ""python"": ""3.12"", ""risk_level"": ""LOW"", ""security_status"": ""available"", ""selection"": ""latest_compatible_non_yanked"", ""version"": ""0.10.0""}}, ""warnings"": []}",False,[],False,environment_incomplete,blocked,alternative,environment_incomplete,not_verified_or_not_adjudicated,"The required historical base/target environment could not be reproduced, so no migration verdict is claimed.",{},[],False,False,False,"Verification environment incomplete: numpy:      NameError: name 'CCompiler' is not defined. Did you mean: 'ccompiler'?
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+
+× Encountered error while generating package metadata.
+╰─> See above for output.
+
+note: This is an issue with the package mentioned above, not pip.
+hint: See above for details.
+; ruamel: longintrepr.h""
+                 ^~~~~~~~~~~~~~~
+      1 error generated.
+      error: command '/usr/bin/clang' failed with exit code 1
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  ERROR: Failed building wheel for ruamel.yaml
+ERROR: Could not build wheels for ruamel.yaml, which is required to install pyproject.toml-based projects
+"
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/common/exceptions.py,component_runtime,4,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/l3/l3_odl.py,component_runtime,4,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,
+neutron__neutron-lib__openstack/networking-odl__a40b9d90,openstack/networking-odl,Utility,neutron,neutron-lib,networking_odl/l3/l3_odl_v2.py,component_runtime,4,,False,,,,no_decision,0,False,False,,0,[],{},0,0,,0,{},interpreter_unavailable,docker_recommended,,,2.7,auto,,"{""python_evidence"": [""tox.ini envlist: py27""], ""recovery_hints"": [""Run AXIOM inside a matching container image, or install the declared local interpreter before retrying."", ""Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results.""], ""target_releases"": {}, ""warnings"": [""Project declares Python >=2.7,<2.8, but no matching local interpreter was found. Docker is available for an isolated fallback.""]}",False,[],False,not_run,unknown,no_decision,resolver_miss,not_verified_or_not_adjudicated,Terminal outcome: resolver_miss.,{},[],False,False,False,

@@ -1,0 +1,150 @@
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+This module contains a first-party, hand-rolled finite-state-machine engine
+(replacing the third-party `transitions` library). The transition table is
+declarative -- similar in spirit to `transitions.Machine` -- but the internal
+bookkeeping, dispatch, and evaluation order are implemented from scratch here.
+"""
+from alarms import interlock_ok
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+_WILDCARD = "*"
+
+
+class _TransitionRule:
+    """A single declarative transition edge understood by _StateEngine."""
+
+    __slots__ = ("trigger", "sources", "target", "guard_names", "callback_names")
+
+    def __init__(self, trigger, sources, target, guard_names, callback_names):
+        self.trigger = trigger
+        self.sources = sources
+        self.target = target
+        self.guard_names = guard_names
+        self.callback_names = callback_names
+
+    def matches(self, current_state):
+        return _WILDCARD in self.sources or current_state in self.sources
+
+
+class _StateEngine:
+    """A minimal reimplementation of the pieces of `transitions.Machine`
+    that this program relies on: named states, an initial state, triggers
+    that are bound as callables on a model object, optional guard conditions,
+    and optional after-callbacks.
+    """
+
+    def __init__(self, model, states, initial):
+        self.model = model
+        self.states = list(states)
+        self.current_state = initial
+        self._rules_by_trigger = {}
+
+        # expose current state as `model.state`
+        setattr(self.model, "state", self.current_state)
+
+        for name in self.states:
+            pass  # no per-state objects needed for this minimal engine
+
+    def add_transition(self, trigger, source, dest, conditions=None, after=None):
+        sources = source if isinstance(source, (list, tuple)) else [source]
+        sources = list(sources)
+
+        guard_names = []
+        if conditions is not None:
+            guard_names = list(conditions) if isinstance(conditions, (list, tuple)) else [conditions]
+
+        callback_names = []
+        if after is not None:
+            callback_names = list(after) if isinstance(after, (list, tuple)) else [after]
+
+        rule = _TransitionRule(trigger, sources, dest, guard_names, callback_names)
+        self._rules_by_trigger.setdefault(trigger, []).append(rule)
+
+        if not hasattr(self.model, trigger):
+            setattr(self.model, trigger, self._make_trigger_fn(trigger))
+
+    def _make_trigger_fn(self, trigger_name):
+        def _trigger(*args, **kwargs):
+            return self._fire(trigger_name, *args, **kwargs)
+        return _trigger
+
+    def _fire(self, trigger_name, *args, **kwargs):
+        candidates = self._rules_by_trigger.get(trigger_name, [])
+        current = self.current_state
+        for rule in candidates:
+            if not rule.matches(current):
+                continue
+            if not self._guards_pass(rule.guard_names):
+                continue
+            self._set_state(rule.target)
+            self._run_callbacks(rule.callback_names, *args, **kwargs)
+            return True
+        return False
+
+    def _guards_pass(self, guard_names):
+        for name in guard_names:
+            fn = getattr(self.model, name)
+            if not fn():
+                return False
+        return True
+
+    def _run_callbacks(self, callback_names, *args, **kwargs):
+        for name in callback_names:
+            fn = getattr(self.model, name)
+            fn(*args, **kwargs)
+
+    def _set_state(self, new_state):
+        self.current_state = new_state
+        setattr(self.model, "state", new_state)
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+
+        self.machine = _StateEngine(model=self, states=STATES, initial="IDLE")
+        self.machine.add_transition("start_fill", "IDLE", "FILLING",
+                                    conditions="can_fill", after="open_inlet")
+        self.machine.add_transition("level_reached", "FILLING", "HOLDING",
+                                    after="close_inlet")
+        self.machine.add_transition("start_drain", ["HOLDING", "FILLING"], "DRAINING",
+                                    after="open_outlet")
+        self.machine.add_transition("empty", "DRAINING", "IDLE", after="close_outlet")
+        self.machine.add_transition("trip", "*", "FAULT", after="safe_all")
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()

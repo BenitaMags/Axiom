@@ -1,0 +1,165 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────────────────────────────────────────── AXIOM — Run ────────────────────────────────────────────────────────────────────────╮
+│ Target:    multiple_experiment/utils/crypto_utils.py                                                                                                        │
+│ LLM:       CLAUDE / claude-haiku-4-5-20251001                                                                                                               │
+│ Security:  ON                                                                                                                                               │
+│ Connector: ON                                                                                                                                               │
+│ Feedback:  ON                                                                                                                                               │
+│ Time:      2026-06-29 07:59:15                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_fixed 3/multiple_experiment/utils/crypto_utils.py
+                                     Discovered Imports                                      
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                    ┃ Alias ┃ Names      ┃ API Calls Used    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│    7 │ os                                        │ —     │ —          │ urandom           │
+│    8 │ hashlib                                   │ —     │ —          │ sha256            │
+│    9 │ hmac                                      │ —     │ —          │ new               │
+│   10 │ secrets                                   │ —     │ —          │ token_hex         │
+│   12 │ xxhash                                    │ —     │ —          │ xxh3_128, xxh64   │
+│   15 │ cryptography.fernet                       │ —     │ Fernet     │ —                 │
+│   16 │ cryptography.hazmat.primitives            │ —     │ hashes     │ —                 │
+│   17 │ cryptography.hazmat.primitives.kdf.pbkdf2 │ —     │ PBKDF2HMAC │ —                 │
+│   18 │ base64                                    │ —     │ —          │ urlsafe_b64encode │
+└──────┴───────────────────────────────────────────┴───────┴────────────┴───────────────────┘
+
+✓ Found 9 imports
+
+─────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ───────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────────
+                                                                         Rule Results                                                                          
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                          ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hmac         │ is_installed        │  PASS   │ HIGH       │ message=hmac is installed and importable                                                        │
+│ hmac         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hmac                                                              │
+│ hmac         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hmac                                                  │
+│ hmac         │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.17, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',    │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ xxhash       │ is_installed        │  PASS   │ HIGH       │ message=xxhash is installed and importable                                                      │
+│ xxhash       │ has_metadata        │  PASS   │ MEDIUM     │ version=3.8.0, license=BSD-2-Clause                                                             │
+│ xxhash       │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd-2-clause, permissive=True                                                           │
+│ xxhash       │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.17, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',    │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ base64       │ is_installed        │  PASS   │ HIGH       │ message=base64 is installed and importable                                                      │
+│ base64       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base64                                                            │
+│ base64       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base64                                                │
+│ base64       │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.116, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',   │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ os           │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                                          │
+│ os           │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                                                │
+│ os           │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                                    │
+│ os           │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.022, shared_names=['__builtins__', '__doc__', '__file__', '__loader__',   │
+│              │                     │         │            │ '__name__', '__package__', '__spec__']                                                          │
+│ cryptography │ is_installed        │  PASS   │ HIGH       │ message=cryptography is installed and importable                                                │
+│ cryptography │ has_metadata        │  PASS   │ MEDIUM     │ version=46.0.4, license=unknown                                                                 │
+│ cryptography │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                      │
+│ cryptography │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.308, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',   │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                                            │
+│ hashlib      │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable                                                     │
+│ hashlib      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                                                           │
+│ hashlib      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib                                               │
+│ hashlib      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.238, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',   │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__', '_hashlib', 'new']                         │
+│ secrets      │ is_installed        │  PASS   │ HIGH       │ message=secrets is installed and importable                                                     │
+│ secrets      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for secrets                                                           │
+│ secrets      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for secrets                                               │
+│ secrets      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.3, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',     │
+│              │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__', 'compare_digest']                          │
+└──────────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 28 checks across 7 packages
+
+All packages installed and available
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 7 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                         
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ os           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ secrets      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hashlib      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ cryptography │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ base64       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ hmac         │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ xxhash       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└──────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Querying CLAUDE / claude-haiku-4-5-20251001...
+Pipeline error: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}
+Traceback (most recent call last):
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/cli.py", line 114, in run
+    final_state = run_loader(
+                  ^^^^^^^^^^^
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/core/graph.py", line 219, in run_loader
+    return graph.invoke({
+           ^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/pregel/main.py", line 3928, in invoke
+    for chunk in self.stream(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/pregel/main.py", line 2982, in stream
+    for _ in runner.tick(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/pregel/_runner.py", line 207, in tick
+    run_with_retry(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/pregel/_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/_internal/_runnable.py", line 684, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langgraph/_internal/_runnable.py", line 426, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/core/graph.py", line 121, in _security_aware_resolver
+    return resolver_agent(new_state)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/agents/resolver_agent.py", line 170, in resolver_agent
+    response = llm.invoke([
+               ^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_core/language_models/chat_models.py", line 476, in invoke
+    self.generate_prompt(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_core/language_models/chat_models.py", line 1849, in 
+generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_core/language_models/chat_models.py", line 1656, in generate
+    self._generate_with_cache(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_core/language_models/chat_models.py", line 1994, in 
+_generate_with_cache
+    result = self._generate(
+             ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_anthropic/chat_models.py", line 1799, in _generate
+    data = self._create(payload)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/langchain_anthropic/chat_models.py", line 1431, in _create
+    return self._client.messages.create(**payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/anthropic/_utils/_utils.py", line 294, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/anthropic/resources/messages/messages.py", line 1032, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/anthropic/_base_client.py", line 1536, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/anthropic/_base_client.py", line 1195, in request
+    raise self._make_status_error_from_response(response) from None
+anthropic.AuthenticationError: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}
+During task with name 'resolver' and id 'da325901-ebf5-07d0-3f3f-def94a5fa9b1'
+

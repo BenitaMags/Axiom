@@ -1,0 +1,142 @@
+You are given a Python program. Rewrite it so that it is FUNCTIONALLY EQUIVALENT, while performing this library substitution:
+
+    replace `smtplib` with `apprise`
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Use `apprise` instead of `smtplib`, adding whatever adapter or glue code the different API requires.
+- Diversify all first-party logic: different internal structure, different intermediate variables, different control flow where possible.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: engine.py
+```python
+"""engine -- streaming out-of-band anomaly detector with hysteresis.
+
+Ties together per-tag hysteresis detection (first-party), configuration, and operator
+notification. Emits one event per alarm state change and notifies on each transition.
+"""
+from hysteresis import Hysteresis
+
+
+class AnomalyEngine:
+    def __init__(self, config: dict, notifier=None):
+        self.detectors = {tag: Hysteresis(c.high, c.low) for tag, c in config.items()}
+        self.notifier = notifier
+        self.events = []
+
+    def process(self, reading: dict):
+        """Process one {tag, value} reading; return an event on state change else None."""
+        tag = reading["tag"]
+        detector = self.detectors.get(tag)
+        if detector is None:
+            return None
+        previous = detector.state
+        current = detector.update(reading["value"])
+        if current == previous:
+            return None
+        event = {"tag": tag, "state": current, "value": reading["value"]}
+        self.events.append(event)
+        if self.notifier is not None:
+            self.notifier.notify(f"{tag} {current}", str(event))
+        return event
+
+    def process_stream(self, readings) -> list:
+        """Process an iterable of readings, returning only the emitted events."""
+        emitted = []
+        for reading in readings:
+            event = self.process(reading)
+            if event is not None:
+                emitted.append(event)
+        return emitted
+```
+
+### FILENAME: engine_config.py
+```python
+"""engine_config -- per-tag threshold configuration for the anomaly engine."""
+from dataclasses import dataclass
+
+
+@dataclass
+class TagConfig:
+    tag: str
+    high: float
+    low: float
+
+
+def load(config: dict) -> dict:
+    """Build {tag: TagConfig} from a config dict of the form {"tags": [ ... ]}."""
+    result = {}
+    for entry in config["tags"]:
+        tc = TagConfig(tag=entry["tag"], high=entry["high"], low=entry["low"])
+        if tc.low >= tc.high:
+            raise ValueError(f"tag {tc.tag}: low must be < high")
+        result[tc.tag] = tc
+    return result
+```
+
+### FILENAME: hysteresis.py
+```python
+"""hysteresis -- dual-threshold hysteresis detector (first-party core logic).
+
+This is the detection logic the LMA must rewrite into an equivalent but structurally
+different form. A value at or above `high` trips ALARM; the detector only clears once
+the value falls back to or below `low`, preventing chatter within the deadband.
+"""
+
+
+class Hysteresis:
+    def __init__(self, high: float, low: float):
+        if low >= high:
+            raise ValueError("low must be < high")
+        self.high = high
+        self.low = low
+        self.state = "NORMAL"
+
+    def update(self, value: float) -> str:
+        if self.state == "NORMAL" and value >= self.high:
+            self.state = "ALARM"
+        elif self.state == "ALARM" and value <= self.low:
+            self.state = "NORMAL"
+        return self.state
+```
+
+### FILENAME: notifier.py
+```python
+"""notifier -- operator notification on alarm state changes.
+
+The notification backend is the substitution target: `smtplib` (stdlib SMTP) ->
+`apprise` (multi-service notifications). The API differs (sendmail vs. notify), so a
+clone needs glue. The SMTP transport is dependency-injected for testing.
+"""
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    import smtplib  # lazy import for testability
+
+    return smtplib.SMTP(host, port)
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        message = (
+            f"From: {self.sender}\r\n"
+            f"To: {', '.join(self.recipients)}\r\n"
+            f"Subject: {subject}\r\n\r\n{body}"
+        )
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message
+```

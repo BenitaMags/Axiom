@@ -1,0 +1,45 @@
+
+==========================================================================
+EVIDENCE 1 - the resolver finds good candidates, then discards them
+(proteus_no_verif, B3_mqtt_telemetry_bridge)
+==========================================================================
+Discovering alternative libraries for: mqtt_config, paho, telemetry
+Discovered candidates:
+  paho -> gmqtt, amqtt, hbmqtt
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,573  output: 1,191  latency: 12274ms
+Skipping unrelated resolver group 'MQTT client for connecting to broker and 
+publishing telemetry messages': no candidate matches an import in this file.
+Discovery leads not advanced to an equivalence group after file/API fit review:
+paho: gmqtt, amqtt, hbmqtt
+No overlapping dependencies — nothing to opti
+==========================================================================
+EVIDENCE 2 - the connector's edit is thrown away whole
+This fired 7 times in EACH arm. proteus_full recovered all 7 via the
+Verifier retry; proteus_no_verif has no Verifier and lost 5 to no-ops.
+==========================================================================
+urn an httpx.Client() configured with an 
+explicit default timeout (
+  Opening ACI edit session for requests → httpx...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:9,600 
+out:911
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+  ⚠ connector edit removed source import 'requests' while injecting the 
+wrapper; import replacement is reserved for Connector's own post-processing 
+rewrite — leave the import statement unchanged and only add/modify the wrapper 
+function(s); reverting connector edit.
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────── 🧬 Logic Substitution Agent ─────────────────────────
+⚠ EQUIVALENCE OR
+==========================================================================
+EVIDENCE 3 - counts
+==========================================================================
+  'reverting connector edit'      no_verif: 7   full: 7
+  'Skipping unrelated resolver'   no_verif: 8   full: 8
+  'No overlapping dependencies'   no_verif: 12   full: 9
+  runs recorded                   no_verif: 36   full: 36

@@ -1,0 +1,1855 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=20, stopping collection.
+Built 20 evaluable case(s).
+→ [1/20] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmphgpmo7a8_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+  pip install kafka...
+  pip install confluent-kafka...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                               Rule Results                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                           ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ kafka   │ is_installed        │  FAIL   │ HIGH       │ message=kafka is not installed                   │
+│ kafka   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.5, license=Apache License 2.0        │
+│ kafka   │ license_permissive  │  PASS   │ MEDIUM     │ license=apache license 2.0, permissive=True      │
+│ kafka   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka.vendor.six.moves' │
+│ locust  │ is_installed        │  FAIL   │ HIGH       │ message=locust is not installed                  │
+│ locust  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for locust             │
+│ locust  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for locust │
+│ locust  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'                 │
+│ time    │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable         │
+│ time    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time               │
+│ time    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time   │
+│ time    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka.vendor.six.moves' │
+└─────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): kafka, locust
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ kafka          
+⠋ ✓ confluent-kafka
+                                                   Benchmark Results                                                    
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ confluent-kafka │     ✗     │               — │           — │           — │ No module named 'confluent-kafka'        │
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka.vendor.six.moves' │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_kafka__confluent-kafka__svenskaspel
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka, confluent-kafka
+  API compat tokens — input: 229  output: 64  latency: 13726ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                              ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ kafka -> confluent-kafka (seeded from PyMigBench  │ kafka    │ kafka  │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 1.0 │ 0.635 │ not installed │
+│ ground truth)                                     │          │        │        │       │        │          │     │       │               │
+└───────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_kafka__confluent-kafka__svenskaspel
+→ [2/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/application/notifier/slack_notifier.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpog9if4qu_slack_notifier.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                   ┃ Alias ┃ Names                                    ┃ API Calls Used                      ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ typing                                   │ —     │ Optional                                 │ —                                   │
+│    3 │ slack                                    │ —     │ WebClient                                │ WebClient                           │
+│    4 │ slack.errors                             │ —     │ SlackApiError                            │ WebClient                           │
+│    6 │ petisco.base.application.notifier.notif… │ —     │ Notifier                                 │ BlocksSlackNotifierMessageConverter │
+│    7 │ petisco.base.application.notifier.notif… │ —     │ NotifierMessage                          │ BlocksSlackNotifierMessageConverter │
+│    8 │ petisco.base.domain.errors.domain_error  │ —     │ DomainError                              │ BlocksSlackNotifierMessageConverter │
+│    9 │ petisco.extra.slack.application.notifie… │ —     │ BlocksSlackNotifierMessageConverter,     │ BlocksSlackNotifierMessageConverter │
+│      │                                          │       │ SlackNotifierMessageConverter            │                                     │
+└──────┴──────────────────────────────────────────┴───────┴──────────────────────────────────────────┴─────────────────────────────────────┘
+
+✓ Found 7 imports
+
+  pip install slackclient...
+  pip install slack-sdk...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/slack/deprecation.py:14: UserWarning: slack package is deprecated. Please use slack_sdk.web/webhook/rtm package instead. For more info, go to https://docs.slack.dev/tools/python-slack-sdk/v3-migration/
+  warnings.warn(message)
+                                                                Rule Results                                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                            ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ typing  │ is_installed        │  PASS   │ HIGH       │ message=typing is installed and importable                                        │
+│ typing  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for typing                                              │
+│ typing  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for typing                                  │
+│ typing  │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.037, shared_names=['__builtins__', '__cached__', '__doc__', │
+│         │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                  │
+│ slack   │ is_installed        │  PASS   │ HIGH       │ message=slack is installed and importable                                         │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack                                               │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for slack                                   │
+│ slack   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.037, shared_names=['__builtins__', '__cached__', '__doc__', │
+│         │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                  │
+│ petisco │ is_installed        │  FAIL   │ HIGH       │ message=petisco is not installed                                                  │
+│ petisco │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for petisco                                             │
+│ petisco │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for petisco                                 │
+│ petisco │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'petisco'                                                 │
+└─────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): petisco
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slackclient
+⠋ ✓ slack-sdk  
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_slackclient__slack-sdk__alice-biome
+  Not installed locally (scoring with neutral placeholders, not excluded): slackclient, slack-sdk
+  API compat tokens — input: 227  output: 64  latency: 1261ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                      ┃ Original    ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ slackclient -> slack-sdk (seeded from     │ slackclient │ slackclient │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 1.0 │ 0.635 │ not installed │
+│ PyMigBench ground truth)                  │             │             │        │       │        │          │     │       │               │
+└───────────────────────────────────────────┴─────────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__alice-biome
+→ [3/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/is_slack_available.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp2gjpw07i_is_slack_available.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ slack  │ —     │ —     │ —              │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                               Rule Results                                               
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                          ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ is_installed        │  PASS   │ HIGH       │ message=slack is installed and importable       │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack             │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for slack │
+│ slack   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No reference package provided           │
+└─────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────┘
+
+✓ Rules engine: 4 checks across 1 packages
+
+All packages installed and available
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slackclient
+⠋ ✓ slack-sdk  
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_slackclient__slack-sdk__alice-biome
+  Not installed locally (scoring with neutral placeholders, not excluded): slackclient, slack-sdk
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                      ┃ Original    ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ slackclient -> slack-sdk (seeded from     │ slackclient │ slackclient │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 0.8 │ 0.605 │ not installed │
+│ PyMigBench ground truth)                  │             │             │        │       │        │          │     │       │               │
+└───────────────────────────────────────────┴─────────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__alice-biome
+→ [4/20] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/legacy/notifier/infrastructure/slack/slack_notifier.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpafawcuy9_slack_notifier.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                       ┃ Alias ┃ Names                          ┃ API Calls Used                            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ slack                                        │ —     │ WebClient                      │ WebClient                                 │
+│    2 │ slack.errors                                 │ —     │ SlackApiError                  │ WebClient                                 │
+│    4 │ petisco.legacy.notifier.domain.interface_no… │ —     │ INotifier                      │ SlackError, SlackNotifierMessageConverter │
+│    5 │ petisco.legacy.notifier.domain.notifier_mes… │ —     │ NotifierMessage                │ SlackError, SlackNotifierMessageConverter │
+│    6 │ petisco.legacy.notifier.infrastructure.slac… │ —     │ SlackError                     │ SlackError, SlackNotifierMessageConverter │
+│    7 │ petisco.legacy.notifier.infrastructure.slac… │ —     │ ISlackNotifierMessageConverter │ SlackError, SlackNotifierMessageConverter │
+│   10 │ petisco.legacy.notifier.infrastructure.slac… │ —     │ SlackNotifierMessageConverter  │ SlackError, SlackNotifierMessageConverter │
+└──────┴──────────────────────────────────────────────┴───────┴────────────────────────────────┴───────────────────────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                Rule Results                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                            ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ is_installed        │  PASS   │ HIGH       │ message=slack is installed and importable         │
+│ slack   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for slack               │
+│ slack   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for slack   │
+│ slack   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'petisco'                 │
+│ petisco │ is_installed        │  FAIL   │ HIGH       │ message=petisco is not installed                  │
+│ petisco │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for petisco             │
+│ petisco │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for petisco │
+│ petisco │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'petisco'                 │
+└─────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): petisco
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ slackclient
+⠋ ✓ slack-sdk  
+                                            Benchmark Results                                            
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                         ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slackclient │     ✗     │               — │           — │           — │ No module named 'slackclient' │
+│ slack-sdk   │     ✗     │               — │           — │           — │ No module named 'slack-sdk'   │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_slackclient__slack-sdk__alice-biome
+  Not installed locally (scoring with neutral placeholders, not excluded): slackclient, slack-sdk
+  API compat tokens — input: 227  output: 64  latency: 3038ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                      ┃ Original    ┃ Winner      ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ slackclient -> slack-sdk (seeded from     │ slackclient │ slackclient │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 1.0 │ 0.635 │ not installed │
+│ PyMigBench ground truth)                  │             │             │        │       │        │          │     │       │               │
+└───────────────────────────────────────────┴─────────────┴─────────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_slackclient__slack-sdk__alice-biome
+→ [5/20] phuks-co/throat  eventlet→gevent  (throat.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp_rg72444_throat.py
+                        Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names                ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ eventlet │ —     │ —                    │ monkey_patch   │
+│    5 │ app      │ —     │ create_app, socketio │ create_app     │
+└──────┴──────────┴───────┴──────────────────────┴────────────────┘
+
+✓ Found 2 imports
+
+  pip install eventlet...
+  pip install gevent...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  return _bootstrap._gcd_import(name[level:], package, level)
+                                              Rule Results                                               
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                        ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ app      │ is_installed        │  FAIL   │ HIGH       │ message=app is not installed                  │
+│ app      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for app             │
+│ app      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for app │
+│ app      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'app'                 │
+│ eventlet │ is_installed        │  PASS   │ HIGH       │ message=eventlet is installed and importable  │
+│ eventlet │ has_metadata        │  PASS   │ MEDIUM     │ version=0.41.1, license=MIT                   │
+│ eventlet │ license_permissive  │  PASS   │ MEDIUM     │ license=mit, permissive=True                  │
+│ eventlet │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'app'                 │
+└──────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): app
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠴ ✓ gevent  
+⠴ ✓ eventlet
+                              Benchmark Results                               
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ gevent   │     ✓     │         20.5 ms │           — │         487 │       │
+│ eventlet │     ✓     │        119.5 ms │           — │         658 │       │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_eventlet__gevent__phuks-co-throat__
+  API compat tokens — input: 227  output: 60  latency: 1039ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                 ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ eventlet -> gevent (seeded from PyMigBench ground    │ eventlet │ gevent │ MEDIUM │ 1.0   │ 1.0    │ 0.8      │ 0.5 │ 0.885 │ ✓          │
+│ truth)                                               │          │        │        │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  eventlet  →  gevent  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+
+Analyzing: eventlet → gevent
+  Found 1 call site(s):
+    L4: eventlet.monkey_patch()
+  Tokens — in:935 out:142 latency:2139ms
+
+  Compatibility analysis:
+    ✗ L4: eventlet.monkey_patch()  — gevent provides gevent.monkey.patch_all() as the equivalent, but the function na
+
+  1 call site(s) need a wrapper:
+    _gevent_monkey_patch_wrapper  L4: Call gevent.monkey.patch_all() with appropriate arguments to replicate
+  Opening ACI edit session for eventlet → gevent...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:4,807 out:305
+    · open(line_number=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+╭───────────────────────────────────────────────── Patched Source (with inline adapters) ──────────────────────────────────────────────────╮
+│    1 #!/usr/bin/env python3                                                                                                              │
+│    2 """ From here we start the app in debug mode. """                                                                                   │
+│    3 import gevent.monkey                                                                                                                │
+│    4                                                                                                                                     │
+│    5                                                                                                                                     │
+│    6 def _gevent_monkey_patch_wrapper():                                                                                                 │
+│    7     """                                                                                                                             │
+│    8     Wrapper to replicate eventlet.monkey_patch() behavior using gevent.                                                             │
+│    9                                                                                                                                     │
+│   10     eventlet.monkey_patch() patches standard library modules (socket, time,                                                         │
+│   11     threading, etc.) to be cooperative. By default it patches all modules.                                                          │
+│   12                                                                                                                                     │
+│   13     gevent.monkey.patch_all() does the same for gevent. This wrapper calls                                                          │
+│   14     patch_all() with default arguments which patches all standard modules,                                                          │
+│   15     matching eventlet's default behavior.                                                                                           │
+│   16     """                                                                                                                             │
+│   17     gevent.monkey.patch_all()                                                                                                       │
+│   18                                                                                                                                     │
+│   19                                                                                                                                     │
+│   20 _gevent_monkey_patch_wrapper()                                                                                                      │
+│   21 from app import create_app, socketio  # noqa                                                                                        │
+│   22 app = create_app()                                                                                                                  │
+│   23                                                                                                                                     │
+│   24 if __name__ == "__main__":                                                                                                          │
+│   25     socketio.run(app, debug=True)                                                                                                   │
+│   26                                                                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                          Stage 1 — Static Analysis                           
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail                                        ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                                               │
+│ Pylint (errors)   │   0    │                                               │
+│ Bandit (med/high) │   0    │                                               │
+│ Mypy              │   0    │                                               │
+│ Import smoke test │  FAIL  │ Traceback (most recent call last):            │
+│                   │        │   File "/tmp/tmpcmyivz9i.py", line 21, in <mo │
+└───────────────────┴────────┴───────────────────────────────────────────────┘
+Stage 2 — LLM review of combined evidence...
+  Verifier LLM tokens — in:1,093 out:139 latency:1273ms
+                                                           Stage 2 — LLM Verdicts                                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                                                    ┃ Verdict ┃ Confidence ┃ Reasoning                                               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ eventlet -> gevent (seeded from PyMigBench ground       │ PASS    │ MEDIUM     │ The smoke-test failure is an environment issue (the     │
+│ truth)                                                  │         │            │ 'app' module is no                                      │
+└─────────────────────────────────────────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────┘
+✓ All replacements verified — proceeding.
+Session saved: eval_eventlet__gevent__phuks-co-throat__
+→ [6/20] hhyo/archery  pycrypto→pycryptodome  (sql/utils/aes_decryptor.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpbqe9avv1_aes_decryptor.py
+                          Discovered Imports                          
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names            ┃ API Calls Used   ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│    1 │ Crypto.Cipher │ —     │ AES              │ —                │
+│    2 │ binascii      │ —     │ b2a_hex, a2b_hex │ a2b_hex, b2a_hex │
+│   40 │ sys           │ —     │ —                │ argv             │
+└──────┴───────────────┴───────┴──────────────────┴──────────────────┘
+
+✓ Found 3 imports
+
+  pip install pycrypto...
+  pip install pycryptodome...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                           ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ binascii │ is_installed        │  PASS   │ HIGH       │ message=binascii is installed and importable                                     │
+│ binascii │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for binascii                                           │
+│ binascii │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for binascii                               │
+│ binascii │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.042, shared_names=['__doc__', '__loader__', '__name__',    │
+│          │                     │         │            │ '__package__', '__spec__']                                                       │
+│ sys      │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and importable                                          │
+│ sys      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys                                                │
+│ sys      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for sys                                    │
+│ sys      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.042, shared_names=['__doc__', '__loader__', '__name__',    │
+│          │                     │         │            │ '__package__', '__spec__']                                                       │
+│ Crypto   │ is_installed        │  PASS   │ HIGH       │ message=Crypto is installed and importable                                       │
+│ Crypto   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for Crypto                                             │
+│ Crypto   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for Crypto                                 │
+│ Crypto   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.231, shared_names=['__doc__', '__file__', '__loader__',    │
+│          │                     │         │            │ '__name__', '__package__', '__spec__']                                           │
+└──────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+All packages installed and available
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ pycrypto    
+⠋ ✓ pycryptodome
+                                             Benchmark Results                                             
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                          ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ pycrypto     │     ✗     │               — │           — │           — │ No module named 'pycrypto'     │
+│ pycryptodome │     ✗     │               — │           — │           — │ No module named 'pycryptodome' │
+└──────────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_pycrypto__pycryptodome__hhyo-archer
+  Not installed locally (scoring with neutral placeholders, not excluded): pycrypto, pycryptodome
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                            ┃ Original ┃ Winner   ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ pycrypto -> pycryptodome (seeded from           │ pycrypto │ pycrypto │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 0.8 │ 0.605 │ not installed │
+│ PyMigBench ground truth)                        │          │          │        │       │        │          │     │       │               │
+└─────────────────────────────────────────────────┴──────────┴──────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_pycrypto__pycryptodome__hhyo-archer
+→ [7/20] ethereum/py-evm  leveldb→plyvel  (evm/db/backends/level.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpdp_uwtpm_level.py
+                 Discovered Imports                 
+┏━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module  ┃ Alias ┃ Names  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ base    │ —     │ BaseDB │ —              │
+│   13 │ leveldb │ —     │ —      │ LevelDB        │
+└──────┴─────────┴───────┴────────┴────────────────┘
+
+✓ Found 2 imports
+
+  pip install leveldb...
+  pip install plyvel...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                Rule Results                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                            ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ leveldb │ is_installed        │  FAIL   │ HIGH       │ message=leveldb is not installed                  │
+│ leveldb │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for leveldb             │
+│ leveldb │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for leveldb │
+│ leveldb │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'leveldb'                 │
+│ base    │ is_installed        │  FAIL   │ HIGH       │ message=base is not installed                     │
+│ base    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base                │
+│ base    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base    │
+│ base    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'base'                    │
+└─────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────┘
+
+✓ Rules engine: 8 checks across 2 packages
+
+Disqualified (not installed): leveldb, base
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ leveldb
+⠋ ✓ plyvel 
+                                        Benchmark Results                                        
+┏━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ plyvel  │     ✗     │               — │           — │           — │ No module named 'plyvel'  │
+│ leveldb │     ✗     │               — │           — │           — │ No module named 'leveldb' │
+└─────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_leveldb__plyvel__ethereum-py-evm__5
+  Not installed locally (scoring with neutral placeholders, not excluded): leveldb, plyvel
+  API compat tokens — input: 225  output: 60  latency: 754ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                             ┃ Original ┃ Winner  ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ leveldb -> plyvel (seeded from PyMigBench ground │ leveldb  │ leveldb │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 1.0 │ 0.635 │ not installed │
+│ truth)                                           │          │         │        │       │        │          │     │       │               │
+└──────────────────────────────────────────────────┴──────────┴─────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_leveldb__plyvel__ethereum-py-evm__5
+→ [8/20] usergeteam/userge-plugins  requests→aiohttp  (plugins/info.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp4ew8us6y_info.py
+                                      Discovered Imports                                       
+┏━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module    ┃ Alias ┃ Names                                   ┃ API Calls Used         ┃
+┡━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    5 │ spamwatch │ —     │ —                                       │ Client                 │
+│    6 │ requests  │ —     │ —                                       │ get                    │
+│    7 │ datetime  │ —     │ datetime                                │ fromtimestamp          │
+│    9 │ userge    │ —     │ userge, Config, Message, get_collection │ on_cmd, get_collection │
+└──────┴───────────┴───────┴─────────────────────────────────────────┴────────────────────────┘
+
+✓ Found 4 imports
+
+  pip install requests...
+  pip install aiohttp...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                          ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ datetime  │ is_installed        │  PASS   │ HIGH       │ message=datetime is installed and importable                                    │
+│ datetime  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for datetime                                          │
+│ datetime  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for datetime                              │
+│ datetime  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'userge'                                                │
+│ userge    │ is_installed        │  FAIL   │ HIGH       │ message=userge is not installed                                                 │
+│ userge    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for userge                                            │
+│ userge    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for userge                                │
+│ userge    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'userge'                                                │
+│ spamwatch │ is_installed        │  FAIL   │ HIGH       │ message=spamwatch is not installed                                              │
+│ spamwatch │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for spamwatch                                         │
+│ spamwatch │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for spamwatch                             │
+│ spamwatch │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'spamwatch'                                             │
+│ requests  │ is_installed        │  PASS   │ HIGH       │ message=requests is installed and importable                                    │
+│ requests  │ has_metadata        │  PASS   │ MEDIUM     │ version=2.34.2, license=Apache-2.0                                              │
+│ requests  │ license_permissive  │  PASS   │ MEDIUM     │ license=apache-2.0, permissive=True                                             │
+│ requests  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11, shared_names=['__all__', '__builtins__',              │
+│           │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',   │
+│           │                     │         │            │ '__spec__']                                                                     │
+└───────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+Disqualified (not installed): userge, spamwatch
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠼ ✓ aiohttp 
+⠼ ✓ requests
+                              Benchmark Results                               
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ requests │     ✓     │         85.8 ms │           — │         566 │       │
+│ aiohttp  │     ✓     │        115.8 ms │           — │        2078 │       │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_requests__aiohttp__usergeteam-userg
+  API compat tokens — input: 225  output: 62  latency: 1139ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ requests -> aiohttp (seeded from PyMigBench ground  │ requests │ requests │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 1.0 │ 0.96  │ ✓          │
+│ truth)                                              │          │          │       │       │        │          │     │       │            │
+└─────────────────────────────────────────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_requests__aiohttp__usergeteam-userg
+→ [9/20] miguelgrinberg/flask-socketio  gevent→eventlet  (example/app.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpj7vczfbr_app.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module             ┃ Alias ┃ Names                                             ┃ API Calls Used                                   ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ gevent             │ —     │ monkey                                            │ —                                                │
+│    4 │ time               │ —     │ —                                                 │ sleep                                            │
+│    5 │ threading          │ —     │ Thread                                            │ Thread                                           │
+│    6 │ flask              │ —     │ Flask, render_template, session, request          │ Flask, SocketIO, render_template, join_room,     │
+│      │                    │       │                                                   │ disconnect, close_room, emit, leave_room         │
+│    7 │ flask.ext.socketio │ —     │ SocketIO, emit, join_room, leave_room,            │ Flask, SocketIO, render_template, join_room,     │
+│      │                    │       │ close_room, disconnect                            │ disconnect, close_room, emit, leave_room         │
+└──────┴────────────────────┴───────┴───────────────────────────────────────────────────┴──────────────────────────────────────────────────┘
+
+✓ Found 5 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                          ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ threading │ is_installed        │  PASS   │ HIGH       │ message=threading is installed and importable                                   │
+│ threading │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for threading                                         │
+│ threading │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for threading                             │
+│ threading │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.06, shared_names=['__builtins__', '__cached__',           │
+│           │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']     │
+│ flask     │ is_installed        │  PASS   │ HIGH       │ message=flask is installed and importable                                       │
+│ flask     │ has_metadata        │  PASS   │ MEDIUM     │ version=3.1.3, license=unknown                                                  │
+│ flask     │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                      │
+│ flask     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.06, shared_names=['__builtins__', '__cached__',           │
+│           │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__']     │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable                                        │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                                              │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time                                  │
+│ time      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.044, shared_names=['__doc__', '__loader__', '__name__',   │
+│           │                     │         │            │ '__package__', '__spec__']                                                      │
+│ gevent    │ is_installed        │  PASS   │ HIGH       │ message=gevent is installed and importable                                      │
+│ gevent    │ has_metadata        │  PASS   │ MEDIUM     │ version=26.5.0, license=MIT                                                     │
+│ gevent    │ license_permissive  │  PASS   │ MEDIUM     │ license=mit, permissive=True                                                    │
+│ gevent    │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.068, shared_names=['__all__', '__builtins__',             │
+│           │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',   │
+│           │                     │         │            │ '__spec__']                                                                     │
+└───────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+All packages installed and available
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠴ ✓ gevent  
+⠴ ✓ eventlet
+                              Benchmark Results                               
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ gevent   │     ✓     │         16.3 ms │           — │         487 │       │
+│ eventlet │     ✓     │        131.4 ms │           — │         658 │       │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_gevent__eventlet__miguelgrinberg-fl
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                 ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ gevent -> eventlet (seeded from PyMigBench ground    │ gevent   │ gevent │ MEDIUM │ 1.0   │ 1.0    │ 0.8      │ 0.8 │ 0.93  │ ✓          │
+│ truth)                                               │          │        │        │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_gevent__eventlet__miguelgrinberg-fl
+→ [10/20] paratoolsinc/taucmdr  lockfile→fasteners  (packages/tau/cf/software/installation.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpuh2ji44n_installation.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                         ┃ API Calls Used                                                    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   30 │ os                    │ —     │ —                             │ environ, chmod, path, access, symlink, X_OK, pathsep              │
+│   31 │ sys                   │ —     │ —                             │ platform                                                          │
+│   32 │ hashlib               │ —     │ —                             │ md5                                                               │
+│   33 │ multiprocessing       │ —     │ —                             │ cpu_count                                                         │
+│   34 │ lockfile              │ —     │ LockFile, NotLocked           │ LockFile                                                          │
+│   35 │ tau                   │ —     │ logger, util, configuration   │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│   36 │ tau.error             │ —     │ ConfigurationError            │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│   37 │ tau.cf.storage.levels │ —     │ ORDERED_LEVELS                │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│   38 │ tau.cf.storage.levels │ —     │ highest_writable_storage      │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│   39 │ tau.cf.software       │ —     │ SoftwarePackageError          │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│   40 │ tau.cf.target         │ —     │ Architecture, OperatingSystem │ SoftwarePackageError, ConfigurationError,                         │
+│      │                       │       │                               │ highest_writable_storage                                          │
+│  173 │ tempfile              │ —     │ —                             │ gettempdir, NamedTemporaryFile                                    │
+│  174 │ subprocess            │ —     │ —                             │ CalledProcessError, check_call                                    │
+│  175 │ stat                  │ —     │ S_IRUSR, S_IWUSR, S_IEXEC     │ —                                                                 │
+└──────┴───────────────────────┴───────┴───────────────────────────────┴───────────────────────────────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+  pip install lockfile...
+  pip install fasteners...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ os              │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                    │
+│ os              │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                          │
+│ os              │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                              │
+│ os              │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__',       │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__',           │
+│                 │                     │         │            │ '__spec__']                                                               │
+│ lockfile        │ is_installed        │  PASS   │ HIGH       │ message=lockfile is installed and importable                              │
+│ lockfile        │ has_metadata        │  PASS   │ MEDIUM     │ version=0.12.2, license=UNKNOWN                                           │
+│ lockfile        │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=unknown, permissive=False                                         │
+│ lockfile        │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__',       │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__',           │
+│                 │                     │         │            │ '__spec__']                                                               │
+│ tau             │ is_installed        │  FAIL   │ HIGH       │ message=tau is not installed                                              │
+│ tau             │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tau                                         │
+│ tau             │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tau                             │
+│ tau             │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'tau'                                             │
+│ subprocess      │ is_installed        │  PASS   │ HIGH       │ message=subprocess is installed and importable                            │
+│ subprocess      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for subprocess                                  │
+│ subprocess      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for subprocess                      │
+│ subprocess      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.025, shared_names=['__all__', '__builtins__',       │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__',           │
+│                 │                     │         │            │ '__spec__', 'sys']                                                        │
+│ sys             │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and importable                                   │
+│ sys             │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys                                         │
+│ sys             │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for sys                             │
+│ sys             │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.015, shared_names=['__doc__', '__loader__',         │
+│                 │                     │         │            │ '__name__', '__package__', '__spec__', 'path']                            │
+│ stat            │ is_installed        │  PASS   │ HIGH       │ message=stat is installed and importable                                  │
+│ stat            │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for stat                                        │
+│ stat            │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for stat                            │
+│ stat            │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.018, shared_names=['__builtins__', '__doc__',       │
+│                 │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']          │
+│ hashlib         │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable                               │
+│ hashlib         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                                     │
+│ hashlib         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib                         │
+│ hashlib         │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__',       │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__',           │
+│                 │                     │         │            │ '__spec__']                                                               │
+│ multiprocessing │ is_installed        │  PASS   │ HIGH       │ message=multiprocessing is installed and importable                       │
+│ multiprocessing │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for multiprocessing                             │
+│ multiprocessing │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for multiprocessing                 │
+│ multiprocessing │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.028, shared_names=['__all__', '__builtins__',       │
+│                 │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__',           │
+│                 │                     │         │            │ '__spec__', 'cpu_count', 'sys']                                           │
+│ tempfile        │ is_installed        │  PASS   │ HIGH       │ message=tempfile is installed and importable                              │
+│ tempfile        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tempfile                                    │
+│ tempfile        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tempfile                        │
+│ tempfile        │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.028, shared_names=['TMP_MAX', '__all__',            │
+│                 │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',          │
+│                 │                     │         │            │ '__package__', '__spec__', '_exists']                                     │
+└─────────────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 36 checks across 9 packages
+
+Disqualified (not installed): tau
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ fasteners
+⠋ ✓ lockfile 
+                               Benchmark Results                               
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ lockfile  │     ✓     │          2.2 ms │           — │          60 │       │
+│ fasteners │     ✓     │          7.6 ms │           — │         149 │       │
+└───────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_lockfile__fasteners__paratoolsinc-t
+  API compat tokens — input: 225  output: 60  latency: 14146ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                               ┃ Original ┃ Winner   ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ lockfile -> fasteners (seeded from PyMigBench      │ lockfile │ lockfile │ MEDIUM │ 0.733 │ 1.0    │ 0.8      │ 1.0 │ 0.867 │ ✓          │
+│ ground truth)                                      │          │          │        │       │        │          │     │       │            │
+└────────────────────────────────────────────────────┴──────────┴──────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_lockfile__fasteners__paratoolsinc-t
+→ [11/20] paratoolsinc/taucmdr  lockfile→fasteners  (packages/tau/cf/software/tau_installation.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpn8sau_2q_tau_installation.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                       ┃ Alias ┃ Names                                       ┃ API Calls Used                               ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   33 │ os                           │ —     │ —                                           │ path, pathsep                                │
+│   34 │ glob                         │ —     │ —                                           │ glob                                         │
+│   35 │ shutil                       │ —     │ —                                           │ move                                         │
+│   36 │ resource                     │ —     │ —                                           │ RLIMIT_NOFILE, getrlimit                     │
+│   37 │ tau                          │ —     │ logger, util                                │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   38 │ tau.error                    │ —     │ ConfigurationError, InternalError           │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   39 │ tau.cf.storage.levels        │ —     │ highest_writable_storage                    │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   40 │ tau.cf.software              │ —     │ SoftwarePackageError                        │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   41 │ tau.cf.software.installation │ —     │ Installation, parallel_make_flags           │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   42 │ tau.cf.compiler              │ —     │ GNU_COMPILERS, INTEL_COMPILERS,             │ highest_writable_storage,                    │
+│      │                              │       │ PGI_COMPILERS, CRAY_COMPILERS               │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   43 │ tau.cf.compiler              │ —     │ IBM_COMPILERS, IBM_BG_COMPILERS             │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   44 │ tau.cf.compiler              │ —     │ CC_ROLE, CXX_ROLE, FC_ROLE, UPC_ROLE        │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   45 │ tau.cf.compiler.mpi          │ —     │ SYSTEM_MPI_COMPILERS, INTEL_MPI_COMPILERS,  │ highest_writable_storage,                    │
+│      │                              │       │ IBM_MPI_COMPILERS                           │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   46 │ tau.cf.compiler.mpi          │ —     │ MPI_CC_ROLE, MPI_CXX_ROLE, MPI_FC_ROLE      │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   47 │ tau.cf.compiler.shmem        │ —     │ SHMEM_CC_ROLE, SHMEM_CXX_ROLE,              │ highest_writable_storage,                    │
+│      │                              │       │ SHMEM_FC_ROLE                               │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+│   48 │ tau.cf.target                │ —     │ TauArch, CRAY_CNL_OS, DARWIN_OS             │ highest_writable_storage,                    │
+│      │                              │       │                                             │ SoftwarePackageError, ConfigurationError,    │
+│      │                              │       │                                             │ parallel_make_flags, InternalError           │
+└──────┴──────────────────────────────┴───────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┘
+
+✓ Found 16 imports
+
+  skipped: source package not actually imported in before_code
+→ [12/20] shingetsu/saku  cheetah3→jinja2  (shingetsu/template.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp4cbdmy43_template.py
+                            Discovered Imports                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names ┃ API Calls Used                ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   31 │ os.path          │ —     │ —     │ path                          │
+│   32 │ sys              │ —     │ —     │ stderr                        │
+│   34 │ Cheetah.Template │ —     │ —     │ Template                      │
+│   36 │ config           │ —     │ —     │ template_dir, template_suffix │
+└──────┴──────────────────┴───────┴───────┴───────────────────────────────┘
+
+✓ Found 4 imports
+
+  pip install cheetah3...
+  pip install jinja2...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                            ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Cheetah │ is_installed        │  PASS   │ HIGH       │ message=Cheetah is installed and importable                                       │
+│ Cheetah │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for Cheetah                                             │
+│ Cheetah │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for Cheetah                                 │
+│ Cheetah │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.022, shared_names=['__builtins__', '__doc__', '__file__',   │
+│         │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                              │
+│ os      │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                            │
+│ os      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                                  │
+│ os      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                      │
+│ os      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.022, shared_names=['__builtins__', '__doc__', '__file__',   │
+│         │                     │         │            │ '__loader__', '__name__', '__package__', '__spec__']                              │
+│ config  │ is_installed        │  FAIL   │ HIGH       │ message=config is not installed                                                   │
+│ config  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for config                                              │
+│ config  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for config                                  │
+│ config  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                                                  │
+│ sys     │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and importable                                           │
+│ sys     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys                                                 │
+│ sys     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for sys                                     │
+│ sys     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.044, shared_names=['__doc__', '__loader__', '__name__',     │
+│         │                     │         │            │ '__package__', '__spec__']                                                        │
+└─────────┴─────────────────────┴─────────┴────────────┴───────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+Disqualified (not installed): config
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ jinja2  
+⠙ ✓ cheetah3
+                                         Benchmark Results                                         
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                      ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ jinja2   │     ✓     │         35.4 ms │           — │        1414 │                            │
+│ cheetah3 │     ✗     │               — │           — │           — │ No module named 'cheetah3' │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_cheetah3__jinja2__shingetsu-saku__d
+  Not installed locally (scoring with neutral placeholders, not excluded): cheetah3
+  API compat tokens — input: 230  output: 66  latency: 964ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                  ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ cheetah3 -> jinja2 (seeded from PyMigBench ground     │ cheetah3 │ jinja2 │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 0.3 │ 0.855 │ ✓          │
+│ truth)                                                │          │        │       │       │        │          │     │       │            │
+└───────────────────────────────────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  cheetah3  →  jinja2  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+
+Analyzing: cheetah3 → jinja2
+  No call sites found for cheetah3 — skipping.
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_cheetah3__jinja2__shingetsu-saku__d
+→ [13/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/fields.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpodx6wsm2_fields.py
+/private/tmp/tmpodx6wsm2_fields.py:153: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.InetAddressField",
+/private/tmp/tmpodx6wsm2_fields.py:154: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.CidrAddressField",
+/private/tmp/tmpodx6wsm2_fields.py:155: SyntaxWarning: invalid escape sequence '\.'
+  "^netfields\.fields\.MACAddressField",
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                 ┃ Alias ┃ Names                                                          ┃ API Calls Used                  ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                │ —     │ IPAddress, IPNetwork, EUI                                      │ IPAddress, IPNetwork, EUI       │
+│    2 │ netaddr.core           │ —     │ AddrFormatError                                                │ IPAddress, IPNetwork, EUI       │
+│    4 │ django                 │ —     │ VERSION                                                        │ ValidationError, with_metaclass │
+│    5 │ django.db              │ —     │ models                                                         │ ValidationError, with_metaclass │
+│    6 │ django.core.exceptions │ —     │ ValidationError                                                │ ValidationError, with_metaclass │
+│    7 │ django.utils.six       │ —     │ with_metaclass                                                 │ ValidationError, with_metaclass │
+│    9 │ netfields.managers     │ —     │ NET_OPERATORS, NET_TEXT_OPERATORS                              │ validate_ipnetwork              │
+│   10 │ netfields.forms        │ —     │ InetAddressFormField, CidrAddressFormField,                    │ validate_ipnetwork              │
+│      │                        │       │ MACAddressFormField                                            │                                 │
+│   11 │ netfields.mac          │ —     │ mac_unix_common                                                │ validate_ipnetwork              │
+│   12 │ netfields.validators   │ —     │ validate_ipnetwork                                             │ validate_ipnetwork              │
+│  151 │ south.modelsinspector  │ —     │ add_introspection_rules                                        │ add_introspection_rules         │
+└──────┴────────────────────────┴───────┴────────────────────────────────────────────────────────────────┴─────────────────────────────────┘
+
+✓ Found 11 imports
+
+  pip install netaddr...
+  pip install py2-ipaddress...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                  Rule Results                                                  
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                              ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ django    │ is_installed        │  FAIL   │ HIGH       │ message=django is not installed                     │
+│ django    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for django                │
+│ django    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for django    │
+│ django    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                    │
+│ netaddr   │ is_installed        │  PASS   │ HIGH       │ message=netaddr is installed and importable         │
+│ netaddr   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.0, license=BSD License                  │
+│ netaddr   │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd license, permissive=True                │
+│ netaddr   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                    │
+│ south     │ is_installed        │  FAIL   │ HIGH       │ message=south is not installed                      │
+│ south     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for south                 │
+│ south     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for south     │
+│ south     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'south'                     │
+│ netfields │ is_installed        │  FAIL   │ HIGH       │ message=netfields is not installed                  │
+│ netfields │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for netfields             │
+│ netfields │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for netfields │
+│ netfields │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'netfields'                 │
+└───────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+Disqualified (not installed): django, south, netfields
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ py2-ipaddress
+⠙ ✓ netaddr      
+                                              Benchmark Results                                              
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                           ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ netaddr       │     ✓     │         25.4 ms │           — │         571 │                                 │
+│ py2-ipaddress │     ✗     │               — │           — │           — │ No module named 'py2-ipaddress' │
+└───────────────┴───────────┴─────────────────┴─────────────┴─────────────┴─────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_netaddr__py2-ipaddress__jimfunk-dja
+  Not installed locally (scoring with neutral placeholders, not excluded): py2-ipaddress
+  API compat tokens — input: 239  output: 66  latency: 1296ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                 ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ netaddr -> py2-ipaddress (seeded from PyMigBench     │ netaddr  │ netaddr │ HIGH  │ 0.733 │ 1.0    │ 0.8      │ 1.0 │ 0.867 │ ✓          │
+│ ground truth)                                        │          │         │       │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_netaddr__py2-ipaddress__jimfunk-dja
+→ [14/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/forms.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpmn10vtr3_forms.py
+                                                    Discovered Imports                                                     
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                  ┃ Alias ┃ Names                           ┃ API Calls Used                               ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                 │ —     │ IPNetwork, EUI, AddrFormatError │ IPNetwork, EUI                               │
+│    3 │ django                  │ —     │ forms                           │ flatatt, mark_safe, ValidationError, VERSION │
+│    4 │ django                  │ —     │ —                               │ flatatt, mark_safe, ValidationError, VERSION │
+│    6 │ django.forms.utils      │ —     │ flatatt                         │ flatatt, mark_safe, ValidationError, VERSION │
+│    8 │ django.forms.util       │ —     │ flatatt                         │ flatatt, mark_safe, ValidationError, VERSION │
+│    9 │ django.utils.safestring │ —     │ mark_safe                       │ flatatt, mark_safe, ValidationError, VERSION │
+│   10 │ django.core.exceptions  │ —     │ ValidationError                 │ flatatt, mark_safe, ValidationError, VERSION │
+│   12 │ netfields.mac           │ —     │ mac_unix_common                 │ validate_ipnetwork                           │
+│   13 │ netfields.validators    │ —     │ validate_ipnetwork              │ validate_ipnetwork                           │
+└──────┴─────────────────────────┴───────┴─────────────────────────────────┴──────────────────────────────────────────────┘
+
+✓ Found 9 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                  Rule Results                                                  
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                              ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ django    │ is_installed        │  FAIL   │ HIGH       │ message=django is not installed                     │
+│ django    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for django                │
+│ django    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for django    │
+│ django    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                    │
+│ netaddr   │ is_installed        │  PASS   │ HIGH       │ message=netaddr is installed and importable         │
+│ netaddr   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.0, license=BSD License                  │
+│ netaddr   │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd license, permissive=True                │
+│ netaddr   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                    │
+│ netfields │ is_installed        │  FAIL   │ HIGH       │ message=netfields is not installed                  │
+│ netfields │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for netfields             │
+│ netfields │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for netfields │
+│ netfields │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'netfields'                 │
+└───────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): django, netfields
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ py2-ipaddress
+⠙ ✓ netaddr      
+                                              Benchmark Results                                              
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                           ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ netaddr       │     ✓     │         24.8 ms │           — │         571 │                                 │
+│ py2-ipaddress │     ✗     │               — │           — │           — │ No module named 'py2-ipaddress' │
+└───────────────┴───────────┴─────────────────┴─────────────┴─────────────┴─────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_netaddr__py2-ipaddress__jimfunk-dja
+  Not installed locally (scoring with neutral placeholders, not excluded): py2-ipaddress
+  API compat tokens — input: 235  output: 66  latency: 799ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                 ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ netaddr -> py2-ipaddress (seeded from PyMigBench     │ netaddr  │ netaddr │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 1.0 │ 0.96  │ ✓          │
+│ ground truth)                                        │          │         │       │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_netaddr__py2-ipaddress__jimfunk-dja
+→ [15/20] jimfunk/django-postgresql-netfields  netaddr→py2-ipaddress  (netfields/managers.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpvs2erljh_managers.py
+                                         Discovered Imports                                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                      ┃ Alias ┃ Names              ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    1 │ netaddr                                     │ —     │ IPNetwork          │ —              │
+│    3 │ django                                      │ —     │ VERSION            │ —              │
+│    4 │ django.db                                   │ —     │ models, connection │ —              │
+│    5 │ django.db.backends.postgresql_psycopg2.base │ —     │ DatabaseWrapper    │ —              │
+│    6 │ django.db.models.fields                     │ —     │ DateTimeField      │ —              │
+│    7 │ django.db.models                            │ —     │ sql, query         │ —              │
+│    8 │ django.db.models.query_utils                │ —     │ QueryWrapper       │ —              │
+│    9 │ django.utils                                │ —     │ tree               │ —              │
+│   11 │ datetime                                    │ —     │ —                  │ datetime       │
+└──────┴─────────────────────────────────────────────┴───────┴────────────────────┴────────────────┘
+
+✓ Found 9 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                           ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ datetime │ is_installed        │  PASS   │ HIGH       │ message=datetime is installed and importable                                     │
+│ datetime │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for datetime                                           │
+│ datetime │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for datetime                               │
+│ datetime │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                                                 │
+│ django   │ is_installed        │  FAIL   │ HIGH       │ message=django is not installed                                                  │
+│ django   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for django                                             │
+│ django   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for django                                 │
+│ django   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'django'                                                 │
+│ netaddr  │ is_installed        │  PASS   │ HIGH       │ message=netaddr is installed and importable                                      │
+│ netaddr  │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.0, license=BSD License                                               │
+│ netaddr  │ license_permissive  │  PASS   │ MEDIUM     │ license=bsd license, permissive=True                                             │
+│ netaddr  │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.106, shared_names=['__all__', '__builtins__',              │
+│          │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',    │
+│          │                     │         │            │ '__spec__']                                                                      │
+└──────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): django
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠙ ✓ py2-ipaddress
+⠙ ✓ netaddr      
+                                              Benchmark Results                                              
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                           ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ netaddr       │     ✓     │         23.9 ms │           — │         571 │                                 │
+│ py2-ipaddress │     ✗     │               — │           — │           — │ No module named 'py2-ipaddress' │
+└───────────────┴───────────┴─────────────────┴─────────────┴─────────────┴─────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_netaddr__py2-ipaddress__jimfunk-dja
+  Not installed locally (scoring with neutral placeholders, not excluded): py2-ipaddress
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                 ┃ Original ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ netaddr -> py2-ipaddress (seeded from PyMigBench     │ netaddr  │ netaddr │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 0.8 │ 0.93  │ ✓          │
+│ ground truth)                                        │          │         │       │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────┴──────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_netaddr__py2-ipaddress__jimfunk-dja
+→ [16/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/cli.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpp0f9cbt5_cli.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                 ┃ Alias ┃ Names                                   ┃ API Calls Used                         ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ __future__                             │ —     │ absolute_import, division,              │ —                                      │
+│      │                                        │       │ print_function, unicode_literals        │                                        │
+│    3 │ argparse                               │ —     │ —                                       │ ArgumentParser                         │
+│    4 │ functools                              │ —     │ —                                       │ partial                                │
+│    5 │ logging                                │ —     │ —                                       │ DEBUG, getLogger, basicConfig, INFO,   │
+│      │                                        │       │                                         │ WARNING                                │
+│    6 │ os                                     │ —     │ path                                    │ —                                      │
+│    8 │ boto3                                  │ —     │ —                                       │ Session                                │
+│    9 │ jsonschema                             │ —     │ —                                       │ validate                               │
+│   10 │ c7n_mailer                             │ —     │ deploy, utils                           │ get_provider,                          │
+│      │                                        │       │                                         │ MailerAzureQueueProcessor,             │
+│      │                                        │       │                                         │ MailerSqsQueueProcessor                │
+│   11 │ c7n_mailer.azure_mailer.azure_queue_p… │ —     │ MailerAzureQueueProcessor               │ get_provider,                          │
+│      │                                        │       │                                         │ MailerAzureQueueProcessor,             │
+│      │                                        │       │                                         │ MailerSqsQueueProcessor                │
+│   12 │ c7n_mailer.azure_mailer                │ —     │ deploy                                  │ get_provider,                          │
+│      │                                        │       │                                         │ MailerAzureQueueProcessor,             │
+│      │                                        │       │                                         │ MailerSqsQueueProcessor                │
+│   13 │ c7n_mailer.sqs_queue_processor         │ —     │ MailerSqsQueueProcessor                 │ get_provider,                          │
+│      │                                        │       │                                         │ MailerAzureQueueProcessor,             │
+│      │                                        │       │                                         │ MailerSqsQueueProcessor                │
+│   14 │ c7n_mailer.utils                       │ —     │ get_provider, Providers                 │ get_provider,                          │
+│      │                                        │       │                                         │ MailerAzureQueueProcessor,             │
+│      │                                        │       │                                         │ MailerSqsQueueProcessor                │
+│   15 │ ruamel                                 │ —     │ yaml                                    │ —                                      │
+└──────┴────────────────────────────────────────┴───────┴─────────────────────────────────────────┴────────────────────────────────────────┘
+
+✓ Found 13 imports
+
+  pip install ruamel.yaml...
+  pip install pyyaml...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package    ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                         ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ logging    │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable                                    │
+│ logging    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging                                          │
+│ logging    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging                              │
+│ logging    │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.027, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',               │
+│            │                     │         │            │ '__package__', '__spec__', 'error']                                            │
+│ os         │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                         │
+│ os         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                               │
+│ os         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                   │
+│ os         │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.027, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',               │
+│            │                     │         │            │ '__package__', '__spec__', 'error']                                            │
+│ c7n_mailer │ is_installed        │  FAIL   │ HIGH       │ message=c7n_mailer is not installed                                            │
+│ c7n_mailer │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for c7n_mailer                                       │
+│ c7n_mailer │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for c7n_mailer                           │
+│ c7n_mailer │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'c7n_mailer'                                           │
+│ ruamel     │ is_installed        │  PASS   │ HIGH       │ message=ruamel is installed and importable                                     │
+│ ruamel     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for ruamel                                           │
+│ ruamel     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for ruamel                               │
+│ ruamel     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.063, shared_names=['__doc__', '__file__', '__loader__',  │
+│            │                     │         │            │ '__name__', '__package__', '__path__', '__spec__']                             │
+│ functools  │ is_installed        │  PASS   │ HIGH       │ message=functools is installed and importable                                  │
+│ functools  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for functools                                        │
+│ functools  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for functools                            │
+│ functools  │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.065, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', │
+│            │                     │         │            │ '__package__', '__spec__']                                                     │
+│ argparse   │ is_installed        │  PASS   │ HIGH       │ message=argparse is installed and importable                                   │
+│ argparse   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.4.0, license=Python Software Foundation License                      │
+│ argparse   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=python software foundation license, permissive=False                   │
+│ argparse   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.072, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__spec__', '__version__']                                                     │
+│ boto3      │ is_installed        │  FAIL   │ HIGH       │ message=boto3 is not installed                                                 │
+│ boto3      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for boto3                                            │
+│ boto3      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for boto3                                │
+│ boto3      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'boto3'                                                │
+│ __future__ │ is_installed        │  PASS   │ HIGH       │ message=__future__ is installed and importable                                 │
+│ __future__ │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for __future__                                       │
+│ __future__ │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for __future__                           │
+│ __future__ │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.068, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__spec__']                                                                    │
+│ jsonschema │ is_installed        │  PASS   │ HIGH       │ message=jsonschema is installed and importable                                 │
+│ jsonschema │ has_metadata        │  PASS   │ MEDIUM     │ version=4.23.0, license=MIT                                                    │
+│ jsonschema │ license_permissive  │  PASS   │ MEDIUM     │ license=mit, permissive=True                                                   │
+│ jsonschema │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.083, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__path__', '__spec__']                                                        │
+└────────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 36 checks across 9 packages
+
+Disqualified (not installed): boto3, c7n_mailer
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ ruamel.yaml
+⠋ ✓ pyyaml     
+                                         Benchmark Results                                          
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ruamel.yaml │     ✓     │         16.7 ms │           — │        1441 │                          │
+│ pyyaml      │     ✗     │               — │           — │           — │ No module named 'pyyaml' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_ruamel.yaml__pyyaml__cloud-custodia
+  Not installed locally (scoring with neutral placeholders, not excluded): pyyaml
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                          ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ ruamel.yaml -> pyyaml (seeded from PyMigBench │ ruamel.yaml │ ruamel.yaml │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 0.8 │ 0.93  │ ✓          │
+│ ground truth)                                 │             │             │       │       │        │          │     │       │            │
+└───────────────────────────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_ruamel.yaml__pyyaml__cloud-custodia
+→ [17/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/replay.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp0ulyxgbw_replay.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                    ┃ Alias ┃ Names                                         ┃ API Calls Used                                ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   10 │ __future__                │ —     │ absolute_import, division, print_function,    │ —                                             │
+│      │                           │       │ unicode_literals                              │                                               │
+│   12 │ argparse                  │ —     │ —                                             │ ArgumentParser                                │
+│   13 │ base64                    │ —     │ —                                             │ b64decode                                     │
+│   14 │ json                      │ —     │ —                                             │ loads                                         │
+│   15 │ logging                   │ —     │ —                                             │ DEBUG, WARNING, basicConfig, getLogger        │
+│   16 │ os                        │ —     │ —                                             │ path                                          │
+│   17 │ zlib                      │ —     │ —                                             │ decompress                                    │
+│   19 │ boto3                     │ —     │ —                                             │ Session                                       │
+│   20 │ jsonschema                │ —     │ —                                             │ validate                                      │
+│   21 │ c7n_mailer.cli            │ —     │ CONFIG_SCHEMA                                 │ get_mimetext_message, setup_defaults,         │
+│      │                           │       │                                               │ EmailDelivery                                 │
+│   22 │ c7n_mailer.email_delivery │ —     │ EmailDelivery                                 │ get_mimetext_message, setup_defaults,         │
+│      │                           │       │                                               │ EmailDelivery                                 │
+│   23 │ c7n_mailer.utils          │ —     │ setup_defaults                                │ get_mimetext_message, setup_defaults,         │
+│      │                           │       │                                               │ EmailDelivery                                 │
+│   24 │ c7n_mailer.utils_email    │ —     │ get_mimetext_message                          │ get_mimetext_message, setup_defaults,         │
+│      │                           │       │                                               │ EmailDelivery                                 │
+│   25 │ ruamel                    │ —     │ yaml                                          │ —                                             │
+└──────┴───────────────────────────┴───────┴───────────────────────────────────────────────┴───────────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package    ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                         ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ logging    │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable                                    │
+│ logging    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging                                          │
+│ logging    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging                              │
+│ logging    │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.027, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',               │
+│            │                     │         │            │ '__package__', '__spec__', 'error']                                            │
+│ os         │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                         │
+│ os         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                               │
+│ os         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                   │
+│ os         │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.027, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',               │
+│            │                     │         │            │ '__package__', '__spec__', 'error']                                            │
+│ c7n_mailer │ is_installed        │  FAIL   │ HIGH       │ message=c7n_mailer is not installed                                            │
+│ c7n_mailer │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for c7n_mailer                                       │
+│ c7n_mailer │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for c7n_mailer                           │
+│ c7n_mailer │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'c7n_mailer'                                           │
+│ ruamel     │ is_installed        │  PASS   │ HIGH       │ message=ruamel is installed and importable                                     │
+│ ruamel     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for ruamel                                           │
+│ ruamel     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for ruamel                               │
+│ ruamel     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.063, shared_names=['__doc__', '__file__', '__loader__',  │
+│            │                     │         │            │ '__name__', '__package__', '__path__', '__spec__']                             │
+│ argparse   │ is_installed        │  PASS   │ HIGH       │ message=argparse is installed and importable                                   │
+│ argparse   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.4.0, license=Python Software Foundation License                      │
+│ argparse   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=python software foundation license, permissive=False                   │
+│ argparse   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.072, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__spec__', '__version__']                                                     │
+│ boto3      │ is_installed        │  FAIL   │ HIGH       │ message=boto3 is not installed                                                 │
+│ boto3      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for boto3                                            │
+│ boto3      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for boto3                                │
+│ boto3      │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'boto3'                                                │
+│ base64     │ is_installed        │  PASS   │ HIGH       │ message=base64 is installed and importable                                     │
+│ base64     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base64                                           │
+│ base64     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base64                               │
+│ base64     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.063, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__spec__', 're']                                                              │
+│ json       │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                       │
+│ json       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                             │
+│ json       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                 │
+│ json       │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.096, shared_names=['__all__', '__author__',              │
+│            │                     │         │            │ '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', │
+│            │                     │         │            │ '__package__', '__path__']                                                     │
+│ __future__ │ is_installed        │  PASS   │ HIGH       │ message=__future__ is installed and importable                                 │
+│ __future__ │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for __future__                                       │
+│ __future__ │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for __future__                           │
+│ __future__ │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.068, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__spec__']                                                                    │
+│ zlib       │ is_installed        │  PASS   │ HIGH       │ message=zlib is installed and importable                                       │
+│ zlib       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for zlib                                             │
+│ zlib       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for zlib                                 │
+│ zlib       │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.057, shared_names=['__doc__', '__file__', '__loader__',  │
+│            │                     │         │            │ '__name__', '__package__', '__spec__', '__version__', 'error']                 │
+│ jsonschema │ is_installed        │  PASS   │ HIGH       │ message=jsonschema is installed and importable                                 │
+│ jsonschema │ has_metadata        │  PASS   │ MEDIUM     │ version=4.23.0, license=MIT                                                    │
+│ jsonschema │ license_permissive  │  PASS   │ MEDIUM     │ license=mit, permissive=True                                                   │
+│ jsonschema │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.083, shared_names=['__all__', '__builtins__',            │
+│            │                     │         │            │ '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__',  │
+│            │                     │         │            │ '__path__', '__spec__']                                                        │
+└────────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 44 checks across 11 packages
+
+Disqualified (not installed): boto3, c7n_mailer
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ ruamel.yaml
+⠋ ✓ pyyaml     
+                                         Benchmark Results                                          
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ruamel.yaml │     ✓     │         15.1 ms │           — │        1441 │                          │
+│ pyyaml      │     ✗     │               — │           — │           — │ No module named 'pyyaml' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_ruamel.yaml__pyyaml__cloud-custodia
+  Not installed locally (scoring with neutral placeholders, not excluded): pyyaml
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                          ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ ruamel.yaml -> pyyaml (seeded from PyMigBench │ ruamel.yaml │ ruamel.yaml │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 0.8 │ 0.93  │ ✓          │
+│ ground truth)                                 │             │             │       │       │        │          │     │       │            │
+└───────────────────────────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_ruamel.yaml__pyyaml__cloud-custodia
+→ [18/20] cloud-custodian/cloud-custodian  ruamel.yaml→pyyaml  (tools/c7n_mailer/c7n_mailer/utils.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp_4p5405w_utils.py
+                                                             Discovered Imports                                                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                        ┃ Alias ┃ Names                                          ┃ API Calls Used                           ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   14 │ __future__                    │ —     │ absolute_import, division, print_function,     │ —                                        │
+│      │                               │       │ unicode_literals                               │                                          │
+│   16 │ base64                        │ —     │ —                                              │ binascii, b64decode                      │
+│   17 │ datetime                      │ —     │ datetime, timedelta                            │ timedelta, utcfromtimestamp, utcnow, now │
+│   18 │ functools                     │ —     │ —                                              │ partial                                  │
+│   19 │ json                          │ —     │ —                                              │ dumps, loads                             │
+│   20 │ os                            │ —     │ —                                              │ path                                     │
+│   21 │ time                          │ —     │ —                                              │ mktime                                   │
+│   23 │ jinja2                        │ —     │ —                                              │ Template, Environment, FileSystemLoader  │
+│   24 │ jmespath                      │ —     │ —                                              │ search                                   │
+│   25 │ botocore.exceptions           │ —     │ ClientError                                    │ —                                        │
+│   26 │ dateutil                      │ —     │ parser                                         │ gettz, tzutc                             │
+│   27 │ dateutil.tz                   │ —     │ gettz, tzutc                                   │ gettz, tzutc                             │
+│   28 │ ruamel                        │ —     │ yaml                                           │ —                                        │
+│  395 │ c7n_mailer.azure_mailer.utils │ —     │ azure_decrypt                                  │ azure_decrypt                            │
+└──────┴───────────────────────────────┴───────┴────────────────────────────────────────────────┴──────────────────────────────────────────┘
+
+✓ Found 14 imports
+
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package    ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                         ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ os         │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                         │
+│ os         │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                               │
+│ os         │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                   │
+│ os         │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.014, shared_names=['__doc__', '__loader__', '__name__',  │
+│            │                     │         │            │ '__package__', '__spec__']                                                     │
+│ time       │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable                                       │
+│ time       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                                             │
+│ time       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time                                 │
+│ time       │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.014, shared_names=['__doc__', '__loader__', '__name__',  │
+│            │                     │         │            │ '__package__', '__spec__']                                                     │
+│ ruamel     │ is_installed        │  PASS   │ HIGH       │ message=ruamel is installed and importable                                     │
+│ ruamel     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for ruamel                                           │
+│ ruamel     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for ruamel                               │
+│ ruamel     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.019, shared_names=['__doc__', '__file__', '__loader__',  │
+│            │                     │         │            │ '__name__', '__package__', '__spec__']                                         │
+│ functools  │ is_installed        │  PASS   │ HIGH       │ message=functools is installed and importable                                  │
+│ functools  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for functools                                        │
+│ functools  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for functools                            │
+│ functools  │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.025, shared_names=['GenericAlias', '__all__',            │
+│            │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',               │
+│            │                     │         │            │ '__package__', '__spec__']                                                     │
+│ c7n_mailer │ is_installed        │  FAIL   │ HIGH       │ message=c7n_mailer is not installed                                            │
+│ c7n_mailer │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for c7n_mailer                                       │
+│ c7n_mailer │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for c7n_mailer                           │
+│ c7n_mailer │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'c7n_mailer'                                           │
+│ jinja2     │ is_installed        │  PASS   │ HIGH       │ message=jinja2 is installed and importable                                     │
+│ jinja2     │ has_metadata        │  PASS   │ MEDIUM     │ version=3.1.5, license=unknown                                                 │
+│ jinja2     │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                     │
+│ jinja2     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.019, shared_names=['__builtins__', '__doc__',            │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ datetime   │ is_installed        │  PASS   │ HIGH       │ message=datetime is installed and importable                                   │
+│ datetime   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for datetime                                         │
+│ datetime   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for datetime                             │
+│ datetime   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.025, shared_names=['__all__', '__builtins__', '__doc__', │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ base64     │ is_installed        │  PASS   │ HIGH       │ message=base64 is installed and importable                                     │
+│ base64     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for base64                                           │
+│ base64     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for base64                               │
+│ base64     │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.022, shared_names=['__all__', '__builtins__', '__doc__', │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ jmespath   │ is_installed        │  FAIL   │ HIGH       │ message=jmespath is not installed                                              │
+│ jmespath   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for jmespath                                         │
+│ jmespath   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for jmespath                             │
+│ jmespath   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'jmespath'                                             │
+│ json       │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                       │
+│ json       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                             │
+│ json       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                 │
+│ json       │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__', '__doc__', │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ __future__ │ is_installed        │  PASS   │ HIGH       │ message=__future__ is installed and importable                                 │
+│ __future__ │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for __future__                                       │
+│ __future__ │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for __future__                           │
+│ __future__ │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__', '__doc__', │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ dateutil   │ is_installed        │  PASS   │ HIGH       │ message=dateutil is installed and importable                                   │
+│ dateutil   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for dateutil                                         │
+│ dateutil   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for dateutil                             │
+│ dateutil   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.024, shared_names=['__all__', '__builtins__', '__doc__', │
+│            │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']               │
+│ botocore   │ is_installed        │  FAIL   │ HIGH       │ message=botocore is not installed                                              │
+│ botocore   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for botocore                                         │
+│ botocore   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for botocore                             │
+│ botocore   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'botocore'                                             │
+└────────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 52 checks across 13 packages
+
+Disqualified (not installed): jmespath, c7n_mailer, botocore
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ ruamel.yaml
+⠋ ✓ pyyaml     
+                                         Benchmark Results                                          
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ruamel.yaml │     ✓     │         15.2 ms │           — │        1441 │                          │
+│ pyyaml      │     ✗     │               — │           — │           — │ No module named 'pyyaml' │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_ruamel.yaml__pyyaml__cloud-custodia
+  Not installed locally (scoring with neutral placeholders, not excluded): pyyaml
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                          ┃ Original    ┃ Winner      ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ ruamel.yaml -> pyyaml (seeded from PyMigBench │ ruamel.yaml │ ruamel.yaml │ HIGH  │ 1.0   │ 1.0    │ 0.8      │ 0.8 │ 0.93  │ ✓          │
+│ ground truth)                                 │             │             │       │       │        │          │     │       │            │
+└───────────────────────────────────────────────┴─────────────┴─────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_ruamel.yaml__pyyaml__cloud-custodia
+→ [19/20] shoebot/shoebot  pil→pillow  (shoebot/data/img.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpyoi_512c_img.py
+                                     Discovered Imports                                     
+┏━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module       ┃ Alias    ┃ Names            ┃ API Calls Used                       ┃
+┡━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ shoebot.data │ —        │ _copy_attrs      │ _copy_attrs, RecordingSurface        │
+│    3 │ array        │ —        │ —                │ array                                │
+│    4 │ StringIO     │ —        │ StringIO         │ StringIO                             │
+│    5 │ os.path      │ —        │ —                │ path                                 │
+│    6 │ sys          │ —        │ platform         │ —                                    │
+│    8 │ cairo        │ —        │ —                │ FORMAT_ARGB32, Context, ImageSurface │
+│    9 │ Image        │ PILImage │ —                │ open                                 │
+│   10 │ gtk          │ —        │ —                │ gdk                                  │
+│   13 │ rsvg         │ —        │ —                │ Handle                               │
+│   15 │ shoebot.data │ —        │ Grob, ColorMixin │ _copy_attrs, RecordingSurface        │
+│   16 │ shoebot.util │ —        │ RecordingSurface │ _copy_attrs, RecordingSurface        │
+└──────┴──────────────┴──────────┴──────────────────┴──────────────────────────────────────┘
+
+✓ Found 11 imports
+
+  skipped: source package not actually imported in before_code
+→ [20/20] grahame/sedge  argparse→click  (sedge/cli.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpgmlx1daq_cli.py
+                                           Discovered Imports                                           
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names                                     ┃ API Calls Used            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ argparse      │ —     │ —                                         │ ArgumentParser            │
+│    2 │ difflib       │ —     │ —                                         │ unified_diff              │
+│    3 │ os.path       │ —     │ —                                         │ rename, path, unlink      │
+│    4 │ sys           │ —     │ —                                         │ stderr, exit, stdout      │
+│    5 │ tempfile      │ —     │ NamedTemporaryFile                        │ NamedTemporaryFile        │
+│    6 │ engine        │ —     │ SedgeEngine, SedgeException, ConfigOutput │ SedgeEngine, ConfigOutput │
+│    7 │ keylib        │ —     │ KeyLibrary                                │ KeyLibrary                │
+│  134 │ pkg_resources │ —     │ —                                         │ require                   │
+└──────┴───────────────┴───────┴───────────────────────────────────────────┴───────────────────────────┘
+
+✓ Found 8 imports
+
+  pip install argparse...
+  pip install click...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                                                Rule Results                                                                
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                      ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ os            │ is_installed        │  PASS   │ HIGH       │ message=os is installed and importable                                      │
+│ os            │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for os                                            │
+│ os            │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for os                                │
+│ os            │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'engine'                                            │
+│ engine        │ is_installed        │  FAIL   │ HIGH       │ message=engine is not installed                                             │
+│ engine        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for engine                                        │
+│ engine        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for engine                            │
+│ engine        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'engine'                                            │
+│ argparse      │ is_installed        │  PASS   │ HIGH       │ message=argparse is installed and importable                                │
+│ argparse      │ has_metadata        │  PASS   │ MEDIUM     │ version=1.4.0, license=Python Software Foundation License                   │
+│ argparse      │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=python software foundation license, permissive=False                │
+│ argparse      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.022, shared_names=['__all__', '__builtins__',         │
+│               │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__'] │
+│ pkg_resources │ is_installed        │  PASS   │ HIGH       │ message=pkg_resources is installed and importable                           │
+│ pkg_resources │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for pkg_resources                                 │
+│ pkg_resources │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for pkg_resources                     │
+│ pkg_resources │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.029, shared_names=['Mapping', '__all__',              │
+│               │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',            │
+│               │                     │         │            │ '__package__', '__spec__', 'mkdir']                                         │
+│ difflib       │ is_installed        │  PASS   │ HIGH       │ message=difflib is installed and importable                                 │
+│ difflib       │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for difflib                                       │
+│ difflib       │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for difflib                           │
+│ difflib       │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.027, shared_names=['GenericAlias', '__all__',         │
+│               │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',            │
+│               │                     │         │            │ '__package__', '__spec__']                                                  │
+│ sys           │ is_installed        │  PASS   │ HIGH       │ message=sys is installed and importable                                     │
+│ sys           │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for sys                                           │
+│ sys           │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for sys                               │
+│ sys           │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.015, shared_names=['__doc__', '__loader__',           │
+│               │                     │         │            │ '__name__', '__package__', '__spec__', 'path']                              │
+│ keylib        │ is_installed        │  FAIL   │ HIGH       │ message=keylib is not installed                                             │
+│ keylib        │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for keylib                                        │
+│ keylib        │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for keylib                            │
+│ keylib        │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'keylib'                                            │
+│ tempfile      │ is_installed        │  PASS   │ HIGH       │ message=tempfile is installed and importable                                │
+│ tempfile      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for tempfile                                      │
+│ tempfile      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for tempfile                          │
+│ tempfile      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.028, shared_names=['TMP_MAX', '__all__',              │
+│               │                     │         │            │ '__builtins__', '__doc__', '__file__', '__loader__', '__name__',            │
+│               │                     │         │            │ '__package__', '__spec__', '_exists']                                       │
+└───────────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 32 checks across 8 packages
+
+Disqualified (not installed): engine, keylib
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ click   
+⠋ ✓ argparse
+                              Benchmark Results                               
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ argparse │     ✓     │          1.7 ms │           — │         309 │       │
+│ click    │     ✓     │         15.5 ms │           — │         797 │       │
+└──────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_argparse__click__grahame-sedge__3ba
+  API compat tokens — input: 222  output: 58  latency: 1973ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                ┃ Original ┃ Winner   ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ argparse -> click (seeded from PyMigBench ground    │ argparse │ argparse │ HIGH  │ 0.867 │ 1.0    │ 0.8      │ 1.0 │ 0.913 │ ✓          │
+│ truth)                                              │          │          │       │       │        │          │     │       │            │
+└─────────────────────────────────────────────────────┴──────────┴──────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_argparse__click__grahame-sedge__3ba
+
+Evaluation took 107.9s for 20 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                20
+Errored (skipped):          2
+Resolver detection rate:     0.0%  (n=0)
+Full-pipeline accuracy:      11.11%  (n=18)
+Connector invoked on:        1 case(s)
+Verifier clean (no findings):  0.0%  (n=18)
+           Detection Rate by Domain            
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain             ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients       │     5 │              — │
+│ API wrapper        │     3 │              — │
+│ Utility            │     3 │              — │
+│ File reader/writer │     3 │              — │
+│ Cryptography       │     1 │              — │
+│ Database           │     1 │              — │
+│ Filesystem&Crypto  │     1 │              — │
+│ Web Framework      │     1 │              — │
+└────────────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_full_pipeline_test.json, pymigbench_full_pipeline_test.csv

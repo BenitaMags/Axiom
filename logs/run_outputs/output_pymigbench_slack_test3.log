@@ -1,0 +1,144 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/application/notifier/slack_notifier.py)
+──────────────────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpec90q2ez_slack_notifier.py
+                                                        Discovered Imports                                                        
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                              ┃ Alias ┃ Names                               ┃ API Calls Used                      ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ typing                              │ —     │ Optional                            │ —                                   │
+│    3 │ slack                               │ —     │ WebClient                           │ WebClient                           │
+│    4 │ slack.errors                        │ —     │ SlackApiError                       │ WebClient                           │
+│    6 │ petisco.base.application.notifier.… │ —     │ Notifier                            │ BlocksSlackNotifierMessageConverter │
+│    7 │ petisco.base.application.notifier.… │ —     │ NotifierMessage                     │ BlocksSlackNotifierMessageConverter │
+│    8 │ petisco.base.domain.errors.domain_… │ —     │ DomainError                         │ BlocksSlackNotifierMessageConverter │
+│    9 │ petisco.extra.slack.application.no… │ —     │ BlocksSlackNotifierMessageConverte… │ BlocksSlackNotifierMessageConverter │
+│      │                                     │       │ SlackNotifierMessageConverter       │                                     │
+└──────┴─────────────────────────────────────┴───────┴─────────────────────────────────────┴─────────────────────────────────────┘
+
+✓ Found 7 imports
+
+─────────────────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                      Security Scan Results                                       
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ petisco │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ typing  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  petisco -> fastapi, flask, django
+  slack -> slack-sdk, slack-bolt, slackclient
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,871  output: 193  latency: 21650ms
+Equivalence Groups Found
+└── Slack API client
+    ├── Candidates : slackclient, slack-sdk
+    ├── Used APIs  : WebClient, WebClient.chat_postMessage, SlackApiError
+    ├── Pitfalls   : Ensure version >= 3.0 for WebClient API compatibility; older 'slackclient' (v1/v2) has a different interface 
+    │   and is not a drop-in replacement.
+    └── The 'slack' package on PyPI is the slack-sdk package (v3+). The candidate 'slack-sdk' is the same distribution under its 
+        canonical name. Both provide WebClient for synchronous Slack API calls and SlackApiError for error handling, which are the
+        only Slack APIs used in this file.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────
+Scanning candidate 2 package(s) via OSV + PyPI...
+
+         Candidate Security Scan          
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package     ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ slack-sdk   │ unknown │ LOW  │    0.76 │
+│ slackclient │ unknown │ LOW  │    0.76 │
+└─────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+─────────────────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using a disposable virtual environment; installed packages will be removed after probing.
+                                                       Benchmark Results                                                        
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                                ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✓     │         65.4 ms │           — │        5863 │ import module: slack_sdk                             │
+│ slackclient │     ✗     │               — │           — │           — │ No package metadata was found for slackclient==2.5.0 │
+└─────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+─────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 41b63c40
+  Not installed locally (scoring with neutral placeholders, not excluded): slackclient
+  API compat tokens — input: 230  output: 64  latency: 805ms
+                                        AXIOM Optimization Decisions                                         
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role             ┃ Original    ┃ Winner    ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Slack API client │ slackclient │ slack-sdk │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │ ✓          │
+└──────────────────┴─────────────┴───────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Drop-in import patches (no connector needed):
+  slack  →  slack_sdk
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+           Stage 1 — Static Analysis            
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail          ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                 │
+│ Pylint (errors)   │   0    │                 │
+│ Bandit (med/high) │   0    │                 │
+│ Mypy              │   0    │                 │
+│ Adapter contracts │   0    │                 │
+│ Import smoke test │  PASS  │ Exited cleanly. │
+└───────────────────┴────────┴─────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 41b63c40
+
+Evaluation took 35.5s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     100.0%  (n=1)
+Full-pipeline accuracy:      100.0%  (n=1)
+Connector invoked on:        0 case(s)
+Verifier clean (no findings):  100.0%  (n=1)
+        Detection Rate by Domain        
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain      ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ API wrapper │     1 │         100.0% │
+└─────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_slack_test3.json, pymigbench_slack_test3.csv

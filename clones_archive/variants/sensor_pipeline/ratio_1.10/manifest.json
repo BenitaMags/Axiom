@@ -1,0 +1,1184 @@
+{
+ "module": "sensor_pipeline",
+ "original_lines": 114,
+ "requested_lines": 125,
+ "achieved_lines": 126,
+ "length_error": 1,
+ "ranking_metric": "ast_structural",
+ "beam_size": 3,
+ "max_iterations": 6,
+ "iterations_used": 3,
+ "candidates_generated": 54,
+ "candidates_equivalent": 54,
+ "duration_s": 9.774,
+ "winner": {
+  "file": "winner.py",
+  "chain": [
+   "call_argument_extraction",
+   "extract_subexpression",
+   "for_range_to_while"
+  ],
+  "lines": 126,
+  "metrics": {
+   "ncd": 0.124352,
+   "ast_structural": 0.083752,
+   "du_chain": 0.129032,
+   "cfg_shape": 0.222222,
+   "composite": 0.152987
+  },
+  "oracle_passed": true,
+  "oracle_detail": "all layers passed (incl. __main__ output)"
+ },
+ "candidates": [
+  {
+   "index": 1,
+   "file": "001_split_return_expression.py",
+   "chain": [
+    "split_return_expression"
+   ],
+   "lines": 115,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.045977,
+    "ast_structural": 0.006135,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.0,
+    "composite": 0.003067
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.105
+  },
+  {
+   "index": 2,
+   "file": "002_extract_subexpression.py",
+   "chain": [
+    "extract_subexpression"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.070479,
+    "ast_structural": 0.024221,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.012111
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 3,
+   "file": "003_if_else_assign_to_ternary.py",
+   "chain": [
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.060544,
+    "ast_structural": 0.009709,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.067354
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.11
+  },
+  {
+   "index": 4,
+   "file": "004_for_range_to_while.py",
+   "chain": [
+    "for_range_to_while"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.054472,
+    "ast_structural": 0.014795,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.118509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.095
+  },
+  {
+   "index": 5,
+   "file": "005_invert_if_else.py",
+   "chain": [
+    "invert_if_else"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.058824,
+    "ast_structural": 0.007018,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.003509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 6,
+   "file": "006_rename_locals.py",
+   "chain": [
+    "rename_locals"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.164248,
+    "ast_structural": 0.0,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.13
+  },
+  {
+   "index": 7,
+   "file": "007_call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.077282,
+    "ast_structural": 0.047373,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.023686
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.112
+  },
+  {
+   "index": 8,
+   "file": "008_demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.06038,
+    "ast_structural": 0.019366,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.106
+  },
+  {
+   "index": 9,
+   "file": "009_call_argument_extraction+split_return_expression.py",
+   "chain": [
+    "call_argument_extraction",
+    "split_return_expression"
+   ],
+   "lines": 120,
+   "line_delta": 6,
+   "metrics": {
+    "ncd": 0.088138,
+    "ast_structural": 0.053173,
+    "du_chain": 0.051724,
+    "cfg_shape": 0.0,
+    "composite": 0.026587
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 10,
+   "file": "010_call_argument_extraction+extract_subexpression.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.105298,
+    "ast_structural": 0.070279,
+    "du_chain": 0.098361,
+    "cfg_shape": 0.0,
+    "composite": 0.03514
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 11,
+   "file": "011_call_argument_extraction+if_else_assign_to_ternary.py",
+   "chain": [
+    "call_argument_extraction",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.083617,
+    "ast_structural": 0.056995,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.090997
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 12,
+   "file": "012_call_argument_extraction+for_range_to_while.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.095646,
+    "ast_structural": 0.061329,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.141776
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.103
+  },
+  {
+   "index": 13,
+   "file": "013_call_argument_extraction+invert_if_else.py",
+   "chain": [
+    "call_argument_extraction",
+    "invert_if_else"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.099934,
+    "ast_structural": 0.054077,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.027039
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 14,
+   "file": "014_call_argument_extraction+rename_locals.py",
+   "chain": [
+    "call_argument_extraction",
+    "rename_locals"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.201805,
+    "ast_structural": 0.047373,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.0,
+    "composite": 0.023686
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 15,
+   "file": "015_call_argument_extraction+call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction",
+    "call_argument_extraction"
+   ],
+   "lines": 120,
+   "line_delta": 6,
+   "metrics": {
+    "ncd": 0.081619,
+    "ast_structural": 0.053173,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.026587
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 16,
+   "file": "016_call_argument_extraction+demorgan_branch_swap.py",
+   "chain": [
+    "call_argument_extraction",
+    "demorgan_branch_swap"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.101661,
+    "ast_structural": 0.066322,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.033161
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.095
+  },
+  {
+   "index": 17,
+   "file": "017_extract_subexpression+split_return_expression.py",
+   "chain": [
+    "extract_subexpression",
+    "split_return_expression"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.081457,
+    "ast_structural": 0.030146,
+    "du_chain": 0.083333,
+    "cfg_shape": 0.0,
+    "composite": 0.015073
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 18,
+   "file": "018_extract_subexpression+extract_subexpression.py",
+   "chain": [
+    "extract_subexpression",
+    "extract_subexpression"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.076872,
+    "ast_structural": 0.030146,
+    "du_chain": 0.083333,
+    "cfg_shape": 0.0,
+    "composite": 0.015073
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 19,
+   "file": "019_extract_subexpression+if_else_assign_to_ternary.py",
+   "chain": [
+    "extract_subexpression",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.078751,
+    "ast_structural": 0.033825,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.079412
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 20,
+   "file": "020_extract_subexpression+for_range_to_while.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.087558,
+    "ast_structural": 0.038494,
+    "du_chain": 0.1,
+    "cfg_shape": 0.222222,
+    "composite": 0.130358
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 21,
+   "file": "021_extract_subexpression+invert_if_else.py",
+   "chain": [
+    "extract_subexpression",
+    "invert_if_else"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.092715,
+    "ast_structural": 0.031034,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.015517
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 22,
+   "file": "022_extract_subexpression+rename_locals.py",
+   "chain": [
+    "extract_subexpression",
+    "rename_locals"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.194964,
+    "ast_structural": 0.024221,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.0,
+    "composite": 0.012111
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.143
+  },
+  {
+   "index": 23,
+   "file": "023_extract_subexpression+demorgan_branch_swap.py",
+   "chain": [
+    "extract_subexpression",
+    "demorgan_branch_swap"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.094227,
+    "ast_structural": 0.043253,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.021626
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 24,
+   "file": "024_for_range_to_while+expand_aug_assign.py",
+   "chain": [
+    "for_range_to_while",
+    "expand_aug_assign"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.054509,
+    "ast_structural": 0.017361,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.119792
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 25,
+   "file": "025_for_range_to_while+split_return_expression.py",
+   "chain": [
+    "for_range_to_while",
+    "split_return_expression"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.066845,
+    "ast_structural": 0.020797,
+    "du_chain": 0.052632,
+    "cfg_shape": 0.222222,
+    "composite": 0.12151
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.093
+  },
+  {
+   "index": 26,
+   "file": "026_for_range_to_while+if_else_assign_to_ternary.py",
+   "chain": [
+    "for_range_to_while",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.072109,
+    "ast_structural": 0.024433,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.178883
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 27,
+   "file": "027_for_range_to_while+invert_if_else.py",
+   "chain": [
+    "for_range_to_while",
+    "invert_if_else"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.078313,
+    "ast_structural": 0.021683,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.121952
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.093
+  },
+  {
+   "index": 28,
+   "file": "028_for_range_to_while+rename_locals.py",
+   "chain": [
+    "for_range_to_while",
+    "rename_locals"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.189734,
+    "ast_structural": 0.014795,
+    "du_chain": 0.408451,
+    "cfg_shape": 0.222222,
+    "composite": 0.118509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 29,
+   "file": "029_for_range_to_while+demorgan_branch_swap.py",
+   "chain": [
+    "for_range_to_while",
+    "demorgan_branch_swap"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.080483,
+    "ast_structural": 0.033943,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.128082
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  },
+  {
+   "index": 30,
+   "file": "030_for_range_to_while+independent_assignment_swap.py",
+   "chain": [
+    "for_range_to_while",
+    "independent_assignment_swap"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.056528,
+    "ast_structural": 0.016536,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.119379
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.103
+  },
+  {
+   "index": 31,
+   "file": "031_call_argument_extraction+extract_subexpression+split_return_expression.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "split_return_expression"
+   ],
+   "lines": 124,
+   "line_delta": 10,
+   "metrics": {
+    "ncd": 0.115885,
+    "ast_structural": 0.075885,
+    "du_chain": 0.112903,
+    "cfg_shape": 0.0,
+    "composite": 0.037943
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 32,
+   "file": "032_call_argument_extraction+extract_subexpression+extract_subexpression.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "extract_subexpression"
+   ],
+   "lines": 124,
+   "line_delta": 10,
+   "metrics": {
+    "ncd": 0.110677,
+    "ast_structural": 0.075885,
+    "du_chain": 0.112903,
+    "cfg_shape": 0.0,
+    "composite": 0.037943
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 33,
+   "file": "033_call_argument_extraction+extract_subexpression+if_else_assign_to_ternary.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.114896,
+    "ast_structural": 0.079796,
+    "du_chain": 0.098361,
+    "cfg_shape": 0.125,
+    "composite": 0.102398
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 34,
+   "file": "034_call_argument_extraction+extract_subexpression+for_range_to_while.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "for_range_to_while"
+   ],
+   "lines": 126,
+   "line_delta": 12,
+   "metrics": {
+    "ncd": 0.124352,
+    "ast_structural": 0.083752,
+    "du_chain": 0.129032,
+    "cfg_shape": 0.222222,
+    "composite": 0.152987
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.089
+  },
+  {
+   "index": 35,
+   "file": "035_call_argument_extraction+extract_subexpression+invert_if_else.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "invert_if_else"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.126953,
+    "ast_structural": 0.076793,
+    "du_chain": 0.098361,
+    "cfg_shape": 0.0,
+    "composite": 0.038397
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 36,
+   "file": "036_call_argument_extraction+extract_subexpression+rename_locals.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "rename_locals"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.22756,
+    "ast_structural": 0.070279,
+    "du_chain": 0.413333,
+    "cfg_shape": 0.0,
+    "composite": 0.03514
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 37,
+   "file": "037_call_argument_extraction+extract_subexpression+call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "call_argument_extraction"
+   ],
+   "lines": 124,
+   "line_delta": 10,
+   "metrics": {
+    "ncd": 0.109446,
+    "ast_structural": 0.075885,
+    "du_chain": 0.098361,
+    "cfg_shape": 0.0,
+    "composite": 0.037943
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 38,
+   "file": "038_call_argument_extraction+extract_subexpression+demorgan_branch_swap.py",
+   "chain": [
+    "call_argument_extraction",
+    "extract_subexpression",
+    "demorgan_branch_swap"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.128506,
+    "ast_structural": 0.088908,
+    "du_chain": 0.098361,
+    "cfg_shape": 0.0,
+    "composite": 0.044454
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.099
+  },
+  {
+   "index": 39,
+   "file": "039_call_argument_extraction+for_range_to_while+expand_aug_assign.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "expand_aug_assign"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.095646,
+    "ast_structural": 0.063721,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.142972
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.091
+  },
+  {
+   "index": 40,
+   "file": "040_call_argument_extraction+for_range_to_while+split_return_expression.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "split_return_expression"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.106885,
+    "ast_structural": 0.067006,
+    "du_chain": 0.084746,
+    "cfg_shape": 0.222222,
+    "composite": 0.144614
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 41,
+   "file": "041_call_argument_extraction+for_range_to_while+if_else_assign_to_ternary.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.102961,
+    "ast_structural": 0.07088,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.333333,
+    "composite": 0.202106
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 42,
+   "file": "042_call_argument_extraction+for_range_to_while+invert_if_else.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "invert_if_else"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.118611,
+    "ast_structural": 0.067912,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.145067
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.1
+  },
+  {
+   "index": 43,
+   "file": "043_call_argument_extraction+for_range_to_while+rename_locals.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "rename_locals"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.226319,
+    "ast_structural": 0.061329,
+    "du_chain": 0.424658,
+    "cfg_shape": 0.222222,
+    "composite": 0.141776
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.106
+  },
+  {
+   "index": 44,
+   "file": "044_call_argument_extraction+for_range_to_while+call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "call_argument_extraction"
+   ],
+   "lines": 123,
+   "line_delta": 9,
+   "metrics": {
+    "ncd": 0.100526,
+    "ast_structural": 0.067006,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.144614
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.093
+  },
+  {
+   "index": 45,
+   "file": "045_call_argument_extraction+for_range_to_while+demorgan_branch_swap.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "demorgan_branch_swap"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.119658,
+    "ast_structural": 0.080068,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.151145
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 46,
+   "file": "046_call_argument_extraction+for_range_to_while+independent_assignment_swap.py",
+   "chain": [
+    "call_argument_extraction",
+    "for_range_to_while",
+    "independent_assignment_swap"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.098285,
+    "ast_structural": 0.063032,
+    "du_chain": 0.068966,
+    "cfg_shape": 0.222222,
+    "composite": 0.142627
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.109
+  },
+  {
+   "index": 47,
+   "file": "047_extract_subexpression+for_range_to_while+expand_aug_assign.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "expand_aug_assign"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.088216,
+    "ast_structural": 0.040956,
+    "du_chain": 0.1,
+    "cfg_shape": 0.222222,
+    "composite": 0.131589
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.137
+  },
+  {
+   "index": 48,
+   "file": "048_extract_subexpression+for_range_to_while+split_return_expression.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "split_return_expression"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.098361,
+    "ast_structural": 0.044293,
+    "du_chain": 0.114754,
+    "cfg_shape": 0.222222,
+    "composite": 0.133258
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.114
+  },
+  {
+   "index": 49,
+   "file": "049_extract_subexpression+for_range_to_while+extract_subexpression.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "extract_subexpression"
+   ],
+   "lines": 122,
+   "line_delta": 8,
+   "metrics": {
+    "ncd": 0.09377,
+    "ast_structural": 0.044293,
+    "du_chain": 0.114754,
+    "cfg_shape": 0.222222,
+    "composite": 0.133258
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.105
+  },
+  {
+   "index": 50,
+   "file": "050_extract_subexpression+for_range_to_while+if_else_assign_to_ternary.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 116,
+   "line_delta": 2,
+   "metrics": {
+    "ncd": 0.096839,
+    "ast_structural": 0.048027,
+    "du_chain": 0.1,
+    "cfg_shape": 0.333333,
+    "composite": 0.19068
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.119
+  },
+  {
+   "index": 51,
+   "file": "051_extract_subexpression+for_range_to_while+invert_if_else.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "invert_if_else"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.109436,
+    "ast_structural": 0.045183,
+    "du_chain": 0.1,
+    "cfg_shape": 0.222222,
+    "composite": 0.133703
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 52,
+   "file": "052_extract_subexpression+for_range_to_while+rename_locals.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "rename_locals"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.217916,
+    "ast_structural": 0.038494,
+    "du_chain": 0.44,
+    "cfg_shape": 0.222222,
+    "composite": 0.130358
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.113
+  },
+  {
+   "index": 53,
+   "file": "053_extract_subexpression+for_range_to_while+demorgan_branch_swap.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "demorgan_branch_swap"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.110965,
+    "ast_structural": 0.057314,
+    "du_chain": 0.1,
+    "cfg_shape": 0.222222,
+    "composite": 0.139768
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.1
+  },
+  {
+   "index": 54,
+   "file": "054_extract_subexpression+for_range_to_while+independent_assignment_swap.py",
+   "chain": [
+    "extract_subexpression",
+    "for_range_to_while",
+    "independent_assignment_swap"
+   ],
+   "lines": 121,
+   "line_delta": 7,
+   "metrics": {
+    "ncd": 0.090849,
+    "ast_structural": 0.040205,
+    "du_chain": 0.1,
+    "cfg_shape": 0.222222,
+    "composite": 0.131214
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  }
+ ]
+}

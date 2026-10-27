@@ -1,0 +1,31 @@
+{
+  "role": "IP address parsing and validation",
+  "winner": "ipaddr",
+  "original": "ipaddr",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "evidence_weight": 0.6,
+    "total": 0.875,
+    "installed": true
+  },
+  "rationale": "'ipaddr' wins 'IP address parsing and validation'. Confidence: HIGH. Total: 0.875 (speed=1.0, mem=1.0, sec=None, api=0.5). Migration note: ipaddr uses AddressValueError while ipaddress uses ValueError for invalid addresses - exception handling needs updating",
+  "confidence": "HIGH",
+  "used_apis": [
+    "IPv4Address",
+    "IPv6Address",
+    "AddressValueError"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

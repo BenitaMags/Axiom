@@ -1,0 +1,38 @@
+# parsed 1 file(s): ['sensor_json_logger.py']
+# expected: ['sensor_json_logger.py']
+# reply length: 1922 chars
+======================================================================
+Looking at this program, I need to determine which condition applies.
+
+The docstring describes JSON audit logging requiring deterministic output (sorted keys, compact separators). There's no statement in the documentation saying the JSON dependency should be removed and reimplemented as first-party code. This means **condition 1** applies: replace `json` with a suitable third-party library.
+
+A good choice is `orjson`, a fast, actively-maintained JSON library. However, `orjson` doesn't support arbitrary separators or a direct `sort_keys` boolean in the same way as stdlib — actually it does support `OPT_SORT_KEYS` and always produces compact output (no spaces), which matches `(",", ":")` separators. It returns bytes, so I need to decode to `str` to preserve the return type.
+
+I need to verify: `orjson.dumps` with `option=orjson.OPT_SORT_KEYS` sorts keys and produces compact separators by default (no whitespace), matching `separators=(",", ":")`. This preserves functional equivalence.
+
+### FILENAME: sensor_json_logger.py
+```python
+# CHOSEN-TARGET: orjson
+"""sensor_json_logger -- deterministic JSON audit logging of sensor samples.
+
+Serializes tag/value sensor readings to canonical one-line JSON records. The JSON
+
+Determinism (sorted keys, compact separators) is a hard requirement so that audit
+logs are byte-reproducible.
+"""
+import orjson
+from typing import Iterable, Mapping
+
+_SEPARATORS = (",", ":")
+
+
+def format_reading(tag: str, value, ts: str, quality: str = "GOOD") -> str:
+    """Return a canonical one-line JSON record for a single reading."""
+    record = {"tag": tag, "value": value, "ts": ts, "quality": quality}
+    return orjson.dumps(record, option=orjson.OPT_SORT_KEYS).decode("utf-8")
+
+
+def format_batch(readings: Iterable[Mapping]) -> str:
+    """Serialize an iterable of reading mappings to newline-delimited JSON."""
+    return "\n".join(format_reading(**dict(r)) for r in readings)
+```

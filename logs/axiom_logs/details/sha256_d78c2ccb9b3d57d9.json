@@ -1,0 +1,33 @@
+{
+  "role": "async concurrency runtime for Socket.IO server",
+  "winner": "eventlet",
+  "original": "eventlet",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.15,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.894,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'eventlet' wins 'async concurrency runtime for Socket.IO server'. Confidence: HIGH. Total: 0.894 (speed=1.0, mem=0.15, sec=1.0, api=1.0). Migration note: gevent uses a different hub implementation; some C extensions that work with eventlet may block the gevent loop",
+  "confidence": "HIGH",
+  "used_apis": [
+    "monkey_patch"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

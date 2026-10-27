@@ -1,0 +1,130 @@
+# parsed 3 file(s): ['client.py', 'scheduler.py', 'station.py']
+# expected: ['client.py', 'scheduler.py', 'station.py']
+# reply length: 4172 chars
+======================================================================
+### FILENAME: client.py
+```python
+"""client -- SCADA HTTP client for the pump station.
+
+The HTTP client is one substitution target: `requests` -> `httpx` (similar but not
+identical sessions/timeouts/exceptions -> glue required). Session is injected.
+"""
+
+
+def _default_session():
+    import httpx  # lazy import for testability
+
+    return httpx.Client()
+
+
+class ScadaClient:
+    def __init__(self, base_url: str, session=None, timeout: float = 2.0):
+        self.base = base_url.rstrip("/")
+        self.session = session if session is not None else _default_session()
+        self.timeout = timeout
+
+    def _full_url(self, path: str) -> str:
+        return f"{self.base}{path}"
+
+    def get_demand(self) -> float:
+        endpoint = self._full_url("/demand")
+        response = self.session.get(endpoint, timeout=self.timeout)
+        response.raise_for_status()
+        payload = response.json()
+        return payload["demand"]
+
+    def get_runtimes(self) -> list:
+        endpoint = self._full_url("/runtimes")
+        response = self.session.get(endpoint, timeout=self.timeout)
+        response.raise_for_status()
+        payload = response.json()
+        return payload["runtimes"]
+
+    def command(self, pump: int, on: bool) -> int:
+        endpoint = self._full_url(f"/pump/{pump}")
+        body = {"on": on}
+        response = self.session.post(endpoint, json=body, timeout=self.timeout)
+        response.raise_for_status()
+        status = getattr(response, "status_code", 200)
+        return status
+```
+
+### FILENAME: scheduler.py
+```python
+"""scheduler -- first-party lead-lag pump staging with runtime balancing.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. Given a flow demand and per-pump accumulated runtimes,
+it decides how many pumps to stage and rotates duty to the least-run pumps.
+"""
+from functools import reduce
+
+
+class PumpScheduler:
+    def __init__(self, n_pumps: int = 3, pump_capacity: float = 50.0):
+        self.n = n_pumps
+        self.capacity = pump_capacity
+
+    def required_count(self, demand: float) -> int:
+        """Number of pumps needed to meet *demand* (capacity-staged)."""
+        if demand <= 0:
+            return 0
+
+        needed = 0
+        covered = 0.0
+        while covered < demand and needed < self.n:
+            covered += self.capacity
+            needed += 1
+        return needed
+
+    def select(self, demand: float, runtimes) -> dict:
+        """Return {pump_index: on?} staging the least-run pumps first (lead-lag)."""
+        count_needed = self.required_count(demand)
+
+        indices = list(range(self.n))
+        ranked = sorted(indices, key=lambda idx: (runtimes[idx], idx))
+
+        active = set()
+        for pos, pump_idx in enumerate(ranked):
+            if pos < count_needed:
+                active.add(pump_idx)
+
+        result = {}
+        for pump_idx in range(self.n):
+            result[pump_idx] = pump_idx in active
+        return result
+```
+
+### FILENAME: station.py
+```python
+"""station -- pump-station orchestration: poll, schedule, command.
+
+Combines all three transformations in one program:
+  * LSA + GSA: swap the HTTP client (`requests` -> `httpx`) and write glue.
+  * LMA: rewrite the first-party lead-lag staging logic in `scheduler.py`.
+"""
+from client import ScadaClient
+from scheduler import PumpScheduler
+
+
+class PumpStation:
+    def __init__(self, client: ScadaClient, scheduler: PumpScheduler = None):
+        self.client = client
+        self.scheduler = scheduler or PumpScheduler()
+
+    def _fetch_state(self):
+        current_demand = self.client.get_demand()
+        current_runtimes = self.client.get_runtimes()
+        return current_demand, current_runtimes
+
+    def _apply_plan(self, plan: dict) -> None:
+        for pump_idx, should_run in plan.items():
+            self.client.command(pump_idx, should_run)
+
+    def cycle(self) -> dict:
+        """Poll demand/runtimes, compute the staging plan, and issue commands."""
+        demand, runtimes = self._fetch_state()
+        staging_plan = self.scheduler.select(demand, runtimes)
+        self._apply_plan(staging_plan)
+        return staging_plan
+```

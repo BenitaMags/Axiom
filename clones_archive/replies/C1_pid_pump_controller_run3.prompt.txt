@@ -1,0 +1,105 @@
+You are given a Python program. Rewrite it so that it is FUNCTIONALLY EQUIVALENT, while performing this library substitution:
+
+    replace `simple-pid` with a first-party implementation you write yourself
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Remove the `simple-pid` dependency entirely and reimplement its behaviour as first-party code inside this program.
+- Diversify all first-party logic: different internal structure, different intermediate variables, different control flow where possible.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: controller.py
+```python
+"""controller -- PID pump controller regulating tank level to a setpoint.
+
+The PID engine is the substitution target: `simple-pid` -> an in-house controller.
+Because the substitution *removes* a third-party behavior, the PID computation becomes
+first-party code that the LMA must re-implement and diversify -- hence Category C. The
+surrounding logic (setpoint ramping, output clamping, AUTO/MANUAL mode) is already
+first-party. The PID object is dependency-injected for testing.
+"""
+from io_map import speed_to_counts
+
+
+def _make_pid(kp, ki, kd, setpoint):
+    from simple_pid import PID  # lazy import for testability
+
+    return PID(kp, ki, kd, setpoint=setpoint, output_limits=(0.0, 100.0))
+
+
+class PumpController:
+    def __init__(self, setpoint, kp=2.0, ki=0.5, kd=0.0, ramp=0.5, pid=None):
+        self.target = setpoint
+        self.applied_setpoint = 0.0
+        self.ramp = ramp
+        self.mode = "AUTO"
+        self.pid = pid if pid is not None else _make_pid(kp, ki, kd, 0.0)
+
+    def _ramp_setpoint(self):
+        """First-party logic: move the applied setpoint toward the target by <= ramp."""
+        if self.applied_setpoint < self.target:
+            self.applied_setpoint = min(self.target, self.applied_setpoint + self.ramp)
+        elif self.applied_setpoint > self.target:
+            self.applied_setpoint = max(self.target, self.applied_setpoint - self.ramp)
+        self.pid.setpoint = self.applied_setpoint
+
+    def update(self, level) -> int:
+        """Compute the pump-speed command (in DAC counts) for the measured level."""
+        if self.mode == "MANUAL":
+            return speed_to_counts(0.0)
+        self._ramp_setpoint()
+        speed = self.pid(level)
+        speed = max(0.0, min(100.0, speed))  # clamp before actuation
+        return speed_to_counts(speed)
+```
+
+### FILENAME: io_map.py
+```python
+"""io_map -- field I/O scaling for the pump controller (first-party logic)."""
+
+
+def counts_to_level(counts, adc_span=(0, 4095), level_range=(0.0, 10.0)) -> float:
+    """Convert raw level-sensor ADC counts to meters."""
+    lo, hi = adc_span
+    a, b = level_range
+    return a + (counts - lo) * (b - a) / (hi - lo)
+
+
+def speed_to_counts(speed_pct, dac_span=(0, 4095)) -> int:
+    """Convert a 0-100% pump-speed command to DAC counts (clamped)."""
+    lo, hi = dac_span
+    speed_pct = max(0.0, min(100.0, speed_pct))
+    return int(round(lo + speed_pct * (hi - lo) / 100.0))
+```
+
+### FILENAME: plant.py
+```python
+"""plant -- a minimal tank simulator used to exercise the controller in closed loop.
+
+This is test/reference scaffolding (a first-order integrator), not part of the shipped
+controller, but it provides the reference trajectory the equivalence oracle checks.
+"""
+
+
+class Tank:
+    def __init__(self, level=0.0, inflow_gain=0.05, outflow=0.02, area=1.0):
+        self.level = level
+        self.inflow_gain = inflow_gain
+        self.outflow = outflow
+        self.area = area
+
+    def step(self, pump_speed_pct, dt=1.0) -> float:
+        inflow = self.inflow_gain * pump_speed_pct
+        self.level += (inflow - self.outflow) * dt / self.area
+        self.level = max(0.0, self.level)
+        return self.level
+```

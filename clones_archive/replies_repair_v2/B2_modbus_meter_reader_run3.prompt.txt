@@ -1,0 +1,88 @@
+You are given a Python program that depends on `pymodbus`. Rewrite it so the dependency on `pymodbus` is gone and the program remains FUNCTIONALLY EQUIVALENT.
+
+Exactly one of these two conditions applies. Read the program — including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable, actively-maintained third-party library yourself and migrate to it. Write whatever adapter or glue code the difference in API requires. Do not write your own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the program's own documentation states that the dependency is to be removed and its behaviour written as first-party code. If the documentation does not say that, condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1, or `# CHOSEN-TARGET: first-party` for condition 2.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: modbus_meter_reader.py
+```python
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+
+read APIs and result objects differ (pymodbus returns a response object with
+
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+"""
+from registers import REGISTERS, decode
+
+
+def _default_client(host: str, port: int = 502):
+    from pymodbus.client import ModbusTcpClient  # lazy import for testability
+
+    client = ModbusTcpClient(host, port=port)
+    client.connect()
+    return client
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self.client.read_holding_registers(address, count, unit=self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record
+```
+
+### FILENAME: registers.py
+```python
+"""registers -- register map and word decoding for a Modbus power meter.
+
+Decodes big-endian 16-bit register words into engineering values. Kept separate from
+the transport so that decoding is reusable and independently testable.
+"""
+import struct
+
+# name -> (start address, word count, encoding, scale)
+REGISTERS = {
+    "voltage": (0x0000, 2, "f32", 1.0),
+    "current": (0x0002, 2, "f32", 1.0),
+    "power":   (0x0004, 2, "f32", 1.0),
+    "energy":  (0x0006, 2, "u32", 0.001),  # Wh -> kWh
+}
+
+
+def decode(encoding: str, words, scale: float) -> float:
+    """Decode a sequence of 16-bit words into a scaled engineering value."""
+    raw = b"".join(struct.pack(">H", w & 0xFFFF) for w in words)
+    if encoding == "f32":
+        value = struct.unpack(">f", raw)[0]
+    elif encoding == "u32":
+        value = struct.unpack(">I", raw)[0]
+    else:
+        raise ValueError(f"unknown encoding: {encoding}")
+    return value * scale
+```

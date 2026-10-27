@@ -1,0 +1,96 @@
+"""Water-tank pump controller -- hysteresis (bang-bang) state machine.
+
+Infrastructure-style level control. The pump refills a tank against a varying
+demand draw. Control is on/off with a deadband: pump turns ON at the low
+setpoint, OFF at the high setpoint. Safety interlocks force a FAULT latch on
+overflow or on excessive continuous runtime (dry-run / stuck-valve proxy).
+
+States: OFF -> ON -> OFF (normal cycle), any -> FAULT (latched).
+
+Control-flow of interest for a diversifier:
+  * explicit finite state machine (string-tagged modes)
+  * hysteresis branch that depends on current mode
+  * latching fault logic that overrides normal transitions
+"""
+
+from dataclasses import dataclass
+
+
+@dataclass
+class PumpState:
+    level: float
+    mode: str      # "OFF" | "ON" | "FAULT"
+    runtime: float
+
+
+@dataclass
+class PumpConfig:
+    low: float
+    high: float
+    overflow: float
+    pump_rate: float
+    max_runtime: float
+
+
+def pump_step(state: PumpState, demand: float, cfg: PumpConfig,
+              dt: float) -> PumpState:
+    level = state.level
+    mode = state.mode
+    runtime = state.runtime
+
+    # --- Hysteresis control (only while not faulted) ---
+    if mode == "ON":
+        runtime = runtime + dt
+        if level >= cfg.high:
+            runtime = 0.0
+            mode = "OFF"
+    elif mode == "OFF" and level <= cfg.low:
+        runtime = 0.0
+        mode = "ON"
+    if mode == "ON":
+        inflow = cfg.pump_rate
+    else:
+        inflow = 0.0
+    level = level + dt * (inflow - demand)
+    if level < 0.0:
+        level = 0.0
+
+    # --- Safety interlocks (latching) ---
+    if level >= cfg.overflow:
+        mode = "FAULT"
+    if mode == "ON" and runtime > cfg.max_runtime:
+        mode = "FAULT"
+
+    if level > cfg.overflow:
+        level = cfg.overflow
+
+    return PumpState(level, mode, runtime)
+
+
+def run_scenario() -> list:
+    """Deterministic demand profile. Returns [(level, mode)] samples."""
+    cfg = PumpConfig(low=20.0, high=80.0, overflow=100.0,
+                     pump_rate=12.0, max_runtime=40.0)
+    state = PumpState(level=50.0, mode="OFF", runtime=0.0)
+
+    samples = []
+    dt = 0.5
+    for step in range(400):
+        # Demand rises and falls in phases; a heavy-draw phase stresses the pump.
+        phase = step % 200
+        if phase < 60:
+            demand = 4.0
+        elif not (phase >= 120):
+            demand = 10.5
+        else:
+            demand = 2.0
+        state = pump_step(state, demand, cfg, dt)
+        samples.append((state.level, state.mode))
+    return samples
+
+
+if __name__ == "__main__":
+    out = run_scenario()
+    print(f"steps={len(out)}")
+    print(f"final level={out[-1][0]:.3f}  mode={out[-1][1]}")
+    print("modes seen:", sorted({m for _, m in out}))

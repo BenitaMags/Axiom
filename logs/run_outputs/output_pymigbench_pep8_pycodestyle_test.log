@@ -1,0 +1,334 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] schlamar/flake8-todo  pep8→pycodestyle  (flake8_todo.py)
+──────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────
+Resolved path: /private/tmp/tmpzo6j_2gr_flake8_todo.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    4 │ re     │ —     │ —     │ compile        │
+│    6 │ pep8   │ —     │ —     │ noqa           │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 2 imports
+
+─────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                          Security Scan Results                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                 ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ pep8    │ 1.7.1   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 8y  │
+│         │         │      │      │           │            │           │         │ 9mo                   │
+│ re      │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python                │
+│         │         │      │      │           │            │           │         │ standard-library      │
+│         │         │      │      │           │            │           │         │ module; no PyPI/OSV   │
+│         │         │      │      │           │            │           │         │ package sca           │
+└─────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴───────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────
+Discovering alternative libraries for: pep8
+Discovered candidates:
+  pep8 -> pycodestyle, flake8, ruff
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,402  output: 286  latency: 6504ms
+Equivalence Groups Found
+└── Python style guide checker / linter plugin base
+    ├── Candidates : pep8, pycodestyle, flake8, ruff
+    ├── Used APIs  : noqa
+    ├── Pitfalls   : pep8 package is unmaintained since 2016; pycodestyle is the direct successor; flake8 
+    │   and ruff are full linters with plugin ecosystems, not just style checkers; ruff is written in Rust
+    │   and significantly faster but has different configuration format; flake8 requires plugins for some 
+    │   checks that pycodestyle handles natively
+    └── pep8 was renamed to pycodestyle in 2016; both provide the same noqa() function for inline ignore 
+        comments. flake8 and ruff are modern linters that also understand # noqa comments and can serve as
+        drop-in replacements for the linting role. The code only uses pep8.noqa() to check for noqa 
+        comments, which all candidates support.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+               Candidate Security Scan                
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package     ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ flake8      │ 7.3.0   │ LOW  │ AVAILABLE │    0.90 │
+│ pycodestyle │ 2.14.0  │ LOW  │ AVAILABLE │    0.90 │
+│ ruff        │ 0.16.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+─────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case 
+finishes.
+                                            Benchmark Results                                             
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃                 ┃    Runtime API (real ┃             ┃                       ┃
+┃ Package     ┃ Available ┃ Import (3 runs) ┃               probe) ┃ Memory (KB) ┃ Notes                 ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ ruff        │     ✓     │          0.7 ms │      UNMEASURED — No │         121 │ import module: ruff   │
+│             │           │                 │           registered │             │                       │
+│             │           │                 │     side-effect-free │             │                       │
+│             │           │                 │    runtime probe for │             │                       │
+│             │           │                 │ noqa; an integration │             │                       │
+│             │           │                 │  fixture is required │             │                       │
+│             │           │                 │ for network, broker, │             │                       │
+│ flake8      │     ✓     │          2.1 ms │      UNMEASURED — No │         459 │ import module: flake8 │
+│             │           │                 │           registered │             │                       │
+│             │           │                 │     side-effect-free │             │                       │
+│             │           │                 │    runtime probe for │             │                       │
+│             │           │                 │ noqa; an integration │             │                       │
+│             │           │                 │  fixture is required │             │                       │
+│             │           │                 │ for network, broker, │             │                       │
+│ pep8        │     ✓     │          5.3 ms │      UNMEASURED — No │         814 │ import module: pep8   │
+│             │           │                 │           registered │             │                       │
+│             │           │                 │     side-effect-free │             │                       │
+│             │           │                 │    runtime probe for │             │                       │
+│             │           │                 │ noqa; an integration │             │                       │
+│             │           │                 │  fixture is required │             │                       │
+│             │           │                 │ for network, broker, │             │                       │
+│ pycodestyle │     ✓     │          5.4 ms │      UNMEASURED — No │         652 │ import module:        │
+│             │           │                 │           registered │             │ pycodestyle           │
+│             │           │                 │     side-effect-free │             │                       │
+│             │           │                 │    runtime probe for │             │                       │
+│             │           │                 │ noqa; an integration │             │                       │
+│             │           │                 │  fixture is required │             │                       │
+│             │           │                 │ for network, broker, │             │                       │
+└─────────────┴───────────┴─────────────────┴──────────────────────┴─────────────┴───────────────────────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+─────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 917d422e
+  API compat tokens — input: 173  output: 54  latency: 969ms
+                                       AXIOM Optimization Decisions                                       
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Python style guide  │ pep8     │ ruff   │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 0.0 │ 0.812 │ ✓          │
+│ checker / linter    │          │        │       │       │        │          │     │       │            │
+│ plugin base         │          │        │       │       │        │          │     │       │            │
+└─────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pep8  →  ruff  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+
+Analyzing: pep8 → ruff
+  Found 1 call site(s):
+    L12: if pep8.noqa(physical_line):
+  Tokens — in:1,001 out:159 latency:18877ms
+
+  Compatibility analysis:
+    ✓ L12: pep8.noqa(physical_line)  — pycodestyle (the direct successor to pep8) provides an identical 
+noqa() function
+  ✓ All pep8 call sites are fully compatible — no wrappers needed
+
+Applying migration import rewrites: {'pep8': 'ruff'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 __version__ = '0.3'                                                                               │
+│    2 import re                                                                                         │
+│    3 import ruff                                                                                       │
+│    4 NOTE_REGEX = re.compile('(TODO|FIXME|XXX)')                                                       │
+│    5                                                                                                   │
+│    6 def check_todo_notes(physical_line):                                                              │
+│    7     if ruff.noqa(physical_line):                                                                  │
+│    8         return                                                                                    │
+│    9     match = NOTE_REGEX.search(physical_line)                                                      │
+│   10     if match:                                                                                     │
+│   11         return (match.start(), 'T000 Todo note found.')                                           │
+│   12 check_todo_notes.name = name = 'flake8-todo'                                                      │
+│   13 check_todo_notes.version = __version__                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                    │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                  │
+│                        │                       │                  │     {                              │
+│                        │                       │                  │         "type": "error",           │
+│                        │                       │                  │         "module": "flake8_todo",   │
+│                        │                       │                  │         "obj": "check_todo_notes", │
+│ Bandit                 │         PASS          │       PASS       │ {                                  │
+│                        │                       │                  │   "errors": [],                    │
+│                        │                       │                  │   "generated_at":                  │
+│                        │                       │                  │ "2026-07-26T12:16:12Z",            │
+│                        │                       │                  │   "metrics": {                     │
+│                        │                       │                  │     "/var/folders/_4/t4jx          │
+│ Mypy (untyped defs)    │     2 finding(s)      │   2 finding(s)   │ /var/folders/_4/t4jxnllx1fsf__wwq… │
+│                        │                       │                  │ er                                 │
+│ Patch integrity        │           —           │       PASS       │                                    │
+│ Adapter contracts      │           —           │       PASS       │                                    │
+│ Stale source symbols   │           —           │       PASS       │                                    │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten │
+│                        │                       │                  │ module symbols to probe.           │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after           │
+│                        │                       │                  │ migration: no-member:Module 'ruff' │
+│                        │                       │                  │ has no 'noqa' member               │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                    │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────┘
+╭─────────────────────────────── New static findings introduced by patch ────────────────────────────────╮
+│ line 1: New pylint finding after migration: no-member:Module 'ruff' has no 'noqa' member               │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────── Full verifier repair evidence ─────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: no-member:Module 'ruff' has no 'noqa'     │
+│ member                                                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 1/5 → Connector (patch_or_static): line 1: New pylint finding after migration: 
+no-member:Module 'ruff' has no 'noqa' member
+────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: New pylint finding after migration: 
+no-member:Module 'ruff' has no 'noqa' member)
+
+Analyzing: pep8 → ruff
+  Found 1 call site(s):
+    L12: if pep8.noqa(physical_line):
+  Tokens — in:1,047 out:181 latency:49685ms
+
+  Compatibility analysis:
+    ✗ L12: ruff.noqa(physical_line)  — ruff does not expose a 'noqa' function in its Python API. The 
+pep8.noqa() functi
+
+  1 call site(s) need a wrapper:
+    _ruff_noqa_wrapper  L12: Implement a function that checks if a physical line contains a '# noqa
+  Opening ACI edit session for pep8 → ruff...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:5,340 out:435
+    · open(line_number=...)
+    · edit(replacement_text=..., start_line=..., end_line=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'pep8': 'ruff'}
+╭──────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────╮
+│    1 __version__ = '0.3'                                                                               │
+│    2 import re                                                                                         │
+│    3 import ruff                                                                                       │
+│    4 NOTE_REGEX = re.compile('(TODO|FIXME|XXX)')                                                       │
+│    5                                                                                                   │
+│    6 def _ruff_noqa_wrapper(physical_line):                                                            │
+│    7     """                                                                                           │
+│    8     Wrapper to check if a physical line contains a '# noqa' comment.                              │
+│    9                                                                                                   │
+│   10     pep8.noqa() returned True if the line contains a '# noqa' comment                             │
+│   11     (optionally followed by error codes like '# noqa: E123,W456').                                │
+│   12                                                                                                   │
+│   13     ruff does not expose a public `noqa` function. This wrapper replicates                        │
+│   14     the behavior by checking for a '# noqa' pattern in the line.                                  │
+│   15     """                                                                                           │
+│   16     return bool(re.search('#\\s*noqa\\b', physical_line))                                         │
+│   17                                                                                                   │
+│   18 def check_todo_notes(physical_line):                                                              │
+│   19     if _ruff_noqa_wrapper(physical_line):                                                         │
+│   20         return                                                                                    │
+│   21     match = NOTE_REGEX.search(physical_line)                                                      │
+│   22     if match:                                                                                     │
+│   23         return (match.start(), 'T000 Todo note found.')                                           │
+│   24 check_todo_notes.name = name = 'flake8-todo'                                                      │
+│   25 check_todo_notes.version = __version__                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing baseline sandbox for this case.
+Verifier: reusing target sandbox for this case.
+Verifier: reusing static-analysis toolchain for this case.
+                                  Stage 1 — Differential Static Analysis                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                                 ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                                        │
+│ Pylint (errors)        │         PASS          │     PASS     │ []                                     │
+│ Bandit                 │         PASS          │     PASS     │ {                                      │
+│                        │                       │              │   "errors": [],                        │
+│                        │                       │              │   "generated_at":                      │
+│                        │                       │              │ "2026-07-26T12:18:11Z",                │
+│                        │                       │              │   "metrics": {                         │
+│                        │                       │              │     "/var/folders/_4/t4jx              │
+│ Mypy (untyped defs)    │     2 finding(s)      │ 2 finding(s) │ /var/folders/_4/t4jxnllx1fsf__wwq8kx2… │
+│                        │                       │              │ er                                     │
+│ Patch integrity        │           —           │     PASS     │                                        │
+│ Adapter contracts      │           —           │     PASS     │                                        │
+│ Stale source symbols   │           —           │     PASS     │                                        │
+│ Referenced target APIs │           —           │     PASS     │ No statically referenced rewritten     │
+│                        │                       │              │ module symbols to probe.               │
+│ New static findings    │ baseline is reference │     PASS     │                                        │
+│ Import smoke test      │         PASS          │     PASS     │ Exited cleanly.                        │
+└────────────────────────┴───────────────────────┴──────────────┴────────────────────────────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 917d422e
+
+Evaluation took 165.7s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     100.0%  (n=1)
+Target selection rate:        0.0%  (n=1; selection only)
+Verified exact PyMigBench migrations: 0.0%  (0/1)
+Verification environments incomplete: 0
+Proven target-infeasible migrations: 0
+Verified exact among deterministic patch verdicts: 0.0%  (n=1)
+Verified alternatives (not scored as exact target): 1
+  Efficiency-superior on real comparable evidence: 1  (unproven/inconclusive: 0)
+Connector invoked on:        1 case(s)
+Verifier repair cycles:      1 across 1 case(s)
+Verified after repair:       1  (budget exhausted: 0)
+Verifier accepted (differential): 100.0%  (n=1)
+Real runtime-probe coverage: 0.0%  (0/4 package-case profiles; 0 measured probe(s))
+              Publication Outcome Categories              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Category                                       ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Verified exact PyMigBench migration            │     0 │
+│ Verified alternative (see efficiency evidence) │     1 │
+│ Rejected after repair budget                   │     0 │
+│ Not verified / not adjudicated                 │     0 │
+└────────────────────────────────────────────────┴───────┘
+       Terminal Outcomes        
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome              ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ verified_alternative │     1 │
+└──────────────────────┴───────┘
+       Detection / Verified Exact Rate by Domain       
+┏━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain    ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Codestyle │     1 │         100.0% │           0.0% │
+└───────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_pep8_pycodestyle_test.json, pymigbench_pep8_pycodestyle_test.csv

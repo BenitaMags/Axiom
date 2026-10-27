@@ -1,0 +1,38 @@
+{
+  "role": "synchronous HTTP client for polling REST endpoints",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.9,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.925,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: New mypy finding after migration: Name \"<lib>\" is not defined  [name-defined]; line 1: New pylint finding after migration: undefined-variable:Undefined variable '<lib>'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in scada_poller.py: [read_tag] NameError: name 'httpx' is not defined. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.",
+  "confidence": "LOW",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "resp.raise_for_status",
+    "resp.json"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

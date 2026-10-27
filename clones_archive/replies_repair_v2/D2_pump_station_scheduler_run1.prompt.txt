@@ -1,0 +1,118 @@
+You are given a Python program that depends on `requests`. Rewrite it so the dependency on `requests` is gone and the program remains FUNCTIONALLY EQUIVALENT.
+
+Exactly one of these two conditions applies. Read the program — including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable, actively-maintained third-party library yourself and migrate to it. Write whatever adapter or glue code the difference in API requires. Do not write your own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the program's own documentation states that the dependency is to be removed and its behaviour written as first-party code. If the documentation does not say that, condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1, or `# CHOSEN-TARGET: first-party` for condition 2.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: client.py
+```python
+"""client -- SCADA HTTP client for the pump station.
+
+
+identical sessions/timeouts/exceptions -> glue required). Session is injected.
+"""
+
+
+def _default_session():
+    import requests  # lazy import for testability
+
+    return requests.Session()
+
+
+class ScadaClient:
+    def __init__(self, base_url: str, session=None, timeout: float = 2.0):
+        self.base = base_url.rstrip("/")
+        self.session = session if session is not None else _default_session()
+        self.timeout = timeout
+
+    def get_demand(self) -> float:
+        r = self.session.get(f"{self.base}/demand", timeout=self.timeout)
+        r.raise_for_status()
+        return r.json()["demand"]
+
+    def get_runtimes(self) -> list:
+        r = self.session.get(f"{self.base}/runtimes", timeout=self.timeout)
+        r.raise_for_status()
+        return r.json()["runtimes"]
+
+    def command(self, pump: int, on: bool) -> int:
+        r = self.session.post(f"{self.base}/pump/{pump}", json={"on": on},
+                              timeout=self.timeout)
+        r.raise_for_status()
+        return getattr(r, "status_code", 200)
+```
+
+### FILENAME: scheduler.py
+```python
+"""scheduler -- first-party lead-lag pump staging with runtime balancing.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. Given a flow demand and per-pump accumulated runtimes,
+it decides how many pumps to stage and rotates duty to the least-run pumps.
+"""
+import math
+
+
+class PumpScheduler:
+    def __init__(self, n_pumps: int = 3, pump_capacity: float = 50.0):
+        self.n = n_pumps
+        self.capacity = pump_capacity
+
+    def required_count(self, demand: float) -> int:
+        """Number of pumps needed to meet *demand* (capacity-staged)."""
+        if demand <= 0:
+            return 0
+        return min(self.n, math.ceil(demand / self.capacity))
+
+    def select(self, demand: float, runtimes) -> dict:
+        """Return {pump_index: on?} staging the least-run pumps first (lead-lag)."""
+        k = self.required_count(demand)
+        # Rotate duty to balance wear: prefer pumps with the least accumulated runtime.
+        order = sorted(range(self.n), key=lambda i: (runtimes[i], i))
+        on = set(order[:k])
+        return {i: (i in on) for i in range(self.n)}
+```
+
+### FILENAME: station.py
+```python
+"""station -- pump-station orchestration: poll, schedule, command.
+
+Combines all three transformations in one program:
+
+  * LMA: rewrite the first-party lead-lag staging logic in `scheduler.py`.
+"""
+from client import ScadaClient
+from scheduler import PumpScheduler
+
+
+class PumpStation:
+    def __init__(self, client: ScadaClient, scheduler: PumpScheduler = None):
+        self.client = client
+        self.scheduler = scheduler if scheduler is not None else PumpScheduler()
+
+    def cycle(self) -> dict:
+        """Poll demand/runtimes, compute the staging plan, and issue commands."""
+        demand = self.client.get_demand()
+        runtimes = self.client.get_runtimes()
+        plan = self.scheduler.select(demand, runtimes)
+        for pump, on in plan.items():
+            self.client.command(pump, on)
+        return plan
+```

@@ -1,0 +1,328 @@
+$ run_axiom_arms.py --config proteus_no_verif --program D1_boiler_control_loop --runs 1 --start-run 1
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_d1_final.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-D1_boiler_control_loop-6x4dmqwz/transport.py
+                          Discovered Imports                          
+┏━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module          ┃ Alias ┃ Names           ┃ API Calls Used  ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│    9 │ pymodbus.client │ —     │ ModbusTcpClient │ ModbusTcpClient │
+└──────┴─────────────────┴───────┴─────────────────┴─────────────────┘
+
+✓ Found 1 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                    Security Scan Results                                    
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┓
+┃ Package  ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes   ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━┩
+│ pymodbus │ 3.15.0  │    0 │ LOW  │ AVAILABLE │       1.00 │      1.00 │    1.00 │ ✓ Clean │
+└──────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴─────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: pymodbus
+Discovered candidates:
+  pymodbus -> minimalmodbus, pyserial, modbus-tk
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,422  output: 1,197  latency: 12367ms
+Discovery leads not advanced to an equivalence group after file/API fit review: pymodbus: pyserial
+Equivalence Groups Found
+└── Modbus protocol client for reading/writing PLC/field device registers
+    ├── Candidates : pymodbus, minimalmodbus, modbus-tk
+    ├── Used APIs  : ModbusTcpClient, connect, read_holding_registers, write_register, isError, registers
+    ├── Pitfalls   : minimalmodbus's Instrument API uses read_register()/write_register() with different signatures and raises exceptions on error instead of 
+    │   returning a response object with isError(); minimalmodbus is primarily designed for serial/RTU Modbus; TCP support is limited/less mature compared to 
+    │   pymodbus's ModbusTcpClient; modbus-tk uses a master/execute() pattern with explicit Modbus function codes (e.g. cst.READ_HOLDING_REGISTERS) rather than
+    │   named methods like read_holding_registers; unit/slave id handling differs across libraries (unit= kwarg in pymodbus vs positional slave address 
+    │   elsewhere); response object structure (.registers, .isError()) is pymodbus-specific and must be re-mapped for other libraries
+    ├── Constraints: requires_connector
+    └── All three libraries implement the Modbus protocol (TCP and/or RTU) for reading and writing holding registers to industrial field devices, which is 
+        exactly how pymodbus is used here (ModbusTcpClient, read_holding_registers, write_register). They are functionally interchangeable at the protocol 
+        level, though each has a distinct client API and error-handling model. pyserial was suggested but is rejected: it is a raw serial-port transport 
+        library with no Modbus protocol framing/addressing support, so it plays a different (lower-level) role than pymodbus and cannot directly substitute for
+        the register-level API used in this file.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+                Candidate Security Scan                 
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package       ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ minimalmodbus │ 2.1.1   │ LOW  │ AVAILABLE │    0.82 │
+│ modbus-tk     │ 1.1.5   │ LOW  │ AVAILABLE │    0.90 │
+└───────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠋ ✓ minimalmodbus
+⠋ ✓ modbus-tk    
+⠋ ✓ pymodbus     
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package       ┃ Available ┃ Import (3 runs) ┃                                                                Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ modbus-tk     │     ✓     │          3.6 ms │ UNMEASURED — No registered side-effect-free runtime probe for ModbusTcpClient, connect, │           8 │       │
+│               │           │                 │                                                     read_holding_registers, write_regis │             │       │
+│ minimalmodbus │     ✓     │         11.2 ms │ UNMEASURED — No registered side-effect-free runtime probe for ModbusTcpClient, connect, │         328 │       │
+│               │           │                 │                                                     read_holding_registers, write_regis │             │       │
+│ pymodbus      │     ✓     │        111.3 ms │ UNMEASURED — No registered side-effect-free runtime probe for ModbusTcpClient, connect, │         874 │       │
+│               │           │                 │                                                     read_holding_registers, write_regis │             │       │
+└───────────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 3 package(s), 3 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 03c9fe0c
+  API compat tokens — input: 300  output: 195  latency: 2720ms
+                                                                 AXIOM Optimization Decisions                                                                  
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                                 ┃ Original ┃ Winner    ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Modbus protocol client for reading/writing PLC/field device          │ pymodbus │ modbus-tk │ MEDIUM │ 1.0   │ 1.0    │ 0.895    │ 0.1 │ 0.702 │ ✓          │
+│ registers                                                            │          │           │        │       │        │          │     │       │            │
+└──────────────────────────────────────────────────────────────────────┴──────────┴───────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pymodbus  →  modbus-tk  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: pymodbus → modbus-tk
+  Found 1 call site(s):
+    L11: client = ModbusTcpClient(host, port=port)
+  Tokens — in:2,306 out:2,427 latency:24055ms
+
+  Compatibility analysis:
+    ✗ L11: ModbusTcpClient(host, port=port)  — modbus-tk has no ModbusTcpClient class; the TCP-capable equivalent is modbus_tk.
+
+  1 call site(s) need a wrapper:
+    _modbustk_client_adapter  L11: Construct a modbus_tk TcpMaster(host, port), call .open() instead of .
+  Opening ACI edit session for pymodbus → modbus-tk...
+  ACI session: 1 edit(s) applied over 4 tool call(s)  |  tokens in:40,177 out:4,248
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open(line_number=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'pymodbus': 'modbus_tk'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """transport -- Modbus field I/O for the boiler supervisor.                                                                                           │
+│     2                                                                                                                                                       │
+│     3 The Modbus client is one substitution target: `pymodbus` -> `minimalmodbus` (different                                                                │
+│     4 read/write API and error model -> glue required). The client is dependency-injected.                                                                  │
+│     5 """                                                                                                                                                   │
+│     6                                                                                                                                                       │
+│     7                                                                                                                                                       │
+│     8 class _ModbusTkResponse:                                                                                                                              │
+│     9     """Pymodbus-shaped response object.                                                                                                               │
+│    10                                                                                                                                                       │
+│    11     pymodbus's read/write calls return an object exposing `.isError()` and,                                                                           │
+│    12     for reads, `.registers` (a list of ints). modbus_tk's `Master.execute()`                                                                          │
+│    13     instead either returns a plain tuple of register values on success or                                                                             │
+│    14     raises a `modbus_tk.modbus.ModbusError` (or a transport-level                                                                                     │
+│    15     `socket.error`/`socket.timeout`) on failure. This class re-packages                                                                               │
+│    16     either outcome into the pymodbus-shaped object so call sites written                                                                              │
+│    17     against pymodbus's response API keep working unchanged.                                                                                           │
+│    18     """                                                                                                                                               │
+│    19                                                                                                                                                       │
+│    20     def __init__(self, registers=None, error=None):                                                                                                   │
+│    21         self.registers = registers                                                                                                                    │
+│    22         self._error = error                                                                                                                           │
+│    23                                                                                                                                                       │
+│    24     def isError(self) -> bool:                                                                                                                        │
+│    25         return self._error is not None                                                                                                                │
+│    26                                                                                                                                                       │
+│    27                                                                                                                                                       │
+│    28 class _ModbusTkClientAdapter:                                                                                                                         │
+│    29     """Adapter exposing a pymodbus-like `ModbusTcpClient` surface backed by modbus_tk.                                                                │
+│    30                                                                                                                                                       │
+│    31     pymodbus's `ModbusTcpClient` exposes `.connect()`,                                                                                                │
+│    32     `.read_holding_registers(address, count, unit=...)` and                                                                                           │
+│    33     `.write_register(address, value, unit=...)`, all returning a response                                                                             │
+│    34     object with `.isError()`/`.registers`. modbus_tk's `TcpMaster` instead                                                                            │
+│    35     exposes `.open()`/`.close()` and a single `.execute(slave_id,                                                                                     │
+│    36     function_code, starting_address, quantity_of_x=..., output_value=...)`                                                                            │
+│    37     method that returns a raw tuple on success and raises on failure. This                                                                            │
+│    38     adapter translates the pymodbus-shaped calls into the equivalent                                                                                  │
+│    39     `execute()` calls with the right modbus_tk function codes, and wraps the                                                                          │
+│    40     tuple result (or a caught error) into `_ModbusTkResponse` so the rest of                                                                          │
+│    41     the file's call chain (`rr.isError()` / `rr.registers[0]`) is unaffected                                                                          │
+│    42     by the underlying library swap.                                                                                                                   │
+│    43     """                                                                                                                                               │
+│    44                                                                                                                                                       │
+│    45     def __init__(self, master):                                                                                                                       │
+│    46         self._master = master                                                                                                                         │
+│    47                                                                                                                                                       │
+│    48     def connect(self) -> bool:                                                                                                                        │
+│    49         self._master.open()                                                                                                                           │
+│    50         return True                                                                                                                                   │
+│    51                                                                                                                                                       │
+│    52     def close(self):                                                                                                                                  │
+│    53         self._master.close()                                                                                                                          │
+│    54                                                                                                                                                       │
+│    55     def read_holding_registers(self, address, count, unit: int = 1) -> "_ModbusTkResponse":                                                           │
+│    56         import socket                                                                                                                                 │
+│    57                                                                                                                                                       │
+│    58         import modbus_tk.defines as cst                                                                                                               │
+│    59         import modbus_tk.modbus as modbus_tk_modbus                                                                                                   │
+│    60                                                                                                                                                       │
+│    61         try:                                                                                                                                          │
+│    62             result = self._master.execute(unit, cst.READ_HOLDING_REGISTERS, address, count)                                                           │
+│    63             return _ModbusTkResponse(registers=list(result))                                                                                          │
+│    64         except (modbus_tk_modbus.ModbusError, socket.error) as exc:                                                                                   │
+│    65             return _ModbusTkResponse(error=exc)                                                                                                       │
+│    66                                                                                                                                                       │
+│    67     def write_register(self, address, value, unit: int = 1) -> "_ModbusTkResponse":                                                                   │
+│    68                                                                                                                                                       │
+│    69         try:                                                                                                                                          │
+│    70             self._master.execute(                                                                                                                     │
+│    71                 unit, cst.WRITE_SINGLE_REGISTER, address, output_value=value                                                                          │
+│    72             )                                                                                                                                         │
+│    73             return _ModbusTkResponse(registers=[value])                                                                                               │
+│    74         except (modbus_tk_modbus.ModbusError, socket.error) as exc:                                                                                   │
+│    75             return _ModbusTkResponse(error=exc)                                                                                                       │
+│    76                                                                                                                                                       │
+│    77                                                                                                                                                       │
+│    78 def _modbustk_client_adapter(host: str, port: int = 502) -> "_ModbusTkClientAdapter":                                                                 │
+│    79     """Build a modbus_tk `TcpMaster` and wrap it as a pymodbus-shaped client.                                                                         │
+│    80                                                                                                                                                       │
+│    81     pymodbus's `ModbusTcpClient(host, port=port)` returns an object that is                                                                           │
+│    82     later driven through `.connect()`, `.read_holding_registers(...)` and                                                                             │
+│    83     `.write_register(...)`, each returning a `.isError()`/`.registers`                                                                                │
+│    84     response. modbus_tk has no equivalent client: `TcpMaster(host, port)`                                                                             │
+│    85     must be opened with `.open()` and driven through `.execute()` with                                                                                │
+│    86     explicit function codes. This helper constructs the `TcpMaster` and                                                                               │
+│    87     returns a `_ModbusTkClientAdapter` that re-exposes the pymodbus-shaped                                                                            │
+│    88     methods the rest of the module already calls, so `ModbusIO` does not                                                                              │
+│    89     need to know which library is underneath.                                                                                                         │
+│    90     """                                                                                                                                               │
+│    91     import modbus_tk.modbus_tcp as modbus_tk_tcp  # lazy import for testability                                                                       │
+│    92                                                                                                                                                       │
+│    93     master = modbus_tk_tcp.TcpMaster(host, port)                                                                                                      │
+│    94     return _ModbusTkClientAdapter(master)                                                                                                             │
+│    95                                                                                                                                                       │
+│    96                                                                                                                                                       │
+│    97 def _default_client(host: str, port: int = 502):                                                                                                      │
+│    98     client = _modbustk_client_adapter(host, port=port)                                                                                                │
+│    99     client.connect()                                                                                                                                  │
+│   100     return client                                                                                                                                     │
+│   101                                                                                                                                                       │
+│   102                                                                                                                                                       │
+│   103 class ModbusIO:                                                                                                                                       │
+│   104     def __init__(self, host: str = None, client=None, unit: int = 1):                                                                                 │
+│   105         self.client = client if client is not None else _default_client(host)                                                                         │
+│   106         self.unit = unit                                                                                                                              │
+│   107                                                                                                                                                       │
+│   108     def _read1(self, address: str) -> int:                                                                                                            │
+│   109         rr = self.client.read_holding_registers(address, 1, unit=self.unit)                                                                           │
+│   110         if rr.isError():                                                                                                                              │
+│   111             raise IOError(f"Modbus read failed @ {address:#06x}")                                                                                     │
+│   112         return rr.registers[0]                                                                                                                        │
+│   113                                                                                                                                                       │
+│   114     def read_temperature(self, address: int = 0x0000) -> float:                                                                                       │
+│   115         return self._read1(address) / 10.0  # deci-degrees C -> C                                                                                     │
+│   116                                                                                                                                                       │
+│   117     def read_pressure(self, address: int = 0x0001) -> float:                                                                                          │
+│   118         return self._read1(address) / 100.0  # centibar -> bar                                                                                        │
+│   119                                                                                                                                                       │
+│   120     def write_valve(self, percent: float, address: int = 0x0010) -> int:                                                                              │
+│   121         counts = int(round(max(0.0, min(100.0, percent)) * 40.95))  # 0-100% -> 0-4095                                                                │
+│   122         wr = self.client.write_register(address, counts, unit=self.unit)                                                                              │
+│   123         if wr.isError():                                                                                                                              │
+│   124             raise IOError(f"Modbus write failed @ {address:#06x}")                                                                                    │
+│   125         return counts                                                                                                                                 │
+│   126                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 125 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ transport                                      │
+│ Lines (original → variant)  │ 125 → 50                                       │
+│ Requested lines             │ 50                                             │
+│ Achieved lines              │ 50                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:_modbustk_adapter.py    │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.2015                                         │
+│ diversity: ast_structural   │ 0.5195  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.1121                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.2598  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 19.9s │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  wrote extracted module _modbustk_adapter.py
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D1_boiler_control_loop (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 36 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ control                                        │
+│ Lines (original → variant)  │ 36 → 48                                        │
+│ Requested lines             │ 48                                             │
+│ Achieved lines              │ 48                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:clamping.py             │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4169                                         │
+│ diversity: ast_structural   │ 0.2956  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.6140                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1478  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 7.3s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D1_boiler_control_loop (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 28 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ supervisor                                     │
+│ Lines (original → variant)  │ 28 → 44                                        │
+│ Requested lines             │ 44                                             │
+│ Achieved lines              │ 44                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:cycle_record.py         │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4455                                         │
+│ diversity: ast_structural   │ 0.4761  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.7885                                         │
+│ diversity: cfg_shape        │ 1.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.7380  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 6.7s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+D1_boiler_control_loop           1       5/5     Y    Y      4      8  0.2942  131.1s
+
+migration_success 1/1 (100%)
+rows appended to results_d1_final.csv

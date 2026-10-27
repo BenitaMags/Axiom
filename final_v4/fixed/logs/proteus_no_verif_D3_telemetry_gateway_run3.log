@@ -1,0 +1,308 @@
+$ run_axiom_arms.py --config proteus_no_verif --program D3_telemetry_gateway --runs 1 --start-run 3
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_fixed4.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-D3_telemetry_gateway-rxle6y98/sink.py
+                     Discovered Imports                     
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    6 │ json             │ —     │ —     │ dumps          │
+│   10 │ paho.mqtt.client │ mqtt  │ —     │ Client         │
+└──────┴──────────────────┴───────┴───────┴────────────────┘
+
+✓ Found 2 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                                Security Scan Results                                                                
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package          ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho → paho-mqtt │ 2.1.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ PyPI distribution: paho-mqtt                            │
+│ json             │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└──────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: paho
+Discovered candidates:
+  paho -> gmqtt, amqtt, aiomqtt
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,244  output: 841  latency: 9399ms
+Equivalence Groups Found
+└── MQTT client for publishing telemetry records
+    ├── Candidates : paho-mqtt, aiomqtt, gmqtt, amqtt
+    ├── Used APIs  : mqtt.Client, client.connect, client.publish
+    ├── Pitfalls   : paho-mqtt is synchronous/callback-based; aiomqtt and gmqtt are asyncio-based and require the calling code (MqttSink.publish) to become 
+    │   async or use an event loop bridge; aiomqtt uses async context managers (`async with Client(...) as client`) rather than an instantiate-then-connect 
+    │   pattern; publish() return types differ: paho-mqtt returns a MQTTMessageInfo with .rc, while aiomqtt/gmqtt publish calls may return None or raise 
+    │   exceptions instead of returning an rc code; amqtt is less actively maintained and has a different API surface (fork of hbmqtt) with its own 
+    │   connect/publish coroutine signatures; connection error handling and reconnection semantics differ significantly across these libraries
+    ├── Constraints: requires_connector
+    └── paho-mqtt is used here as a synchronous, callback-based MQTT client to connect and publish JSON payloads to a broker. aiomqtt, gmqtt, and amqtt are all
+        MQTT client libraries capable of the same connect/publish role, making them plausible substitutes for the underlying MQTT transport. The file's own 
+        docstring explicitly calls out aiomqtt as a substitution target for paho-mqtt, confirming the intended equivalence.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Reusing pinned source security evidence: paho-mqtt ← paho_mqtt
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ aiomqtt │ 2.5.1   │ LOW  │ AVAILABLE │    1.00 │
+│ amqtt   │ 0.12.1  │ LOW  │ AVAILABLE │    1.00 │
+│ gmqtt   │ 0.7.0   │ LOW  │ AVAILABLE │    0.90 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠇ ✓ aiomqtt  
+⠇ ✓ amqtt    
+⠇ ✓ gmqtt    
+⠇ ✓ paho-mqtt
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package   ┃ Available ┃ Import (3 runs) ┃                                                                    Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ paho-mqtt │     ✓     │          0.3 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │           7 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ amqtt     │     ✓     │          0.4 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │           7 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ gmqtt     │     ✓     │         65.7 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │         321 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+│ aiomqtt   │     ✓     │        138.0 ms │  UNMEASURED — No registered side-effect-free runtime probe for mqtt.Client, client.connect, │         213 │       │
+│           │           │                 │                                                            client.publish; an integration f │             │       │
+└───────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: c721bc94
+  API compat tokens — input: 280  output: 294  latency: 3563ms
+                                                    AXIOM Optimization Decisions                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                         ┃ Original  ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ MQTT client for publishing telemetry records │ paho-mqtt │ amqtt  │ MEDIUM │ 0.974 │ 1.0    │ 1.0      │ 0.2 │ 0.825 │ ✓          │
+└──────────────────────────────────────────────┴───────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  paho-mqtt  →  amqtt  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: paho-mqtt → amqtt
+  Found 1 call site(s):
+    L12: client = mqtt.Client()
+  Tokens — in:2,058 out:1,492 latency:16831ms
+
+  Compatibility analysis:
+    ✗ L12: client = mqtt.Client()  — amqtt has no synchronous `Client()` constructor equivalent. Its analogous class 
+  ⚠ Remaining incompatibilities noted by connector LLM:
+    - MqttSink.publish() is a synchronous method returning int; amqtt's publish() is a coroutine (`await client.publish(...)`) that must run inside an asyncio 
+event loop — this requires restructuring the calling code to be async or wrapping every call with a blocking event-loop bridge, which is a structural change 
+beyond wrapper glue code.
+    - amqtt's connect()/publish() APIs return None or raise exceptions instead of returning an object with an `.rc` attribute like paho-mqtt's MQTTMessageInfo;
+the existing `getattr(info, 'rc', 0)` pattern has no meaningful equivalent to wrap around since there is no rc code to extract from amqtt's async calls.
+    - The module's lazy-import synchronous constructor pattern (`_default_client` returning a ready, connected client instance for later sync use) is 
+incompatible with amqtt's async connection lifecycle, which requires an active running event loop at connect time — no amount of wrapping can make an async 
+connection object usable synchronously afterward without a full async rewrite of MqttSink.
+    - Reconnection and error-handling semantics differ significantly (per known pitfalls) and amqtt's maintenance status further reduces confidence that its 
+API surface can reliably replace paho-mqtt's callback-driven reconnection logic even with wrapper glue.
+
+  1 call site(s) need a wrapper:
+    _axiom_mqtt_client_wrapper  L12: Would need to instantiate amqtt.client.MQTTClient and run its async co
+  Opening ACI edit session for paho-mqtt → amqtt...
+  ACI session: 1 edit(s) applied over 3 tool call(s)  |  tokens in:20,981 out:3,878
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1 """sink -- MQTT publication of estimated telemetry records.                                                                                            │
+│    2                                                                                                                                                        │
+│    3 The MQTT client is one substitution target: `paho-mqtt` (synchronous, callback-based)                                                                  │
+│    4 -> `aiomqtt` (async, context-managed) -> glue required. The client is injected.                                                                        │
+│    5 """                                                                                                                                                    │
+│    6 import asyncio                                                                                                                                         │
+│    7 import json                                                                                                                                            │
+│    8 import threading                                                                                                                                       │
+│    9                                                                                                                                                        │
+│   10                                                                                                                                                        │
+│   11 class _AxiomPublishResult:                                                                                                                             │
+│   12     """Small stand-in for paho-mqtt's MQTTMessageInfo, exposing `.rc` only."""                                                                         │
+│   13                                                                                                                                                        │
+│   14     def __init__(self, rc: int):                                                                                                                       │
+│   15         self.rc = rc                                                                                                                                   │
+│   16                                                                                                                                                        │
+│   17                                                                                                                                                        │
+│   18 class _AxiomMqttClientFacade:                                                                                                                          │
+│   19     """Synchronous-looking facade around amqtt's async MQTTClient.                                                                                     │
+│   20                                                                                                                                                        │
+│   21     paho-mqtt's `mqtt.Client()` + `.connect(host, port)` gives a synchronous                                                                           │
+│   22     object whose `.publish()` call returns immediately with an                                                                                         │
+│   23     `MQTTMessageInfo` (an object carrying `.rc`, the result code). amqtt's                                                                             │
+│   24     `MQTTClient` is asyncio-only: `await client.connect(uri)` and                                                                                      │
+│   25     `await client.publish(topic, payload, qos=qos)`, and the publish                                                                                   │
+│   26     coroutine returns `None` on success (or raises) rather than handing back                                                                           │
+│   27     an `.rc`-bearing object.                                                                                                                           │
+│   28                                                                                                                                                        │
+│   29     To bridge this without changing the synchronous call sites, this facade                                                                            │
+│   30     starts one persistent background event loop (a thread running                                                                                      │
+│   31     `loop.run_forever()`) when it is constructed, connects amqtt's client on                                                                           │
+│   32     that loop, and keeps using the same loop/connection for every subsequent                                                                           │
+│   33     call -- unlike `asyncio.run`, which would tear the loop (and the                                                                                   │
+│   34     connection bound to it) down after every single call. `.publish()`                                                                                 │
+│   35     submits the amqtt publish coroutine to that loop and blocks for the                                                                                │
+│   36     result via `run_coroutine_threadsafe(...).result()`, which also                                                                                    │
+│   37     re-raises any exception amqtt raised, so callers keep seeing failures                                                                              │
+│   38     exactly as they would from paho-mqtt (e.g. a bad topic raising                                                                                     │
+│   39     ValueError) instead of having them silently swallowed. On success we can                                                                           │
+│   40     only truthfully report that amqtt accepted/queued the message (there is                                                                            │
+│   41     no ack for qos 0), so `.rc` is reported as 0 (paho-mqtt's                                                                                          │
+│   42     MQTT_ERR_SUCCESS) purely to mean "no exception was raised", not "broker                                                                            │
+│   43     confirmed delivery".                                                                                                                               │
+│   44     """                                                                                                                                                │
+│   45                                                                                                                                                        │
+│   46     def __init__(self, host: str = "localhost", port: int = 1883):                                                                                     │
+│   47         from amqtt.client import MQTTClient  # lazy import for testability                                                                             │
+│   48                                                                                                                                                        │
+│   49         self._loop = asyncio.new_event_loop()                                                                                                          │
+│   50         self._thread = threading.Thread(target=self._loop.run_forever, daemon=True)                                                                    │
+│   51         self._thread.start()                                                                                                                           │
+│   52         self._client = MQTTClient()                                                                                                                    │
+│   53         self._run(self._client.connect(f"mqtt://{host}:{port}"))                                                                                       │
+│   54                                                                                                                                                        │
+│   55     def _run(self, coro):                                                                                                                              │
+│   56         return asyncio.run_coroutine_threadsafe(coro, self._loop).result()                                                                             │
+│   57                                                                                                                                                        │
+│   58     def publish(self, topic: str, payload: bytes, qos: int = 0) -> _AxiomPublishResult:                                                                │
+│   59         self._run(self._client.publish(topic, payload, qos=qos))                                                                                       │
+│   60         return _AxiomPublishResult(0)                                                                                                                  │
+│   61                                                                                                                                                        │
+│   62     def close(self):                                                                                                                                   │
+│   63         self._run(self._client.disconnect())                                                                                                           │
+│   64         self._loop.call_soon_threadsafe(self._loop.stop)                                                                                               │
+│   65                                                                                                                                                        │
+│   66                                                                                                                                                        │
+│   67 def _axiom_mqtt_client_wrapper(host: str = "localhost", port: int = 1883):                                                                             │
+│   68     """Create a synchronous-looking MQTT client backed by amqtt.                                                                                       │
+│   69                                                                                                                                                        │
+│   70     See `_AxiomMqttClientFacade` for the detailed rationale: paho-mqtt's                                                                               │
+│   71     `mqtt.Client()` + `.connect()` is synchronous and its `.publish()`                                                                                 │
+│   72     returns an object with `.rc`; amqtt is async-only and its publish                                                                                  │
+│   73     coroutine returns `None`/raises instead. This factory builds a facade                                                                              │
+│   74     that owns a persistent background event loop so the amqtt connection                                                                               │
+│   75     stays alive across calls, and exposes the same synchronous                                                                                         │
+│   76     `.publish(topic, payload)` shape the rest of this module expects.                                                                                  │
+│   77     """                                                                                                                                                │
+│   78     return _AxiomMqttClientFacade(host, port)                                                                                                          │
+│   79                                                                                                                                                        │
+│   80                                                                                                                                                        │
+│   81 def _default_client(host: str = "localhost", port: int = 1883):                                                                                        │
+│   82     return _axiom_mqtt_client_wrapper(host, port)                                                                                                      │
+│   83                                                                                                                                                        │
+│   84                                                                                                                                                        │
+│   85 class MqttSink:                                                                                                                                        │
+│   86     def __init__(self, topic_base: str = "plant/est", client=None):                                                                                    │
+│   87         self.topic_base = topic_base                                                                                                                   │
+│   88         self.client = client if client is not None else _default_client()                                                                              │
+│   89                                                                                                                                                        │
+│   90     def publish(self, tag: str, record: dict) -> int:                                                                                                  │
+│   91         payload = json.dumps(record, separators=(",", ":")).encode("utf-8")                                                                            │
+│   92         info = self.client.publish(f"{self.topic_base}/{tag}", payload)                                                                                │
+│   93         return getattr(info, "rc", 0)                                                                                                                  │
+│   94                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 93 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ sink                                           │
+│ Lines (original → variant)  │ 93 → 87                                        │
+│ Requested lines             │ 87                                             │
+│ Achieved lines              │ 87                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:amqtt_bridge.py         │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.2401                                         │
+│ diversity: ast_structural   │ 0.2837  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.3636                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1419  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 16.2s │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  wrote extracted module amqtt_bridge.py
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D3_telemetry_gateway (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 25 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ estimator                                      │
+│ Lines (original → variant)  │ 25 → 42                                        │
+│ Requested lines             │ 42                                             │
+│ Achieved lines              │ 42                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:smoothing.py            │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4355                                         │
+│ diversity: ast_structural   │ 0.4861  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.7258                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.2430  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 6.5s  │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+Using ProgramOracle for D3_telemetry_gateway (golden vectors + invariants + tests + imports).
+13 transformations available; no size requested (currently 35 lines) — ranking on diversity alone.
+  llm variant attempt 1: rejected — import gateway failed: ModuleNotFoundError: No module named 'estimator_registry'
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ gateway                                        │
+│ Lines (original → variant)  │ 35 → 52                                        │
+│ Requested lines             │ 52                                             │
+│ Achieved lines              │ 52                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:gateway_support.py      │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.4637                                         │
+│ diversity: ast_structural   │ 0.3878  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.5694                                         │
+│ diversity: cfg_shape        │ 0.0000  (rename-insensitive)                   │
+│ diversity: composite        │ 0.1939  (rename-insensitive)                   │
+│ Search                      │ 1/2 candidates equivalent, 2 iterations, 15.7s │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+D3_telemetry_gateway             3       4/4     Y    Y      4      7  0.1588  138.4s
+
+migration_success 1/1 (100%)
+rows appended to results_fixed4.csv

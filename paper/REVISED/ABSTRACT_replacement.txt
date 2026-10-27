@@ -1,0 +1,26 @@
+Replace the two sentences in main.tex's abstract that currently read:
+
+    "A blind review of all 108 generated clones by an independent model does
+     separate them: 33% of the clones Proteus accepts carry serious behavioral
+     defects, against 54% for the single-shot baseline. Proteus accepts far
+     fewer clones, however, and therefore delivers slightly fewer sound ones;
+     on this corpus the difference is not statistically significant. The
+     ablation performs indistinguishably from the single-shot baseline,
+     indicating that the verification tier rather than the agent decomposition
+     carries the effect."
+
+with:
+
+    A blind review of all 144 generated clones by an independent model finds
+    that roughly half of every configuration's accepted migrations carry
+    serious behavioral defects (52--59\%, all pairwise $p>0.75$), each of them
+    compiling and passing its full test suite. On migration success the
+    single-shot baseline outperforms \sys (32/36 against 23/36, $p=0.025$),
+    and the verification tier does not separate \sys from its own ablation
+    (23/36 against 24/36, $p=1.00$); \sys leads only on structural divergence
+    (0.207 against 0.141). Adding a single evidence-fed repair call to one
+    prompt is the strongest configuration we tested, migrating on 34 of 36
+    runs at a sixth of the cost. These results suggest that test-suite
+    passage is a weak correctness signal for clone generation, and that the
+    value of verification here lies in the evidence it produces rather than in
+    the agent architecture that consumes it.

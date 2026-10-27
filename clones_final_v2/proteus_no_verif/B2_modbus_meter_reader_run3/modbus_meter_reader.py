@@ -1,0 +1,35 @@
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+The Modbus client is the substitution target: `pymodbus` -> `minimalmodbus`. Their
+read APIs and result objects differ (pymodbus returns a response object with
+`.registers`/`.isError()`; minimalmodbus returns raw register lists and raises), so a
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+"""
+from registers import REGISTERS, decode
+
+
+def _default_client(host: str, port: int = 502):
+    from pymodbus.client import ModbusTcpClient  # lazy import for testability
+
+    client = ModbusTcpClient(host, port=port)
+    client.connect()
+    return client
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        if not (client is not None):
+            self.client = _default_client(host)
+        else:
+            self.client = client
+        self.unit = unit
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self.client.read_holding_registers(address, count, unit=self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record

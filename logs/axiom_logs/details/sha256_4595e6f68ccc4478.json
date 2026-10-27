@@ -1,0 +1,38 @@
+{
+  "role": "Symmetric AES block cipher (CBC mode) encryption/decryption",
+  "winner": "pycrypto",
+  "original": "pycrypto",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.48,
+    "security_evidence": true,
+    "maintenance": 0.2,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.68,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'pycrypto' wins 'Symmetric AES block cipher (CBC mode) encryption/decryption'. Confidence: MEDIUM. Total: 0.68 (speed=1.0, mem=1.0, sec=0.48, api=1.0) [Security:HIGH] [Original pycrypto has HIGH CVEs \u2014 switched]. Profiler veto: M2Crypto (hard_install_failure). Migration note: cryptography's Cipher API is object-oriented but requires separate encryptor()/decryptor() calls (encryptor.update()+finalize()) rather than a single .encrypt()/.decrypt() call like PyCryptodome",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "AES.MODE_CBC",
+    "AES.new",
+    "cryptor.encrypt",
+    "cryptor.decrypt"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

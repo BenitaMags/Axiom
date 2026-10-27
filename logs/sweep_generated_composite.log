@@ -1,0 +1,78 @@
+catalogue: 16 transformations (4 LLM-designed)
+oracle   : 4 layers incl. script-level __main__ check
+ranking  : composite
+sweep    : 6 targets x 4 modules = 24 variants
+
+ ratio module              orig  want   got  miss  diversity  #tf  oracle
+------------------------------------------------------------------------------
+  0.85 pid_governor          89    76    84    +8     0.0192    5  PASS
+  0.85 pump_controller       96    82    95   +13     0.0521    5  PASS
+  0.85 protective_relay     134   114   134   +20     0.0424    4  PASS
+  0.85 sensor_pipeline      114    97   109   +12     0.0726    3  PASS
+  0.90 pid_governor          89    80    84    +4     0.0192    5  PASS
+  0.90 pump_controller       96    86    95    +9     0.0521    5  PASS
+  0.90 protective_relay     134   121   134   +13     0.0424    4  PASS
+  0.90 sensor_pipeline      114   103   109    +6     0.0726    3  PASS
+  1.00 pid_governor          89    89    89    +0     0.0012    1  PASS
+  1.00 pump_controller       96    96    96    +0     0.0035    1  PASS
+  1.00 protective_relay     134   134   134    +0     0.0235    1  PASS
+  1.00 sensor_pipeline      114   114   114    +0     0.0097    1  PASS
+  1.10 pid_governor          89    98    97    -1     0.0407    4  PASS
+  1.10 pump_controller       96   106   104    -2     0.1118    6  PASS
+  1.10 protective_relay     134   147   141    -6     0.0631    6  PASS
+  1.10 sensor_pipeline      114   125   124    -1     0.0379    3  PASS
+  1.20 pid_governor          89   107    97   -10     0.0429    6  PASS
+  1.20 pump_controller       96   115   104   -11     0.1118    6  PASS
+  1.20 protective_relay     134   161   141   -20     0.0631    6  PASS
+  1.20 sensor_pipeline      114   137   126   -11     0.0527    6  PASS
+  1.30 pid_governor          89   116    97   -19     0.0429    6  PASS
+  1.30 pump_controller       96   125   104   -21     0.1118    6  PASS
+  1.30 protective_relay     134   174   141   -33     0.0631    6  PASS
+  1.30 sensor_pipeline      114   148   126   -22     0.0527    6  PASS
+
+==============================================================================
+BY REQUESTED DIRECTION
+direction      n  mean|miss|  mean div  on target
+shrink         8       10.62    0.0466        0%
+same           4        0.00    0.0095      100%
+grow          12       13.08    0.0662       17%
+
+DOES DIVERSITY RISE WITH THE SIZE OF THE REQUESTED CHANGE?
+  ratio 0.85  mean requested delta  16.0 lines  diversity 0.0466  #########
+  ratio 0.90  mean requested delta  10.8 lines  diversity 0.0466  #########
+  ratio 1.00  mean requested delta   0.0 lines  diversity 0.0095  #
+  ratio 1.10  mean requested delta  10.8 lines  diversity 0.0634  ############
+  ratio 1.20  mean requested delta  21.8 lines  diversity 0.0676  #############
+  ratio 1.30  mean requested delta  32.5 lines  diversity 0.0676  #############
+
+==============================================================================
+ABLATION ROW — comparable across ranking modes
+ranking signal      mean|miss|  on-target  oracle pass   mean cfg_shape of winners   winners w/ cfg>0
+composite                10.08       25% 24/24                               0.0352             7/24
+
+REACH (largest achieved change, per direction)
+  shrink  best single -5 lines, total -22 lines, modules that moved: pid_governor, pump_controller, sensor_pipeline
+  grow    best single +12 lines, total +103 lines, modules that moved: pid_governor, protective_relay, pump_controller, sensor_pipeline
+
+EQUIVALENCE: 24/24 variants passed all four oracle layers (100%)
+SEARCH     : 2157 candidates generated, 2157 equivalent
+TIME       : 226.3s total
+
+TRANSFORMATION USAGE (how often each was selected):
+   21x  demorgan_branch_swap  [LLM]
+   20x  call_argument_extraction  [LLM]
+   12x  split_return_expression
+   11x  extract_subexpression
+    8x  invert_if_else
+    8x  independent_assignment_swap  [LLM]
+    6x  inline_single_use_return
+    5x  expand_aug_assign
+    3x  ternary_to_if_else
+    3x  split_boolean_if
+    2x  merge_nested_if
+    2x  collapse_aug_assign
+    2x  expand_chained_compare
+    2x  if_else_assign_to_ternary
+  never selected: and_chain_nesting, rename_locals
+
+wrote 24 rows to generated_v2_composite.csv

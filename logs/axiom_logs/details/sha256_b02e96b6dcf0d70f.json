@@ -1,0 +1,37 @@
+{
+  "role": "Kafka producer client",
+  "winner": "kafka",
+  "original": "kafka",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 1.0,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'kafka' wins 'Kafka producer client'. Confidence: LOW. Total: 1.0 (speed=1.0, mem=1.0, sec=1.0, api=1.0). Migration note: confluent-kafka uses librdkafka (C library) requiring system dependencies. Verifier feedback considered: kafka\u2192confluent-kafka: connector edit removed source import 'kafka'; import replacement is reserved for Connector post-processing",
+  "confidence": "LOW",
+  "used_apis": [
+    "KafkaProducer",
+    "send",
+    "flush",
+    "add_callback",
+    "add_errback"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,310 @@
+$ run_axiom_arms.py --config proteus_full --program B3_mqtt_telemetry_bridge --runs 1 --start-run 2
+
+config   : proteus_full (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_fixed4.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-B3_mqtt_telemetry_bridge-hmf4ledm/bridge.py
+                            Discovered Imports                             
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names             ┃ API Calls Used    ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩
+│    7 │ mqtt_config      │ —     │ BridgeConfig      │ —                 │
+│    8 │ telemetry        │ —     │ encode, topic_for │ topic_for, encode │
+│   12 │ paho.mqtt.client │ mqtt  │ —                 │ Client            │
+└──────┴──────────────────┴───────┴───────────────────┴───────────────────┘
+
+✓ Found 3 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Skipping 2 first-party module(s), not dependencies: mqtt_config, telemetry
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                  Security Scan Results                                                   
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package          ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                        ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ paho → paho-mqtt │ 2.1.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.40 │    0.82 │ PyPI distribution: paho-mqtt │
+└──────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴──────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: mqtt_config, paho, telemetry
+Discovered candidates:
+  paho -> gmqtt, amqtt, aiomqtt
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,515  output: 959  latency: 11387ms
+Could not bind any candidate in group 'MQTT client for publishing sensor telemetry to a broker' to an import; proceeding with paho.mqtt.client -> import 
+'mqtt_config' (UNVERIFIED mapping, downstream verification applies).
+Equivalence Groups Found
+└── MQTT client for publishing sensor telemetry to a broker
+    ├── Candidates : paho.mqtt.client, aiomqtt, gmqtt, amqtt
+    ├── Used APIs  : Client, connect, publish
+    ├── Pitfalls   : paho-mqtt is synchronous/callback-based; aiomqtt, gmqtt, and amqtt are async (asyncio-based), requiring the calling code 
+    │   (publish_reading/publish_batch) to become async or be wrapped; aiomqtt uses async context managers for connection lifecycle instead of explicit 
+    │   connect()/disconnect() calls; gmqtt uses an event/callback registration model (on_connect, on_publish) rather than a direct blocking publish() call 
+    │   with a return object exposing .rc; amqtt's publish/connect API and QoS handling differ from paho's MQTTMessageInfo return object, so the getattr(info, 
+    │   'rc', 0) pattern would need rework; Dependency-injected client in TelemetryBridge assumes a synchronous object with .publish()/.connect() methods; 
+    │   switching to any async client breaks this interface without an async/sync adapter
+    ├── Constraints: requires_connector
+    └── paho-mqtt is used here as a synchronous, callback-based MQTT client to connect to a broker and publish telemetry payloads. aiomqtt, gmqtt, and amqtt 
+        are all MQTT client libraries capable of the same core function (connect + publish to a broker) and are explicitly called out in the file's own 
+        docstring as the intended substitution target, confirming genuine functional overlap for this role.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Scanning candidate 1 package(s) via OSV + PyPI...
+
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+                  Candidate Security Scan                  
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package          ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ paho.mqtt.client │ 0.0.1   │ LOW  │ AVAILABLE │    0.82 │
+│ aiomqtt          │ 2.5.1   │ LOW  │ AVAILABLE │    1.00 │
+│ amqtt            │ 0.12.1  │ LOW  │ AVAILABLE │    1.00 │
+│ gmqtt            │ 0.7.0   │ LOW  │ AVAILABLE │    0.90 │
+└──────────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 4 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠴ ✓ aiomqtt         
+⠴ ✓ amqtt           
+⠴ ✓ gmqtt           
+⠴ ✓ paho.mqtt.client
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package          ┃ Available ┃ Import (3 runs) ┃                                                             Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ amqtt            │     ✓     │          0.4 ms │       UNMEASURED — No registered side-effect-free runtime probe for Client, connect, │           7 │       │
+│                  │           │                 │                                          publish; an integration fixture is required │             │       │
+│ gmqtt            │     ✓     │         65.0 ms │       UNMEASURED — No registered side-effect-free runtime probe for Client, connect, │         321 │       │
+│                  │           │                 │                                          publish; an integration fixture is required │             │       │
+│ paho.mqtt.client │     ✓     │        112.2 ms │       UNMEASURED — No registered side-effect-free runtime probe for Client, connect, │         622 │       │
+│                  │           │                 │                                          publish; an integration fixture is required │             │       │
+│ aiomqtt          │     ✓     │        130.6 ms │       UNMEASURED — No registered side-effect-free runtime probe for Client, connect, │         213 │       │
+│                  │           │                 │                                          publish; an integration fixture is required │             │       │
+└──────────────────┴───────────┴─────────────────┴──────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 4 package(s), 4 available, 0 with measured runtime probes, 4 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 7b9aae24
+  API compat tokens — input: 279  output: 81  latency: 1428ms
+                                                             AXIOM Optimization Decisions                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                    ┃ Original         ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ MQTT client for publishing sensor telemetry to a broker │ paho.mqtt.client │ amqtt  │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 0.2 │ 0.829 │ ✓          │
+└─────────────────────────────────────────────────────────┴──────────────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  paho.mqtt.client  →  amqtt  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: paho.mqtt.client → amqtt
+  No call sites found for mqtt_config (distribution: paho.mqtt.client) — skipping.
+
+Applying migration import rewrites: {'paho': 'amqtt'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1 """bridge -- publish sensor telemetry to an MQTT broker.                                                                                               │
+│    2                                                                                                                                                        │
+│    3 The MQTT client is the substitution target: `paho-mqtt` (synchronous, callback-based)                                                                  │
+│    4 -> `aiomqtt` (async context-managed). The connection/publish models differ enough to                                                                   │
+│    5 require glue -- hence Category B. The client is dependency-injected for testing.                                                                       │
+│    6 """                                                                                                                                                    │
+│    7 from mqtt_config import BridgeConfig                                                                                                                   │
+│    8 from telemetry import encode, topic_for                                                                                                                │
+│    9                                                                                                                                                        │
+│   10                                                                                                                                                        │
+│   11 def _default_client(cfg: BridgeConfig):                                                                                                                │
+│   12     import amqtt as mqtt  # lazy import for testability                                                                                                │
+│   13                                                                                                                                                        │
+│   14     client = mqtt.Client(client_id=cfg.client_id)                                                                                                      │
+│   15     client.connect(cfg.host, cfg.port)                                                                                                                 │
+│   16     return client                                                                                                                                      │
+│   17                                                                                                                                                        │
+│   18                                                                                                                                                        │
+│   19 class TelemetryBridge:                                                                                                                                 │
+│   20     def __init__(self, cfg: BridgeConfig, client=None):                                                                                                │
+│   21         self.cfg = cfg                                                                                                                                 │
+│   22         self.client = client if client is not None else _default_client(cfg)                                                                           │
+│   23                                                                                                                                                        │
+│   24     def publish_reading(self, tag: str, reading: dict) -> dict:                                                                                        │
+│   25         topic = topic_for(self.cfg.base_topic, tag)                                                                                                    │
+│   26         payload = encode(reading)                                                                                                                      │
+│   27         info = self.client.publish(topic, payload, qos=self.cfg.qos)                                                                                   │
+│   28         return {                                                                                                                                       │
+│   29             "topic": topic,                                                                                                                            │
+│   30             "payload": payload,                                                                                                                        │
+│   31             "qos": self.cfg.qos,                                                                                                                       │
+│   32             "rc": getattr(info, "rc", 0),                                                                                                              │
+│   33         }                                                                                                                                              │
+│   34                                                                                                                                                        │
+│   35     def publish_batch(self, readings: dict) -> list:                                                                                                   │
+│   36         """Publish {tag: reading} pairs, returning the per-message results."""                                                                         │
+│   37         return [self.publish_reading(tag, r) for tag, r in readings.items()]                                                                           │
+│   38                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                                        Stage 1 — Differential Static Analysis                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                                                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                                                                 │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                                                               │
+│                        │                       │                  │     {                                                                           │
+│                        │                       │                  │         "type": "error",                                                        │
+│                        │                       │                  │         "module": "bridge",                                                     │
+│                        │                       │                  │         "obj": "_default_client",                                               │
+│                        │                       │                  │                                                                                 │
+│ Bandit                 │         PASS          │       PASS       │ {                                                                               │
+│                        │                       │                  │   "errors": [],                                                                 │
+│                        │                       │                  │   "generated_at": "2026-09-24T14:44:37Z",                                       │
+│                        │                       │                  │   "metrics": {                                                                  │
+│                        │                       │                  │     "/var/folders/_4/t4jx                                                       │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config file                                           │
+│ Patch integrity        │           —           │       PASS       │                                                                                 │
+│ Adapter contracts      │           —           │       PASS       │                                                                                 │
+│ Stale source symbols   │           —           │       PASS       │                                                                                 │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten module symbols to probe.                     │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after migration: not-callable:mqtt.Client is not callable    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                                                                 │
+│ Project tests          │         PASS          │       PASS       │ ...                                                                      [100%] │
+│                        │                       │                  │ 3 passed in 0.01s                                                               │
+└────────────────────────┴───────────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────────────────╮
+│ line 1: New pylint finding after migration: not-callable:mqtt.Client is not callable                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────── Full verifier repair evidence ───────────────────────────────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: not-callable:mqtt.Client is not callable                                                       │
+│ • real_library_call (line 1): Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  AttributeError: module       │
+│ 'amqtt' has no attribute 'Client'. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new    │
+│ library's actual signature.                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 1/5 → Connector (patch_or_static): line 1: New pylint finding after migration: not-callable:mqtt.Client is not callable; line 1: Calling this 
+program's own API with the real library -- nothing injected -- fails in bridge.py:  AttributeError: module 'amqtt' has no attribute 'Client'. The project tests
+pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: New pylint finding after migration: not-callable:mqtt.Client is not callable; line 1: Calling this 
+program's own API with the real library -- nothing injected -- fails in bridge.py:  AttributeError: module 'amqtt' has no attribute 'Client'. The project tests
+pass because the)
+
+Analyzing: paho.mqtt.client → amqtt
+  No call sites found for mqtt_config (distribution: paho.mqtt.client) — skipping.
+
+Applying migration import rewrites: {'paho': 'amqtt'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│    1 """bridge -- publish sensor telemetry to an MQTT broker.                                                                                               │
+│    2                                                                                                                                                        │
+│    3 The MQTT client is the substitution target: `paho-mqtt` (synchronous, callback-based)                                                                  │
+│    4 -> `aiomqtt` (async context-managed). The connection/publish models differ enough to                                                                   │
+│    5 require glue -- hence Category B. The client is dependency-injected for testing.                                                                       │
+│    6 """                                                                                                                                                    │
+│    7 from mqtt_config import BridgeConfig                                                                                                                   │
+│    8 from telemetry import encode, topic_for                                                                                                                │
+│    9                                                                                                                                                        │
+│   10                                                                                                                                                        │
+│   11 def _default_client(cfg: BridgeConfig):                                                                                                                │
+│   12     import amqtt as mqtt  # lazy import for testability                                                                                                │
+│   13                                                                                                                                                        │
+│   14     client = mqtt.Client(client_id=cfg.client_id)                                                                                                      │
+│   15     client.connect(cfg.host, cfg.port)                                                                                                                 │
+│   16     return client                                                                                                                                      │
+│   17                                                                                                                                                        │
+│   18                                                                                                                                                        │
+│   19 class TelemetryBridge:                                                                                                                                 │
+│   20     def __init__(self, cfg: BridgeConfig, client=None):                                                                                                │
+│   21         self.cfg = cfg                                                                                                                                 │
+│   22         self.client = client if client is not None else _default_client(cfg)                                                                           │
+│   23                                                                                                                                                        │
+│   24     def publish_reading(self, tag: str, reading: dict) -> dict:                                                                                        │
+│   25         topic = topic_for(self.cfg.base_topic, tag)                                                                                                    │
+│   26         payload = encode(reading)                                                                                                                      │
+│   27         info = self.client.publish(topic, payload, qos=self.cfg.qos)                                                                                   │
+│   28         return {                                                                                                                                       │
+│   29             "topic": topic,                                                                                                                            │
+│   30             "payload": payload,                                                                                                                        │
+│   31             "qos": self.cfg.qos,                                                                                                                       │
+│   32             "rc": getattr(info, "rc", 0),                                                                                                              │
+│   33         }                                                                                                                                              │
+│   34                                                                                                                                                        │
+│   35     def publish_batch(self, readings: dict) -> list:                                                                                                   │
+│   36         """Publish {tag: reading} pairs, returning the per-message results."""                                                                         │
+│   37         return [self.publish_reading(tag, r) for tag, r in readings.items()]                                                                           │
+│   38                                                                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 0 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing static-analysis toolchain for this case.
+                                                        Stage 1 — Differential Static Analysis                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                                                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                                                                 │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                                                               │
+│                        │                       │                  │     {                                                                           │
+│                        │                       │                  │         "type": "error",                                                        │
+│                        │                       │                  │         "module": "bridge",                                                     │
+│                        │                       │                  │         "obj": "_default_client",                                               │
+│                        │                       │                  │                                                                                 │
+│ Bandit                 │         PASS          │       PASS       │ {                                                                               │
+│                        │                       │                  │   "errors": [],                                                                 │
+│                        │                       │                  │   "generated_at": "2026-09-24T14:44:52Z",                                       │
+│                        │                       │                  │   "metrics": {                                                                  │
+│                        │                       │                  │     "/var/folders/_4/t4jx                                                       │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config file                                           │
+│ Patch integrity        │           —           │       PASS       │                                                                                 │
+│ Adapter contracts      │           —           │       PASS       │                                                                                 │
+│ Stale source symbols   │           —           │       PASS       │                                                                                 │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten module symbols to probe.                     │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after migration: not-callable:mqtt.Client is not callable    │
+│ Import smoke test      │         PASS          │       PASS       │ Exited cleanly.                                                                 │
+│ Project tests          │         PASS          │       PASS       │ ...                                                                      [100%] │
+│                        │                       │                  │ 3 passed in 0.01s                                                               │
+└────────────────────────┴───────────────────────┴──────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────────────────╮
+│ line 1: New pylint finding after migration: not-callable:mqtt.Client is not callable                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────── Full verifier repair evidence ───────────────────────────────────────────────────────────────╮
+│ • verification (line 1): New pylint finding after migration: not-callable:mqtt.Client is not callable                                                       │
+│ • real_library_call (line 1): Calling this program's own API with the real library -- nothing injected -- fails in bridge.py:  AttributeError: module       │
+│ 'amqtt' has no attribute 'Client'. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new    │
+│ library's actual signature.                                                                                                                                 │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Repair cycle 2 would report the same findings as cycle 1 — the previous repair changed nothing the verifier can see. Stopping instead of spending the remaining
+4 cycle(s).
+Known adapter contract violation remains after Connector retries; reverting to the original source.
+Session saved: 7b9aae24
+B3_mqtt_telemetry_bridge         2       3/3     N    Y      3      3     1.0   70.0s
+
+migration_success 0/1 (0%)
+rows appended to results_fixed4.csv

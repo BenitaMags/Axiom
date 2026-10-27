@@ -1,0 +1,56 @@
+# CHOSEN-TARGET: aiosmtplib
+"""notifier -- operator notification on alarm state changes.
+
+
+
+clone needs glue. The SMTP transport is dependency-injected for testing.
+"""
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    import asyncio
+    import aiosmtplib
+
+    class _SyncSMTPAdapter:
+        """Thin sync wrapper around aiosmtplib.SMTP to preserve the sync
+        `smtp.sendmail(sender, recipients, message)` API used by EmailNotifier."""
+
+        def __init__(self, host: str, port: int):
+            self._host = host
+            self._port = port
+
+        def sendmail(self, sender, recipients, message):
+            async def _send():
+                client = aiosmtplib.SMTP(hostname=self._host, port=self._port)
+                await client.connect()
+                try:
+                    await client.sendmail(sender, recipients, message)
+                finally:
+                    await client.quit()
+
+            try:
+                asyncio.run(_send())
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                try:
+                    loop.run_until_complete(_send())
+                finally:
+                    loop.close()
+
+    return _SyncSMTPAdapter(host, port)
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        message = (
+            f"From: {self.sender}\r\n"
+            f"To: {', '.join(self.recipients)}\r\n"
+            f"Subject: {subject}\r\n\r\n{body}"
+        )
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message

@@ -1,0 +1,232 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 1,
+    "case_offset": 0,
+    "case_filter": "src/error.py"
+  },
+  "metrics": {
+    "total_cases": 1,
+    "errored_cases": 0,
+    "detection_rate_pct": 100.0,
+    "detection_n": 1,
+    "target_selection_rate_pct": 100.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 1,
+    "verified_ground_truth_rate_pct": 100.0,
+    "execution_ready_n": 1,
+    "verified_ground_truth_rate_ready_pct": 100.0,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "proven_target_infeasible_n": 0,
+    "outcomes": {
+      "ground_truth_verified": 1
+    },
+    "result_categories": {
+      "pymigbench_exact_verified": 1
+    },
+    "verified_alternative_efficiency_superior_n": 0,
+    "verified_alternative_efficiency_unproven_n": 0,
+    "connector_invoked_n": 1,
+    "verification_environment_incomplete_n": 0,
+    "verification_environment_incomplete_by_status": {},
+    "verifier_clean_rate_pct": 100.0,
+    "verifier_n": 1,
+    "repair_cases_n": 0,
+    "repair_cycle_total": 0,
+    "repair_cycles_per_case": 0.0,
+    "repair_cycles_per_repaired_case": null,
+    "verified_after_repair_n": 0,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {},
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 2,
+    "runtime_measured_package_case_n": 2,
+    "runtime_measurement_coverage_pct": 100.0,
+    "runtime_measured_probe_n": 2,
+    "runtime_probe_status_counts": {
+      "measured": 2
+    },
+    "by_domain": {
+      "Utility": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 100.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 1,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "target_infeasible": "The verifier explicitly excluded PyMigBench's target as structurally incompatible with the source role; this is not inferred from an installation conflict.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "result_category_definitions": {
+    "pymigbench_exact_verified": "AXIOM produced and verified the same target migration recorded by PyMigBench.",
+    "verified_alternative": "AXIOM verified a different target for the same source role. Its alternative_efficiency record states whether real comparable measurements justify an efficiency-superior claim.",
+    "rejected_after_repair_budget": "A selected migration remained unaccepted after the globally bounded verifier repair budget was exhausted.",
+    "not_verified_or_not_adjudicated": "No verified migration claim is made. category_reason and detailed outcome distinguish no-change, environment, resolver, provider, and other causes."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses.",
+    "environment_plan": "Read-only historical-environment plan. It records the selected compatible local Python or explicit interpreter diagnostics; target_version='auto' means planning did not invent or fetch a pin. Candidate Security may later record an exact selected target under target_releases and resolved_target_version."
+  },
+  "elapsed_seconds": 40.9852249622345,
+  "results": [
+    {
+      "migration_id": "attrs__dataclasses__simonlindholm/decomp-permuter__cfbb7064",
+      "repo": "simonlindholm/decomp-permuter",
+      "domain": "Utility",
+      "source": "attrs",
+      "target": "dataclasses",
+      "file_path": "src/error.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [],
+      "base_requirement_count": 0,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "dataclasses",
+      "attempted_axiom_winner": "dataclasses",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "connector_ever_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "attrs": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 7.058,
+          "memory_kb": 948.7,
+          "profile_detail": "import module: attrs",
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:record_construction",
+            "probe_kind": "pure_local",
+            "median_ms": 0.000167,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "record_construction"
+            ]
+          },
+          "runtime_probes": {
+            "record_construction": {
+              "status": "measured",
+              "probe_id": "record_construction",
+              "kind": "pure_local",
+              "distribution": "attrs",
+              "module": "attrs",
+              "median_ms": 0.000167,
+              "p95_ms": 0.00025,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "3b506cd222c8a77b",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        },
+        "dataclasses": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 6.614,
+          "memory_kb": 140.7,
+          "profile_detail": null,
+          "runtime": {
+            "measured": true,
+            "selected_probe": "call:record_construction",
+            "probe_kind": "pure_local",
+            "median_ms": 0.000167,
+            "detail": "median/p95 over 50 fixed-fixture samples",
+            "measured_probe_ids": [
+              "record_construction"
+            ]
+          },
+          "runtime_probes": {
+            "record_construction": {
+              "status": "measured",
+              "probe_id": "record_construction",
+              "kind": "pure_local",
+              "distribution": "dataclasses",
+              "module": null,
+              "median_ms": 0.000167,
+              "p95_ms": 0.000209,
+              "runs": 50.0,
+              "warmups": 10.0,
+              "fixture_sha256": "3b506cd222c8a77b",
+              "reason": null,
+              "used_apis": []
+            }
+          }
+        }
+      },
+      "environment_plan": {
+        "interpreter_status": "ready",
+        "environment_backend": "local",
+        "requested_python": "auto",
+        "detected_python": null,
+        "python_constraint": null,
+        "selected_python": "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12",
+        "selected_python_version": "3.12",
+        "target_distribution": "dataclasses",
+        "target_version": "auto",
+        "resolved_target_version": null,
+        "target_requirement": "dataclasses",
+        "requirement_count": 0,
+        "requirement_file_count": 0,
+        "python_evidence": [],
+        "warnings": [
+          "No runtime requirements file was found; AXIOM will rely on package metadata and smoke-test recovery."
+        ],
+        "recovery_hints": [
+          "Target version is unpinned; resolve and record the newest compatible non-yanked release, then retain its OSV/PyPI security evidence before publishing results."
+        ],
+        "target_releases": {
+          "dataclasses": {
+            "distribution": "dataclasses",
+            "selection": "stdlib",
+            "python": "3.12",
+            "security_status": "not_applicable",
+            "risk_level": "N/A"
+          }
+        }
+      },
+      "verifier_passed_clean": true,
+      "target_infeasibility_evidence": [],
+      "patch_changed": true,
+      "verification_status": "verified",
+      "verification_environment_status": "ready",
+      "selection_status": "exact_target",
+      "outcome": "ground_truth_verified",
+      "verified_ground_truth": true,
+      "verified_alternative": false,
+      "result_category": "pymigbench_exact_verified",
+      "category_reason": "AXIOM selected PyMigBench's target and the final patch passed verification.",
+      "alternative_efficiency": {},
+      "repair_budget_exhausted": false,
+      "error": null
+    }
+  ]
+}

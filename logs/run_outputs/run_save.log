@@ -1,0 +1,160 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────────────────────────────────────────── AXIOM — Run ────────────────────────────────────────────────────────────────────────╮
+│ Target:    multiple_experiment/api/main.py                                                                                                                  │
+│ LLM:       OLLAMA / mistral                                                                                                                                 │
+│ Security:  ON                                                                                                                                               │
+│ Connector: ON                                                                                                                                               │
+│ Feedback:  OFF                                                                                                                                              │
+│ Time:      2026-06-29 07:33:31                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_fixed 3/multiple_experiment/api/main.py
+                                                Discovered Imports                                                
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                ┃ Alias ┃ Names                                                  ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    8 │ time                  │ —     │ —                                                      │ —              │
+│    9 │ logging               │ —     │ —                                                      │ —              │
+│   10 │ json                  │ —     │ —                                                      │ —              │
+│   12 │ fastapi               │ —     │ —                                                      │ —              │
+│   13 │ fastapi               │ —     │ FastAPI, HTTPException, Depends                        │ —              │
+│   14 │ uvicorn               │ —     │ —                                                      │ run            │
+│   17 │ models.data_models    │ —     │ UserRecord, EventRecord, serialize_orjson, fingerprint │ —              │
+│   18 │ services.http_service │ —     │ HttpService                                            │ —              │
+│   19 │ utils.crypto_utils    │ —     │ sha256_digest, xxhash_fast, secure_token               │ —              │
+│   20 │ config.settings       │ —     │ get_all_settings                                       │ —              │
+│   23 │ structlog             │ —     │ —                                                      │ get_logger     │
+│   24 │ loguru                │ —     │ —                                                      │ —              │
+└──────┴───────────────────────┴───────┴────────────────────────────────────────────────────────┴────────────────┘
+
+✓ Found 12 imports
+
+─────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ───────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────────
+                                                                         Rule Results                                                                          
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                             ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ json      │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                           │
+│ json      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                                 │
+│ json      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                                     │
+│ json      │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.282, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',       │
+│           │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__']                       │
+│ uvicorn   │ is_installed        │  PASS   │ HIGH       │ message=uvicorn is installed and importable                                                        │
+│ uvicorn   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.47.0, license=unknown                                                                    │
+│ uvicorn   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                         │
+│ uvicorn   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.282, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',       │
+│           │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__']                       │
+│ time      │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable                                                           │
+│ time      │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time                                                                 │
+│ time      │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time                                                     │
+│ time      │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.079, shared_names=['__doc__', '__loader__', '__name__', '__package__',       │
+│           │                     │         │            │ '__spec__']                                                                                        │
+│ loguru    │ is_installed        │  FAIL   │ HIGH       │ message=loguru is not installed                                                                    │
+│ loguru    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for loguru                                                               │
+│ loguru    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for loguru                                                   │
+│ loguru    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'loguru'                                                                   │
+│ fastapi   │ is_installed        │  PASS   │ HIGH       │ message=fastapi is installed and importable                                                        │
+│ fastapi   │ has_metadata        │  PASS   │ MEDIUM     │ version=0.136.1, license=unknown                                                                   │
+│ fastapi   │ license_permissive  │ UNKNOWN │ MEDIUM     │ license=, permissive=False                                                                         │
+│ fastapi   │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.147, shared_names=['__builtins__', '__cached__', '__doc__', '__file__',      │
+│           │                     │         │            │ '__loader__', '__name__', '__package__', '__path__', '__spec__', '__version__']                    │
+│ models    │ is_installed        │  FAIL   │ HIGH       │ message=models is not installed                                                                    │
+│ models    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for models                                                               │
+│ models    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for models                                                   │
+│ models    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'models'                                                                   │
+│ utils     │ is_installed        │  FAIL   │ HIGH       │ message=utils is not installed                                                                     │
+│ utils     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for utils                                                                │
+│ utils     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for utils                                                    │
+│ utils     │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'utils'                                                                    │
+│ logging   │ is_installed        │  PASS   │ HIGH       │ message=logging is installed and importable                                                        │
+│ logging   │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for logging                                                              │
+│ logging   │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for logging                                                  │
+│ logging   │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.095, shared_names=['__all__', '__author__', '__builtins__', '__cached__',    │
+│           │                     │         │            │ '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__']                        │
+│ config    │ is_installed        │  FAIL   │ HIGH       │ message=config is not installed                                                                    │
+│ config    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for config                                                               │
+│ config    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for config                                                   │
+│ config    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'config'                                                                   │
+│ structlog │ is_installed        │  FAIL   │ HIGH       │ message=structlog is not installed                                                                 │
+│ structlog │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for structlog                                                            │
+│ structlog │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for structlog                                                │
+│ structlog │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'structlog'                                                                │
+│ services  │ is_installed        │  FAIL   │ HIGH       │ message=services is not installed                                                                  │
+│ services  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for services                                                             │
+│ services  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for services                                                 │
+│ services  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'services'                                                                 │
+└───────────┴─────────────────────┴─────────┴────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 44 checks across 11 packages
+
+Disqualified (not installed): loguru, models, utils, config, structlog, services
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 11 package(s) via OSV + PyPI...
+
+                                       Security Scan Results                                        
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ uvicorn   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ config    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ structlog │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Querying OLLAMA / mistral...
+Tokens — input: 2,069  output: 208  latency: 28755ms
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────────── ── Security Summary ── ────────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ CVEs ┃ Score ┃ Notes                     ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ uvicorn   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ loguru    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ time      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ json      │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ logging   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ models    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ fastapi   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ utils     │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ services  │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ config    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ structlog │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+└───────────┴─────────┴──────┴──────┴───────┴───────────────────────────┘
+──────────────────────────────────────────────────────────────── ── Optimization Decisions ── ─────────────────────────────────────────────────────────────────
+  ✅ All imports already optimal.
+──────────────────────────────────────────────────────────────── ── Token Usage (this run) ── ─────────────────────────────────────────────────────────────────
+  resolver                   in= 2,069  out=  208  calls=1
+  TOTAL                      in= 2,069  out=  208
+────────────────────────────────────────────────────────────────────── ── Agent Trace ── ──────────────────────────────────────────────────────────────────────
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed

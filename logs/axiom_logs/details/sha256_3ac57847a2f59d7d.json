@@ -1,0 +1,26 @@
+{
+  "role": "embedded key-value store (LevelDB backend)",
+  "winner": "leveldb",
+  "original": "leveldb",
+  "score": {
+    "speed": 0.5,
+    "memory": 0.5,
+    "availability": 0.5,
+    "api_match": 1.0,
+    "security": 0.76,
+    "security_evidence": true,
+    "total": 0.627,
+    "installed": false
+  },
+  "rationale": "'leveldb' wins 'embedded key-value store (LevelDB backend)'. Confidence: LOW. Total: 0.627 (speed=0.5, mem=0.5, sec=0.76, api=1.0). Profiler veto: plyvel (hard_install_failure), python-rocksdb (hard_install_failure), pylmdb (hard_install_failure). Migration note: plyvel uses a different constructor signature (plyvel.DB(path, create_if_missing=True)) and returns bytes directly from Get (no bytearray conversion needed)",
+  "confidence": "LOW",
+  "used_apis": [
+    "LevelDB",
+    "Get",
+    "Put",
+    "Delete"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

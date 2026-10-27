@@ -1,0 +1,35 @@
+{
+  "role": "JSON serialization for deterministic audit log records",
+  "winner": "ujson",
+  "original": "json",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.6,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.829,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'ujson' wins 'JSON serialization for deterministic audit log records'. Confidence: HIGH. Total: 0.829 (speed=1.0, mem=1.0, sec=None, api=0.6). Migration note: ujson's support for sort_keys and custom separators has varied across versions; older ujson releases silently ignored some kwargs, which would break the determinism requirement here.",
+  "confidence": "HIGH",
+  "used_apis": [
+    "dumps"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

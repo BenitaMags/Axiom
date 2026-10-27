@@ -1,0 +1,35 @@
+{
+  "role": "HTTP client for calling external REST APIs (spamwatch/anti-spam check)",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 0.356,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.908,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'requests' wins 'HTTP client for calling external REST APIs (spamwatch/anti-spam check)'. Confidence: MEDIUM. Total: 0.908 (speed=0.356, mem=1.0, sec=1.0, api=1.0). Migration note: httpx.get() is sync by default just like requests, but httpx also supports async via httpx.AsyncClient \u2014 mixing styles can cause confusion",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "requests.get(...).json()"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

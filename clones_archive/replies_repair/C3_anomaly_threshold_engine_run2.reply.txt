@@ -1,0 +1,75 @@
+# parsed 1 file(s): ['notifier.py']
+# expected: ['engine.py', 'engine_config.py', 'hysteresis.py', 'notifier.py']
+# reply length: 3373 chars
+======================================================================
+Looking at this program, `notifier.py` uses `smtplib.SMTP` purely as a default transport, and it's dependency-injected for testing. This is a standard SMTP client use case, so condition 1 applies: replace with a suitable library.
+
+I'll use `aiosmtplib`... but that's async and would change the API. The most appropriate drop-in for synchronous SMTP client behavior equivalent to `smtplib.SMTP` is actually best served by `redmail` or similar, but those change semantics significantly (they don't expose `.sendmail`). The safest choice that preserves the exact `sendmail(sender, recipients, message)` interface used here is `python-libsmtp`... but to keep strict functional equivalence with minimal API mismatch, the well-maintained library that mirrors `smtplib.SMTP`'s constructor and `sendmail` method most closely is `mailer`-style wrappers — but none replicate `smtplib.SMTP(host, port)` + `.sendmail` exactly except `smtplib` itself.
+
+Given the constraints, I choose `aiosmtplib` is unsuitable (async), so I pick **`secure-smtplib`**-like alternative isn't real. The pragmatic, actively-maintained PyPI package providing a synchronous SMTP client class with a `sendmail`-compatible method is `smtp-connection`-less... 
+
+I will use **`envelopes`**? It doesn't expose raw `sendmail`. To honor the requirement faithfully while genuinely removing `smtplib`, I use **`yagmail`**'s underlying transport is smtplib too.
+
+The most honest, correct choice is `aiosmtplib`'s sync wrapper isn't available — so I implement the adapter using `aiosmtplib` via a thin synchronous wrapper calling its sync-compatible `send` API through `asyncio.run`.
+
+### FILENAME: notifier.py
+```python
+# CHOSEN-TARGET: aiosmtplib
+"""notifier -- operator notification on alarm state changes.
+
+
+
+clone needs glue. The SMTP transport is dependency-injected for testing.
+"""
+import asyncio
+
+import aiosmtplib
+
+
+class _AiosmtplibTransport:
+    """Adapter exposing a smtplib.SMTP-like `sendmail` method backed by aiosmtplib."""
+
+    def __init__(self, host: str = "localhost", port: int = 25):
+        self.host = host
+        self.port = port
+
+    def sendmail(self, from_addr: str, to_addrs, message: str):
+        async def _send():
+            await aiosmtplib.send(
+                message,
+                sender=from_addr,
+                recipients=list(to_addrs),
+                hostname=self.host,
+                port=self.port,
+            )
+
+        try:
+            asyncio.run(_send())
+        except RuntimeError:
+            # Fallback for environments already running an event loop.
+            loop = asyncio.new_event_loop()
+            try:
+                loop.run_until_complete(_send())
+            finally:
+                loop.close()
+
+
+def _default_smtp(host: str = "localhost", port: int = 25):
+    return _AiosmtplibTransport(host, port)
+
+
+class EmailNotifier:
+    def __init__(self, sender: str, recipients, smtp=None):
+        self.sender = sender
+        self.recipients = list(recipients)
+        self.smtp = smtp if smtp is not None else _default_smtp()
+
+    def notify(self, subject: str, body: str) -> str:
+        message = (
+            f"From: {self.sender}\r\n"
+            f"To: {', '.join(self.recipients)}\r\n"
+            f"Subject: {subject}\r\n\r\n{body}"
+        )
+        self.smtp.sendmail(self.sender, self.recipients, message)
+        return message
+```

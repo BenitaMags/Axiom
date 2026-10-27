@@ -1,0 +1,224 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+╭──────────────────────────────────────────────────────────────────────── AXIOM — Run ────────────────────────────────────────────────────────────────────────╮
+│ Target:    multiple_experiment/data_pipeline.py                                                                                                             │
+│ LLM:       NVIDIA / nvidia/nemotron-3-ultra-550b-a55b                                                                                                       │
+│ Security:  ON                                                                                                                                               │
+│ Connector: ON                                                                                                                                               │
+│ Feedback:  ON                                                                                                                                               │
+│ Time:      2026-06-29 23:03:58                                                                                                                              │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /Users/benz.mags/Desktop/axiom_v2_fixed 3/multiple_experiment/data_pipeline.py
+                     Discovered Imports                     
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names ┃ API Calls Used         ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│   16 │ json     │ —     │ —     │ loads, dumps           │
+│   17 │ hashlib  │ —     │ —     │ md5                    │
+│   18 │ datetime │ —     │ —     │ datetime               │
+│   19 │ requests │ —     │ —     │ post, RequestException │
+└──────┴──────────┴───────┴───────┴────────────────────────┘
+
+✓ Found 4 imports
+
+─────────────────────────────────────────────────────────────────────── ⚙️  Rules Agent ───────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────── ⚙️  Rules Engine ───────────────────────────────────────────────────────────────────────
+                                                                         Rule Results                                                                          
+┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                                                                              ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ requests │ is_installed        │  PASS   │ HIGH       │ message=requests is installed and importable                                                        │
+│ requests │ has_metadata        │  PASS   │ MEDIUM     │ version=2.34.2, license=Apache-2.0                                                                  │
+│ requests │ license_permissive  │  PASS   │ MEDIUM     │ license=apache-2.0, permissive=True                                                                 │
+│ requests │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.153, shared_names=['JSONDecodeError', '__all__', '__author__',                │
+│          │                     │         │            │ '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__']       │
+│ json     │ is_installed        │  PASS   │ HIGH       │ message=json is installed and importable                                                            │
+│ json     │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for json                                                                  │
+│ json     │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for json                                                      │
+│ json     │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.153, shared_names=['JSONDecodeError', '__all__', '__author__',                │
+│          │                     │         │            │ '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__']       │
+│ hashlib  │ is_installed        │  PASS   │ HIGH       │ message=hashlib is installed and importable                                                         │
+│ hashlib  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for hashlib                                                               │
+│ hashlib  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for hashlib                                                   │
+│ hashlib  │ api_surface_overlap │  FAIL   │ MEDIUM     │ jaccard_api_overlap=0.094, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',        │
+│          │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                                    │
+│ datetime │ is_installed        │  PASS   │ HIGH       │ message=datetime is installed and importable                                                        │
+│ datetime │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for datetime                                                              │
+│ datetime │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for datetime                                                  │
+│ datetime │ api_surface_overlap │  PASS   │ MEDIUM     │ jaccard_api_overlap=0.11, shared_names=['__all__', '__builtins__', '__cached__', '__doc__',         │
+│          │                     │         │            │ '__file__', '__loader__', '__name__', '__package__', '__spec__']                                    │
+└──────────┴─────────────────────┴─────────┴────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+✓ Rules engine: 16 checks across 4 packages
+
+All packages installed and available
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 4 package(s) via OSV + PyPI...
+
+                                       Security Scan Results                                       
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hashlib  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ json     │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ datetime │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ requests │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└──────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,868  output: 525  latency: 3515ms
+Equivalence Groups Found
+├── JSON serialization/deserialization
+│   ├── Candidates : json, orjson
+│   ├── Used APIs  : loads, dumps
+│   ├── Pitfalls   : orjson returns bytes from dumps (not str), so .encode() calls would need removal; orjson doesn't support default=str parameter - requires 
+│   │   custom default handler; orjson is stricter about types (e.g., no NaN/Infinity support)
+│   ├── Constraints: requires_connector
+│   └── The code uses json.loads and json.dumps for serialization/deserialization of records. orjson is a drop-in faster alternative with compatible API for 
+│       these methods.
+├── synchronous HTTP client
+│   ├── Candidates : requests, httpx
+│   ├── Used APIs  : post, RequestException
+│   ├── Pitfalls   : httpx uses httpx.RequestError as base exception (not RequestException), though httpx.RequestException exists as alias; httpx timeout 
+│   │   parameter accepts Timeout object or float, slightly different from requests; httpx response.json() may raise different exceptions on parse failure
+│   └── The code uses requests.post for synchronous HTTP calls and catches RequestException. httpx provides a compatible synchronous API with the same method 
+│       names and exception hierarchy.
+└── non-cryptographic checksumming
+    ├── Candidates : hashlib, xxhash
+    ├── Used APIs  : md5
+    ├── Pitfalls   : xxhash has different API: xxhash.xxh64(data).hexdigest() vs hashlib.md5(data).hexdigest(); xxhash is not in stdlib - adds dependency; 
+    │   different hash output format/length - would break existing deduplication keys
+    ├── Constraints: crypto_required, requires_connector
+    └── The code uses hashlib.md5 for fast record deduplication checksums (explicitly noted as non-crypto). xxhash provides significantly faster 
+        non-cryptographic hashing with a similar API.
+
+✓ 3 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Scanning candidate 3 package(s) via OSV + PyPI...
+
+       Candidate Security Scan        
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ xxhash  │ unknown │ LOW  │    0.76 │
+│ orjson  │ unknown │ LOW  │    0.76 │
+│ httpx   │ unknown │ LOW  │    0.76 │
+└─────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 6 package(s) across 3 group(s)...
+
+⠼ ✓ json    
+⠼ ✓ hashlib 
+⠼ ✓ xxhash  
+⠼ ✓ requests
+⠼ ✓ orjson  
+⠼ ✓ httpx   
+Runtime API benchmarks (5 runs each)...
+                                Benchmark Results                                 
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃     Runtime API ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ xxhash   │     ✓     │          0.6 ms │               — │          13 │       │
+│ hashlib  │     ✓     │          2.0 ms │               — │          24 │       │
+│ json     │     ✓     │          2.4 ms │ 0.19 ms (loads) │          94 │       │
+│ orjson   │     ✓     │         10.8 ms │ 1.30 ms (loads) │           8 │       │
+│ httpx    │     ✓     │         83.0 ms │               — │         924 │       │
+│ requests │     ✓     │         86.4 ms │               — │         566 │       │
+└──────────┴───────────┴─────────────────┴─────────────────┴─────────────┴───────┘
+
+✓ Profiled 6 package(s), 6 available, 2 with runtime benchmarks
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 53e3c07d
+  API compat tokens — input: 220  output: 58  latency: 1459ms
+  API compat tokens — input: 217  output: 61  latency: 3846ms
+  Crypto veto: excluded xxhash from 'non-cryptographic checksumming'
+  API compat tokens — input: 213  output: 40  latency: 3782ms
+                                         AXIOM Optimization Decisions                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+┃ Role                               ┃ Original ┃ Winner   ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━┩
+│ JSON serialization/deserialization │ json     │ json     │ HIGH   │ 1.0   │ 0.082  │ 0.76     │ 1.0 │ 0.86  │
+│ synchronous HTTP client            │ requests │ requests │ MEDIUM │ 0.859 │ 1.0    │ 0.76     │ 1.0 │ 0.903 │
+│ non-cryptographic checksumming     │ hashlib  │ hashlib  │ LOW    │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │
+└────────────────────────────────────┴──────────┴──────────┴────────┴───────┴────────┴──────────┴─────┴───────┘
+
+All imports already optimal — no changes needed.
+
+Session saved: 53e3c07d
+
+✓ AXIOM complete — 3 decision(s)
+
+─────────────────────────────────────────────────────────────────── ── Security Summary ── ────────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Version ┃ Risk ┃ CVEs ┃ Score ┃ Notes                     ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hashlib  │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ json     │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ datetime │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ requests │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ xxhash   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ orjson   │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+│ httpx    │ unknown │ LOW  │    0 │  0.76 │ 📅 Not updated in 27y 4mo │
+└──────────┴─────────┴──────┴──────┴───────┴───────────────────────────┘
+──────────────────────────────────────────────────────────────── ── Optimization Decisions ── ─────────────────────────────────────────────────────────────────
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                               ┃ Original ┃ Winner   ┃ Confidence ┃ Security ┃ Rationale                                                                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ JSON serialization/deserialization │ json     │ json     │ HIGH       │ 0.76     │ 'json' wins 'JSON serialization/deserialization'. Confidence: HIGH.      │
+│                                    │          │          │            │          │ To...                                                                    │
+│ synchronous HTTP client            │ requests │ requests │ MEDIUM     │ 0.76     │ 'requests' wins 'synchronous HTTP client'. Confidence: MEDIUM. Total:    │
+│                                    │          │          │            │          │ ...                                                                      │
+│ non-cryptographic checksumming     │ hashlib  │ hashlib  │ LOW        │ 0.76     │ 'hashlib' wins 'non-cryptographic checksumming'. Confidence: LOW.        │
+│                                    │          │          │            │          │ Tota...                                                                  │
+└────────────────────────────────────┴──────────┴──────────┴────────────┴──────────┴──────────────────────────────────────────────────────────────────────────┘
+──────────────────────────────────────────────────────────────── ── Token Usage (this run) ── ─────────────────────────────────────────────────────────────────
+  resolver                   in= 1,868  out=  525  calls=1
+  axiom                      in=   650  out=  159  calls=3
+  TOTAL                      in= 2,518  out=  684
+────────────────────────────────────────────────────────────────────── ── Agent Trace ── ──────────────────────────────────────────────────────────────────────
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+   started
+   completed
+
+────────────────────────────────────────────────────────────────── ── AXIOM Feedback Loop ── ──────────────────────────────────────────────────────────────────
+No replacements were made — nothing to review.
+
+─────────────────────────────────────────────────────────────── ── Output Equivalence Check ── ────────────────────────────────────────────────────────────────
+Running original and patched code to compare outputs...
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ ✓ EQUIVALENT                                                                                                                                                │
+│ Both original and patched produce identical output.                                                                                                         │
+│ diff original patched → (empty — no differences)                                                                                                            │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Saved to: multiple_experiment/data_pipeline_optimized.py
+Version 1 recorded — identical to previous version (no diff).

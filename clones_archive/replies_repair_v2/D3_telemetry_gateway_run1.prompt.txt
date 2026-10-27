@@ -1,0 +1,119 @@
+You are given a Python program that depends on `paho-mqtt`. Rewrite it so the dependency on `paho-mqtt` is gone and the program remains FUNCTIONALLY EQUIVALENT.
+
+Exactly one of these two conditions applies. Read the program — including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable, actively-maintained third-party library yourself and migrate to it. Write whatever adapter or glue code the difference in API requires. Do not write your own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the program's own documentation states that the dependency is to be removed and its behaviour written as first-party code. If the documentation does not say that, condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class names, same signatures, same return types. The existing test suite must pass against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1, or `# CHOSEN-TARGET: first-party` for condition 2.
+
+Return ONLY the rewritten file(s). For each file use exactly this format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+The program's files are below.
+
+### FILENAME: estimator.py
+```python
+"""estimator -- first-party engineering-unit estimation with anomaly flagging.
+
+This is the core application logic the LMA must rewrite into an equivalent but
+structurally different form. It scales raw counts to engineering units, smooths with a
+moving average, and flags a rate-of-change anomaly when consecutive samples jump too far.
+"""
+
+
+class Estimator:
+    def __init__(self, scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.scale = scale
+        self.window = window
+        self.roc_limit = roc_limit
+        self.buffer = []
+        self.last = None
+
+    def update(self, raw_counts: float) -> dict:
+        value = raw_counts * self.scale
+        self.buffer.append(value)
+        if len(self.buffer) > self.window:
+            self.buffer.pop(0)
+        smoothed = sum(self.buffer) / len(self.buffer)
+        roc = 0.0 if self.last is None else abs(value - self.last)
+        self.last = value
+        return {"value": value, "smoothed": smoothed, "anomaly": roc > self.roc_limit}
+```
+
+### FILENAME: gateway.py
+```python
+"""gateway -- telemetry gateway: read raw counts, estimate, publish.
+
+Combines all three transformations in one program:
+
+  * LMA: rewrite the first-party estimation/anomaly logic in `estimator.py`.
+
+`reader` is an injected callable `tag -> raw_counts` (the field acquisition source).
+"""
+from estimator import Estimator
+from sink import MqttSink
+
+
+class TelemetryGateway:
+    def __init__(self, reader, sink: MqttSink, estimators: dict = None,
+                 scale: float = 0.1, window: int = 5, roc_limit: float = 5.0):
+        self.reader = reader
+        self.sink = sink
+        self.estimators = estimators if estimators is not None else {}
+        self._cfg = dict(scale=scale, window=window, roc_limit=roc_limit)
+
+    def _estimator(self, tag: str) -> Estimator:
+        if tag not in self.estimators:
+            self.estimators[tag] = Estimator(**self._cfg)
+        return self.estimators[tag]
+
+    def process(self, tag: str) -> dict:
+        """Acquire one sample for *tag*, estimate, publish, and return the record."""
+        raw = self.reader(tag)
+        record = self._estimator(tag).update(raw)
+        record["tag"] = tag
+        self.sink.publish(tag, record)
+        return record
+
+    def process_all(self, tags) -> list:
+        return [self.process(t) for t in tags]
+```
+
+### FILENAME: sink.py
+```python
+"""sink -- MQTT publication of estimated telemetry records.
+
+
+
+"""
+import json
+
+
+def _default_client(host: str = "localhost", port: int = 1883):
+    import paho.mqtt.client as mqtt  # lazy import for testability
+
+    client = mqtt.Client()
+    client.connect(host, port)
+    return client
+
+
+class MqttSink:
+    def __init__(self, topic_base: str = "plant/est", client=None):
+        self.topic_base = topic_base
+        self.client = client if client is not None else _default_client()
+
+    def publish(self, tag: str, record: dict) -> int:
+        payload = json.dumps(record, separators=(",", ":")).encode("utf-8")
+        info = self.client.publish(f"{self.topic_base}/{tag}", payload)
+        return getattr(info, "rc", 0)
+```

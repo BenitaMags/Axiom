@@ -1,0 +1,415 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] grahame/sedge  argparse→click  (sedge/cli.py)
+──────────────────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpja79ctpw_cli.py
+                                           Discovered Imports                                           
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names                                     ┃ API Calls Used            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ argparse      │ —     │ —                                         │ ArgumentParser            │
+│    2 │ difflib       │ —     │ —                                         │ unified_diff              │
+│    3 │ os.path       │ —     │ —                                         │ rename, unlink, path      │
+│    4 │ sys           │ —     │ —                                         │ stdout, exit, stderr      │
+│    5 │ tempfile      │ —     │ NamedTemporaryFile                        │ NamedTemporaryFile        │
+│    6 │ engine        │ —     │ SedgeEngine, SedgeException, ConfigOutput │ SedgeEngine, ConfigOutput │
+│    7 │ keylib        │ —     │ KeyLibrary                                │ KeyLibrary                │
+│  134 │ pkg_resources │ —     │ —                                         │ require                   │
+└──────┴───────────────┴───────┴───────────────────────────────────────────┴───────────────────────────┘
+
+✓ Found 8 imports
+
+─────────────────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────────────────
+Scanning 8 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                          
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ engine        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ argparse      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ keylib        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ os            │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ pkg_resources │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ difflib       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tempfile      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ sys           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────────────────
+Discovering alternative libraries for: engine, keylib, pkg_resources
+Discovered candidates:
+  pkg_resources -> importlib-resources, importlib_metadata
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,384  output: 220  latency: 3260ms
+Equivalence Groups Found
+└── package version requirement checking
+    ├── Candidates : pkg_resources, importlib_metadata
+    ├── Used APIs  : require
+    ├── Pitfalls   : importlib_metadata API differs: use importlib.metadata.version('pkg') and importlib.metadata.requires('pkg') 
+    │   instead of pkg_resources.require(); importlib_metadata is stdlib in Python 3.8+ (importlib.metadata); backport needed for 
+    │   older versions; pkg_resources.require() enforces version constraints at runtime; importlib.metadata only reads metadata — 
+    │   manual version comparison logic needed
+    ├── Constraints: requires_connector
+    └── pkg_resources.require() is used to verify package version requirements at runtime. importlib_metadata (backport of 
+        importlib.metadata) provides equivalent version checking capabilities via importlib.metadata.version() and 
+        importlib.metadata.requires(), making it a viable modern replacement for this specific use case.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────
+Scanning candidate 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan             
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package            ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ importlib_metadata │ unknown │ LOW  │    0.76 │
+└────────────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+─────────────────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using a disposable virtual environment; installed packages will be removed after probing.
+Project-local or undeclared imports supplied from the project checkout: engine, keylib
+                                                 Benchmark Results                                                  
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package            ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                             ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ importlib_metadata │     ✓     │          3.2 ms │           — │         378 │ import module: importlib_metadata │
+│ pkg_resources      │     ✓     │         52.7 ms │           — │        6502 │ import module: setuptools         │
+└────────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴───────────────────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with runtime benchmarks
+
+─────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 83052e9e
+  API compat tokens — input: 216  output: 64  latency: 675ms
+                                                   AXIOM Optimization Decisions                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                       ┃ Original      ┃ Winner             ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ package version            │ pkg_resources │ importlib_metadata │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.3 │ 0.847 │ ✓          │
+│ requirement checking       │               │                    │       │       │        │          │     │       │            │
+└────────────────────────────┴───────────────┴────────────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pkg_resources  →  importlib_metadata  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────────────────
+
+Analyzing: pkg_resources → importlib_metadata
+  Found 1 call site(s):
+    L135: version = pkg_resources.require("sedge")[0].version
+  Tokens — in:1,947 out:175 latency:19474ms
+
+  Compatibility analysis:
+    ✗ L135: pkg_resources.require("sedge")[0].version  — pkg_resources.require() returns a list of Distribution objects with a 
+.version a
+
+  1 call site(s) need a wrapper:
+    _get_sedge_version_wrapper  L135: Replace pkg_resources.require('sedge')[0].version with importlib.metad
+  Opening ACI edit session for pkg_resources → importlib_metadata...
+  ACI session: 0 edit(s) applied over 9 tool call(s)  |  tokens in:33,349 out:1,021
+    · open(line_number=...)
+    · goto(line_number=...)
+    · edit(replacement_text=..., end_line=..., start_line=...)
+    · open(line_number=...)
+    · edit(start_line=..., replacement_text=..., end_line=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · edit(end_line=..., start_line=...)
+    · edit(end_line=..., start_line=...)
+  ACI session made no edits — falling back to one-shot generation.
+  Falling back to one-shot wrapper generation for pkg_resources...
+    get_sedge_version  replaces: pkg_resources.require("sedge")[0].version
+╭────────────────────────────────────────────────────── get_sedge_version ───────────────────────────────────────────────────────╮
+│    1 def get_sedge_version() -> str:                                                                                           │
+│    2     """                                                                                                                   │
+│    3     Return the installed version of the 'sedge' package.                                                                  │
+│    4                                                                                                                           │
+│    5     Original implementation used ``pkg_resources.require('sedge')[0].version``                                            │
+│    6     which returns a ``pkg_resources.Version`` object that behaves like a string.                                          │
+│    7     This wrapper uses ``importlib.metadata.version`` (Python 3.8+) which returns                                          │
+│    8     the version directly as a ``str``. The public API is identical for typical                                            │
+│    9     usage (printing, formatting, comparisons).                                                                            │
+│   10     """                                                                                                                   │
+│   11     try:                                                                                                                  │
+│   12         # Python 3.8+                                                                                                     │
+│   13         from importlib.metadata import version                                                                            │
+│   14     except ImportError:  # pragma: no cover                                                                               │
+│   15         # Python 3.7 fallback                                                                                             │
+│   16         from importlib_metadata import version                                                                            │
+│   17     return version('sedge')                                                                                               │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ✓ AST-based replacement applied (1 matches)
+╭──────────────────────────────────────────── Patched Source (with inline adapters) ─────────────────────────────────────────────╮
+│     1 import argparse                                                                                                          │
+│     2 import difflib                                                                                                           │
+│     3 import os.path                                                                                                           │
+│     4 import sys                                                                                                               │
+│     5 from tempfile import NamedTemporaryFile                                                                                  │
+│     6 from .engine import SedgeEngine, SedgeException, ConfigOutput                                                            │
+│     7 from .keylib import KeyLibrary                                                                                           │
+│     8                                                                                                                          │
+│     9                                                                                                                          │
+│    10 # ──────────────────────────────────────────────────────────────────────                                                 │
+│    11 # AXIOM CONNECTOR: pkg_resources → importlib_metadata                                                                    │
+│    12 # The following functions bridge API incompatibilities between                                                           │
+│    13 # pkg_resources and importlib_metadata. They are injected by the AXIOM                                                   │
+│    14 # connector agent and called in place of the original API.                                                               │
+│    15 # ──────────────────────────────────────────────────────────────────────                                                 │
+│    16 def get_sedge_version() -> str:                                                                                          │
+│    17     """                                                                                                                  │
+│    18     Return the installed version of the 'sedge' package.                                                                 │
+│    19                                                                                                                          │
+│    20     Original implementation used ``pkg_resources.require('sedge')[0].version``                                           │
+│    21     which returns a ``pkg_resources.Version`` object that behaves like a string.                                         │
+│    22     This wrapper uses ``importlib.metadata.version`` (Python 3.8+) which returns                                         │
+│    23     the version directly as a ``str``. The public API is identical for typical                                           │
+│    24     usage (printing, formatting, comparisons).                                                                           │
+│    25     """                                                                                                                  │
+│    26     try:                                                                                                                 │
+│    27         # Python 3.8+                                                                                                    │
+│    28         from importlib.metadata import version                                                                           │
+│    29     except ImportError:  # pragma: no cover                                                                              │
+│    30         # Python 3.7 fallback                                                                                            │
+│    31         from importlib_metadata import version                                                                           │
+│    32     return version('sedge')                                                                                              │
+│    33                                                                                                                          │
+│    34                                                                                                                          │
+│    35                                                                                                                          │
+│    36 def ask_overwrite(fname):                                                                                                │
+│    37     print(                                                                                                               │
+│    38         "WARNING: `%s' already exists and was not generated by sedge." % fname,                                          │
+│    39         file=sys.stderr)                                                                                                 │
+│    40     confirm = input("Enter `yes' to overwite: ")                                                                         │
+│    41     return confirm == 'yes'                                                                                              │
+│    42                                                                                                                          │
+│    43                                                                                                                          │
+│    44 def check_or_confirm_overwrite(fname):                                                                                   │
+│    45     "returns True if OK to proceed, False otherwise"                                                                     │
+│    46     try:                                                                                                                 │
+│    47         with open(fname) as fd:                                                                                          │
+│    48             header = next(fd)                                                                                            │
+│    49             if header.find(':sedge:') == -1:                                                                             │
+│    50                 okay = ask_overwrite(fname)                                                                              │
+│    51                 if okay:                                                                                                 │
+│    52                     backup_file = fname + '.pre-sedge'                                                                   │
+│    53                     os.rename(fname, backup_file)                                                                        │
+│    54                     print("your previous SSH configuration file has been renamed to:\n%s" % (backup_file), file=sys.stde │
+│    55     except OSError:                                                                                                      │
+│    56         pass                                                                                                             │
+│    57     except StopIteration:                                                                                                │
+│    58         pass                                                                                                             │
+│    59     return True                                                                                                          │
+│    60                                                                                                                          │
+│    61                                                                                                                          │
+│    62 def diff_config_changes(before, after):                                                                                  │
+│    63     def get_data(f):                                                                                                     │
+│    64         with open(f) as fd:                                                                                              │
+│    65             return fd.read().splitlines(True)                                                                            │
+│    66     a = get_data(before)                                                                                                 │
+│    67     b = get_data(after)                                                                                                  │
+│    68     diff_lines = list(difflib.unified_diff(a, b))                                                                        │
+│    69     if not diff_lines:                                                                                                   │
+│    70         print("no changes.", file=sys.stderr)                                                                            │
+│    71     else:                                                                                                                │
+│    72         print('configuration changes:', file=sys.stderr)                                                                 │
+│    73         print(''.join(diff_lines), file=sys.stderr)                                                                      │
+│    74                                                                                                                          │
+│    75                                                                                                                          │
+│    76 def command_list_keys(args):                                                                                             │
+│    77     library = KeyLibrary(args.key_directory)                                                                             │
+│    78     library.list_keys()                                                                                                  │
+│    79                                                                                                                          │
+│    80                                                                                                                          │
+│    81 def command_add_keys(args):                                                                                              │
+│    82     library = KeyLibrary(args.key_directory)                                                                             │
+│    83     library.add_keys()                                                                                                   │
+│    84                                                                                                                          │
+│    85                                                                                                                          │
+│    86 def command_update(args):                                                                                                │
+│    87     def write_to(out):                                                                                                   │
+│    88         config.output(out)                                                                                               │
+│    89     library = KeyLibrary(args.key_directory)                                                                             │
+│    90     with open(args.config_file) as fd:                                                                                   │
+│    91         config = SedgeEngine(library, fd, not args.no_verify, url=args.config_file)                                      │
+│    92     if args.output_file == '-':                                                                                          │
+│    93         write_to(ConfigOutput(sys.stdout))                                                                               │
+│    94         return                                                                                                           │
+│    95     if not check_or_confirm_overwrite(args.output_file):                                                                 │
+│    96         print("Aborting.", file=sys.stderr)                                                                              │
+│    97         sys.exit(1)                                                                                                      │
+│    98                                                                                                                          │
+│    99     tmpf = NamedTemporaryFile(mode='w', dir=os.path.dirname(args.output_file), delete=False)                             │
+│   100     try:                                                                                                                 │
+│   101         tmpf.file.write('''\                                                                                             │
+│   102 # :sedge:                                                                                                                │
+│   103 #                                                                                                                        │
+│   104 # this configuration generated from `sedge' file:                                                                        │
+│   105 # %s                                                                                                                     │
+│   106 #                                                                                                                        │
+│   107 # do not edit this file manually, edit the source file and re-run `sedge'                                                │
+│   108 #                                                                                                                        │
+│   109                                                                                                                          │
+│   110 ''' % (args.config_file))                                                                                                │
+│   111         write_to(ConfigOutput(tmpf.file))                                                                                │
+│   112         tmpf.close()                                                                                                     │
+│   113         if args.verbose:                                                                                                 │
+│   114             diff_config_changes(args.output_file, tmpf.name)                                                             │
+│   115         os.rename(tmpf.name, args.output_file)                                                                           │
+│   116     except:                                                                                                              │
+│   117         os.unlink(tmpf.name)                                                                                             │
+│   118         raise                                                                                                            │
+│   119                                                                                                                          │
+│   120                                                                                                                          │
+│   121 def main():                                                                                                              │
+│   122     commands = {                                                                                                         │
+│   123         'update': command_update,                                                                                        │
+│   124         'list-keys': command_list_keys,                                                                                  │
+│   125         'add-keys': command_add_keys,                                                                                    │
+│   126     }                                                                                                                    │
+│   127     parser = argparse.ArgumentParser()                                                                                   │
+│   128     parser.add_argument(                                                                                                 │
+│   129         '-k', '--key_directory',                                                                                         │
+│   130         default=os.path.expanduser('~/.ssh'),                                                                            │
+│   131         type=str,                                                                                                        │
+│   132         help='directory to scan for SSH keys')                                                                           │
+│   133     parser.add_argument(                                                                                                 │
+│   134         '-v', '--verbose',                                                                                               │
+│   135         action='store_true',                                                                                             │
+│   136         help='verbose output')                                                                                           │
+│   137     parser.add_argument(                                                                                                 │
+│   138         '--version', action='store_true',                                                                                │
+│   139         help='print version and exit')                                                                                   │
+│   140     parser.add_argument(                                                                                                 │
+│   141         '-c', '--config-file',                                                                                           │
+│   142         default=os.path.expanduser('~/.sedge/config'),                                                                   │
+│   143         nargs='?')                                                                                                       │
+│   144     parser.add_argument(                                                                                                 │
+│   145         '-o', '--output-file',                                                                                           │
+│   146         default=os.path.expanduser('~/.ssh/config'),                                                                     │
+│   147         nargs='?')                                                                                                       │
+│   148     parser.add_argument(                                                                                                 │
+│   149         '-n', '--no-verify',                                                                                             │
+│   150         action='store_true',                                                                                             │
+│   151         help='do not verify HTTPS requests')                                                                             │
+│   152     parser.add_argument(                                                                                                 │
+│   153         'command',                                                                                                       │
+│   154         help='action to take',                                                                                           │
+│   155         nargs='?',                                                                                                       │
+│   156         default='update',                                                                                                │
+│   157         choices=commands.keys())                                                                                         │
+│   158     args = parser.parse_args()                                                                                           │
+│   159     if args.version:                                                                                                     │
+│   160         import pkg_resources                                                                                             │
+│   161         version = get_sedge_version()                                                                                    │
+│   162         print('''\                                                                                                       │
+│   163 sedge, version %s                                                                                                        │
+│   164                                                                                                                          │
+│   165 Copyright © 2015 Grahame Bowland                                                                                         │
+│   166 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.                                           │
+│   167 This is free software: you are free to change and redistribute it.                                                       │
+│   168 There is NO WARRANTY, to the extent permitted by law.''' % (version))                                                    │
+│   169         sys.exit(0)                                                                                                      │
+│   170     try:                                                                                                                 │
+│   171         commands[args.command](args)                                                                                     │
+│   172     except SedgeException as e:                                                                                          │
+│   173         print('Error: %s' % (e), file=sys.stderr)                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                       Stage 1 — Static Analysis                        
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail                                  ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                                         │
+│ Pylint (errors)   │   0    │                                         │
+│ Bandit (med/high) │   0    │                                         │
+│ Mypy              │   0    │                                         │
+│ Adapter contracts │   0    │                                         │
+│ Import smoke test │  FAIL  │ Traceback (most recent call last):      │
+│                   │        │   File "<string>", line 12, in <module> │
+│                   │        │   Fil                                   │
+└───────────────────┴────────┴─────────────────────────────────────────┘
+Stage 2 — LLM review of combined evidence...
+  Verifier LLM tokens — in:2,979 out:153 latency:1733ms
+                                                      Stage 2 — LLM Verdicts                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                                 ┃ Verdict ┃ Confidence ┃ Reasoning                                                        ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ package version requirement checking │ PASS    │ HIGH       │ The connector wrapper `get_sedge_version()` correctly uses       │
+│                                      │         │            │ `importlib.                                                      │
+└──────────────────────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────────────────────┘
+╭──────────────────────────────────────────────── Full import smoke-test failure ────────────────────────────────────────────────╮
+│ Traceback (most recent call last):                                                                                             │
+│   File "<string>", line 12, in <module>                                                                                        │
+│   File "/tmp/tmpyrrocr4d.py", line 6, in <module>                                                                              │
+│     from .engine import SedgeEngine, SedgeException, ConfigOutput                                                              │
+│   File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/engine.py", line 12, in <module>       │
+│     from .urlhandling import get_contents                                                                                      │
+│   File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/urlhandling.py", line 5, in <module>   │
+│     import requests                                                                                                            │
+│ ModuleNotFoundError: No module named 'requests'                                                                                │
+│                                                                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Import smoke test failed and no repairable verdict was produced: Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+  File "/tmp/tmpyrrocr4d.py", line 6, in <module>
+    from .engine import SedgeEngine, SedgeException, ConfigOutput
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/engine.py", line 12, in <module>
+    from .urlhandling import get_contents
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/urlhandling.py", line 5, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+
+  skipped: Import smoke test failed and no repairable verdict was produced: Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+  File "/tmp/tmpyrrocr4d.py", line 6, in <module>
+    from .engine import SedgeEngine, SedgeException, ConfigOutput
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/engine.py", line 12, in <module>
+    from .urlhandling import get_contents
+  File "/Users/benz.mags/Desktop/axiom_v2_fixed 3/pymigbench_repos/grahame__sedge/sedge/urlhandling.py", line 5, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+
+
+Evaluation took 71.6s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          1
+Resolver detection rate:     0.0%  (n=0)
+Full-pipeline accuracy:      requested, but 0 cases were scoreable — usually means neither source nor target package is 
+pip-installed here (profiler_agent can't benchmark what it can't import), or resolver never produced a decision. Try --seed-target
+to bypass resolver's own discovery, or pip install the specific pair you're testing.
+     Detection Rate by Domain      
+┏━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+└────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_project_env_test3.json, pymigbench_project_env_test3.csv

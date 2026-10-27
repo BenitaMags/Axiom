@@ -1,0 +1,113 @@
+# parsed 2 file(s): ['modbus_meter_reader.py', 'registers.py']
+# expected: ['modbus_meter_reader.py', 'registers.py']
+# reply length: 4468 chars
+======================================================================
+Looking at this program, I need to determine which condition applies.
+
+The docstring mentions "pymodbus returns a response object with clone needs glue -- hence Category B" — this is describing the API mismatch reasoning for choosing a library-replacement approach, not stating that pymodbus should be removed and reimplemented as first-party code. There's no explicit statement that "the dependency is to be removed and its behaviour written as first-party code."
+
+So condition 1 applies: replace `pymodbus` with another suitable library for Modbus TCP communication. A good actively-maintained alternative is `umodbus`, but a more commonly used and actively maintained alternative that provides a synchronous TCP client similar to pymodbus is `minimalmodbus` (serial-focused) — not ideal for TCP. The best fit is `pyModbusTCP`, which is actively maintained and provides a `ModbusClient` for TCP with `read_holding_registers`.
+
+I'll use `pyModbusTCP`.
+
+### FILENAME: modbus_meter_reader.py
+```python
+# CHOSEN-TARGET: pyModbusTCP
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+
+read APIs and result objects differ (pymodbus returns a response object with
+
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+"""
+from registers import REGISTERS, decode
+
+
+def _default_client(host: str, port: int = 502):
+    from pyModbusTCP.client import ModbusClient  # lazy import for testability
+
+    client = ModbusClient(host=host, port=port, unit_id=1, auto_open=True)
+    return client
+
+
+class _ReadResult:
+    """Adapter object exposing an `isError()`/`.registers` interface similar to
+    what pymodbus's response objects provided, so decoding code stays the same."""
+
+    def __init__(self, registers):
+        self._registers = registers
+
+    def isError(self):
+        return self._registers is None
+
+    @property
+    def registers(self):
+        return self._registers
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def _read_holding_registers(self, address, count, unit):
+        """Call the underlying client's read API, normalizing to a
+        `_ReadResult`-like object regardless of whether the injected client is
+        a pyModbusTCP client (returns a list or None) or a test double already
+        providing `.isError()`/`.registers`."""
+        # Support pyModbusTCP-style clients: set unit id if supported, then read.
+        set_unit = getattr(self.client, "unit_id", None)
+        if hasattr(self.client, "unit_id"):
+            try:
+                self.client.unit_id = unit
+            except Exception:
+                pass
+
+        raw = self.client.read_holding_registers(address, count)
+
+        if isinstance(raw, list) or raw is None:
+            return _ReadResult(raw)
+
+        # Already an object exposing isError()/registers (e.g. test doubles).
+        return raw
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self._read_holding_registers(address, count, self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record
+```
+
+### FILENAME: registers.py
+```python
+"""registers -- register map and word decoding for a Modbus power meter.
+
+Decodes big-endian 16-bit register words into engineering values. Kept separate from
+the transport so that decoding is reusable and independently testable.
+"""
+import struct
+
+# name -> (start address, word count, encoding, scale)
+REGISTERS = {
+    "voltage": (0x0000, 2, "f32", 1.0),
+    "current": (0x0002, 2, "f32", 1.0),
+    "power":   (0x0004, 2, "f32", 1.0),
+    "energy":  (0x0006, 2, "u32", 0.001),  # Wh -> kWh
+}
+
+
+def decode(encoding: str, words, scale: float) -> float:
+    """Decode a sequence of 16-bit words into a scaled engineering value."""
+    raw = b"".join(struct.pack(">H", w & 0xFFFF) for w in words)
+    if encoding == "f32":
+        value = struct.unpack(">f", raw)[0]
+    elif encoding == "u32":
+        value = struct.unpack(">I", raw)[0]
+    else:
+        raise ValueError(f"unknown encoding: {encoding}")
+    return value * scale
+```

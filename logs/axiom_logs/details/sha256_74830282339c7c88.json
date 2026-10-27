@@ -1,0 +1,21 @@
+{
+  "role": "HTTP client",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 1.0,
+    "memory": 0.613,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "security": 0.8,
+    "total": 0.921
+  },
+  "rationale": "'httpx' wins 'HTTP client'. Confidence: MEDIUM. Total: 0.921 (speed=1.0, mem=0.613, sec=0.8, api=1.0). Migration note: httpx uses async by default, while requests is sync. Migrating to httpx would require rewriting call sites and potentially refactoring the code for asynchronous execution.",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "post",
+    "RequestException"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": []
+}

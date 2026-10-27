@@ -1,0 +1,36 @@
+{
+  "role": "email/notification sending",
+  "winner": "apprise",
+  "original": "smtplib",
+  "score": {
+    "speed": 0.04,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.114,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.087,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'apprise' wins 'email/notification sending'. Confidence: HIGH. Total: 0.087 (speed=0.04, mem=0.114, sec=None, api=0.1). Migration note: smtplib.sendmail() takes a fully-formed RFC822 message string with headers; apprise.notify() takes structured title/body arguments and does not directly accept raw MIME text",
+  "confidence": "HIGH",
+  "used_apis": [
+    "SMTP",
+    "sendmail"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

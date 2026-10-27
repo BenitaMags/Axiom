@@ -1,0 +1,283 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpigvdcv_o_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+──────────────────────────────────────────────────────────── 🔒 Security Agent ─────────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                      Security Scan Results                                       
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ time    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ locust  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ kafka   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+──────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+  locust -> k6, vegeta, hey
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,905  output: 466  latency: 5010ms
+Equivalence Groups Found
+├── Kafka producer client
+│   ├── Candidates : kafka, confluent-kafka
+│   ├── Used APIs  : KafkaProducer, send, flush, add_callback, add_errback
+│   ├── Pitfalls   : confluent-kafka uses librdkafka (C library) requiring system dependencies; Callback signatures differ: confluent-kafka 
+│   │   uses delivery_report(err, msg) vs kafka's add_callback/add_errback on futures; confluent-kafka Producer is not thread-safe; 
+│   │   kafka.KafkaProducer is thread-safe; Configuration property names differ (e.g., 'bootstrap.servers' vs 'bootstrap_servers')
+│   ├── Constraints: requires_connector
+│   └── The code uses kafka.KafkaProducer for synchronous message production with callback-based async handling. confluent-kafka provides a 
+│       similar Producer API with delivery callbacks and flush() support, making it a viable drop-in replacement for the same synchronous 
+│       producer role.
+└── Load testing framework
+    ├── Candidates : locust, k6
+    ├── Used APIs  : Locust, constant, environment.events.request_success.fire, environment.events.request_failure.fire
+    ├── Pitfalls   : Fundamental paradigm shift: Locust uses Python classes with event hooks; k6 uses JS scripts with built-in metrics; No 
+    │   direct equivalent to Locust's environment.events system for custom request tracking; k6 does not support Python code reuse; the 
+    │   KafkaClient wrapper would need full rewrite in JS; Different execution model: k6 uses VUs (virtual users) with iterators, not 
+    │   class-based users
+    ├── Constraints: requires_connector
+    └── The code implements a custom Locust user class (KafkaLocust) for load testing Kafka producers. k6 can serve the same functional role
+        (load testing) but uses JavaScript/TypeScript scripts instead of Python classes, requiring a complete rewrite of the test logic.
+
+✓ 2 equivalence group(s) found
+
+────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ──────────────────────────────────────────────────────
+Scanning candidate 2 package(s) via OSV + PyPI...
+
+           Candidate Security Scan            
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package         ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ confluent-kafka │ unknown │ LOW  │    0.76 │
+│ k6              │ unknown │ LOW  │    0.76 │
+└─────────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 4 package(s) across 2 group(s)...
+
+Using a disposable virtual environment; installed packages will be removed after probing.
+                                                   Benchmark Results                                                    
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ confluent-kafka │     ✓     │        113.9 ms │           — │         295 │ import module: confluent_kafka           │
+│ locust          │     ✓     │       1288.8 ms │           — │       19374 │ import module: locust                    │
+│ k6              │     ✗     │               — │           — │           — │ Not a Python import-library candidate    │
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka.vendor.six.moves' │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────┘
+
+✓ Profiled 4 package(s), 2 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 3ec97a75
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka
+  API compat tokens — input: 232  output: 64  latency: 7103ms
+  Not installed locally (scoring with neutral placeholders, not excluded): k6
+  API compat tokens — input: 232  output: 60  latency: 6116ms
+                                             AXIOM Optimization Decisions                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                   ┃ Original ┃ Winner          ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Kafka producer client  │ kafka    │ confluent-kafka │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.3 │ 0.847 │ ✓          │
+│ Load testing framework │ locust   │ locust          │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │ ✓          │
+└────────────────────────┴──────────┴─────────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  kafka  →  confluent-kafka  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 2 decision(s)
+
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+
+Analyzing: kafka → confluent-kafka
+  Found 1 call site(s):
+    L29: self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)
+  Tokens — in:1,388 out:829 latency:6044ms
+
+  Compatibility analysis:
+    ✗ L29: KafkaProducer(bootstrap_servers=bootstrap_servers, value_ser  — Parameter name differs: confluent-kafka uses 'bootstrap.servers' 
+(with dot) inst
+    ✗ L37: self.producer.send(topic, key=key, value=message)  — confluent-kafka Producer.produce() is non-blocking and does not return a 
+Future 
+    ✗ L38: future.add_callback(self.__handle_success, start_time, topic  — The future returned by confluent-kafka produce() does not have 
+add_callback/add_
+    ✗ L39: future.add_errback(self.__handle_failure, start_time, topic=  — Same as line 38 — confluent-kafka's produce() does not return a 
+future with add_
+    ✗ L43: record_metadata.serialized_value_size  — confluent-kafka's delivery report message object (in delivery_report callback) d
+    ✓ L52: self.producer.flush(timeout=5)  — confluent-kafka Producer.flush() exists and accepts a timeout parameter (in seco
+
+  5 call site(s) need a wrapper:
+    _create_confluent_producer  L29: Create a confluent-kafka Producer with bootstrap.servers config and wr
+    _wrap_producer_send  L37: Wrap confluent-kafka produce() to return a future-like object that sup
+    _wrap_producer_send  L38: Same wrapper as line 37 — the returned future-like object must impleme
+    _wrap_producer_send  L39: Same wrapper as line 37 — the returned future-like object must impleme
+    _adapt_record_metadata  L43: Adapt the confluent-kafka message object in the success callback to pr
+  Opening ACI edit session for kafka → confluent-kafka...
+  ACI session: 1 edit(s) applied over 9 tool call(s)  |  tokens in:34,605 out:2,886
+    · open(line_number=...)
+    · edit(replacement_text=..., start_line=..., end_line=...)
+    · edit(replacement_text=..., start_line=..., end_line=...)
+    · open(line_number=...)
+    · edit(replacement_text=..., end_line=..., start_line=...)
+    · edit(start_line=..., end_line=...)
+    · open(line_number=...)
+    · edit(end_line=..., replacement_text=..., start_line=...)
+  ✓ ACI edit session complete — 5 wrapper(s) injected.
+╭───────────────────────────────────────────────── Patched Source (with inline adapters) ──────────────────────────────────────────────────╮
+│    1 # inspired by https://medium.com/locust-io-experiments/locust-experiments-locust-meets-kafka-b9d9e6e49537                           │
+│    2 import time                                                                                                                         │
+│    3 from concurrent.futures import Future                                                                                               │
+│    4 from confluent_kafka import Producer                                                                                                │
+│    5 from locust import Locust                                                                                                           │
+│    6 from locust.wait_time import constant                                                                                               │
+│    7                                                                                                                                     │
+│    8 class KafkaLocust(Locust):                                                                                                          │
+│    9     abstract = True                                                                                                                 │
+│   10     wait_time = constant(0)                                                                                                         │
+│   11     # overload these values in your subclass                                                                                        │
+│   12     bootstrap_servers = None                                                                                                        │
+│   13     value_serializer = str.encode                                                                                                   │
+│   14                                                                                                                                     │
+│   15     def __init__(self, environment):                                                                                                │
+│   16         super().__init__(environment)                                                                                               │
+│   17         self.client = KafkaClient(                                                                                                  │
+│   18             environment=environment, bootstrap_servers=self.bootstrap_servers, value_serializer=self.value_serializer               │
+│   19         )                                                                                                                           │
+│   20                                                                                                                                     │
+│   21     def teardown(self):                                                                                                             │
+│   22         # this should actually be run for every locust instead of just once, but it is better than nothing...                       │
+│   23         self.client.producer.flush(timeout=5)                                                                                       │
+│   24                                                                                                                                     │
+│   25                                                                                                                                     │
+│   26 class KafkaClient:                                                                                                                  │
+│   27     def __init__(self, *, environment, bootstrap_servers, value_serializer):                                                        │
+│   28         self.environment = environment                                                                                              │
+│   29         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)                       │
+│   30                                                                                                                                     │
+│   31     def send(self, *, topic: str, key=None, message=None, response_length=None):                                                    │
+│   32         start_time = time.time()                                                                                                    │
+│   33         future = self.producer.send(topic, key=key, value=message)                                                                  │
+│   34         future.add_callback(self.__handle_success, start_time, topic=topic, response_length=response_length)                        │
+│   35         future.add_errback(self.__handle_failure, start_time, topic=topic, response_length=response_length)                         │
+│   36                                                                                                                                     │
+│   37     def __handle_success(self, start_time, record_metadata, *, topic, response_length=None):                                        │
+│   38         self.environment.events.request_success.fire(                                                                               │
+│   39             request_type="ENQUEUE",                                                                                                 │
+│   40             name=topic,                                                                                                             │
+│   41             response_time=int((time.time() - start_time) * 1000),                                                                   │
+│   42             response_length=response_length if response_length else record_metadata.serialized_value_size,                          │
+│   43         )                                                                                                                           │
+│   44                                                                                                                                     │
+│   45     def __handle_failure(self, exception, start_time, *, topic, response_length=None):                                              │
+│   46         self.environment.events.request_failure.fire(                                                                               │
+│   47             request_type="ENQUEUE",                                                                                                 │
+│   48             name=topic,                                                                                                             │
+│   49             response_time=int((time.time() - start_time) * 1000),                                                                   │
+│   50             response_length=response_length,                                                                                        │
+│   51             exception=exception,                                                                                                    │
+│   52         )                                                                                                                           │
+│   53                                                                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                          Stage 1 — Static Analysis                           
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail                                        ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                                               │
+│ Pylint (errors)   │   0    │                                               │
+│ Bandit (med/high) │   0    │                                               │
+│ Mypy              │   0    │                                               │
+│ Import smoke test │  FAIL  │ Traceback (most recent call last):            │
+│                   │        │   File "/tmp/tmpjyjalju8.py", line 5, in <mod │
+└───────────────────┴────────┴───────────────────────────────────────────────┘
+Stage 2 — LLM review of combined evidence...
+  Verifier LLM tokens — in:1,456 out:138 latency:4892ms
+                                                     Stage 2 — LLM Verdicts                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                  ┃ Verdict        ┃ Confidence ┃ Reasoning                                                              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Kafka producer client │ DECISION_LEVEL │ HIGH       │ The patched source still references the old 'kafka.KafkaProducer' clas │
+└───────────────────────┴────────────────┴────────────┴────────────────────────────────────────────────────────────────────────┘
+↩ Routing back to axiom_agent — excluding ['Kafka producer client'] candidates (retry 1/2)
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 3ec97a75
+↩ Re-scoring after verifier rejection — excluded candidates: {'Kafka producer client': ['confluent-kafka']}
+  Verifier veto: excluded confluent-kafka from 'Kafka producer client' (failed verification on a prior pass)
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka
+  API compat tokens — input: 225  output: 38  latency: 572ms
+  Not installed locally (scoring with neutral placeholders, not excluded): k6
+  API compat tokens — input: 232  output: 60  latency: 1831ms
+                                          AXIOM Optimization Decisions                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                   ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ Kafka producer client  │ kafka    │ kafka  │ LOW   │ 0.5   │ 0.5    │ 0.76     │ 1.0 │ 0.627 │ not installed │
+│ Load testing framework │ locust   │ locust │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 1.0 │ 0.952 │ ✓             │
+└────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 2 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: 3ec97a75
+
+Evaluation took 115.6s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     100.0%  (n=1)
+Full-pipeline accuracy:      0.0%  (n=1)
+Connector invoked on:        1 case(s)
+Verifier clean (no findings):  0.0%  (n=1)
+        Detection Rate by Domain         
+┏━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain       ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients │     1 │         100.0% │
+└──────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_isolated_profile_test3.json, pymigbench_isolated_profile_test3.csv

@@ -1,0 +1,11 @@
+<br>
+
+Looking at this rewrite, a few things stand out.
+
+**control.py** — the integrator refactor preserves semantics: accumulate-then-clamp order, same clamp bounds, `integral` exposed as a read-only property backed by `ClampedIntegrator.total`. One difference worth checking: the original's `self.integral` was a writable attribute, while the rewrite makes it a read-only property, so any external code doing `control.integral = 0.0` would now raise `AttributeError`. But nothing in the shown programs assigns to it — `reset()` goes through `_integrator.reset()` — so on the code as given this is speculative, not a concrete defect. Leaving it out.
+
+The interlock ordering is also identical: `_check_interlock` latches `tripped` and returns it, so a trip on the current cycle returns `0.0` before the integrator is touched — matching the original, where the integral likewise does not accumulate on a tripped cycle.
+
+**transport.py** — `_default_client` drops the explicit `client.connect()`, but `auto_open=True` makes pyModbusTCP open the socket on first request, so connection behaviour is equivalent. `_read1`'s `None` check maps correctly onto pyModbusTCP's failure return.
+
+The real problem is in `write_valve`. pymodbus's `wr.isError()` is `False` for a successful write, so the original raised only on an actual error response. The rewrite uses `if not ok:` against `write_single_register`, which returns `True`/`False`/`None`. That much is fine — but it interacts badly with the `counts` value. There's no divergence in the arithmetic itself; `int(round(...))` is byte-identical.

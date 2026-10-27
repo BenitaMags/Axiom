@@ -1,0 +1,29 @@
+{
+  "role": "IP network/CIDR manipulation",
+  "winner": "netaddr",
+  "original": "netaddr",
+  "score": {
+    "speed": 0.831,
+    "speed_evidence": "runtime:ip_network_parse+import",
+    "runtime_probe": "ip_network_parse",
+    "runtime_evidence": true,
+    "memory": 0.336,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "evidence_weight": 0.6,
+    "total": 0.791,
+    "installed": true
+  },
+  "rationale": "'netaddr' wins 'IP network/CIDR manipulation'. Confidence: MEDIUM. Total: 0.791 (speed=0.831, mem=0.336, sec=None, api=1.0). Migration note: ipaddress.IPNetwork is called IPv4Network/IPv6Network in stdlib; IPNetwork is a factory function",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "IPNetwork"
+  ],
+  "requires_connector": false,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

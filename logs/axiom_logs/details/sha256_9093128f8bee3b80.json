@@ -1,0 +1,40 @@
+{
+  "role": "synchronous HTTP client (session-based requests to REST API)",
+  "winner": "httpx",
+  "original": "requests",
+  "score": {
+    "speed": 0.978,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.624,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.7,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.879,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'httpx' wins 'synchronous HTTP client (session-based requests to REST API)'. Confidence: MEDIUM. Total: 0.879 (speed=0.978, mem=0.624, sec=1.0, api=0.7). Migration note: httpx.Client vs requests.Session: constructor and timeout semantics differ (httpx uses Timeout objects or float defaults per-client vs per-request)",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "Session",
+    "session.get",
+    "session.post",
+    "response.raise_for_status",
+    "response.json",
+    "response.status_code"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

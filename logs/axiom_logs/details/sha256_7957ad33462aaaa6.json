@@ -1,0 +1,36 @@
+{
+  "role": "MQTT client for publishing telemetry to a broker",
+  "winner": "paho-mqtt",
+  "original": "paho-mqtt",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.82,
+    "security_evidence": true,
+    "maintenance": 0.4,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.82,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "no_alternative_candidate"
+  },
+  "rationale": "'paho-mqtt' wins 'MQTT client for publishing telemetry to a broker'. Confidence: LOW. Total: 0.82 (speed=1.0, mem=1.0, sec=0.82, api=1.0). Migration note: paho-mqtt is synchronous/callback-based; gmqtt and amqtt are asyncio-based, requiring the calling code (TelemetryBridge) to become async. Verifier feedback considered: paho-mqtt\u2192hbmqtt: connector analysis cited unselected candidate(s) amqtt while the locked target is hbmqtt (import hbmqtt)",
+  "confidence": "LOW",
+  "used_apis": [
+    "Client",
+    "connect",
+    "publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

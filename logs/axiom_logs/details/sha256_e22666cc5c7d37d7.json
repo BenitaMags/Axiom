@@ -1,0 +1,29 @@
+{
+  "role": "async concurrency runtime with monkey-patching",
+  "winner": "gevent",
+  "original": "gevent",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.72,
+    "security_evidence": true,
+    "evidence_weight": 0.35,
+    "total": 0.84,
+    "installed": false
+  },
+  "rationale": "'gevent' wins 'async concurrency runtime with monkey-patching'. Confidence: LOW. Total: 0.84 (speed=None, mem=None, sec=0.72, api=1.0) [Security:MEDIUM]. Profiler veto: eventlet (hard_install_failure). Migration note: eventlet uses different greenlet implementation; C extensions may behave differently",
+  "confidence": "LOW",
+  "used_apis": [
+    "gevent.monkey.patch_all"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

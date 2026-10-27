@@ -1,0 +1,141 @@
+# parsed 3 file(s): ['alarms.py', 'fsm.py', 'process.py']
+# expected: ['alarms.py', 'fsm.py', 'process.py']
+# reply length: 4046 chars
+======================================================================
+Looking at this program, the docstring in `fsm.py` explicitly states this is "Category C" and that the LMA must re-encode the FSM into first-party logic ("hence Category C"), meaning the `transitions` library dependency should be removed and reimplemented as first-party code.
+
+This matches condition 2: the documentation states the dependency is to be removed and rewritten as first-party code.
+
+### FILENAME: fsm.py
+```python
+# CHOSEN-TARGET: first-party
+"""fsm -- finite-state controller for a fill/drain tank process.
+
+
+FSM. The transition guards, valve commands, and interlocks are first-party logic that
+the LMA must re-encode into an equivalent but structurally different machine -- hence
+Category C. State bookkeeping is implemented as first-party code (no `transitions`
+dependency).
+"""
+from alarms import interlock_ok
+
+STATES = ["IDLE", "FILLING", "HOLDING", "DRAINING", "FAULT"]
+
+
+class TankController:
+    def __init__(self, high: float = 8.0, low: float = 1.0):
+        self.high = high
+        self.low = low
+        self.inlet = False
+        self.outlet = False
+        self._level = 0.0
+        self.state = "IDLE"
+
+    # --- first-party guards and commands -------------------------------------
+    def can_fill(self) -> bool:
+        return interlock_ok(self._level)
+
+    def open_inlet(self):
+        self.inlet, self.outlet = True, False
+
+    def close_inlet(self):
+        self.inlet = False
+
+    def open_outlet(self):
+        self.inlet, self.outlet = False, True
+
+    def close_outlet(self):
+        self.outlet = False
+
+    def safe_all(self):
+        self.inlet = self.outlet = False
+
+    # --- transitions re-encoded as first-party methods ------------------------
+    def start_fill(self):
+        if self.state == "IDLE" and self.can_fill():
+            self.state = "FILLING"
+            self.open_inlet()
+
+    def level_reached(self):
+        if self.state == "FILLING":
+            self.state = "HOLDING"
+            self.close_inlet()
+
+    def start_drain(self):
+        if self.state in ("HOLDING", "FILLING"):
+            self.state = "DRAINING"
+            self.open_outlet()
+
+    def empty(self):
+        if self.state == "DRAINING":
+            self.state = "IDLE"
+            self.close_outlet()
+
+    def trip(self):
+        self.state = "FAULT"
+        self.safe_all()
+
+    # --- first-party supervisory step ----------------------------------------
+    def step(self, level: float):
+        """Drive automatic transitions from the measured level."""
+        self._level = level
+        if not interlock_ok(level) and self.state != "FAULT":
+            self.trip()
+            return
+        if self.state == "FILLING" and level >= self.high:
+            self.level_reached()
+        elif self.state == "DRAINING" and level <= self.low:
+            self.empty()
+```
+
+### FILENAME: alarms.py
+```python
+"""alarms -- level alarm evaluation and interlocks (first-party logic)."""
+
+LOLO = 0.2
+LOW = 1.0
+HIGH = 8.0
+HIHI = 9.5
+
+
+def evaluate(level: float) -> set:
+    """Return the set of active alarm labels for a tank level."""
+    active = set()
+    if level >= HIHI:
+        active.add("HIHI")
+    if level >= HIGH:
+        active.add("HIGH")
+    if level <= LOLO:
+        active.add("LOLO")
+    if level <= LOW:
+        active.add("LOW")
+    return active
+
+
+def interlock_ok(level: float) -> bool:
+    """Filling is permitted only below the HIHI trip point."""
+    return level < HIHI
+```
+
+### FILENAME: process.py
+```python
+"""process -- physical process variables and a simple update model."""
+from dataclasses import dataclass
+
+
+@dataclass
+class Process:
+    level: float = 0.0
+    inlet: bool = False
+    outlet: bool = False
+
+    def apply(self, dt: float = 1.0, fill_rate: float = 0.5, drain_rate: float = 0.4) -> float:
+        """Advance the level given the current valve commands."""
+        delta = 0.0
+        if self.inlet:
+            delta += fill_rate
+        if self.outlet:
+            delta -= drain_rate
+        self.level = max(0.0, self.level + delta * dt)
+        return self.level
+```

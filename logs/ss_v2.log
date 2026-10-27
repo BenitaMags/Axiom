@@ -1,0 +1,46 @@
+config   : single_shot (claude/claude-sonnet-5)
+programs : 12   runs each: 3
+csv      : single_shot_v2.csv
+targets  : 7/7 importable
+
+program                        run     tests  succ  diverg  swap   time
+----------------------------------------------------------------------------
+A1_crc_telemetry                 1       5/5     Y  0.5654     N   6.7s
+A1_crc_telemetry                 2       5/5     Y  0.5654     N   5.7s
+A1_crc_telemetry                 3       5/5     Y  0.5607     N   6.0s
+A2_sensor_json_logger            1       3/3     Y  0.0558     N   7.9s
+A2_sensor_json_logger            2       3/3     Y  0.1096     N   9.5s
+A2_sensor_json_logger            3       3/3     Y  0.1007     N   9.3s
+A3_iso_ts_parser                 1       3/4     N  0.0872     N  17.7s
+A3_iso_ts_parser                 2       3/4     N  0.0992     N  16.8s
+A3_iso_ts_parser                 3       3/4     N  0.0789     N  15.0s
+B1_scada_poller                  1       2/2     Y   0.425     N   7.7s
+B1_scada_poller                  2       2/2     Y  0.4288     N   7.4s
+B1_scada_poller                  3       2/2     Y  0.4116     N   7.1s
+B2_modbus_meter_reader           1       3/3     Y  0.4883     N  15.7s
+B2_modbus_meter_reader           2       3/3     Y  0.4973     N  15.2s
+B2_modbus_meter_reader           3       3/3     Y  0.4904     N  14.9s
+B3_mqtt_telemetry_bridge         1       3/3     Y  0.3991     N  15.9s
+B3_mqtt_telemetry_bridge         2       3/3     Y  0.3234     N  19.3s
+B3_mqtt_telemetry_bridge         3       3/3     Y  0.4062     N  16.6s
+C1_pid_pump_controller           1       5/5     Y  0.6672     Y  14.6s
+C1_pid_pump_controller           2       5/5     Y  0.6819     Y  14.3s
+C1_pid_pump_controller           3       5/5     Y  0.6819     Y  14.3s
+C2_tank_level_fsm                1       5/5     Y  0.6148     Y   9.9s
+C2_tank_level_fsm                2       5/5     Y  0.5369     Y  11.4s
+C2_tank_level_fsm                3       5/5     Y   0.666     Y  10.0s
+C3_anomaly_threshold_engine      1       4/4     Y  0.6334     N  16.6s
+C3_anomaly_threshold_engine      2       4/4     Y  0.7204     N  10.8s
+C3_anomaly_threshold_engine      3       4/4     Y  0.7178     N  17.9s
+D1_boiler_control_loop           1       5/5     Y   0.558     N  25.0s
+D1_boiler_control_loop           2       5/5     Y  0.5105     N  24.3s
+D1_boiler_control_loop           3       5/5     Y  0.5499     N  23.8s
+D2_pump_station_scheduler        1       3/3     Y  0.5986     N  13.5s
+D2_pump_station_scheduler        2       3/3     Y  0.5811     N  14.1s
+D2_pump_station_scheduler        3       3/3     Y  0.6488     N  13.2s
+D3_telemetry_gateway             1       4/4     Y  0.6365     N  17.3s
+D3_telemetry_gateway             2       4/4     Y  0.6318     N  19.0s
+D3_telemetry_gateway             3       4/4     Y   0.555     N  19.8s
+
+gen_success 33/36 (92%)
+rows appended to single_shot_v2.csv

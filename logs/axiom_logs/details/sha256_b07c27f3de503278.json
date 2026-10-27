@@ -1,0 +1,36 @@
+{
+  "role": "logging library",
+  "winner": "logbook",
+  "original": "logbook",
+  "score": {
+    "speed": 0.364,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 0.955,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.71,
+    "installed": true
+  },
+  "rationale": "'logbook' wins 'logging library'. Confidence: MEDIUM. Total: 0.71 (speed=0.364, mem=1.0, sec=0.955, api=1.0). Migration note: logbook uses handler stack (push_application) while loguru uses global sink configuration",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "Logger",
+    "DEBUG",
+    "NOTSET",
+    "ColorizedStderrHandler",
+    "INFO",
+    "disable",
+    "level",
+    "push_application"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

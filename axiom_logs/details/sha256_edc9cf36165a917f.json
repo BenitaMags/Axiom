@@ -1,0 +1,37 @@
+{
+  "role": "MQTT client for publishing telemetry to a broker",
+  "winner": "gmqtt",
+  "original": "paho-mqtt",
+  "score": {
+    "speed": 0.006,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.022,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.506,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'gmqtt' wins 'MQTT client for publishing telemetry to a broker'. Confidence: HIGH. Total: 0.506 (speed=0.006, mem=0.022, sec=0.895, api=0.5). Migration note: paho-mqtt is synchronous (blocking connect/publish); aiomqtt, gmqtt, and amqtt are asyncio-based and require an event loop and async/await throughout the calling code. Verifier feedback considered: MQTT client for publishing telemetry to a broker: connector_agent's own self-assessment explicitly says migration_feasible=False and identifies a fundamental async/sync execution-model mismatch: aiomqtt has no synchronous connect/publish AP",
+  "confidence": "HIGH",
+  "used_apis": [
+    "Client",
+    "connect",
+    "publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

@@ -1,0 +1,141 @@
+You previously rewrote a Python program to remove its dependency on `datetime`
+while keeping it FUNCTIONALLY EQUIVALENT to the original. Your rewrite was
+executed and checked, and it did not pass. You are now going to correct it.
+
+You are given three things: the ORIGINAL program, YOUR PREVIOUS ATTEMPT, and the
+EVIDENCE from running it.
+
+Work from the evidence. Each item names something concrete that went wrong. Fix
+those things. Do not restart from scratch and do not redesign parts of your
+attempt the evidence does not implicate — a rewrite that fixes the reported
+problems and changes nothing else is the goal.
+
+If the evidence shows that the library you chose cannot do what this program
+needs — a fundamentally different execution model, a missing transport, an API
+that cannot express the original's behaviour — then choosing a different library
+IS the correct fix. Say so and switch. Do not build increasingly elaborate
+adapters around a library that does not fit.
+
+Exactly one of these two conditions applies, as before. Read the program —
+including its module docstrings and comments — and decide which:
+
+1. REPLACE WITH A LIBRARY (the normal case). Choose a suitable,
+actively-maintained third-party library yourself and migrate to it. Write
+whatever adapter or glue code the difference in API requires. Do not write your
+own implementation of what a library already provides.
+
+2. REIMPLEMENT AS FIRST-PARTY CODE (the exception). Choose this ONLY if the
+program's own documentation states that the dependency is to be removed and its
+behaviour written as first-party code. If the documentation does not say that,
+condition 1 applies.
+
+Requirements:
+- Preserve the exact public API: same module names, same function and class
+names, same signatures, same return types. The existing test suite must pass
+against your rewrite unchanged.
+- Preserve all numeric constants and thresholds exactly.
+- Follow any additional requirement the program's own documentation states.
+- On the first line of the first file, record which condition you applied and
+your choice, formatted exactly as `# CHOSEN-TARGET: <pypi-name>` for condition 1,
+or `# CHOSEN-TARGET: first-party` for condition 2. If you are switching to a
+different library, this line must name the new one.
+
+Return ONLY the corrected file(s), complete. For each file use exactly this
+format, with no commentary before or after:
+
+### FILENAME: <name.py>
+```python
+<complete file contents>
+```
+
+=== ORIGINAL PROGRAM ===
+### FILENAME: iso_ts_parser.py
+```python
+"""iso_ts_parser -- ISO-8601 timestamp parsing for event/alarm logs.
+
+Parses ISO-8601 timestamps into timezone-aware datetimes and epoch seconds. Naive
+timestamps are assumed UTC (a common RTU convention). The parser backend is the
+
+tolerant of the trailing 'Z' zulu suffix).
+"""
+from datetime import datetime, timezone
+
+
+def _normalize(text: str) -> str:
+
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def parse(ts: str) -> datetime:
+    """Parse an ISO-8601 timestamp into a timezone-aware datetime (UTC if naive)."""
+    dt = datetime.fromisoformat(_normalize(ts))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def to_epoch(ts: str) -> float:
+    """Return POSIX epoch seconds for an ISO-8601 timestamp."""
+    return parse(ts).timestamp()
+```
+
+=== YOUR PREVIOUS ATTEMPT ===
+### FILENAME: iso_ts_parser.py
+```python
+# CHOSEN-TARGET: pendulum
+"""iso_ts_parser -- ISO-8601 timestamp parsing for event/alarm logs.
+
+Parses ISO-8601 timestamps into timezone-aware datetimes and epoch seconds. Naive
+timestamps are assumed UTC (a common RTU convention). The parser backend is the
+
+tolerant of the trailing 'Z' zulu suffix).
+"""
+from datetime import datetime, timezone
+
+import pendulum
+
+
+def _normalize(text: str) -> str:
+
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def parse(ts: str) -> datetime:
+    """Parse an ISO-8601 timestamp into a timezone-aware datetime (UTC if naive)."""
+    dt = pendulum.parse(_normalize(ts))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return datetime(
+        dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second,
+        dt.microsecond, tzinfo=dt.tzinfo,
+    )
+
+
+def to_epoch(ts: str) -> float:
+    """Return POSIX epoch seconds for an ISO-8601 timestamp."""
+    return parse(ts).timestamp()
+```
+
+=== EVIDENCE FROM RUNNING YOUR ATTEMPT ===
+[PYTEST OUTPUT]
+==================================== ERRORS ====================================
+____________________ ERROR collecting test_iso_ts_parser.py ____________________
+ImportError while importing test module '/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-A3_iso_ts_parser-ajwhu92a/test_iso_ts_parser.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+test_iso_ts_parser.py:4: in <module>
+    from iso_ts_parser import parse, to_epoch
+iso_ts_parser.py:11: in <module>
+    import pendulum
+E   ModuleNotFoundError: No module named 'pendulum'
+=========================== short test summary info ============================
+ERROR test_iso_ts_parser.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.06s

@@ -1,0 +1,40 @@
+{
+  "role": "Modbus TCP/RTU client for reading/writing holding registers to field devices",
+  "winner": "pymodbus",
+  "original": "pymodbus",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.702,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "Reverted to original after verification retries exhausted: deterministic verifier failure: line 1: New mypy finding after migration: Name \"cst\" is not defined  [name-defined]; line 1: New mypy finding after migration: Name \"mbtk_exceptions\" is not defined  [name-defined]; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'cst'; line 1: New pylint finding after migration: undefined-variable:Undefined variable 'mbtk_exceptions'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in transport.py: [write_valve] NameError: name 'mbtk_exceptions' is not defined. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's actual signature.",
+  "confidence": "LOW",
+  "used_apis": [
+    "ModbusTcpClient",
+    "client.connect",
+    "client.read_holding_registers",
+    "client.write_register",
+    "rr.isError",
+    "rr.registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

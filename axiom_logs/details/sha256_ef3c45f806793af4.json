@@ -1,0 +1,40 @@
+{
+  "role": "Modbus TCP client for reading/writing PLC/RTU holding registers",
+  "winner": "pyModbusTCP",
+  "original": "pymodbus",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.1,
+    "api_evidence": true,
+    "security": 0.82,
+    "security_evidence": true,
+    "maintenance": 0.4,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.627,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'pyModbusTCP' wins 'Modbus TCP client for reading/writing PLC/RTU holding registers'. Confidence: MEDIUM. Total: 0.627 (speed=1.0, mem=1.0, sec=0.82, api=0.1). Migration note: pyModbusTCP's ModbusClient API differs significantly: it returns plain lists/None on read (e.g. read_holding_registers returns a list or None) instead of a response object with .isError() and .registers",
+  "confidence": "MEDIUM",
+  "used_apis": [
+    "ModbusTcpClient",
+    "client.connect",
+    "read_holding_registers",
+    "write_register",
+    "rr.isError",
+    "rr.registers"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

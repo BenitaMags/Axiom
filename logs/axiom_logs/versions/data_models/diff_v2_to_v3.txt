@@ -1,0 +1,32 @@
+--- v2_original.py
++++ v3_patched.py
+@@ -6,8 +6,8 @@
+ """
+
+ import json
+
+ import orjson
+
+-import hashlib
+
+-from dataclasses import dataclass, field, asdict
+
++import xxhash
+
++from attrs import dataclass, field, asdict
+
+ from typing import Optional
+
+ import attrs
+
+ from attrs import BaseModel, Field, validator
+
+@@ -51,4 +51,4 @@
+ 
+
+ def fingerprint(record: dict) -> str:
+
+     blob = orjson.dumps(record, option=orjson.OPT_SORT_KEYS)
+
+-    return hashlib.sha256(blob).hexdigest()
++    return xxhash.sha256(blob).hexdigest()

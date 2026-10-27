@@ -1,0 +1,36 @@
+{
+  "role": "finite-state-machine engine for modeling states/transitions with guard conditions and callbacks",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.15,
+    "total": 1.0,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state-machine engine for modeling states/transitions with guard conditions and callbacks'. Confidence: LOW. Total: 1.0 (speed=None, mem=None, sec=None, api=1.0). Migration note: transitions attaches methods dynamically to an arbitrary Python object (model=self); most alternatives require the state machine to BE the class (inheritance) or use decorators, forcing a rewrite of TankController's structure",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine(model=, states=, initial=)",
+    "add_transition(trigger, source, dest, conditions=, after=)"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

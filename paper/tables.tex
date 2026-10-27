@@ -1,0 +1,64 @@
+\begin{table}[t]
+\centering
+\caption{Clone-generation results on the industrial measurement and
+control corpus. Twelve programs $\times$ three seeds $=$ 36 runs per
+configuration. \emph{Equiv.\ conf.} is reported over categories C and D
+only --- six subjects, 18 runs per configuration --- these being the
+programs that ship golden vectors and invariants;
+categories A and B have no equivalence probes and are excluded rather
+than scored as passes.}
+\label{tab:results}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Configuration & Gen.\ success & Equiv.\ conf. & Divergence & Repair iters & Cost (USD) \\
+\midrule
+Single-shot LLM (B1) & 30/36 & 16/18 & 0.141 & 0 (0 re-entry) & \$0.79 \\
+\emph{Proteus} w/o verification (B2) & 33/36 & 17/18 & 0.127 & 0 (0 re-entry) & \$3.87 \\
+\emph{Proteus} (full) & 29/36 & 16/18 & 0.154 & 6 (6 re-entry) & \$4.91 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Blind LLM review of all 108 generated clones. An independent
+model (\texttt{claude-opus-5}, distinct from the \texttt{claude-sonnet-5}
+used for generation) was shown each original and its clone with all
+system-identifying markers removed, and asked for concrete behavioural
+defects. \textsc{no-op} denotes a clone byte-identical to its original:
+trivially faithful because nothing was attempted, and therefore excluded
+from the clean rate rather than counted as a success.}
+\label{tab:judge}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+Configuration & \textsc{broken} & \textsc{major} & \textsc{minor} & \textsc{clean} & \textsc{no-op} & Clean rate \\
+\midrule
+Single-shot LLM (B1) & 2 & 16 & 12 & 5 & 0 & 5/36 \\
+\emph{Proteus} w/o verification (B2) & 1 & 8 & 1 & 15 & 11 & 15/25 \\
+\emph{Proteus} (full) & 5 & 8 & 4 & 16 & 3 & 16/33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Precision of each configuration's own success signal. Of the
+clones a configuration certified (compiles, passes the full suite, and
+genuinely substituted the dependency), the fraction an independent
+blind reviewer found to carry \textsc{broken} or \textsc{major}
+behavioural defects. Accepting more clones and accepting sound clones
+are different capabilities, and they trade off against one another.}
+\label{tab:precision}
+\small
+\begin{tabular}{lccc}
+\toprule
+Configuration & Clones accepted & With serious defects & Defect rate \\
+\midrule
+Single-shot LLM (B1) & 28/36 & 15 & \textbf{54\%} \\
+\emph{Proteus} w/o verification (B2) & 11/36 & 6 & \textbf{55\%} \\
+\emph{Proteus} (full) & 15/36 & 5 & \textbf{33\%} \\
+\bottomrule
+\end{tabular}
+\end{table}

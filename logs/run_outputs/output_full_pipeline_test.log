@@ -1,0 +1,109 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp2m8p603f_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+  pip install kafka...
+  pip install confluent-kafka...
+───────────────────────────────────────────────────────────── ⚙️  Rules Agent ──────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────── ⚙️  Rules Engine ─────────────────────────────────────────────────────────────
+                                               Rule Results                                                
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Rule                ┃ Result  ┃ Confidence ┃ Detail                                           ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ locust  │ is_installed        │  FAIL   │ HIGH       │ message=locust is not installed                  │
+│ locust  │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for locust             │
+│ locust  │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for locust │
+│ locust  │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'                 │
+│ time    │ is_installed        │  PASS   │ HIGH       │ message=time is installed and importable         │
+│ time    │ has_metadata        │ UNKNOWN │ MEDIUM     │ message=No metadata found for time               │
+│ time    │ license_permissive  │ UNKNOWN │ MEDIUM     │ message=No package metadata was found for time   │
+│ time    │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'locust'                 │
+│ kafka   │ is_installed        │  FAIL   │ HIGH       │ message=kafka is not installed                   │
+│ kafka   │ has_metadata        │  PASS   │ MEDIUM     │ version=1.3.5, license=Apache License 2.0        │
+│ kafka   │ license_permissive  │  PASS   │ MEDIUM     │ license=apache license 2.0, permissive=True      │
+│ kafka   │ api_surface_overlap │ UNKNOWN │ MEDIUM     │ message=No module named 'kafka.vendor.six.moves' │
+└─────────┴─────────────────────┴─────────┴────────────┴──────────────────────────────────────────────────┘
+
+✓ Rules engine: 12 checks across 3 packages
+
+Disqualified (not installed): locust, kafka
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+⠋ ✓ confluent-kafka
+⠋ ✓ kafka          
+                                                   Benchmark Results                                                    
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ confluent-kafka │     ✗     │               — │           — │           — │ No module named 'confluent-kafka'        │
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka.vendor.six.moves' │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────┘
+
+✓ Profiled 2 package(s), 0 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: eval_kafka__confluent-kafka__svenskaspel
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka, confluent-kafka
+  API compat tokens — input: 229  output: 64  latency: 2292ms
+                                                        AXIOM Optimization Decisions                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                              ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ kafka -> confluent-kafka (seeded from PyMigBench  │ kafka    │ kafka  │ MEDIUM │ 0.5   │ 0.5    │ 0.8      │ 1.0 │ 0.635 │ not installed │
+│ ground truth)                                     │          │        │        │       │        │          │     │       │               │
+└───────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: eval_kafka__confluent-kafka__svenskaspel
+
+Evaluation took 6.1s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     0.0%  (n=0)
+Full-pipeline accuracy:      0.0%  (n=1)
+Connector invoked on:        0 case(s)
+Verifier clean (no findings):  0.0%  (n=1)
+        Detection Rate by Domain         
+┏━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain       ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients │     1 │              — │
+└──────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_full_pipeline_test.json, pymigbench_full_pipeline_test.csv

@@ -1,0 +1,610 @@
+$ run_axiom_arms.py --config proteus_full --program B1_scada_poller --runs 1 --start-run 3
+
+config   : proteus_full (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_fixed4.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-B1_scada_poller-yd7h2lo1/scada_poller.py
+                     Discovered Imports                     
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│   11 │ typing   │ —     │ List, Mapping │ —              │
+│   15 │ requests │ —     │ —             │ Session        │
+└──────┴──────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 2 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                            Security Scan Results                                                            
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ requests │ 2.34.2  │    0 │ LOW  │ AVAILABLE │       1.00 │      1.00 │    1.00 │ ✓ Clean                                                 │
+│ typing   │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└──────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: requests
+Discovered candidates:
+  requests -> httpx, urllib3, aiohttp
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,408  output: 1,129  latency: 12369ms
+Discovery leads not advanced to an equivalence group after file/API fit review: requests: urllib3, aiohttp
+Equivalence Groups Found
+└── synchronous HTTP client for polling REST endpoints
+    ├── Candidates : requests, httpx
+    ├── Used APIs  : Session, session.get, resp.raise_for_status, resp.json
+    ├── Pitfalls   : httpx.Client() vs requests.Session() have different constructor defaults (e.g. connection pooling, base_url handling); Timeout semantics 
+    │   differ: requests uses a single float or tuple, httpx uses httpx.Timeout objects with more granular control; Exception hierarchies differ: requests 
+    │   raises requests.exceptions.HTTPError, httpx raises httpx.HTTPStatusError -- error handling code must be updated; httpx also supports async clients 
+    │   (httpx.AsyncClient) but this file's usage is entirely synchronous, so only the sync Client API is a valid substitute
+    ├── Constraints: requires_connector
+    └── The file uses requests.Session() to perform blocking GET calls with a timeout, then calls raise_for_status() and json() on the response. httpx.Client()
+        supports the same synchronous method signatures (get, raise_for_status, json), making it a plausible substitute for this specific usage pattern 
+        (docstring itself calls this out as the intended substitution target).
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ httpx   │ 0.28.1  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠇ ✓ httpx   
+⠇ ✓ requests
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃                                                                     Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ requests │     ✓     │        164.9 ms │          UNMEASURED — No registered side-effect-free runtime probe for Session, session.get, │         542 │       │
+│          │           │                 │                                                      resp.raise_for_status, resp.json; an in │             │       │
+│ httpx    │     ✓     │        183.4 ms │          UNMEASURED — No registered side-effect-free runtime probe for Session, session.get, │         868 │       │
+│          │           │                 │                                                      resp.raise_for_status, resp.json; an in │             │       │
+└──────────┴───────────┴─────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 9f5f9d54
+  API compat tokens — input: 267  output: 44  latency: 2081ms
+                                                       AXIOM Optimization Decisions                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                               ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ synchronous HTTP client for polling REST endpoints │ requests │ httpx  │ MEDIUM │ 0.899 │ 0.624  │ 1.0      │ 0.9 │ 0.91  │ ✓          │
+└────────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  requests  →  httpx  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: requests → httpx
+  Found 1 call site(s):
+    L17: return requests.Session()
+  Tokens — in:2,153 out:1,179 latency:13467ms
+
+  Compatibility analysis:
+    ✗ L17: requests.Session()  — httpx has no direct 'Session' class; the synchronous equivalent is httpx.Client(
+
+  1 call site(s) need a wrapper:
+    _axiom_default_session_wrapper  L17: Return an httpx.Client() instance configured with defaults equivalent 
+  Opening ACI edit session for requests → httpx...
+  ACI session: 2 edit(s) applied over 5 tool call(s)  |  tokens in:43,581 out:3,220
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open(line_number=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+  ⚠ wrapper(s) _axiom_default_session_wrapper were defined but never called — the call site(s) they were meant to replace are still calling the old API 
+directly instead of going through the wrapper; reverting connector edit.
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector diagnostic: wrapper(s) _axiom_default_session_wrapper were defined 
+but never called — the call site(s) they were meant to replace are still calling the old API directly instead of going through the wrapper
+↩ Repair cycle 1/5 → Connector (patch_generation): line 1: AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: wrapper(s) _axiom_default_session_wrapper were defined but never called — the call site(s) they were meant to replace are still calling the old API
+directly instead of going through the wrapper
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 1: line 1: AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector 
+diagnostic: wrapper(s) _axiom_default_session_wrapper were defined but never called — the call site(s) they were meant to replace are still calling the old API
+directly instead of going through the wr)
+
+Analyzing: requests → httpx
+  Found 1 call site(s):
+    L17: return requests.Session()
+  Tokens — in:2,300 out:851 latency:8938ms
+
+  Compatibility analysis:
+    ✗ L17: requests.Session()  — httpx has no `Session` class; the sync equivalent is `httpx.Client()`. Construct
+
+  1 call site(s) need a wrapper:
+    _axiom_default_session_wrapper  L17: Replace `requests.Session()` construction with `httpx.Client()`, ensur
+  Opening ACI edit session for requests → httpx...
+    wrapper returns the target library's own object; asking for a translating adapter
+    · _axiom_default_session_wrapper() line 39: returns `httpx...` -- the httpx object itself, not an adapter
+  ACI session: 1 edit(s) applied over 6 tool call(s)  |  tokens in:81,094 out:10,790
+    · open()
+    · edit(start_line=..., end_line=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open(line_number=...)
+    · open(line_number=...)
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'requests': 'httpx'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """scada_poller -- periodic polling of a SCADA REST gateway.                                                                                          │
+│     2                                                                                                                                                       │
+│     3 Reads tag values from an HTTP SCADA gateway. The HTTP client is the substitution                                                                      │
+│     4 target: `requests` -> `httpx`. The two libraries are similar but *not* identical                                                                      │
+│     5 (session construction, timeout semantics, and raised exception types differ), so a                                                                    │
+│     6 clone requires glue code -- hence Category B.                                                                                                         │
+│     7                                                                                                                                                       │
+│     8 The HTTP session is dependency-injected so the polling logic is testable without a                                                                    │
+│     9 live gateway or the `requests`/`httpx` package installed.                                                                                             │
+│    10 """                                                                                                                                                   │
+│    11 from typing import List, Mapping                                                                                                                      │
+│    12                                                                                                                                                       │
+│    13                                                                                                                                                       │
+│    14 class AxiomHTTPError(Exception):                                                                                                                      │
+│    15     """Stand-in for requests.exceptions.HTTPError.                                                                                                    │
+│    16                                                                                                                                                       │
+│    17     requests.Response.raise_for_status() raises this (with a ``.response``                                                                            │
+│    18     attribute pointing back at the response that failed) when the status                                                                              │
+│    19     code indicates an error. httpx.Response.raise_for_status() raises                                                                                 │
+│    20     httpx.HTTPStatusError instead, a different class with a different                                                                                 │
+│    21     constructor signature. Call sites (in this file or elsewhere) that were                                                                           │
+│    22     written against the requests error contract must keep seeing this type,                                                                           │
+│    23     so the response adapter below catches httpx.HTTPStatusError and                                                                                   │
+│    24     re-raises this instead of letting the httpx-specific type escape.                                                                                 │
+│    25     """                                                                                                                                               │
+│    26                                                                                                                                                       │
+│    27     def __init__(self, message, response=None):                                                                                                       │
+│    28         super().__init__(message)                                                                                                                     │
+│    29         self.response = response                                                                                                                      │
+│    30                                                                                                                                                       │
+│    31                                                                                                                                                       │
+│    32 class AxiomConnectionError(Exception):                                                                                                                │
+│    33     """Stand-in for requests.exceptions.ConnectionError.                                                                                              │
+│    34                                                                                                                                                       │
+│    35     requests raises this for DNS failures, refused connections, and other                                                                             │
+│    36     transport-level breakage. httpx raises httpx.TransportError (and its                                                                              │
+│    37     subclasses, e.g. httpx.ConnectError) for the same failures instead, so                                                                            │
+│    38     the session adapter below translates those into this class rather than                                                                            │
+│    39     letting them reach callers unconverted.                                                                                                           │
+│    40     """                                                                                                                                               │
+│    41                                                                                                                                                       │
+│    42                                                                                                                                                       │
+│    43 class AxiomTimeoutError(Exception):                                                                                                                   │
+│    44     """Stand-in for requests.exceptions.Timeout.                                                                                                      │
+│    45                                                                                                                                                       │
+│    46     requests raises this when a request exceeds its timeout. httpx raises                                                                             │
+│    47     httpx.TimeoutException (a sibling of httpx.TransportError, not a                                                                                  │
+│    48     subclass) for the same condition, so it must be caught and translated                                                                             │
+│    49     separately rather than assuming the transport-error handler covers it.                                                                            │
+│    50     """                                                                                                                                               │
+│    51                                                                                                                                                       │
+│    52                                                                                                                                                       │
+│    53 class _AxiomResponseAdapter:                                                                                                                          │
+│    54     """Wrap an httpx.Response so it behaves like a requests.Response.                                                                                 │
+│    55                                                                                                                                                       │
+│    56     requests.Response.raise_for_status() raises                                                                                                       │
+│    57     requests.exceptions.HTTPError; httpx.Response.raise_for_status() raises                                                                           │
+│    58     httpx.HTTPStatusError. Callers here call raise_for_status() and then                                                                              │
+│    59     .json(), so this adapter forwards .json() untouched but translates the                                                                            │
+│    60     error raised by raise_for_status() so the failure mode looks the same                                                                             │
+│    61     as it did under requests. Any other attribute access (e.g. .text,                                                                                 │
+│    62     .status_code) is forwarded straight through to the wrapped response.                                                                              │
+│    63     """                                                                                                                                               │
+│    64                                                                                                                                                       │
+│    65     def __init__(self, response):                                                                                                                     │
+│    66         self._response = response                                                                                                                     │
+│    67                                                                                                                                                       │
+│    68     def raise_for_status(self):                                                                                                                       │
+│    69         import httpx                                                                                                                                  │
+│    70                                                                                                                                                       │
+│    71         try:                                                                                                                                          │
+│    72             self._response.raise_for_status()                                                                                                         │
+│    73         except httpx.HTTPStatusError as exc:                                                                                                          │
+│    74             raise AxiomHTTPError(str(exc), response=self) from exc                                                                                    │
+│    75                                                                                                                                                       │
+│    76     def json(self):                                                                                                                                   │
+│    77         return self._response.json()                                                                                                                  │
+│    78                                                                                                                                                       │
+│    79     def __getattr__(self, name):                                                                                                                      │
+│    80         return getattr(self._response, name)                                                                                                          │
+│    81                                                                                                                                                       │
+│    82                                                                                                                                                       │
+│    83 class _AxiomSessionAdapter:                                                                                                                           │
+│    84     """Wrap an httpx.Client so it behaves like a requests.Session.                                                                                    │
+│    85                                                                                                                                                       │
+│    86     requests.Session().get(url, timeout=...) returns a requests.Response                                                                              │
+│    87     and raises requests.exceptions.ConnectionError / .Timeout for transport                                                                           │
+│    88     failures. httpx.Client().get(url, timeout=...) returns an                                                                                         │
+│    89     httpx.Response and instead raises httpx.TransportError (connection                                                                                │
+│    90     refused, DNS failure, etc.) or httpx.TimeoutException (these are                                                                                  │
+│    91     siblings in httpx's hierarchy, not one a subclass of the other, so both                                                                           │
+│    92     must be caught explicitly). This adapter performs the .get() call,                                                                                │
+│    93     translates those two failure modes into the requests-style stand-ins                                                                              │
+│    94     above, and wraps a successful response so raise_for_status() also                                                                                 │
+│    95     raises the requests-style error. No exception is swallowed: every                                                                                 │
+│    96     failure requests would have surfaced still reaches the caller, just                                                                               │
+│    97     re-raised as the corresponding stand-in type instead of the raw httpx                                                                             │
+│    98     type, exactly as requests's own exception would have looked.                                                                                      │
+│    99     """                                                                                                                                               │
+│   100                                                                                                                                                       │
+│   101     def __init__(self, client):                                                                                                                       │
+│   102         self._client = client                                                                                                                         │
+│   103                                                                                                                                                       │
+│   104     def get(self, url, timeout=None, **kwargs):                                                                                                       │
+│   105                                                                                                                                                       │
+│   106         try:                                                                                                                                          │
+│   107             response = self._client.get(url, timeout=timeout, **kwargs)                                                                               │
+│   108         except httpx.TimeoutException as exc:                                                                                                         │
+│   109             raise AxiomTimeoutError(str(exc)) from exc                                                                                                │
+│   110         except httpx.TransportError as exc:                                                                                                           │
+│   111             raise AxiomConnectionError(str(exc)) from exc                                                                                             │
+│   112         return _AxiomResponseAdapter(response)                                                                                                        │
+│   113                                                                                                                                                       │
+│   114                                                                                                                                                       │
+│   115 def _axiom_default_session_wrapper():                                                                                                                 │
+│   116     """Build a requests.Session()-like object backed by httpx.Client().                                                                               │
+│   117                                                                                                                                                       │
+│   118     requests.Session() returns an object whose .get() yields a                                                                                        │
+│   119     requests.Response with requests-flavoured exceptions. httpx.Client()                                                                              │
+│   120     differs in three ways that matter to callers here: (1) its .get()                                                                                 │
+│   121     returns an httpx.Response, not a requests.Response; (2) transport                                                                                 │
+│   122     failures (refused connections, timeouts) raise httpx.TransportError /                                                                             │
+│   123     httpx.TimeoutException instead of requests.exceptions.ConnectionError /                                                                           │
+│   124     .Timeout; and (3) .raise_for_status() raises httpx.HTTPStatusError                                                                                │
+│   125     instead of requests.exceptions.HTTPError. This wrapper builds the                                                                                 │
+│   126     httpx.Client and hands it to _AxiomSessionAdapter, which performs all                                                                             │
+│   127     three translations so callers keep seeing requests-style behaviour.                                                                               │
+│   128     """                                                                                                                                               │
+│   129                                                                                                                                                       │
+│   130     return _AxiomSessionAdapter(httpx.Client())                                                                                                       │
+│   131                                                                                                                                                       │
+│   132                                                                                                                                                       │
+│   133 def _default_session():                                                                                                                               │
+│   134                                                                                                                                                       │
+│   135     return _axiom_default_session_wrapper()                                                                                                           │
+│   136                                                                                                                                                       │
+│   137                                                                                                                                                       │
+│   138 class ScadaPoller:                                                                                                                                    │
+│   139     def __init__(self, base_url: str, session=None, timeout: float = 2.0):                                                                            │
+│   140         self.base_url = base_url.rstrip("/")                                                                                                          │
+│   141         self.session = session if session is not None else _default_session()                                                                         │
+│   142         self.timeout = timeout                                                                                                                        │
+│   143                                                                                                                                                       │
+│   144     def read_tag(self, tag: str) -> Mapping:                                                                                                          │
+│   145         resp = self.session.get(f"{self.base_url}/tags/{tag}", timeout=self.timeout)                                                                  │
+│   146         resp.raise_for_status()                                                                                                                       │
+│   147         data = resp.json()                                                                                                                            │
+│   148         return {                                                                                                                                      │
+│   149             "tag": tag,                                                                                                                               │
+│   150             "value": data["value"],                                                                                                                   │
+│   151             "quality": data.get("quality", "GOOD"),                                                                                                   │
+│   152         }                                                                                                                                             │
+│   153                                                                                                                                                       │
+│   154     def poll(self, tags) -> List[Mapping]:                                                                                                            │
+│   155         """Read a list of tags, returning one normalized record per tag."""                                                                           │
+│   156         return [self.read_tag(t) for t in tags]                                                                                                       │
+│   157                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                                                            Stage 1 — Differential Static Analysis                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃            Patched             ┃ Detail                                                                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │              PASS              │                                                                           │
+│ Pylint (errors)        │         PASS          │          3 finding(s)          │ [                                                                         │
+│                        │                       │                                │     {                                                                     │
+│                        │                       │                                │         "type": "error",                                                  │
+│                        │                       │                                │         "module": "scada_poller",                                         │
+│                        │                       │                                │         "obj": "_AxiomSessionAdap                                         │
+│ Bandit                 │         PASS          │          1 finding(s)          │ {                                                                         │
+│                        │                       │                                │   "errors": [],                                                           │
+│                        │                       │                                │   "generated_at": "2026-09-24T15:09:22Z",                                 │
+│                        │                       │                                │   "metrics": {                                                            │
+│                        │                       │                                │     "/var/folders/_4/t4jx                                                 │
+│ Mypy (untyped defs)    │         PASS          │          3 finding(s)          │ /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-d3jn6rh7/p… │
+│ Patch integrity        │           —           │              PASS              │                                                                           │
+│ Adapter contracts      │           —           │              PASS              │                                                                           │
+│ Stale source symbols   │           —           │              PASS              │                                                                           │
+│ Referenced target APIs │           —           │              PASS              │ No statically referenced rewritten module symbols to probe.               │
+│ New static findings    │ baseline is reference │ 2 new finding(s) (+1 recorded) │ New mypy finding after migration: Name "<lib>" is not defined             │
+│ Import smoke test      │         PASS          │              PASS              │ Exited cleanly.                                                           │
+│ Project tests          │         PASS          │              PASS              │ ..                                                                        │
+│                        │                       │                                │ [100%]                                                                    │
+│                        │                       │                                │ 2 passed in 0.01s                                                         │
+└────────────────────────┴───────────────────────┴────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────────────────╮
+│ line 1: New mypy finding after migration: Name "<lib>" is not defined                                                                                       │
+│ line 1: New pylint finding after migration: undefined-variable:Undefined variable '<lib>'                                                                   │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────────────────────── Static findings recorded for reporting ───────────────────────────────────────────────────────────╮
+│ line 1: New bandit finding after migration: B113:Call to <lib> without timeout                                                                              │
+│                                                                                                                                                             │
+│ Recorded, not repaired: clearing this rule would change behaviour the original did not have.                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────────────────────────────────────────────── Full verifier repair evidence ───────────────────────────────────────────────────────────────╮
+│ • verification (line 1): New mypy finding after migration: Name "<lib>" is not defined                                                                      │
+│ • verification (line 1): New pylint finding after migration: undefined-variable:Undefined variable '<lib>'                                                  │
+│ • real_library_call (line 1): Calling this program's own API with the real library -- nothing injected -- fails in scada_poller.py:  NameError: name        │
+│ 'httpx' is not defined. The project tests pass because they inject a fake matching the OLD library's signature; fix the call to match the new library's     │
+│ actual signature.                                                                                                                                           │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+↩ Repair cycle 2/5 → Connector (patch_or_static): line 1: New mypy finding after migration: Name "<lib>" is not defined  ; line 1: New pylint finding after 
+migration: undefined-variable:Undefined variable '<lib>'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in 
+scada_poller.py:  NameError: name 'httpx' is not defined. The project tests pass because they inject a fake matching the OLD library's signature; fix the call 
+to match the new library's actual signature.
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+↩ Retrying with verifier feedback (repair cycle 2: line 1: New mypy finding after migration: Name "<lib>" is not defined  ; line 1: New pylint finding after 
+migration: undefined-variable:Undefined variable '<lib>'; line 1: Calling this program's own API with the real library -- nothing injected -- fails in 
+scada_poller.py:  N)
+
+Analyzing: requests → httpx
+  Found 1 call site(s):
+    L17: return requests.Session()
+  Tokens — in:4,108 out:1,313 latency:12997ms
+
+  Compatibility analysis:
+    ✗ L17: requests.Session()  — httpx.Client() is not a drop-in replacement for requests.Session(): return type 
+
+  1 call site(s) need a wrapper:
+    _axiom_default_session_wrapper  L17: Add a top-level `import httpx` (so all references in _axiom_default_se
+  Opening ACI edit session for requests → httpx...
+  ACI session: 1 edit(s) applied over 5 tool call(s)  |  tokens in:43,339 out:603
+    · open()
+    · scroll_down()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · scroll_down()
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+
+Applying migration import rewrites: {'requests': 'httpx'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """scada_poller -- periodic polling of a SCADA REST gateway.                                                                                          │
+│     2                                                                                                                                                       │
+│     3 Reads tag values from an HTTP SCADA gateway. The HTTP client is the substitution                                                                      │
+│     4 target: `requests` -> `httpx`. The two libraries are similar but *not* identical                                                                      │
+│     5 (session construction, timeout semantics, and raised exception types differ), so a                                                                    │
+│     6 clone requires glue code -- hence Category B.                                                                                                         │
+│     7                                                                                                                                                       │
+│     8 The HTTP session is dependency-injected so the polling logic is testable without a                                                                    │
+│     9 live gateway or the `requests`/`httpx` package installed.                                                                                             │
+│    10 """                                                                                                                                                   │
+│    11 from typing import List, Mapping                                                                                                                      │
+│    12                                                                                                                                                       │
+│    13 import httpx                                                                                                                                          │
+│    14                                                                                                                                                       │
+│    15                                                                                                                                                       │
+│    16 class AxiomHTTPError(Exception):                                                                                                                      │
+│    17     """Stand-in for requests.exceptions.HTTPError.                                                                                                    │
+│    18                                                                                                                                                       │
+│    19     requests.Response.raise_for_status() raises this (with a ``.response``                                                                            │
+│    20     attribute pointing back at the response that failed) when the status                                                                              │
+│    21     code indicates an error. httpx.Response.raise_for_status() raises                                                                                 │
+│    22     httpx.HTTPStatusError instead, a different class with a different                                                                                 │
+│    23     constructor signature. Call sites (in this file or elsewhere) that were                                                                           │
+│    24     written against the requests error contract must keep seeing this type,                                                                           │
+│    25     so the response adapter below catches httpx.HTTPStatusError and                                                                                   │
+│    26     re-raises this instead of letting the httpx-specific type escape.                                                                                 │
+│    27     """                                                                                                                                               │
+│    28                                                                                                                                                       │
+│    29     def __init__(self, message, response=None):                                                                                                       │
+│    30         super().__init__(message)                                                                                                                     │
+│    31         self.response = response                                                                                                                      │
+│    32                                                                                                                                                       │
+│    33                                                                                                                                                       │
+│    34 class AxiomConnectionError(Exception):                                                                                                                │
+│    35     """Stand-in for requests.exceptions.ConnectionError.                                                                                              │
+│    36                                                                                                                                                       │
+│    37     requests raises this for DNS failures, refused connections, and other                                                                             │
+│    38     transport-level breakage. httpx raises httpx.TransportError (and its                                                                              │
+│    39     subclasses, e.g. httpx.ConnectError) for the same failures instead, so                                                                            │
+│    40     the session adapter below translates those into this class rather than                                                                            │
+│    41     letting them reach callers unconverted.                                                                                                           │
+│    42     """                                                                                                                                               │
+│    43                                                                                                                                                       │
+│    44                                                                                                                                                       │
+│    45 class AxiomTimeoutError(Exception):                                                                                                                   │
+│    46     """Stand-in for requests.exceptions.Timeout.                                                                                                      │
+│    47                                                                                                                                                       │
+│    48     requests raises this when a request exceeds its timeout. httpx raises                                                                             │
+│    49     httpx.TimeoutException (a sibling of httpx.TransportError, not a                                                                                  │
+│    50     subclass) for the same condition, so it must be caught and translated                                                                             │
+│    51     separately rather than assuming the transport-error handler covers it.                                                                            │
+│    52     """                                                                                                                                               │
+│    53                                                                                                                                                       │
+│    54                                                                                                                                                       │
+│    55 class _AxiomResponseAdapter:                                                                                                                          │
+│    56     """Wrap an httpx.Response so it behaves like a requests.Response.                                                                                 │
+│    57                                                                                                                                                       │
+│    58     requests.Response.raise_for_status() raises                                                                                                       │
+│    59     requests.exceptions.HTTPError; httpx.Response.raise_for_status() raises                                                                           │
+│    60     httpx.HTTPStatusError. Callers here call raise_for_status() and then                                                                              │
+│    61     .json(), so this adapter forwards .json() untouched but translates the                                                                            │
+│    62     error raised by raise_for_status() so the failure mode looks the same                                                                             │
+│    63     as it did under requests. Any other attribute access (e.g. .text,                                                                                 │
+│    64     .status_code) is forwarded straight through to the wrapped response.                                                                              │
+│    65     """                                                                                                                                               │
+│    66                                                                                                                                                       │
+│    67     def __init__(self, response):                                                                                                                     │
+│    68         self._response = response                                                                                                                     │
+│    69                                                                                                                                                       │
+│    70     def raise_for_status(self):                                                                                                                       │
+│    71                                                                                                                                                       │
+│    72         try:                                                                                                                                          │
+│    73             self._response.raise_for_status()                                                                                                         │
+│    74         except httpx.HTTPStatusError as exc:                                                                                                          │
+│    75             raise AxiomHTTPError(str(exc), response=self) from exc                                                                                    │
+│    76                                                                                                                                                       │
+│    77     def json(self):                                                                                                                                   │
+│    78         return self._response.json()                                                                                                                  │
+│    79                                                                                                                                                       │
+│    80     def __getattr__(self, name):                                                                                                                      │
+│    81         return getattr(self._response, name)                                                                                                          │
+│    82                                                                                                                                                       │
+│    83                                                                                                                                                       │
+│    84 class _AxiomSessionAdapter:                                                                                                                           │
+│    85     """Wrap an httpx.Client so it behaves like a requests.Session.                                                                                    │
+│    86                                                                                                                                                       │
+│    87     requests.Session().get(url, timeout=...) returns a requests.Response                                                                              │
+│    88     and raises requests.exceptions.ConnectionError / .Timeout for transport                                                                           │
+│    89     failures. httpx.Client().get(url, timeout=...) returns an                                                                                         │
+│    90     httpx.Response and instead raises httpx.TransportError (connection                                                                                │
+│    91     refused, DNS failure, etc.) or httpx.TimeoutException (these are                                                                                  │
+│    92     siblings in httpx's hierarchy, not one a subclass of the other, so both                                                                           │
+│    93     must be caught explicitly). This adapter performs the .get() call,                                                                                │
+│    94     translates those two failure modes into the requests-style stand-ins                                                                              │
+│    95     above, and wraps a successful response so raise_for_status() also                                                                                 │
+│    96     raises the requests-style error. No exception is swallowed: every                                                                                 │
+│    97     failure requests would have surfaced still reaches the caller, just                                                                               │
+│    98     re-raised as the corresponding stand-in type instead of the raw httpx                                                                             │
+│    99     type, exactly as requests's own exception would have looked.                                                                                      │
+│   100     """                                                                                                                                               │
+│   101                                                                                                                                                       │
+│   102     def __init__(self, client):                                                                                                                       │
+│   103         self._client = client                                                                                                                         │
+│   104                                                                                                                                                       │
+│   105     def get(self, url, timeout=None, **kwargs):                                                                                                       │
+│   106                                                                                                                                                       │
+│   107         try:                                                                                                                                          │
+│   108             response = self._client.get(url, timeout=timeout, **kwargs)                                                                               │
+│   109         except httpx.TimeoutException as exc:                                                                                                         │
+│   110             raise AxiomTimeoutError(str(exc)) from exc                                                                                                │
+│   111         except httpx.TransportError as exc:                                                                                                           │
+│   112             raise AxiomConnectionError(str(exc)) from exc                                                                                             │
+│   113         return _AxiomResponseAdapter(response)                                                                                                        │
+│   114                                                                                                                                                       │
+│   115                                                                                                                                                       │
+│   116 def _axiom_default_session_wrapper():                                                                                                                 │
+│   117     """Build a requests.Session()-like object backed by httpx.Client().                                                                               │
+│   118                                                                                                                                                       │
+│   119     requests.Session() returns an object whose .get() yields a                                                                                        │
+│   120     requests.Response with requests-flavoured exceptions. httpx.Client()                                                                              │
+│   121     differs in three ways that matter to callers here: (1) its .get()                                                                                 │
+│   122     returns an httpx.Response, not a requests.Response; (2) transport                                                                                 │
+│   123     failures (refused connections, timeouts) raise httpx.TransportError /                                                                             │
+│   124     httpx.TimeoutException instead of requests.exceptions.ConnectionError /                                                                           │
+│   125     .Timeout; and (3) .raise_for_status() raises httpx.HTTPStatusError                                                                                │
+│   126     instead of requests.exceptions.HTTPError. This wrapper builds the                                                                                 │
+│   127     httpx.Client and hands it to _AxiomSessionAdapter, which performs all                                                                             │
+│   128     three translations so callers keep seeing requests-style behaviour.                                                                               │
+│   129     """                                                                                                                                               │
+│   130                                                                                                                                                       │
+│   131     return _AxiomSessionAdapter(httpx.Client())                                                                                                       │
+│   132                                                                                                                                                       │
+│   133                                                                                                                                                       │
+│   134 def _default_session():                                                                                                                               │
+│   135                                                                                                                                                       │
+│   136     return _axiom_default_session_wrapper()                                                                                                           │
+│   137                                                                                                                                                       │
+│   138                                                                                                                                                       │
+│   139 class ScadaPoller:                                                                                                                                    │
+│   140     def __init__(self, base_url: str, session=None, timeout: float = 2.0):                                                                            │
+│   141         self.base_url = base_url.rstrip("/")                                                                                                          │
+│   142         self.session = session if session is not None else _default_session()                                                                         │
+│   143         self.timeout = timeout                                                                                                                        │
+│   144                                                                                                                                                       │
+│   145     def read_tag(self, tag: str) -> Mapping:                                                                                                          │
+│   146         resp = self.session.get(f"{self.base_url}/tags/{tag}", timeout=self.timeout)                                                                  │
+│   147         resp.raise_for_status()                                                                                                                       │
+│   148         data = resp.json()                                                                                                                            │
+│   149         return {                                                                                                                                      │
+│   150             "tag": tag,                                                                                                                               │
+│   151             "value": data["value"],                                                                                                                   │
+│   152             "quality": data.get("quality", "GOOD"),                                                                                                   │
+│   153         }                                                                                                                                             │
+│   154                                                                                                                                                       │
+│   155     def poll(self, tags) -> List[Mapping]:                                                                                                            │
+│   156         """Read a list of tags, returning one normalized record per tag."""                                                                           │
+│   157         return [self.read_tag(t) for t in tags]                                                                                                       │
+│   158                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+No equivalence corpus configured (isomorph_corpus_dir); refusing to emit an unverified variant. Pass isomorph_skip_verification=True only if you are 
+deliberately running the no-verification ablation.
+────────────────────────────────────────────────────────────────────── 🛡️  Verifier Agent ──────────────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+Verifier: reusing static-analysis toolchain for this case.
+                                                         Stage 1 — Differential Static Analysis                                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃      Patched       ┃ Detail                                                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │        PASS        │                                                                                 │
+│ Pylint (errors)        │         PASS          │        PASS        │ []                                                                              │
+│ Bandit                 │         PASS          │    1 finding(s)    │ {                                                                               │
+│                        │                       │                    │   "errors": [],                                                                 │
+│                        │                       │                    │   "generated_at": "2026-09-24T15:10:02Z",                                       │
+│                        │                       │                    │   "metrics": {                                                                  │
+│                        │                       │                    │     "/var/folders/_4/t4jx                                                       │
+│ Mypy (untyped defs)    │         PASS          │        PASS        │ /dev/null: No  section in config file                                           │
+│ Patch integrity        │           —           │        PASS        │                                                                                 │
+│ Adapter contracts      │           —           │        PASS        │                                                                                 │
+│ Stale source symbols   │           —           │        PASS        │                                                                                 │
+│ Referenced target APIs │           —           │        PASS        │ No statically referenced rewritten module symbols to probe.                     │
+│ New static findings    │ baseline is reference │ PASS (+1 recorded) │ New bandit finding after migration: B113:Call to <lib> without timeout          │
+│ Import smoke test      │         PASS          │        PASS        │ Exited cleanly.                                                                 │
+│ Project tests          │         PASS          │        PASS        │ ..                                                                       [100%] │
+│                        │                       │                    │ 2 passed in 0.01s                                                               │
+└────────────────────────┴───────────────────────┴────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+╭────────────────────────────────────────────────────────── Static findings recorded for reporting ───────────────────────────────────────────────────────────╮
+│ line 1: New bandit finding after migration: B113:Call to <lib> without timeout                                                                              │
+│                                                                                                                                                             │
+│ Recorded, not repaired: clearing this rule would change behaviour the original did not have.                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────── Public contract eroded by the patch ────────────────────────────────────────────────────────────╮
+│ Public contract eroded by the patch: `httpx` is imported at module load, and the original deferred its collaborator import into a function ("lazy import    │
+│ for testability"). Importing this module now fails when httpx is absent, which the original supported so an injected collaborator could be used without it  │
+│                                                                                                                                                             │
+│ Recorded, not repaired: the repair is right, but spending repair cycles on it was measured to cost more migrations than it saved.                           │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Connector adapter runtime: 0/1 safe wrapper probe(s) measured separately from target-package performance.
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 9f5f9d54
+B1_scada_poller                  3       2/2     Y    Y      5     25  0.4743  365.3s
+
+migration_success 1/1 (100%)
+rows appended to results_fixed4.csv

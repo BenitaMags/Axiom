@@ -1,0 +1,44 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# ── Regenerable caches and datasets ──────────────────────────────────────
+# pymigbench_repos is a --repo-cache: `axiom-eval run --repo-cache ./pymigbench_repos`
+# re-clones what it needs. pymigbench_data comes back via
+# `axiom-eval fetch-dataset ./pymigbench_data`. Both arrive as nested git
+# repositories, which git records as gitlinks and refuses to commit usefully.
+pymigbench_repos/
+pymigbench_data/
+
+# A git worktree of this same repository; never a subdirectory to commit.
+copilot-worktrees/
+
+# ── Build and interpreter noise ──────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.benchmarks/
+.DS_Store
+
+qa_prep.md
+presentation_script.md
+docs/*.pptx
+paper/*.pptx

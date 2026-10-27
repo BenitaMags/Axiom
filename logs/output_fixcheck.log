@@ -1,0 +1,902 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Enabling isolated profiling/verification for reproducible PyMigBench execution.
+Loaded 248 migrations from PyMigBench.
+Reached --max-cases=12, stopping collection.
+Built 12 evaluable case(s).
+→ [1/12] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp84ln_pcy_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                                        Security Scan Results                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package              ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ kafka → kafka-python │ 2.0.1   │    2 │ MEDIUM │ AVAILABLE │       0.60 │      1.00 │    0.72 │ PyPI distribution: kafka-python    │
+│ locust → locustio    │ 0.999   │    0 │  LOW   │ AVAILABLE │       1.00 │      0.20 │    0.76 │ PyPI distribution: locustio        │
+│ time                 │ stdlib  │    — │  N/A   │    N/A    │          — │         — │       — │ Python standard-library module; no │
+│                      │         │      │        │           │            │           │         │ PyPI/OSV package sca               │
+└──────────────────────┴─────────┴──────┴────────┴───────────┴────────────┴───────────┴─────────┴────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,905  output: 273  latency: 29195ms
+Discovery leads not advanced to an equivalence group after file/API fit review: kafka: aiokafka, faust-streaming
+Equivalence Groups Found
+└── Kafka producer client
+    ├── Candidates : kafka, confluent-kafka
+    ├── Used APIs  : KafkaProducer, send, flush, add_callback, add_errback
+    ├── Pitfalls   : confluent-kafka uses librdkafka (C library) requiring system dependencies; confluent-kafka Producer.poll() must 
+    │   be called regularly for callbacks to fire; the current callback-only pattern may need a poll loop; Different configuration 
+    │   parameter names (e.g., 'bootstrap.servers' vs 'bootstrap_servers'); confluent-kafka's delivery callbacks have different 
+    │   signature (err, msg) vs kafka's (record_metadata)
+    ├── Constraints: requires_connector
+    └── The code uses kafka.KafkaProducer for synchronous message production with callback-based async handling. confluent-kafka 
+        provides a compatible Producer API with similar send/flush semantics and callback support, making it a viable drop-in 
+        replacement for the same functional role.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+                 Candidate Security Scan                  
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package         ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ confluent-kafka │ 2.15.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+───────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case finishes.
+  ⚠ Full base-requirement install failed (RCES.txt'
+      
+      Error: pg_config executable not found.
+      
+      pg_config is required to build psycopg2 from source.  Please add the directory
+      containing pg_config to the $PATH or spe); retrying with only the 1 package(s) this file's imports actually need (dropped: 
+psycogreen, psycopg2-binary, pymongo, python-dateutil, websocket-client)
+  ✓ Narrowed base install succeeded.
+                                                          Benchmark Results                                                           
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃            Runtime API (real probe) ┃ Memory (KB) ┃ Notes                          ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ kafka           │     ✓     │         20.1 ms │          UNMEASURED — No registered │        4270 │ import module: kafka           │
+│                 │           │                 │  side-effect-free runtime probe for │             │                                │
+│                 │           │                 │         KafkaProducer, send, flush, │             │                                │
+│                 │           │                 │   add_callback, add_errback; an int │             │                                │
+│ confluent-kafka │     ✓     │        123.4 ms │          UNMEASURED — No registered │         547 │ import module: confluent_kafka │
+│                 │           │                 │  side-effect-free runtime probe for │             │                                │
+│                 │           │                 │         KafkaProducer, send, flush, │             │                                │
+│                 │           │                 │   add_callback, add_errback; an int │             │                                │
+└─────────────────┴───────────┴─────────────────┴─────────────────────────────────────┴─────────────┴────────────────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 59b2afa8
+  API compat tokens — input: 174  output: 33  latency: 1468ms
+                                        AXIOM Optimization Decisions                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                  ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Kafka producer client │ kafka    │ kafka  │ MEDIUM │ 1.0   │ 0.128  │ 0.72     │ 1.0 │ 0.795 │ ✓          │
+└───────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+All imports already optimal — no changes needed.
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────────────────────────
+Nothing to verify — AXIOM selected no package replacement.
+Session saved: 59b2afa8
+→ [2/12] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/application/notifier/slack_notifier.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmplljcmyj1_slack_notifier.py
+                                                          Discovered Imports                                                          
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                ┃ Alias ┃ Names                                 ┃ API Calls Used                      ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ typing                                │ —     │ Optional                              │ —                                   │
+│    3 │ slack                                 │ —     │ WebClient                             │ WebClient                           │
+│    4 │ slack.errors                          │ —     │ SlackApiError                         │ WebClient                           │
+│    6 │ petisco.base.application.notifier.no… │ —     │ Notifier                              │ BlocksSlackNotifierMessageConverter │
+│    7 │ petisco.base.application.notifier.no… │ —     │ NotifierMessage                       │ BlocksSlackNotifierMessageConverter │
+│    8 │ petisco.base.domain.errors.domain_er… │ —     │ DomainError                           │ BlocksSlackNotifierMessageConverter │
+│    9 │ petisco.extra.slack.application.noti… │ —     │ BlocksSlackNotifierMessageConverter,  │ BlocksSlackNotifierMessageConverter │
+│      │                                       │       │ SlackNotifierMessageConverter         │                                     │
+└──────┴───────────────────────────────────────┴───────┴───────────────────────────────────────┴─────────────────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                                        Security Scan Results                                                         
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package             ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                 ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack → slackclient │ 2.5.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ PyPI distribution: slackclient        │
+│ petisco             │ 2.2.3   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.65 │    0.90 │ ✓ Clean                               │
+│ typing              │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no    │
+│                     │         │      │      │           │            │           │         │ PyPI/OSV package sca                  │
+└─────────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴───────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  petisco -> fastapi, flask, django
+  slack -> slack-sdk, slack-bolt, slackclient
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,881  output: 378  latency: 19150ms
+Skipping unrelated resolver group 'Slack notifier framework': no candidate matches an import in this file.
+Discovery leads not advanced to an equivalence group after file/API fit review: petisco: fastapi, flask, django; slack: slack-bolt
+Equivalence Groups Found
+└── Slack SDK client
+    ├── Candidates : slackclient, slack-sdk
+    ├── Used APIs  : WebClient, chat_postMessage, SlackApiError
+    ├── Pitfalls   : Ensure slack-sdk version >= 3.0 for WebClient compatibility; Import paths differ slightly: from slack_sdk import 
+    │   WebClient vs from slack import WebClient
+    └── The code uses slack.WebClient for synchronous Slack API calls (chat_postMessage) and catches slack.errors.SlackApiError. 
+        slack-sdk is the modern, maintained package that provides the same WebClient interface; slack is an older distribution name 
+        for the same library. They are functionally equivalent for this usage.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────
+Reusing pinned source security evidence: slackclient ← slack
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ slack-sdk │ 3.43.0  │ LOW  │ AVAILABLE │    1.00 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+───────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case finishes.
+Project-local or undeclared imports supplied from the project checkout: petisco
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-gssmzggv/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                          Benchmark Results                                                           
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃                      Runtime API (real probe) ┃ Memory (KB) ┃ Notes                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✓     │         67.0 ms │   UNMEASURED — No registered side-effect-free │        5863 │ import module: slack_sdk │
+│             │           │                 │                  runtime probe for WebClient, │             │                          │
+│             │           │                 │           chat_postMessage, SlackApiError; an │             │                          │
+│             │           │                 │                                integration fi │             │                          │
+│ slackclient │     ✓     │        396.0 ms │   UNMEASURED — No registered side-effect-free │        8903 │ import module: slack     │
+│             │           │                 │                  runtime probe for WebClient, │             │                          │
+│             │           │                 │           chat_postMessage, SlackApiError; an │             │                          │
+│             │           │                 │                                integration fi │             │                          │
+└─────────────┴───────────┴─────────────────┴───────────────────────────────────────────────┴─────────────┴──────────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 3fc9b858
+  API compat tokens — input: 170  output: 33  latency: 19043ms
+                                        AXIOM Optimization Decisions                                         
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role             ┃ Original    ┃ Winner    ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Slack SDK client │ slackclient │ slack-sdk │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 1.0 │ 1.0   │ ✓          │
+└──────────────────┴─────────────┴───────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Drop-in import patches (no connector needed):
+  slack  →  slack_sdk
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-00oxsunb/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-18x82pr4/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                Stage 1 — Differential Static Analysis                                                
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                                                                    │
+│ Pylint (errors)        │     1 finding(s)      │ 1 finding(s) │ [                                                                  │
+│                        │                       │              │     {                                                              │
+│                        │                       │              │         "type": "error",                                           │
+│                        │                       │              │         "module":                                                  │
+│                        │                       │              │ "petisco.extra.slack.application.notifier.slack_n                  │
+│ Bandit                 │         PASS          │     PASS     │ {                                                                  │
+│                        │                       │              │   "errors": [],                                                    │
+│                        │                       │              │   "generated_at": "2026-07-30T15:32:57Z",                          │
+│                        │                       │              │   "metrics": {                                                     │
+│                        │                       │              │     "/var/folders/_4/t4jx                                          │
+│ Mypy (untyped defs)    │     1 finding(s)      │ 1 finding(s) │ /var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-nh7… │
+│ Patch integrity        │           —           │     PASS     │                                                                    │
+│ Adapter contracts      │           —           │     PASS     │                                                                    │
+│ Stale source symbols   │           —           │     PASS     │                                                                    │
+│ Referenced target APIs │           —           │ 1 failure(s) │ slack_sdk does not expose SlackApiError                            │
+│ New static findings    │ baseline is reference │     PASS     │                                                                    │
+│ Import smoke test      │         FAIL          │     FAIL     │ Traceback (most recent call last):                                 │
+│                        │                       │              │   File "<string>", line 14, in <module>                            │
+│                        │                       │              │   File "/var/folders/_4/t                                          │
+└────────────────────────┴───────────────────────┴──────────────┴────────────────────────────────────────────────────────────────────┘
+Verification environment/instrumentation incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/extra/slack/application/notifier/slack_notifie
+r.py", line 6, in <module>
+    from petisco.base.application.notifier.notifier import Notifier
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/__init__.py", line 7, in <module>
+    from petisco.public_api import *
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/public_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/base/application/application.py", line 
+3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+  environment_incomplete: Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/extra/slack/application/notifier/slack_notifie
+r.py", line 6, in <module>
+    from petisco.base.application.notifier.notifier import Notifier
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/__init__.py", line 7, in <module>
+    from petisco.public_api import *
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/public_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-_slgl2_u/project/petisco/base/application/application.py", line 
+3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+→ [3/12] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/extra/slack/is_slack_available.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp8h71kf_y_is_slack_available.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    3 │ slack  │ —     │ —     │ —              │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 1 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 1 package(s) via OSV + PyPI...
+
+                                                     Security Scan Results                                                     
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package             ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack → slackclient │ 2.5.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ PyPI distribution: slackclient │
+└─────────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: slack
+Discovered candidates:
+  slack -> slack-sdk, slack-bolt, slackclient
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,247  output: 2  latency: 654ms
+Discovery leads not advanced to an equivalence group after file/API fit review: slack: slack-sdk, slack-bolt, slackclient
+No overlapping dependencies — nothing to optimize.
+
+✓ 0 equivalence group(s) found
+
+→ [4/12] alice-biometrics/petisco  slackclient→slack-sdk  (petisco/legacy/notifier/infrastructure/slack/slack_notifier.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpxmdeuhy6_slack_notifier.py
+                                                          Discovered Imports                                                          
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module                                  ┃ Alias ┃ Names                          ┃ API Calls Used                           ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ slack                                   │ —     │ WebClient                      │ WebClient                                │
+│    2 │ slack.errors                            │ —     │ SlackApiError                  │ WebClient                                │
+│    4 │ petisco.legacy.notifier.domain.interfa… │ —     │ INotifier                      │ SlackError,                              │
+│      │                                         │       │                                │ SlackNotifierMessageConverter            │
+│    5 │ petisco.legacy.notifier.domain.notifie… │ —     │ NotifierMessage                │ SlackError,                              │
+│      │                                         │       │                                │ SlackNotifierMessageConverter            │
+│    6 │ petisco.legacy.notifier.infrastructure… │ —     │ SlackError                     │ SlackError,                              │
+│      │                                         │       │                                │ SlackNotifierMessageConverter            │
+│    7 │ petisco.legacy.notifier.infrastructure… │ —     │ ISlackNotifierMessageConverter │ SlackError,                              │
+│      │                                         │       │                                │ SlackNotifierMessageConverter            │
+│   10 │ petisco.legacy.notifier.infrastructure… │ —     │ SlackNotifierMessageConverter  │ SlackError,                              │
+│      │                                         │       │                                │ SlackNotifierMessageConverter            │
+└──────┴─────────────────────────────────────────┴───────┴────────────────────────────────┴──────────────────────────────────────────┘
+
+✓ Found 7 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                     Security Scan Results                                                     
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package             ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack → slackclient │ 2.5.0   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.20 │    0.76 │ PyPI distribution: slackclient │
+│ petisco             │ 2.2.3   │    0 │ LOW  │ AVAILABLE │       1.00 │      0.65 │    0.90 │ ✓ Clean                        │
+└─────────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: petisco, slack
+Discovered candidates:
+  petisco -> fastapi, flask, django
+  slack -> slack-bolt, slackclient, slack-sdk
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,932  output: 219  latency: 9929ms
+Discovery leads not advanced to an equivalence group after file/API fit review: petisco: fastapi, flask, django; slack: slack-bolt
+Equivalence Groups Found
+└── Slack API client
+    ├── Candidates : slackclient, slack-sdk
+    ├── Used APIs  : WebClient, chat_postMessage, SlackApiError
+    ├── Pitfalls   : slack-sdk is the same package as 'slack' on PyPI (the package name is 'slack' but the project is slack-sdk); 
+    │   verify version compatibility if pinning; slack-bolt uses async by default and requires a different architecture (App, 
+    │   BoltRequest) — not a simple swap
+    └── The code uses slack.WebClient for synchronous Slack API calls (chat_postMessage). slack-sdk is the modern, maintained package 
+        that provides the same WebClient interface. slack-bolt is a framework for building Slack apps (event listeners, etc.) and 
+        slackclient is deprecated — neither is a drop-in replacement for the WebClient usage here.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────
+Reusing pinned source security evidence: slackclient ← slack
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+              Candidate Security Scan               
+┏━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package   ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ slack-sdk │ 3.43.0  │ LOW  │ AVAILABLE │    1.00 │
+└───────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+───────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case finishes.
+Project-local or undeclared imports supplied from the project checkout: petisco
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-7x99ag2l/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                          Benchmark Results                                                           
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package     ┃ Available ┃ Import (3 runs) ┃                      Runtime API (real probe) ┃ Memory (KB) ┃ Notes                    ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ slack-sdk   │     ✓     │         65.3 ms │   UNMEASURED — No registered side-effect-free │        5863 │ import module: slack_sdk │
+│             │           │                 │                  runtime probe for WebClient, │             │                          │
+│             │           │                 │           chat_postMessage, SlackApiError; an │             │                          │
+│             │           │                 │                                integration fi │             │                          │
+│ slackclient │     ✓     │        408.7 ms │   UNMEASURED — No registered side-effect-free │        8903 │ import module: slack     │
+│             │           │                 │                  runtime probe for WebClient, │             │                          │
+│             │           │                 │           chat_postMessage, SlackApiError; an │             │                          │
+│             │           │                 │                                integration fi │             │                          │
+└─────────────┴───────────┴─────────────────┴───────────────────────────────────────────────┴─────────────┴──────────────────────────┘
+
+✓ Profiled 2 package(s), 2 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 8bc10945
+  API compat tokens — input: 170  output: 33  latency: 2968ms
+                                        AXIOM Optimization Decisions                                         
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role             ┃ Original    ┃ Winner    ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Slack API client │ slackclient │ slack-sdk │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 1.0 │ 1.0   │ ✓          │
+└──────────────────┴─────────────┴───────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Drop-in import patches (no connector needed):
+  slack  →  slack_sdk
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-edqjxv_k/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (, line 110, in add_defaults
+          super().add_defaults()
+        File "/private/tmp/pip-build-env-4axfopaw/overlay/lib/python3.12/site-packages/setuptools/_distutils/command/sdist.py", line 
+245, i); retrying with only the 0 package(s) this file's imports actually need (dropped: apscheduler, 
+backports-datetime-fromisoformat, cryptography, dataclasses, dataclasses-json, deprecation, meiga, py-healthcheck, pydantic, pyjwt, 
+python-dateutil, pyyaml, requests, validators)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                   Stage 1 — Differential Static Analysis                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                                           │
+│ Pylint (errors)        │         PASS          │     PASS     │ []                                        │
+│ Bandit                 │         PASS          │     PASS     │ {                                         │
+│                        │                       │              │   "errors": [],                           │
+│                        │                       │              │   "generated_at": "2026-07-30T15:34:13Z", │
+│                        │                       │              │   "metrics": {                            │
+│                        │                       │              │     "/var/folders/_4/t4jx                 │
+│ Mypy (untyped defs)    │         PASS          │     PASS     │ /dev/null: No  section in config file     │
+│ Patch integrity        │           —           │     PASS     │                                           │
+│ Adapter contracts      │           —           │     PASS     │                                           │
+│ Stale source symbols   │           —           │     PASS     │                                           │
+│ Referenced target APIs │           —           │ 1 failure(s) │ slack_sdk does not expose SlackApiError   │
+│ New static findings    │ baseline is reference │     PASS     │                                           │
+│ Import smoke test      │         FAIL          │     FAIL     │ Traceback (most recent call last):        │
+│                        │                       │              │   File "<string>", line 14, in <module>   │
+│                        │                       │              │   File "/var/folders/_4/t                 │
+└────────────────────────┴───────────────────────┴──────────────┴───────────────────────────────────────────┘
+Verification environment/instrumentation incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/legacy/notifier/infrastructure/slack/slack_not
+ifier.py", line 4, in <module>
+    from petisco.legacy.notifier.domain.interface_notifier import INotifier
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/__init__.py", line 7, in <module>
+    from petisco.public_api import *
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/public_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/base/application/application.py", line 
+3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+  environment_incomplete: Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File 
+"/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/legacy/notifier/infrastructure/slack/slack_not
+ifier.py", line 4, in <module>
+    from petisco.legacy.notifier.domain.interface_notifier import INotifier
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/__init__.py", line 7, in <module>
+    from petisco.public_api import *
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/public_api.py", line 5, in <module>
+    from petisco.base.application.application import Application
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-uvdq8i3e/project/petisco/base/application/application.py", line 
+3, in <module>
+    from pydantic import BaseSettings, Field
+ModuleNotFoundError: No module named 'pydantic'
+
+→ [5/12] phuks-co/throat  eventlet→gevent  (throat.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp12848vei_throat.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module   ┃ Alias ┃ Names                ┃ API Calls Used  ┃
+┡━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│    3 │ eventlet │ —     │ —                    │ monkey_patch    │
+│    5 │ app      │ —     │ create_app, socketio │ run, create_app │
+└──────┴──────────┴───────┴──────────────────────┴─────────────────┘
+
+✓ Found 2 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                        Security Scan Results                                                         
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Version ┃ CVEs ┃  Risk  ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                          ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ eventlet │ 0.25.2  │    6 │ MEDIUM │ AVAILABLE │       0.60 │      1.00 │    0.72 │ Historical project pin: 0.25.2 (latest PyPI    │
+│          │         │      │        │           │            │           │         │ release: 0.                                    │
+│ app      │ 0.0.1   │    0 │  LOW   │ AVAILABLE │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 10y 0mo                      │
+└──────────┴─────────┴──────┴────────┴───────────┴────────────┴───────────┴─────────┴────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: app, eventlet
+Discovered candidates:
+  eventlet -> gevent, trio, anyio
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,363  output: 254  latency: 56246ms
+Discovery leads not advanced to an equivalence group after file/API fit review: eventlet: trio, anyio
+Equivalence Groups Found
+└── async concurrency backend for Socket.IO
+    ├── Candidates : eventlet, gevent
+    ├── Used APIs  : monkey_patch
+    ├── Pitfalls   : gevent.monkey.patch_all() must be called before other imports, same as eventlet; eventlet uses green threads with
+    │   implicit yielding; gevent uses explicit hub switching — subtle timing differences may appear; Socket.IO async_mode='gevent' 
+    │   requires python-socketio extra; gevent does not patch threading.Thread by default (use patch_all(thread=True))
+    └── eventlet.monkey_patch() is called to patch stdlib for cooperative concurrency before importing the Socket.IO app. gevent 
+        provides the same monkey-patching capability and is a supported async_mode for python-socketio, making it a genuine drop-in 
+        alternative for this specific usage pattern.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────
+Selecting and scanning compatible migration target 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan              
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ gevent  │ 26.7.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+───────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case finishes.
+Project-local or undeclared imports supplied from the project checkout: app
+  ⚠ Full base-requirement install failed (kup for cairo with method 'pkg-config' failed: Pkg-config for machine host machine not 
+found. Giving up.
+      
+            A full log can be found at /private/tmp/pip-install-7m5pk9vo/pycairo_bdcd753); retrying with only the 0 package(s) this 
+file's imports actually need (dropped: bcrypt, bs4, captcha, coverage, email-validator, feedgen, flask, flask-babel, flask-caching, 
+flask-jwt-extended, flask-login, flask-socketio, flask-webpack, flask-wtf, lxml, misaka, peewee, peewee-migrate, pep8, pillow, 
+pygobject, pyopenssl, pyotp, pytest, python-magic, pyyaml, redis, requests, sendgrid, tinycss2, wheel, wheezy-html, wheezy-template, 
+wtforms)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                          Benchmark Results                                                           
+┏━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package  ┃ Available ┃ Import (3 runs) ┃                            Runtime API (real probe) ┃ Memory (KB) ┃ Notes                 ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━┩
+│ gevent   │     ✓     │        485.5 ms │ UNMEASURED — No registered side-effect-free runtime │        1552 │ import module: gevent │
+│          │           │                 │   probe for monkey_patch; an integration fixture is │             │                       │
+│          │           │                 │                               required for network, │             │                       │
+│ eventlet │     ✗     │               — │ UNMEASURED — No registered side-effect-free runtime │           — │ No module named 'imp' │
+│          │           │                 │   probe for monkey_patch; an integration fixture is │             │                       │
+│          │           │                 │                               required for network, │             │                       │
+└──────────┴───────────┴─────────────────┴─────────────────────────────────────────────────────┴─────────────┴───────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with measured runtime probes, 2 explicitly unmeasured
+
+───────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 6c0b512c
+  Performance evidence omitted for this group; no real, comparable isolated measurement exists for: eventlet (hard_probe_failure).
+  API compat tokens — input: 162  output: 31  latency: 32061ms
+                                                 AXIOM Optimization Decisions                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                    ┃ Original ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ async concurrency backend for Socket.IO │ eventlet │ gevent │ LOW   │ —     │ —      │ 1.0      │ 1.0 │ 1.0   │ ✓          │
+└─────────────────────────────────────────┴──────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Drop-in import patches (no connector needed):
+  eventlet  →  gevent
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🛡️  Verifier Agent ─────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+  ⚠ Full base-requirement install failed (kup for cairo with method 'pkg-config' failed: Pkg-config for machine host machine not 
+found. Giving up.
+      
+            A full log can be found at /private/tmp/pip-install-_4l2c0jo/pycairo_a271b26); retrying with only the 0 package(s) this 
+file's imports actually need (dropped: bcrypt, bs4, captcha, coverage, email-validator, feedgen, flask, flask-babel, flask-caching, 
+flask-jwt-extended, flask-login, flask-socketio, flask-webpack, flask-wtf, lxml, misaka, peewee, peewee-migrate, pep8, pillow, 
+pygobject, pyopenssl, pyotp, pytest, python-magic, pyyaml, redis, requests, sendgrid, tinycss2, wheel, wheezy-html, wheezy-template, 
+wtforms)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+  ⚠ Full base-requirement install failed (kup for cairo with method 'pkg-config' failed: Pkg-config for machine host machine not 
+found. Giving up.
+      
+            A full log can be found at /private/tmp/pip-install-q44us5mv/pycairo_e7ed1a9); retrying with only the 0 package(s) this 
+file's imports actually need (dropped: bcrypt, bs4, captcha, coverage, email-validator, feedgen, flask, flask-babel, flask-caching, 
+flask-jwt-extended, flask-login, flask-socketio, flask-webpack, flask-wtf, lxml, misaka, peewee, peewee-migrate, pep8, pillow, 
+pygobject, pyopenssl, pyotp, pytest, python-magic, pyyaml, redis, requests, sendgrid, tinycss2, wheel, wheezy-html, wheezy-template, 
+wtforms)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                Stage 1 — Differential Static Analysis                                                
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃     Patched      ┃ Detail                                                         ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │       PASS       │                                                                │
+│ Pylint (errors)        │         PASS          │   1 finding(s)   │ [                                                              │
+│                        │                       │                  │     {                                                          │
+│                        │                       │                  │         "type": "error",                                       │
+│                        │                       │                  │         "module": "throat",                                    │
+│                        │                       │                  │         "obj": "",                                             │
+│                        │                       │                  │         "line": 4,                                             │
+│                        │                       │                  │                                                                │
+│ Bandit                 │         PASS          │       PASS       │ {                                                              │
+│                        │                       │                  │   "errors": [],                                                │
+│                        │                       │                  │   "generated_at": "2026-07-30T15:37:05Z",                      │
+│                        │                       │                  │   "metrics": {                                                 │
+│                        │                       │                  │     "/var/folders/_4/t4jx                                      │
+│ Mypy (untyped defs)    │         PASS          │       PASS       │ /dev/null: No  section in config file                          │
+│ Patch integrity        │           —           │       PASS       │                                                                │
+│ Adapter contracts      │           —           │       PASS       │                                                                │
+│ Stale source symbols   │           —           │       PASS       │                                                                │
+│ Referenced target APIs │           —           │       PASS       │ No statically referenced rewritten module symbols to probe.    │
+│ New static findings    │ baseline is reference │ 1 new finding(s) │ New pylint finding after migration: no-member:Module 'gevent'  │
+│                        │                       │                  │ has no 'monkey_patch' member                                   │
+│ Import smoke test      │         FAIL          │       FAIL       │ Traceback (most recent call last):                             │
+│                        │                       │                  │   File "<string>", line 14, in <module>                        │
+│                        │                       │                  │   File "/var/folders/_4/t                                      │
+└────────────────────────┴───────────────────────┴──────────────────┴────────────────────────────────────────────────────────────────┘
+╭───────────────────────────────────────────── New static findings introduced by patch ──────────────────────────────────────────────╮
+│ line 1: New pylint finding after migration: no-member:Module 'gevent' has no 'monkey_patch' member                                 │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Verification environment/instrumentation incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-soa0rqol/project/throat.py", line 3, in <module>
+    import eventlet
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/__init__.py"
+, line 10, in <module>
+    from eventlet import convenience
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/convenience.
+py", line 4, in <module>
+    from eventlet import greenpool
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/greenpool.py
+", line 4, in <module>
+    from eventlet import queue
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/queue.py", 
+line 49, in <module>
+    from eventlet.event import Event
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/event.py", 
+line 3, in <module>
+    from eventlet import hubs
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/hubs/__init_
+_.py", line 6, in <module>
+    from eventlet import patcher
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/patcher.py",
+line 1, in <module>
+    import imp
+ModuleNotFoundError: No module named 'imp'
+
+  environment_incomplete: Verification environment incomplete: baseline import smoke failed: Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-soa0rqol/project/throat.py", line 3, in <module>
+    import eventlet
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/__init__.py"
+, line 10, in <module>
+    from eventlet import convenience
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/convenience.
+py", line 4, in <module>
+    from eventlet import greenpool
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/greenpool.py
+", line 4, in <module>
+    from eventlet import queue
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/queue.py", 
+line 49, in <module>
+    from eventlet.event import Event
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/event.py", 
+line 3, in <module>
+    from eventlet import hubs
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/hubs/__init_
+_.py", line 6, in <module>
+    from eventlet import patcher
+  File 
+"/private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/axiom-verify-env-yxf6r2yk/lib/python3.12/site-packages/eventlet/patcher.py",
+line 1, in <module>
+    import imp
+ModuleNotFoundError: No module named 'imp'
+
+→ [6/12] hhyo/archery  pycrypto→pycryptodome  (sql/utils/aes_decryptor.py)
+────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpu2d018iw_aes_decryptor.py
+                          Discovered Imports                          
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names            ┃ API Calls Used   ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━┩
+│    1 │ Crypto.Cipher │ —     │ AES              │ new, MODE_CBC    │
+│    2 │ binascii      │ —     │ b2a_hex, a2b_hex │ a2b_hex, b2a_hex │
+│   40 │ sys           │ —     │ —                │ argv             │
+└──────┴───────────────┴───────┴──────────────────┴──────────────────┘
+
+✓ Found 3 imports
+
+───────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                                        Security Scan Results                                                         
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package           ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                   ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Crypto → pycrypto │ 2.6.1   │    4 │ HIGH │ AVAILABLE │       0.60 │      0.20 │    0.48 │ PyPI distribution: pycrypto             │
+│ binascii          │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no      │
+│                   │         │      │      │           │            │           │         │ PyPI/OSV package sca                    │
+│ sys               │ stdlib  │    — │ N/A  │    N/A    │          — │         — │       — │ Python standard-library module; no      │
+│                   │         │      │      │           │            │           │         │ PyPI/OSV package sca                    │
+└───────────────────┴─────────┴──────┴──────┴───────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────┘
+
+⚠️  High-risk packages detected: Crypto
+───────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────
+Discovering alternative libraries for: Crypto
+Discovered candidates:
+  Crypto -> cryptography, pycryptodome, pynacl, libnacl
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,012  output: 496  latency: 54578ms
+Discovery leads not advanced to an equivalence group after file/API fit review: Crypto: pynacl, libnacl
+Equivalence Groups Found
+└── AES symmetric encryption (CBC mode with PKCS#7-like padding)
+    ├── Candidates : pycrypto, cryptography, pycryptodome
+    ├── Used APIs  : AES.new, AES.MODE_CBC, encrypt, decrypt
+    ├── Pitfalls   : PyCrypto's AES.new accepts key/IV as str/bytes; cryptography requires bytes only; cryptography uses explicit 
+    │   padding (e.g., PKCS7) via separate padding module, not null-byte padding; cryptography's API is lower-level: Cipher(algorithm,
+    │   mode).encryptor() vs AES.new(key, mode, iv); pycryptodome is a near drop-in replacement (same import path), but still inherits
+    │   some PyCrypto quirks; Fixed IV (b'0000000000000000') is a security anti-pattern — should be random per encryption
+    ├── Constraints: crypto_required, requires_connector
+    └── The code uses PyCrypto's AES in CBC mode with a fixed IV and null-byte padding. Both 'cryptography' (via 
+        hazmat.primitives.ciphers) and 'pycryptodome' (drop-in replacement for PyCrypto) provide equivalent AES-CBC functionality. 
+        PyCrypto is unmaintained and has known HIGH-severity CVEs (GHSA-6528-wvf6-f6qg, GHSA-cq27-v7xp-c356), so migration is strongly
+        recommended.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────── 🔒 Security Agent — Candidates ───────────────────────────────────────────────────
+Reusing pinned source security evidence: pycrypto ← Crypto
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+                Candidate Security Scan                
+┏━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package      ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ cryptography │ 49.0.0  │ LOW  │ AVAILABLE │    1.00 │
+│ pycryptodome │ 3.23.0  │ LOW  │ AVAILABLE │    0.90 │
+└──────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+───────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed after the case finishes.
+  ⚠ Full base-requirement install failed ( 
+"/private/tmp/pip-build-env-yimpv976/overlay/lib/python3.12/site-packages/setuptools/build_meta.py", line 317, in run_setup
+          exec(code, locals())
+        File "<string>", line 18, in <module); retrying with only the 0 package(s) this file's imports actually need (dropped: 
+certifi, chardet, django, django-apscheduler, idna, mysqlclient, naked, pyecharts, pyecharts-snapshot, pyyaml, requests, shellescape, 
+simplejson, sqlparse, urllib3)
+  ✓ This file's imports need none of the declared base requirements; skipping the base layer entirely (the failing packages are 
+unrelated to the migration under test).
+                                                          Benchmark Results                                                           
+┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package      ┃ Available ┃ Import (3 runs) ┃           Runtime API (real probe) ┃ Memory (KB) ┃ Notes                              ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ cryptography │     ✓     │          0.4 ms │         UNMEASURED — No registered │          26 │ import module: cryptography        │
+│              │           │                 │ side-effect-free runtime probe for │             │                                    │
+│              │           │                 │    AES.new, AES.MODE_CBC, encrypt, │             │                                    │
+│              │           │                 │      decrypt; an integration fixtu │             │                                    │
+│ pycrypto     │     ✗     │               — │         UNMEASURED — No registered │           — │ import module: Crypto; Shared      │
+│              │           │                 │ side-effect-free runtime probe for │             │ import root 'crypto' across        │
+│              │           │                 │    AES.new, AES.MODE_CBC, encrypt, │             │ pycrypto, pycryptodome;            │
+│              │           │                 │      decrypt; an integration fixtu │             │ mixed-environment benchmark        │
+│              │           │                 │                                    │             │ neutralized. Verification uses     │
+│              │           │                 │                                    │             │ separate source/target venvs.      │
+│ pycryptodome │     ✗     │               — │         UNMEASURED — No registered │           — │ import module: Crypto; Shared      │
+│              │           │                 │ side-effect-free runtime probe for │             │ import root 'crypto' across        │
+│              │           │                 │    AES.new, AES.MODE_CBC, encrypt, │             │ pycrypto, pycryptodome;            │
+│              │           │                 │      decrypt; an integration fixtu │             │ mixed-environment benchmark        │
+│              │           │                 │                                    │             │ neutralized. Verification uses     │
+│              │           │                 │                                    │             │ separate source/target venvs.      │
+└──────────────┴───────────┴─────────────────┴────────────────────────────────────┴─────────────┴────────────────────────────────────┘
+
+✓ Profiled 3 package(s), 1 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ─────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: b9000d24
+⚠️  Security warning: Crypto is HIGH risk (score=0.48)
+⚠️  Security warning: pycrypto is HIGH risk (score=0.48)
+  Performance evidence omitted for this group; no real, comparable isolated measurement exists for: pycrypto 
+(neutral_shared_import_root), pycryptodome (neutral_shared_import_root).
+  API compat tokens — input: 191  output: 45  latency: 3249ms
+                                                     AXIOM Optimization Decisions                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Role                                   ┃ Original ┃ Winner       ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed?    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ AES symmetric encryption (CBC mode     │ pycrypto │ pycryptodome │ LOW   │ —     │ —      │ 0.895    │ 1.0 │ 0.853 │ not installed │
+│ with PKCS#7-like padding)              │          │              │       │       │        │          │     │       │               │
+└────────────────────────────────────────┴──────────┴──────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴───────────────┘
+
+⚠ Add to requirements.txt: pycryptodome
+  Performance dimensions were omitted because those candidates had no comparable isolated measurement. No estimated values were used; 
+re-run after the profiling environment is reproducible to obtain real benchmark numbers.
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pycrypto  →  pycryptodome  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+──────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────
+
+Analyzing: pycrypto → pycryptodome
+  Found 2 call site(s):
+    L13: cryptor = AES.new(self.key, self.mode, b'0000000000000000')
+    L33: cryptor = AES.new(self.key, self.mode, b'0000000000000000')
+  Tokens — in:1,746 out:416 latency:14621ms
+
+  Compatibility analysis:
+    ✗ L13: AES.new(self.key, self.mode, b'0000000000000000')  — PyCrypto accepts str key; pycryptodome requires bytes. self.key is a 
+str ('eCcGF
+    ✗ L33: AES.new(self.key, self.mode, b'0000000000000000')  — Same as line 13: str key vs bytes requirement, and encrypt/decrypt 
+input/output 
+
+  2 call site(s) need a wrapper:
+    _axiom_aes_new_wrapper  L13: Encode str key to bytes (UTF-8), call AES.new, return a wrapper object
+    _axiom_aes_new_wrapper  L33: Encode str key to bytes (UTF-8), call AES.new, return a wrapper object
+  Opening ACI edit session for pycrypto → pycryptodome...

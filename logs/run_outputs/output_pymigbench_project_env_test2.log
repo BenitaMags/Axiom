@@ -1,0 +1,187 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] grahame/sedge  argparse→click  (sedge/cli.py)
+──────────────────────────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmpxigwugwg_cli.py
+                                           Discovered Imports                                           
+┏━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module        ┃ Alias ┃ Names                                     ┃ API Calls Used            ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│    1 │ argparse      │ —     │ —                                         │ ArgumentParser            │
+│    2 │ difflib       │ —     │ —                                         │ unified_diff              │
+│    3 │ os.path       │ —     │ —                                         │ unlink, rename, path      │
+│    4 │ sys           │ —     │ —                                         │ stderr, exit, stdout      │
+│    5 │ tempfile      │ —     │ NamedTemporaryFile                        │ NamedTemporaryFile        │
+│    6 │ engine        │ —     │ SedgeEngine, SedgeException, ConfigOutput │ SedgeEngine, ConfigOutput │
+│    7 │ keylib        │ —     │ KeyLibrary                                │ KeyLibrary                │
+│  134 │ pkg_resources │ —     │ —                                         │ require                   │
+└──────┴───────────────┴───────┴───────────────────────────────────────────┴───────────────────────────┘
+
+✓ Found 8 imports
+
+─────────────────────────────────────────────────────── 🔒 Security Agent ────────────────────────────────────────────────────────
+Scanning 8 package(s) via OSV + PyPI...
+
+                                         Security Scan Results                                          
+┏━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package       ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ engine        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ sys           │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ keylib        │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ tempfile      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ pkg_resources │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ argparse      │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ os            │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ difflib       │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└───────────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+─────────────────────────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────────────────────────
+Discovering alternative libraries for: engine, keylib, pkg_resources
+Discovered candidates:
+  pkg_resources -> importlib_metadata, importlib_resources
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 2,384  output: 189  latency: 18774ms
+Equivalence Groups Found
+└── package metadata/version introspection
+    ├── Candidates : pkg_resources, importlib_metadata
+    ├── Used APIs  : require
+    ├── Pitfalls   : importlib_metadata API differs: use importlib_metadata.version() or importlib_metadata.distribution() instead
+    │   of require(); pkg_resources.require() enforces version constraints at runtime; importlib_metadata is read-only metadata 
+    │   access; pkg_resources is part of setuptools (heavy); importlib_metadata is lightweight/stdlib
+    ├── Constraints: requires_connector
+    └── pkg_resources.require() is used for version checking/dependency verification. importlib_metadata (stdlib in Python 3.8+) 
+        provides equivalent distribution metadata access and is the modern replacement.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────────────────────────── 🔒 Security Agent — Candidates ─────────────────────────────────────────────────
+Scanning candidate 1 package(s) via OSV + PyPI...
+
+             Candidate Security Scan             
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package            ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ importlib_metadata │ unknown │ LOW  │    0.76 │
+└────────────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+─────────────────────────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using a disposable virtual environment; installed packages will be removed after probing.
+Project-local or undeclared imports supplied from the project checkout: engine, keylib
+                                                        Benchmark Results                                                         
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package            ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                           ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ importlib_metadata │     ✓     │          3.4 ms │           — │         378 │ import module: importlib_metadata               │
+│ pkg_resources      │     ✗     │               — │           — │           — │ ERROR: Could not find a version that satisfies  │
+│                    │           │                 │             │             │ the requirement pkg_resources (from versions:   │
+│                    │           │                 │             │             │ none)                                           │
+│                    │           │                 │             │             │ ERROR: No matching distribution found for       │
+│                    │           │                 │             │             │ pkg_resources                                   │
+│                    │           │                 │             │             │                                                 │
+└────────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴─────────────────────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+─────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ───────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: c9169261
+  Not installed locally (scoring with neutral placeholders, not excluded): pkg_resources
+  API compat tokens — input: 219  output: 64  latency: 1350ms
+                                                   AXIOM Optimization Decisions                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                       ┃ Original      ┃ Winner             ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ package metadata/version   │ pkg_resources │ importlib_metadata │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.5 │ 0.877 │ ✓          │
+│ introspection              │               │                    │       │       │        │          │     │       │            │
+└────────────────────────────┴───────────────┴────────────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pkg_resources  →  importlib_metadata  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────────────────────────
+
+Analyzing: pkg_resources → importlib_metadata
+  Found 1 call site(s):
+    L135: version = pkg_resources.require("sedge")[0].version
+  Tokens — in:1,935 out:191 latency:1815ms
+
+  Compatibility analysis:
+    ✗ L135: pkg_resources.require("sedge")[0].version  — pkg_resources.require() returns a list of Distribution objects with a 
+.version a
+
+  1 call site(s) need a wrapper:
+    _get_sedge_version_wrapper  L135: Replace pkg_resources.require('sedge')[0].version with importlib_metad
+  Opening ACI edit session for pkg_resources → importlib_metadata...
+  ACI session: 0 edit(s) applied over 9 tool call(s)  |  tokens in:31,883 out:813
+    · open(line_number=...)
+    · goto(line_number=...)
+    · edit(replacement_text=..., end_line=..., start_line=...)
+    · open(line_number=...)
+    · edit(end_line=..., start_line=..., replacement_text=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · edit(start_line=..., end_line=...)
+    · open(line_number=...)
+  ACI session made no edits — falling back to one-shot generation.
+  Falling back to one-shot wrapper generation for pkg_resources...
+    get_sedge_version  replaces: pkg_resources.require("sedge")[0].version
+╭────────────────────────────────────────────────────── get_sedge_version ───────────────────────────────────────────────────────╮
+│    1 def get_sedge_version() -> str:                                                                                           │
+│    2     """                                                                                                                   │
+│    3     Return the version string of the 'sedge' package.                                                                     │
+│    4                                                                                                                           │
+│    5     Original implementation used `pkg_resources.require("sedge")[0].version`                                              │
+│    6     which returns a version string via the pkg_resources API.                                                             │
+│    7     This wrapper uses `importlib_metadata.version("sedge")` which returns                                                 │
+│    8     the version string directly, avoiding the deprecated pkg_resources API.                                               │
+│    9     """                                                                                                                   │
+│   10     import importlib_metadata                                                                                             │
+│   11     return importlib_metadata.version("sedge")                                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+  ✓ AST-based replacement applied (1 matches)
+  Injection resulted in syntax error: unexpected indent (<unknown>, line 155) — reverting
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────────────────────────── 🛡️  Verifier Agent ───────────────────────────────────────────────────────
+Nothing to verify — no replacements were applied.
+Session saved: c9169261
+
+Evaluation took 78.4s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     0.0%  (n=1)
+Full-pipeline accuracy:      requested, but 0 cases were scoreable — usually means neither source nor target package is 
+pip-installed here (profiler_agent can't benchmark what it can't import), or resolver never produced a decision. Try --seed-target
+to bypass resolver's own discovery, or pip install the specific pair you're testing.
+      Detection Rate by Domain      
+┏━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain  ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Utility │     1 │           0.0% │
+└─────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_project_env_test2.json, pymigbench_project_env_test2.csv

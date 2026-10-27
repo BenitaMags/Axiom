@@ -1,0 +1,112 @@
+# parsed 2 file(s): ['modbus_meter_reader.py', 'registers.py']
+# expected: ['modbus_meter_reader.py', 'registers.py']
+# reply length: 4078 chars
+======================================================================
+### FILENAME: modbus_meter_reader.py
+```python
+"""modbus_meter_reader -- read a power meter's holding registers into a record.
+
+The Modbus client is the substitution target: `pymodbus` -> `minimalmodbus`. Their
+read APIs and result objects differ (pymodbus returns a response object with
+`.registers`/`.isError()`; minimalmodbus returns raw register lists and raises), so a
+clone needs glue -- hence Category B. The client is dependency-injected for testing.
+
+This version uses `minimalmodbus` as the underlying transport. Since
+`minimalmodbus.Instrument.read_registers()` returns a plain list of ints (and raises
+an exception on error instead of returning an error-flagged response object), a small
+adapter (`_MinimalModbusClientAdapter`) is used to expose the same
+`read_holding_registers(address, count, unit=...)` -> object-with-`.registers`/
+`.isError()` interface that the rest of this module (and the test suite) expects.
+"""
+from registers import REGISTERS, decode
+
+
+class _ReadResult:
+    """Adapter result object mimicking pymodbus's response interface.
+
+    Exposes `.registers` (list[int]) and `.isError()` so callers written against the
+    pymodbus API continue to work unchanged.
+    """
+
+    def __init__(self, registers=None, error=False):
+        self.registers = registers if registers is not None else []
+        self._error = error
+
+    def isError(self):
+        return self._error
+
+
+class _MinimalModbusClientAdapter:
+    """Adapts a `minimalmodbus.Instrument` to the pymodbus-style client interface
+    used by `MeterReader` (i.e. `read_holding_registers(address, count, unit=...)`
+    returning an object with `.registers` / `.isError()`).
+    """
+
+    def __init__(self, instrument):
+        self._instrument = instrument
+
+    def read_holding_registers(self, address, count, unit=1):
+        try:
+            self._instrument.address = unit
+            words = self._instrument.read_registers(
+                registeraddress=address,
+                number_of_registers=count,
+                functioncode=3,
+            )
+            return _ReadResult(registers=list(words), error=False)
+        except Exception:
+            return _ReadResult(registers=[], error=True)
+
+
+def _default_client(host: str, port: int = 502):
+    import minimalmodbus  # lazy import for testability
+
+    instrument = minimalmodbus.Instrument(host, 1)
+    return _MinimalModbusClientAdapter(instrument)
+
+
+class MeterReader:
+    def __init__(self, host: str = None, client=None, unit: int = 1):
+        self.client = client if client is not None else _default_client(host)
+        self.unit = unit
+
+    def read_measurement(self) -> dict:
+        """Read every configured register and return a decoded measurement record."""
+        record = {}
+        for name, (address, count, encoding, scale) in REGISTERS.items():
+            result = self.client.read_holding_registers(address, count, unit=self.unit)
+            if result.isError():
+                raise IOError(f"Modbus read failed for {name}")
+            record[name] = decode(encoding, result.registers, scale)
+        return record
+```
+
+### FILENAME: registers.py
+```python
+"""registers -- register map and word decoding for a Modbus power meter.
+
+Decodes big-endian 16-bit register words into engineering values. Kept separate from
+the transport so that decoding is reusable and independently testable.
+"""
+import struct
+
+# name -> (start address, word count, encoding, scale)
+REGISTERS = {
+    "voltage": (0x0000, 2, "f32", 1.0),
+    "current": (0x0002, 2, "f32", 1.0),
+    "power":   (0x0004, 2, "f32", 1.0),
+    "energy":  (0x0006, 2, "u32", 0.001),  # Wh -> kWh
+}
+
+
+def decode(encoding: str, words, scale: float) -> float:
+    """Decode a sequence of 16-bit words into a scaled engineering value."""
+    raw = b"".join(struct.pack(">H", w & 0xFFFF) for w in words)
+    if encoding == "f32":
+        value = struct.unpack(">f", raw)[0]
+    elif encoding == "u32":
+        value = struct.unpack(">I", raw)[0]
+    else:
+        raise ValueError(f"unknown encoding: {encoding}")
+    return value * scale
+```

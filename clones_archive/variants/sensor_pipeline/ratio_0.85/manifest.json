@@ -1,0 +1,2670 @@
+{
+ "module": "sensor_pipeline",
+ "original_lines": 114,
+ "requested_lines": 97,
+ "achieved_lines": 109,
+ "length_error": 12,
+ "ranking_metric": "ast_structural",
+ "beam_size": 3,
+ "max_iterations": 6,
+ "iterations_used": 6,
+ "candidates_generated": 116,
+ "candidates_equivalent": 116,
+ "duration_s": 18.934,
+ "winner": {
+  "file": "winner.py",
+  "chain": [
+   "demorgan_branch_swap",
+   "if_else_assign_to_ternary",
+   "invert_if_else"
+  ],
+  "lines": 109,
+  "metrics": {
+   "ncd": 0.071429,
+   "ast_structural": 0.020264,
+   "du_chain": 0.0,
+   "cfg_shape": 0.125,
+   "composite": 0.072632
+  },
+  "oracle_passed": true,
+  "oracle_detail": "all layers passed (incl. __main__ output)"
+ },
+ "candidates": [
+  {
+   "index": 1,
+   "file": "001_split_return_expression.py",
+   "chain": [
+    "split_return_expression"
+   ],
+   "lines": 115,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.045977,
+    "ast_structural": 0.006135,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.0,
+    "composite": 0.003067
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.128
+  },
+  {
+   "index": 2,
+   "file": "002_extract_subexpression.py",
+   "chain": [
+    "extract_subexpression"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.070479,
+    "ast_structural": 0.024221,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.012111
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 3,
+   "file": "003_if_else_assign_to_ternary.py",
+   "chain": [
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.060544,
+    "ast_structural": 0.009709,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.067354
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.102
+  },
+  {
+   "index": 4,
+   "file": "004_for_range_to_while.py",
+   "chain": [
+    "for_range_to_while"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.054472,
+    "ast_structural": 0.014795,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.118509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.109
+  },
+  {
+   "index": 5,
+   "file": "005_invert_if_else.py",
+   "chain": [
+    "invert_if_else"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.058824,
+    "ast_structural": 0.007018,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.003509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.106
+  },
+  {
+   "index": 6,
+   "file": "006_rename_locals.py",
+   "chain": [
+    "rename_locals"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.164248,
+    "ast_structural": 0.0,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.097
+  },
+  {
+   "index": 7,
+   "file": "007_call_argument_extraction.py",
+   "chain": [
+    "call_argument_extraction"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.077282,
+    "ast_structural": 0.047373,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.023686
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 8,
+   "file": "008_demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.06038,
+    "ast_structural": 0.019366,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.167
+  },
+  {
+   "index": 9,
+   "file": "009_if_else_assign_to_ternary+split_return_expression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.066667,
+    "ast_structural": 0.015817,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.070409
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.103
+  },
+  {
+   "index": 10,
+   "file": "010_if_else_assign_to_ternary+extract_subexpression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.078751,
+    "ast_structural": 0.033825,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.079412
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 11,
+   "file": "011_if_else_assign_to_ternary+ternary_to_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.04966,
+    "ast_structural": 0.0,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.095
+  },
+  {
+   "index": 12,
+   "file": "012_if_else_assign_to_ternary+for_range_to_while.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.072109,
+    "ast_structural": 0.024433,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.178883
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.1
+  },
+  {
+   "index": 13,
+   "file": "013_if_else_assign_to_ternary+invert_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.070068,
+    "ast_structural": 0.011454,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.068227
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 14,
+   "file": "014_if_else_assign_to_ternary+rename_locals.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.169811,
+    "ast_structural": 0.009709,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.067354
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.089
+  },
+  {
+   "index": 15,
+   "file": "015_if_else_assign_to_ternary+call_argument_extraction.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.083617,
+    "ast_structural": 0.056995,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.090997
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 16,
+   "file": "016_if_else_assign_to_ternary+demorgan_branch_swap.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.073469,
+    "ast_structural": 0.015004,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.070002
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 17,
+   "file": "017_demorgan_branch_swap+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "split_return_expression"
+   ],
+   "lines": 115,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.070755,
+    "ast_structural": 0.025416,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.0,
+    "composite": 0.012708
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 18,
+   "file": "018_demorgan_branch_swap+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "extract_subexpression"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.094227,
+    "ast_structural": 0.043253,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.021626
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 19,
+   "file": "019_demorgan_branch_swap+if_else_assign_to_ternary.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.077551,
+    "ast_structural": 0.018535,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 20,
+   "file": "020_demorgan_branch_swap+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "for_range_to_while"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.080483,
+    "ast_structural": 0.033943,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.128082
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 21,
+   "file": "021_demorgan_branch_swap+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "invert_if_else"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.054656,
+    "ast_structural": 0.010526,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.005263
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 22,
+   "file": "022_demorgan_branch_swap+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "rename_locals"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.175,
+    "ast_structural": 0.019366,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 23,
+   "file": "023_demorgan_branch_swap+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.101661,
+    "ast_structural": 0.066322,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.033161
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.119
+  },
+  {
+   "index": 24,
+   "file": "024_demorgan_branch_swap+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "demorgan_branch_swap"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.032653,
+    "ast_structural": 0.0,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 25,
+   "file": "025_invert_if_else+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 115,
+   "line_delta": 1,
+   "metrics": {
+    "ncd": 0.069174,
+    "ast_structural": 0.0131,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.0,
+    "composite": 0.00655
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 26,
+   "file": "026_invert_if_else+extract_subexpression.py",
+   "chain": [
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 118,
+   "line_delta": 4,
+   "metrics": {
+    "ncd": 0.092715,
+    "ast_structural": 0.031034,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.0,
+    "composite": 0.015517
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 27,
+   "file": "027_invert_if_else+if_else_assign_to_ternary.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.072789,
+    "ast_structural": 0.014952,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.069976
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.101
+  },
+  {
+   "index": 28,
+   "file": "028_invert_if_else+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 117,
+   "line_delta": 3,
+   "metrics": {
+    "ncd": 0.078313,
+    "ast_structural": 0.021683,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.222222,
+    "composite": 0.121952
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.094
+  },
+  {
+   "index": 29,
+   "file": "029_invert_if_else+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.044098,
+    "ast_structural": 0.0,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.0
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.092
+  },
+  {
+   "index": 30,
+   "file": "030_invert_if_else+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "rename_locals"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.178055,
+    "ast_structural": 0.007018,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.003509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.111
+  },
+  {
+   "index": 31,
+   "file": "031_invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 119,
+   "line_delta": 5,
+   "metrics": {
+    "ncd": 0.099934,
+    "ast_structural": 0.054077,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.0,
+    "composite": 0.027039
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 32,
+   "file": "032_demorgan_branch_swap+if_else_assign_to_ternary+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.082993,
+    "ast_structural": 0.024605,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.074802
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 33,
+   "file": "033_demorgan_branch_swap+if_else_assign_to_ternary+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.097693,
+    "ast_structural": 0.042498,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.083749
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.111
+  },
+  {
+   "index": 34,
+   "file": "034_demorgan_branch_swap+if_else_assign_to_ternary+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.07483,
+    "ast_structural": 0.019366,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.104
+  },
+  {
+   "index": 35,
+   "file": "035_demorgan_branch_swap+if_else_assign_to_ternary+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.089796,
+    "ast_structural": 0.033159,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.183246
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 36,
+   "file": "036_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.071429,
+    "ast_structural": 0.020264,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 37,
+   "file": "037_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.178331,
+    "ast_structural": 0.018535,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 38,
+   "file": "038_demorgan_branch_swap+if_else_assign_to_ternary+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.10387,
+    "ast_structural": 0.06563,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.095315
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.074
+  },
+  {
+   "index": 39,
+   "file": "039_demorgan_branch_swap+if_else_assign_to_ternary+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.065306,
+    "ast_structural": 0.013239,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.06912
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 40,
+   "file": "040_if_else_assign_to_ternary+demorgan_branch_swap+split_return_expression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.077551,
+    "ast_structural": 0.02109,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.073045
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 41,
+   "file": "041_if_else_assign_to_ternary+demorgan_branch_swap+extract_subexpression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.092203,
+    "ast_structural": 0.039029,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.082014
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.075
+  },
+  {
+   "index": 42,
+   "file": "042_if_else_assign_to_ternary+demorgan_branch_swap+ternary_to_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.062585,
+    "ast_structural": 0.005282,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.002641
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 43,
+   "file": "043_if_else_assign_to_ternary+demorgan_branch_swap+for_range_to_while.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.085034,
+    "ast_structural": 0.029668,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.181501
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.072
+  },
+  {
+   "index": 44,
+   "file": "044_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.067347,
+    "ast_structural": 0.01674,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.07087
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.072
+  },
+  {
+   "index": 45,
+   "file": "045_if_else_assign_to_ternary+demorgan_branch_swap+rename_locals.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.174293,
+    "ast_structural": 0.015004,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.070002
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 46,
+   "file": "046_if_else_assign_to_ternary+demorgan_branch_swap+call_argument_extraction.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.09905,
+    "ast_structural": 0.062176,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.093588
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 47,
+   "file": "047_if_else_assign_to_ternary+demorgan_branch_swap+demorgan_branch_swap.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.060544,
+    "ast_structural": 0.009709,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.067354
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.072
+  },
+  {
+   "index": 48,
+   "file": "048_invert_if_else+if_else_assign_to_ternary+split_return_expression.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.07619,
+    "ast_structural": 0.021016,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.073008
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.073
+  },
+  {
+   "index": 49,
+   "file": "049_invert_if_else+if_else_assign_to_ternary+extract_subexpression.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.095335,
+    "ast_structural": 0.038894,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.081947
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 50,
+   "file": "050_invert_if_else+if_else_assign_to_ternary+ternary_to_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.070068,
+    "ast_structural": 0.007018,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.003509
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 51,
+   "file": "051_invert_if_else+if_else_assign_to_ternary+for_range_to_while.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.084354,
+    "ast_structural": 0.029565,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.181449
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 52,
+   "file": "052_invert_if_else+if_else_assign_to_ternary+invert_if_else.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.065986,
+    "ast_structural": 0.013216,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.069108
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 53,
+   "file": "053_invert_if_else+if_else_assign_to_ternary+rename_locals.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.180416,
+    "ast_structural": 0.014952,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.069976
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 54,
+   "file": "054_invert_if_else+if_else_assign_to_ternary+call_argument_extraction.py",
+   "chain": [
+    "invert_if_else",
+    "if_else_assign_to_ternary",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.101488,
+    "ast_structural": 0.061962,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.093481
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 55,
+   "file": "055_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.078912,
+    "ast_structural": 0.026316,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.075658
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 56,
+   "file": "056_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.095335,
+    "ast_structural": 0.044156,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.084578
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 57,
+   "file": "057_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.068027,
+    "ast_structural": 0.02109,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.010545
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 58,
+   "file": "058_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.082993,
+    "ast_structural": 0.034843,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.184088
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 59,
+   "file": "059_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.077551,
+    "ast_structural": 0.018535,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 60,
+   "file": "060_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.176944,
+    "ast_structural": 0.020264,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 61,
+   "file": "061_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.101557,
+    "ast_structural": 0.067241,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.096121
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 62,
+   "file": "062_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.184615,
+    "ast_structural": 0.024605,
+    "du_chain": 0.371429,
+    "cfg_shape": 0.125,
+    "composite": 0.074802
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 63,
+   "file": "063_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.205145,
+    "ast_structural": 0.042498,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.125,
+    "composite": 0.083749
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 64,
+   "file": "064_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.179504,
+    "ast_structural": 0.019366,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 65,
+   "file": "065_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.198138,
+    "ast_structural": 0.033159,
+    "du_chain": 0.385714,
+    "cfg_shape": 0.333333,
+    "composite": 0.183246
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 66,
+   "file": "066_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.187003,
+    "ast_structural": 0.018535,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 67,
+   "file": "067_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.212161,
+    "ast_structural": 0.06563,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.125,
+    "composite": 0.095315
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 68,
+   "file": "068_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.175876,
+    "ast_structural": 0.013239,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.06912
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 69,
+   "file": "069_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+split_return_expression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.07415,
+    "ast_structural": 0.022807,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.073904
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.083
+  },
+  {
+   "index": 70,
+   "file": "070_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+extract_subexpression.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.090541,
+    "ast_structural": 0.040693,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.082846
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 71,
+   "file": "071_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+ternary_to_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.055782,
+    "ast_structural": 0.00703,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.003515
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.082
+  },
+  {
+   "index": 72,
+   "file": "072_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+for_range_to_while.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.077551,
+    "ast_structural": 0.031359,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.182346
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 73,
+   "file": "073_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+invert_if_else.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.072109,
+    "ast_structural": 0.015004,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.070002
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 74,
+   "file": "074_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+rename_locals.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.173038,
+    "ast_structural": 0.01674,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.07087
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 75,
+   "file": "075_if_else_assign_to_ternary+demorgan_branch_swap+invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "if_else_assign_to_ternary",
+    "demorgan_branch_swap",
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.096687,
+    "ast_structural": 0.063793,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.094397
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.079
+  },
+  {
+   "index": 76,
+   "file": "076_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.185333,
+    "ast_structural": 0.026316,
+    "du_chain": 0.371429,
+    "cfg_shape": 0.125,
+    "composite": 0.075658
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.099
+  },
+  {
+   "index": 77,
+   "file": "077_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.204471,
+    "ast_structural": 0.044156,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.125,
+    "composite": 0.084578
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 78,
+   "file": "078_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.178905,
+    "ast_structural": 0.02109,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.010545
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 79,
+   "file": "079_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.197482,
+    "ast_structural": 0.034843,
+    "du_chain": 0.385714,
+    "cfg_shape": 0.333333,
+    "composite": 0.184088
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 80,
+   "file": "080_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.179315,
+    "ast_structural": 0.018535,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 81,
+   "file": "081_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.186385,
+    "ast_structural": 0.020264,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 82,
+   "file": "082_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.211462,
+    "ast_structural": 0.067241,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.125,
+    "composite": 0.096121
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 83,
+   "file": "083_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.082313,
+    "ast_structural": 0.024605,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.074802
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 84,
+   "file": "084_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.098849,
+    "ast_structural": 0.042498,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.083749
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.1
+  },
+  {
+   "index": 85,
+   "file": "085_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.07415,
+    "ast_structural": 0.019366,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 86,
+   "file": "086_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.089116,
+    "ast_structural": 0.033159,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.183246
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.093
+  },
+  {
+   "index": 87,
+   "file": "087_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.071429,
+    "ast_structural": 0.020264,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 88,
+   "file": "088_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.105085,
+    "ast_structural": 0.06563,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.095315
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  },
+  {
+   "index": 89,
+   "file": "089_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.065306,
+    "ast_structural": 0.013239,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.06912
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 90,
+   "file": "090_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.191826,
+    "ast_structural": 0.024605,
+    "du_chain": 0.371429,
+    "cfg_shape": 0.125,
+    "composite": 0.074802
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 91,
+   "file": "091_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.213264,
+    "ast_structural": 0.042498,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.125,
+    "composite": 0.083749
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.089
+  },
+  {
+   "index": 92,
+   "file": "092_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.188904,
+    "ast_structural": 0.019366,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 93,
+   "file": "093_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.206557,
+    "ast_structural": 0.033159,
+    "du_chain": 0.385714,
+    "cfg_shape": 0.333333,
+    "composite": 0.183246
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.096
+  },
+  {
+   "index": 94,
+   "file": "094_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.190132,
+    "ast_structural": 0.018535,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.097
+  },
+  {
+   "index": 95,
+   "file": "095_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.219401,
+    "ast_structural": 0.06563,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.125,
+    "composite": 0.095315
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.105
+  },
+  {
+   "index": 96,
+   "file": "096_demorgan_branch_swap+if_else_assign_to_ternary+rename_locals+rename_locals+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "rename_locals",
+    "rename_locals",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.183267,
+    "ast_structural": 0.013239,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.06912
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 97,
+   "file": "097_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.193167,
+    "ast_structural": 0.026316,
+    "du_chain": 0.371429,
+    "cfg_shape": 0.125,
+    "composite": 0.075658
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 98,
+   "file": "098_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.212573,
+    "ast_structural": 0.044156,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.125,
+    "composite": 0.084578
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 99,
+   "file": "099_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.188282,
+    "ast_structural": 0.02109,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.010545
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.099
+  },
+  {
+   "index": 100,
+   "file": "100_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.205748,
+    "ast_structural": 0.034843,
+    "du_chain": 0.385714,
+    "cfg_shape": 0.333333,
+    "composite": 0.184088
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.098
+  },
+  {
+   "index": 101,
+   "file": "101_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.187417,
+    "ast_structural": 0.018535,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.097
+  },
+  {
+   "index": 102,
+   "file": "102_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.189508,
+    "ast_structural": 0.020264,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.107
+  },
+  {
+   "index": 103,
+   "file": "103_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+rename_locals+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "rename_locals",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.219481,
+    "ast_structural": 0.067241,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.125,
+    "composite": 0.096121
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 104,
+   "file": "104_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.078912,
+    "ast_structural": 0.026316,
+    "du_chain": 0.017857,
+    "cfg_shape": 0.125,
+    "composite": 0.075658
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 105,
+   "file": "105_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.095335,
+    "ast_structural": 0.044156,
+    "du_chain": 0.067797,
+    "cfg_shape": 0.125,
+    "composite": 0.084578
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 106,
+   "file": "106_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.068027,
+    "ast_structural": 0.02109,
+    "du_chain": 0.0,
+    "cfg_shape": 0.0,
+    "composite": 0.010545
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.087
+  },
+  {
+   "index": 107,
+   "file": "107_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.082993,
+    "ast_structural": 0.034843,
+    "du_chain": 0.035714,
+    "cfg_shape": 0.333333,
+    "composite": 0.184088
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.09
+  },
+  {
+   "index": 108,
+   "file": "108_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+invert_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.077551,
+    "ast_structural": 0.018535,
+    "du_chain": 0.0,
+    "cfg_shape": 0.125,
+    "composite": 0.071767
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.085
+  },
+  {
+   "index": 109,
+   "file": "109_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+rename_locals.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "rename_locals"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.176944,
+    "ast_structural": 0.020264,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.072632
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.086
+  },
+  {
+   "index": 110,
+   "file": "110_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+invert_if_else+invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "invert_if_else",
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.101557,
+    "ast_structural": 0.067241,
+    "du_chain": 0.035088,
+    "cfg_shape": 0.125,
+    "composite": 0.096121
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.081
+  },
+  {
+   "index": 111,
+   "file": "111_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+split_return_expression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "split_return_expression"
+   ],
+   "lines": 110,
+   "line_delta": -4,
+   "metrics": {
+    "ncd": 0.185705,
+    "ast_structural": 0.024605,
+    "du_chain": 0.371429,
+    "cfg_shape": 0.125,
+    "composite": 0.074802
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.084
+  },
+  {
+   "index": 112,
+   "file": "112_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+extract_subexpression.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "extract_subexpression"
+   ],
+   "lines": 113,
+   "line_delta": -1,
+   "metrics": {
+    "ncd": 0.206192,
+    "ast_structural": 0.042498,
+    "du_chain": 0.39726,
+    "cfg_shape": 0.125,
+    "composite": 0.083749
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.08
+  },
+  {
+   "index": 113,
+   "file": "113_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+ternary_to_if_else.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "ternary_to_if_else"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.180602,
+    "ast_structural": 0.019366,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.0,
+    "composite": 0.009683
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.088
+  },
+  {
+   "index": 114,
+   "file": "114_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+for_range_to_while.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "for_range_to_while"
+   ],
+   "lines": 112,
+   "line_delta": -2,
+   "metrics": {
+    "ncd": 0.198407,
+    "ast_structural": 0.033159,
+    "du_chain": 0.385714,
+    "cfg_shape": 0.333333,
+    "composite": 0.183246
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 115,
+   "file": "115_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+call_argument_extraction.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "call_argument_extraction"
+   ],
+   "lines": 114,
+   "line_delta": 0,
+   "metrics": {
+    "ncd": 0.213201,
+    "ast_structural": 0.06563,
+    "du_chain": 0.380282,
+    "cfg_shape": 0.125,
+    "composite": 0.095315
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  },
+  {
+   "index": 116,
+   "file": "116_demorgan_branch_swap+if_else_assign_to_ternary+invert_if_else+rename_locals+invert_if_else+demorgan_branch_swap.py",
+   "chain": [
+    "demorgan_branch_swap",
+    "if_else_assign_to_ternary",
+    "invert_if_else",
+    "rename_locals",
+    "invert_if_else",
+    "demorgan_branch_swap"
+   ],
+   "lines": 109,
+   "line_delta": -5,
+   "metrics": {
+    "ncd": 0.175876,
+    "ast_structural": 0.013239,
+    "du_chain": 0.362319,
+    "cfg_shape": 0.125,
+    "composite": 0.06912
+   },
+   "oracle_passed": true,
+   "oracle_detail": "all layers passed (incl. __main__ output)",
+   "oracle_script_checked": true,
+   "oracle_duration_s": 0.077
+  }
+ ]
+}

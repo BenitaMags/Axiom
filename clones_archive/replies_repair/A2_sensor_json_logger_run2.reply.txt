@@ -1,0 +1,34 @@
+# parsed 1 file(s): ['sensor_json_logger.py']
+# expected: ['sensor_json_logger.py']
+# reply length: 1451 chars
+======================================================================
+Looking at this program, it depends on `json` for canonical serialization (sorted keys, compact separators). This is the normal case where I should replace it with a suitable third-party library rather than reimplementing JSON serialization myself.
+
+The `orjson` library is a fast, actively-maintained library that supports sorting keys (`orjson.OPT_SORT_KEYS`) and produces compact output by default (no spaces after separators, matching `(",", ":")` semantics). I need to add adapter code to match the exact output format.
+
+### FILENAME: sensor_json_logger.py
+```python
+# CHOSEN-TARGET: orjson
+"""sensor_json_logger -- deterministic JSON audit logging of sensor samples.
+
+Serializes tag/value sensor readings to canonical one-line JSON records. The JSON
+
+Determinism (sorted keys, compact separators) is a hard requirement so that audit
+logs are byte-reproducible.
+"""
+import orjson
+from typing import Iterable, Mapping
+
+_SEPARATORS = (",", ":")
+
+
+def format_reading(tag: str, value, ts: str, quality: str = "GOOD") -> str:
+    """Return a canonical one-line JSON record for a single reading."""
+    record = {"tag": tag, "value": value, "ts": ts, "quality": quality}
+    return orjson.dumps(record, option=orjson.OPT_SORT_KEYS).decode("utf-8")
+
+
+def format_batch(readings: Iterable[Mapping]) -> str:
+    """Serialize an iterable of reading mappings to newline-delimited JSON."""
+    return "\n".join(format_reading(**dict(r)) for r in readings)
+```

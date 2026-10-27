@@ -1,0 +1,307 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] schlamar/flake8-todo  pep8→pycodestyle  (flake8_todo.py)
+───────────────────────────────────── 🔍 Parser Agent ─────────────────────────────────────
+Resolved path: /private/tmp/tmp4hu5s797_flake8_todo.py
+                Discovered Imports                
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    4 │ re     │ —     │ —     │ compile        │
+│    6 │ pep8   │ —     │ —     │ noqa           │
+└──────┴────────┴───────┴───────┴────────────────┘
+
+✓ Found 2 imports
+
+──────────────────────────────────── 🔒 Security Agent ────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                   Security Scan Results                                   
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┓
+┃         ┃         ┃      ┃      ┃           ┃     Vuln ┃           ┃         ┃          ┃
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence  ┃    Score ┃ Freshness ┃ Overall ┃ Notes    ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━┩
+│ pep8    │ 1.7.1   │    0 │ LOW  │ AVAILABLE │     1.00 │      0.20 │    0.76 │ 📅 Not   │
+│         │         │      │      │           │          │           │         │ updated  │
+│         │         │      │      │           │          │           │         │ in 8y    │
+│         │         │      │      │           │          │           │         │ 9mo      │
+│ re      │ stdlib  │    — │ N/A  │    N/A    │        — │         — │       — │ Python   │
+│         │         │      │      │           │          │           │         │ standar… │
+│         │         │      │      │           │          │           │         │ module;  │
+│         │         │      │      │           │          │           │         │ no       │
+│         │         │      │      │           │          │           │         │ PyPI/OSV │
+│         │         │      │      │           │          │           │         │ package  │
+│         │         │      │      │           │          │           │         │ sca      │
+└─────────┴─────────┴──────┴──────┴───────────┴──────────┴───────────┴─────────┴──────────┘
+
+✓ No critical vulnerabilities found
+──────────────────────────────────── 🔗 Resolver Agent ────────────────────────────────────
+Discovering alternative libraries for: pep8
+Discovered candidates:
+  pep8 -> pycodestyle, flake8, ruff
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,402  output: 286  latency: 11166ms
+Equivalence Groups Found
+└── Python style guide checker / linter plugin base
+    ├── Candidates : pep8, pycodestyle, flake8, ruff
+    ├── Used APIs  : noqa
+    ├── Pitfalls   : pep8 package is unmaintained since 2016; pycodestyle is the direct 
+    │   successor; flake8 and ruff are full linters with plugin ecosystems, not just style 
+    │   checkers; ruff is written in Rust and significantly faster but has different 
+    │   configuration format; flake8 requires plugins for some checks that pycodestyle 
+    │   handles natively
+    └── pep8 was renamed to pycodestyle in 2016; both provide the same noqa() function for 
+        inline ignore comments. flake8 and ruff are modern linters that also understand # 
+        noqa comments and can serve as drop-in replacements for the linting role. The code 
+        only uses pep8.noqa() to check for noqa comments, which all candidates support.
+
+✓ 1 equivalence group(s) found
+
+───────────────────────────── 🔒 Security Agent — Candidates ──────────────────────────────
+Selecting and scanning compatible migration target 3 package(s) via OSV + PyPI...
+
+               Candidate Security Scan                
+┏━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package     ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ flake8      │ 7.3.0   │ LOW  │ AVAILABLE │    0.90 │
+│ pycodestyle │ 2.14.0  │ LOW  │ AVAILABLE │    0.90 │
+│ ruff        │ 0.16.0  │ LOW  │ AVAILABLE │    1.00 │
+└─────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 3 candidate package(s)
+
+──────────────────────────────────── ⚡ Profiler Agent ────────────────────────────────────
+Probing 4 package(s) across 1 group(s)...
+
+Using disposable profiling/verification environments; installed packages will be removed 
+after the case finishes.
+Runtime API benchmarks (10 warmups + 50 samples; fixed local fixtures)...
+                                     Benchmark Results                                     
+┏━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃             ┃           ┃      Import (3 ┃   Runtime API ┃             ┃                ┃
+┃ Package     ┃ Available ┃          runs) ┃  (real probe) ┃ Memory (KB) ┃ Notes          ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ ruff        │     ✓     │         0.7 ms │  UNMEASURED — │         121 │ import module: │
+│             │           │                │            no │             │ ruff           │
+│             │           │                │ noqa_detecti… │             │                │
+│             │           │                │ implementati… │             │                │
+│             │           │                │ is registered │             │                │
+│             │           │                │      for ruff │             │                │
+│ flake8      │     ✓     │         2.0 ms │  UNMEASURED — │         459 │ import module: │
+│             │           │                │            no │             │ flake8         │
+│             │           │                │ noqa_detecti… │             │                │
+│             │           │                │ implementati… │             │                │
+│             │           │                │ is registered │             │                │
+│             │           │                │    for flake8 │             │                │
+│ pep8        │     ✓     │         5.3 ms │      0.000 ms │         814 │ import module: │
+│             │           │                │      median / │             │ pep8           │
+│             │           │                │  0.000 ms p95 │             │                │
+│             │           │                │ (call:noqa_d… │             │                │
+│ pycodestyle │     ✓     │         5.4 ms │      0.000 ms │         652 │ import module: │
+│             │           │                │      median / │             │ pycodestyle    │
+│             │           │                │  0.000 ms p95 │             │                │
+│             │           │                │ (call:noqa_d… │             │                │
+└─────────────┴───────────┴────────────────┴───────────────┴─────────────┴────────────────┘
+
+✓ Profiled 4 package(s), 4 available, 2 with measured runtime probes, 2 explicitly 
+unmeasured
+
+─────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: e801790e
+  API compat tokens — input: 173  output: 54  latency: 599ms
+                               AXIOM Optimization Decisions                                
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Origin… ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Python   │ pep8    │ ruff   │ HIGH  │ 1.0   │ 1.0    │ 1.0      │ 0.0 │ 0.812 │ ✓       │
+│ style    │         │        │       │       │        │          │     │       │         │
+│ guide    │         │        │       │       │        │          │     │       │         │
+│ checker  │         │        │       │       │        │          │     │       │         │
+│ / linter │         │        │       │       │        │          │     │       │         │
+│ plugin   │         │        │       │       │        │          │     │       │         │
+│ base     │         │        │       │       │        │          │     │       │         │
+└──────────┴─────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pep8  →  ruff  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────
+
+Analyzing: pep8 → ruff
+  Found 1 call site(s):
+    L12: if pep8.noqa(physical_line):
+  Tokens — in:1,173 out:178 latency:3210ms
+  ⚠ connector analysis cited unselected candidate(s) pycodestyle while the locked target is
+ruff (import ruff); rejecting this analysis.
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector
+diagnostic: connector analysis cited unselected candidate(s) pycodestyle while the locked 
+target is ruff (import ruff)
+↩ Repair cycle 1/5 → Axiom (decision_level): line 1: pep8→ruff: connector analysis cited 
+unselected candidate(s) pycodestyle while the locked target is ruff (import ruff)
+─────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: e801790e
+↩ Re-scoring after verifier rejection — excluded candidates: {'Python style guide checker /
+linter plugin base': ['ruff']}
+↩ Repair cycle 1/5: AXIOM received verifier evidence — pep8→ruff: connector analysis cited 
+unselected candidate(s) pycodestyle while the locked target is ruff (import ruff)
+  Verifier veto: excluded ruff from 'Python style guide checker / linter plugin base' 
+(failed verification on a prior pass)
+  API compat tokens — input: 169  output: 44  latency: 714ms
+                               AXIOM Optimization Decisions                                
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role     ┃ Origin… ┃ Winner ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Python   │ pep8    │ flake8 │ HIGH  │ 1.0   │ 1.0    │ 0.895    │ 0.0 │ 0.786 │ ✓       │
+│ style    │         │        │       │       │        │          │     │       │         │
+│ guide    │         │        │       │       │        │          │     │       │         │
+│ checker  │         │        │       │       │        │          │     │       │         │
+│ / linter │         │        │       │       │        │          │     │       │         │
+│ plugin   │         │        │       │       │        │          │     │       │         │
+│ base     │         │        │       │       │        │          │     │       │         │
+└──────────┴─────────┴────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  pep8  →  flake8  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────── 🔌 Connector Agent — Inline I/O Transformer ───────────────────────
+
+Analyzing: pep8 → flake8
+  Found 1 call site(s):
+    L12: if pep8.noqa(physical_line):
+  Tokens — in:1,175 out:130 latency:1015ms
+  ⚠ connector analysis cited unselected candidate(s) pycodestyle while the locked target is
+flake8 (import flake8); rejecting this analysis.
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+─────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────
+AXIOM selected a replacement but Connector/AST rewrite produced no source change. Connector
+diagnostic: connector analysis cited unselected candidate(s) pycodestyle while the locked 
+target is flake8 (import flake8)
+↩ Repair cycle 2/5 → Axiom (decision_level): line 1: pep8→flake8: connector analysis cited 
+unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)
+─────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: e801790e
+↩ Re-scoring after verifier rejection — excluded candidates: {'Python style guide checker /
+linter plugin base': ['ruff', 'flake8']}
+↩ Repair cycle 2/5: AXIOM received verifier evidence — pep8→flake8: connector analysis 
+cited unselected candidate(s) pycodestyle while the locked target is flake8 (import flake8)
+  Verifier veto: excluded flake8, ruff from 'Python style guide checker / linter plugin 
+base' (failed verification on a prior pass)
+  API compat tokens — input: 164  output: 33  latency: 665ms
+                               AXIOM Optimization Decisions                                
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━┓
+┃ Role    ┃ Origin… ┃ Winner  ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Instal… ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━┩
+│ Python  │ pep8    │ pycode… │ HIGH  │ 0.999 │ 1.0    │ 0.895    │ 1.0 │ 0.973 │ ✓       │
+│ style   │         │         │       │       │        │          │     │       │         │
+│ guide   │         │         │       │       │        │          │     │       │         │
+│ checker │         │         │       │       │        │          │     │       │         │
+│ /       │         │         │       │       │        │          │     │       │         │
+│ linter  │         │         │       │       │        │          │     │       │         │
+│ plugin  │         │         │       │       │        │          │     │       │         │
+│ base    │         │         │       │       │        │          │     │       │         │
+└─────────┴─────────┴─────────┴───────┴───────┴────────┴──────────┴─────┴───────┴─────────┘
+
+Drop-in import patches (no connector needed):
+  pep8  →  pycodestyle
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                          Stage 1 — Differential Static Analysis                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check                  ┃       Baseline        ┃   Patched    ┃ Detail                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax                 │         PASS          │     PASS     │                         │
+│ Pylint (errors)        │         PASS          │     PASS     │ []                      │
+│ Bandit                 │         PASS          │     PASS     │ {                       │
+│                        │                       │              │   "errors": [],         │
+│                        │                       │              │   "generated_at":       │
+│                        │                       │              │ "2026-07-26T23:09:37Z", │
+│                        │                       │              │   "metrics": {          │
+│                        │                       │              │     "/var/folders/_4/t… │
+│ Mypy (untyped defs)    │     2 finding(s)      │ 2 finding(s) │ /var/folders/_4/t4jxnl… │
+│                        │                       │              │ er                      │
+│ Patch integrity        │           —           │     PASS     │                         │
+│ Adapter contracts      │           —           │     PASS     │                         │
+│ Stale source symbols   │           —           │     PASS     │                         │
+│ Referenced target APIs │           —           │     PASS     │ No statically           │
+│                        │                       │              │ referenced rewritten    │
+│                        │                       │              │ module symbols to       │
+│                        │                       │              │ probe.                  │
+│ New static findings    │ baseline is reference │     PASS     │                         │
+│ Import smoke test      │         PASS          │     PASS     │ Exited cleanly.         │
+└────────────────────────┴───────────────────────┴──────────────┴─────────────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: e801790e
+
+Evaluation took 58.8s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Terminal pipeline/provider failures: 0
+Resolver detection rate:     100.0%  (n=1)
+Target selection rate:        0.0%  (n=1; selection only)
+Verified exact PyMigBench migrations: 100.0%  (1/1)
+Verification environments incomplete: 0
+Proven target-infeasible migrations: 0
+Verified exact among deterministic patch verdicts: 100.0%  (n=1)
+Verified alternatives (not scored as exact target): 0
+Connector invoked on:        1 case(s)
+Verifier repair cycles:      2 across 1 case(s)
+Verified after repair:       1  (budget exhausted: 0)
+Verifier accepted (differential): 100.0%  (n=1)
+Real runtime-probe coverage: 50.0%  (2/4 package-case profiles; 2 measured probe(s))
+              Publication Outcome Categories              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Category                                       ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Verified exact PyMigBench migration            │     1 │
+│ Verified alternative (see efficiency evidence) │     0 │
+│ Rejected after repair budget                   │     0 │
+│ Not verified / not adjudicated                 │     0 │
+└────────────────────────────────────────────────┴───────┘
+        Terminal Outcomes        
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Outcome               ┃ Cases ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ ground_truth_verified │     1 │
+└───────────────────────┴───────┘
+       Detection / Verified Exact Rate by Domain       
+┏━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain    ┃ Cases ┃ Detection Rate ┃ Verified Exact ┃
+┡━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ Codestyle │     1 │         100.0% │         100.0% │
+└───────────┴───────┴────────────────┴────────────────┘
+
+✓ Report written: pymigbench_pep8_runtime_policy.json, pymigbench_pep8_runtime_policy.csv

@@ -1,0 +1,811 @@
+
+
+   █████╗ ██╗  ██╗██╗ ██████╗ ███╗   ███╗
+  ██╔══██╗╚██╗██╔╝██║██╔═══██╗████╗ ████║
+  ███████║ ╚███╔╝ ██║██║   ██║██╔████╔██║
+  ██╔══██║ ██╔██╗ ██║██║   ██║██║╚██╔╝██║
+  ██║  ██║██╔╝ ██╗██║╚██████╔╝██║ ╚═╝ ██║
+  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝     ╚═╝
+
+  Adaptive eXecution & Import Optimization Module
+  Multi-Agent OS-Loader Simulation · LangGraph + Ollama/Claude
+
+Loaded 321 migrations from PyMigBench.
+Reached --max-cases=1, stopping collection.
+Built 1 evaluable case(s).
+→ [1/1] svenskaspel/locust-plugins  kafka→confluent-kafka  (locust_plugins/kafka.py)
+───────────────────────────────────────────────────────────── 🔍 Parser Agent ──────────────────────────────────────────────────────────────
+Resolved path: /private/tmp/tmp438tqbgk_kafka.py
+                         Discovered Imports                         
+┏━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module           ┃ Alias ┃ Names         ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    2 │ time             │ —     │ —             │ time           │
+│    3 │ kafka            │ —     │ KafkaProducer │ KafkaProducer  │
+│    4 │ locust           │ —     │ Locust        │ constant       │
+│    5 │ locust.wait_time │ —     │ constant      │ constant       │
+└──────┴──────────────────┴───────┴───────────────┴────────────────┘
+
+✓ Found 4 imports
+
+──────────────────────────────────────────────────────────── 🔒 Security Agent ─────────────────────────────────────────────────────────────
+Scanning 3 package(s) via OSV + PyPI...
+
+                                      Security Scan Results                                       
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                     ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ locust  │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ time    │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+│ kafka   │ unknown │    0 │ LOW  │       1.00 │      0.20 │    0.76 │ 📅 Not updated in 27y 4mo │
+└─────────┴─────────┴──────┴──────┴────────────┴───────────┴─────────┴───────────────────────────┘
+
+✓ No critical vulnerabilities found
+──────────────────────────────────────────────────────────── 🔗 Resolver Agent ─────────────────────────────────────────────────────────────
+Discovering alternative libraries for: kafka, locust
+Discovered candidates:
+  kafka -> confluent-kafka, aiokafka, faust-streaming
+Querying NVIDIA / nvidia/nemotron-3-ultra-550b-a55b...
+Tokens — input: 1,893  output: 243  latency: 5796ms
+Equivalence Groups Found
+└── Kafka producer client
+    ├── Candidates : kafka, confluent-kafka
+    ├── Used APIs  : KafkaProducer, send, flush, add_callback, add_errback
+    ├── Pitfalls   : confluent-kafka uses librdkafka (C library) requiring system dependencies; confluent-kafka Producer.poll() must be 
+    │   called periodically for callbacks to fire; the current callback-only pattern may need a poll loop; Different configuration parameter
+    │   names (e.g., 'bootstrap.servers' vs 'bootstrap_servers'); confluent-kafka's delivery reports use a different callback signature 
+    │   (err, msg) vs kafka-python's (record_metadata)
+    ├── Constraints: requires_connector
+    └── The code uses kafka.KafkaProducer for synchronous message production with callback-based async handling. confluent-kafka provides a 
+        compatible Producer API with similar send/flush semantics and callback support, making it a viable drop-in replacement for the same 
+        synchronous producer role.
+
+✓ 1 equivalence group(s) found
+
+────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ──────────────────────────────────────────────────────
+Scanning candidate 1 package(s) via OSV + PyPI...
+
+           Candidate Security Scan            
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃ Package         ┃ Version ┃ Risk ┃ Overall ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ confluent-kafka │ unknown │ LOW  │    0.76 │
+└─────────────────┴─────────┴──────┴─────────┘
+
+✓ Scanned 1 candidate package(s)
+
+──────────────────────────────────────────────────────────── ⚡ Profiler Agent ─────────────────────────────────────────────────────────────
+Probing 2 package(s) across 1 group(s)...
+
+Using a disposable virtual environment; installed packages will be removed after probing.
+                                                   Benchmark Results                                                    
+┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package         ┃ Available ┃ Import (3 runs) ┃ Runtime API ┃ Memory (KB) ┃ Notes                                    ┃
+┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ confluent-kafka │     ✓     │        114.0 ms │           — │         295 │ import module: confluent_kafka           │
+│ kafka           │     ✗     │               — │           — │           — │ No module named 'kafka.vendor.six.moves' │
+└─────────────────┴───────────┴─────────────────┴─────────────┴─────────────┴──────────────────────────────────────────┘
+
+✓ Profiled 2 package(s), 1 available, 0 with runtime benchmarks
+
+──────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ────────────────────────────────────────
+Provider: NVIDIA / nvidia/nemotron-3-ultra-550b-a55b  |  Session: 9d47c9f4
+  Not installed locally (scoring with neutral placeholders, not excluded): kafka
+  API compat tokens — input: 232  output: 64  latency: 1130ms
+                                            AXIOM Optimization Decisions                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                  ┃ Original ┃ Winner          ┃ Conf. ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ Kafka producer client │ kafka    │ confluent-kafka │ HIGH  │ 1.0   │ 1.0    │ 0.76     │ 0.3 │ 0.847 │ ✓          │
+└───────────────────────┴──────────┴─────────────────┴───────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  kafka  →  confluent-kafka  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+
+Analyzing: kafka → confluent-kafka
+  Found 1 call site(s):
+    L29: self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)
+  Tokens — in:1,397 out:915 latency:32058ms
+
+  Compatibility analysis:
+    ✗ L29: KafkaProducer(bootstrap_servers=bootstrap_servers, value_ser  — confluent-kafka uses 'bootstrap.servers' (dot notation) instead 
+of 'bootstrap_se
+    ✗ L40: self.producer.send(topic, key=key, value=message)  — confluent-kafka's Producer.produce() is non-blocking and returns None (not a
+Fut
+    ✗ L41: future.add_callback(self.__handle_success, start_time, topic  — confluent-kafka does not return a Future from produce(); 
+callbacks are registere
+    ✗ L42: future.add_errback(self.__handle_failure, start_time, topic=  — confluent-kafka does not return a Future from produce(); error 
+callbacks are han
+    ✗ L47: record_metadata.serialized_value_size  — confluent-kafka's delivery callback receives a Message object (msg) on success, 
+    ✗ L33: self.client.producer.flush(timeout=5)  — confluent-kafka's Producer.flush() accepts timeout in seconds (float), which mat
+
+  6 call site(s) need a wrapper:
+    _create_confluent_producer  L29: Create a confluent_kafka.Producer with config mapping bootstrap_server
+    _confluent_send_wrapper  L40: Wrap produce() to accept key, value, topic; serialize value using stor
+    _confluent_send_wrapper  L41: Handle success callback registration internally within the send wrappe
+    _confluent_send_wrapper  L42: Handle error callback registration internally within the send wrapper 
+    _confluent_send_wrapper  L47: In the on_delivery success path, extract message size from msg.len() o
+    _confluent_flush_wrapper  L33: Wrap flush() to call poll(0) in a loop until all messages are delivere
+  Opening ACI edit session for kafka → confluent-kafka...
+  ACI session: 2 edit(s) applied over 4 tool call(s)  |  tokens in:13,411 out:3,551
+    · open(line_number=...)
+    · edit(end_line=..., start_line=..., replacement_text=...)
+    · edit(end_line=..., replacement_text=..., start_line=...)
+  ✓ ACI edit session complete — 6 wrapper(s) injected.
+╭───────────────────────────────────────────────── Patched Source (with inline adapters) ──────────────────────────────────────────────────╮
+│     1 # inspired by https://medium.com/locust-io-experiments/locust-experiments-locust-meets-kafka-b9d9e6e49537                          │
+│     2 import time                                                                                                                        │
+│     3 from confluent_kafka import Producer                                                                                               │
+│     4 from locust import Locust                                                                                                          │
+│     5 from locust.wait_time import constant                                                                                              │
+│     6                                                                                                                                    │
+│     7                                                                                                                                    │
+│     8 def _create_confluent_producer(bootstrap_servers, value_serializer):                                                               │
+│     9     """                                                                                                                            │
+│    10     Create a confluent_kafka.Producer with config mapping bootstrap_servers -> bootstrap.servers,                                  │
+│    11     and return a wrapper object that provides a send() method accepting value_serializer                                           │
+│    12     to serialize messages before calling produce().                                                                                │
+│    13                                                                                                                                    │
+│    14     kafka-python's KafkaProducer accepts bootstrap_servers and value_serializer as parameters.                                     │
+│    15     confluent-kafka's Producer expects a config dict with 'bootstrap.servers' key.                                                 │
+│    16     This wrapper maps the parameters and stores the serializer for use in send().                                                  │
+│    17     """                                                                                                                            │
+│    18     config = {"bootstrap.servers": bootstrap_servers}                                                                              │
+│    19     producer = Producer(config)                                                                                                    │
+│    20                                                                                                                                    │
+│    21     class ProducerWrapper:                                                                                                         │
+│    22         def __init__(self, producer, value_serializer):                                                                            │
+│    23             self._producer = producer                                                                                              │
+│    24             self._value_serializer = value_serializer                                                                              │
+│    25                                                                                                                                    │
+│    26         def send(self, topic, key=None, value=None):                                                                               │
+│    27             """                                                                                                                    │
+│    28             Serialize value using stored serializer and call produce() with on_delivery callback.                                  │
+│    29             Returns a future-like object compatible with kafka-python's Future interface.                                          │
+│    30             """                                                                                                                    │
+│    31             # Serialize the value if a serializer is provided                                                                      │
+│    32             if self._value_serializer and value is not None:                                                                       │
+│    33                 serialized_value = self._value_serializer(value)                                                                   │
+│    34             else:                                                                                                                  │
+│    35                 serialized_value = value                                                                                           │
+│    36                                                                                                                                    │
+│    37             # Serialize key if provided                                                                                            │
+│    38             if key is not None and isinstance(key, str):                                                                           │
+│    39                 key = key.encode("utf-8")                                                                                          │
+│    40                                                                                                                                    │
+│    41             # Create a future-like object to match kafka-python's interface                                                        │
+│    42             from concurrent.futures import Future                                                                                  │
+│    43                                                                                                                                    │
+│    44             future = Future()                                                                                                      │
+│    45                                                                                                                                    │
+│    46             def on_delivery(err, msg):                                                                                             │
+│    47                 if err is not None:                                                                                                │
+│    48                     future.set_exception(err)                                                                                      │
+│    49                 else:                                                                                                              │
+│    50                     future.set_result(msg)                                                                                         │
+│    51                                                                                                                                    │
+│    52             self._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                │
+│    53             return future                                                                                                          │
+│    54                                                                                                                                    │
+│    55         def flush(self, timeout=None):                                                                                             │
+│    56             """Flush the producer, polling for delivery reports."""                                                                │
+│    57             return self._producer.flush(timeout=timeout)                                                                           │
+│    58                                                                                                                                    │
+│    59     return ProducerWrapper(producer, value_serializer)                                                                             │
+│    60                                                                                                                                    │
+│    61                                                                                                                                    │
+│    62 def _confluent_send_wrapper(producer, topic, key, value, value_serializer, on_success, on_failure, start_time, response_length=Non │
+│    63     """                                                                                                                            │
+│    64     Wrap produce() to accept key, value, topic; serialize value using stored serializer;                                           │
+│    65     call produce() with on_delivery callback that translates (err, msg) to success/failure                                         │
+│    66     events matching the original Future callback interface.                                                                        │
+│    67                                                                                                                                    │
+│    68     kafka-python's Future.add_callback/add_errback pattern is replaced by confluent-kafka's                                        │
+│    69     on_delivery callback with signature (err, msg). This wrapper handles the translation:                                          │
+│    70     - On success (err is None): calls on_success with record_metadata (msg)                                                        │
+│    71     - On failure (err is not None): calls on_failure with exception (err)                                                          │
+│    72                                                                                                                                    │
+│    73     Also extracts message size from msg.len() or len(msg.value()) for response_length.                                             │
+│    74     """                                                                                                                            │
+│    75     # Serialize the value if a serializer is provided                                                                              │
+│    76     if value_serializer and value is not None:                                                                                     │
+│    77         serialized_value = value_serializer(value)                                                                                 │
+│    78     else:                                                                                                                          │
+│    79         serialized_value = value                                                                                                   │
+│    80                                                                                                                                    │
+│    81     # Serialize key if provided                                                                                                    │
+│    82     if key is not None and isinstance(key, str):                                                                                   │
+│    83         key = key.encode("utf-8")                                                                                                  │
+│    84                                                                                                                                    │
+│    85     def on_delivery(err, msg):                                                                                                     │
+│    86         if err is not None:                                                                                                        │
+│    87             on_failure(err, start_time, topic=topic, response_length=response_length)                                              │
+│    88         else:                                                                                                                      │
+│    89             # Extract message size from msg.len() or len(msg.value())                                                              │
+│    90             if response_length is None:                                                                                            │
+│    91                 try:                                                                                                               │
+│    92                     msg_size = msg.len()                                                                                           │
+│    93                 except Exception:                                                                                                  │
+│    94                     try:                                                                                                           │
+│    95                         msg_size = len(msg.value()) if msg.value() else 0                                                          │
+│    96                     except Exception:                                                                                              │
+│    97                         msg_size = 0                                                                                               │
+│    98             else:                                                                                                                  │
+│    99                 msg_size = response_length                                                                                         │
+│   100             on_success(start_time, msg, topic=topic, response_length=msg_size)                                                     │
+│   101                                                                                                                                    │
+│   102     producer._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                    │
+│   103                                                                                                                                    │
+│   104                                                                                                                                    │
+│   105 def _confluent_flush_wrapper(producer, timeout=5):                                                                                 │
+│   106     """                                                                                                                            │
+│   107     Wrap flush() to call poll(0) in a loop until all messages are delivered or timeout expires,                                    │
+│   108     then call the underlying flush(timeout).                                                                                       │
+│   109                                                                                                                                    │
+│   110     confluent-kafka's Producer.poll() must be called periodically for callbacks to fire.                                           │
+│   111     This wrapper ensures delivery reports are processed before flushing.                                                           │
+│   112     """                                                                                                                            │
+│   113     import time as _time                                                                                                           │
+│   114                                                                                                                                    │
+│   115     start = _time.time()                                                                                                           │
+│   116     # Poll for delivery reports until timeout or all messages delivered                                                            │
+│   117     while True:                                                                                                                    │
+│   118         # Poll with 0 timeout to process any pending callbacks                                                                     │
+│   119         producer._producer.poll(0)                                                                                                 │
+│   120         # Check if there are any messages still in flight                                                                          │
+│   121         if producer._producer.outq_len() == 0:                                                                                     │
+│   122             break                                                                                                                  │
+│   123         if timeout is not None and (_time.time() - start) >= timeout:                                                              │
+│   124             break                                                                                                                  │
+│   125     # Final flush with remaining timeout                                                                                           │
+│   126     remaining_timeout = timeout - (_time.time() - start) if timeout is not None else None                                          │
+│   127     if remaining_timeout is not None and remaining_timeout < 0:                                                                    │
+│   128         remaining_timeout = 0                                                                                                      │
+│   129     return producer._producer.flush(remaining_timeout if remaining_timeout is not None else timeout)                               │
+│   130 class KafkaLocust(Locust):                                                                                                         │
+│   131     abstract = True                                                                                                                │
+│   132     wait_time = constant(0)                                                                                                        │
+│   133     # overload these values in your subclass                                                                                       │
+│   134     bootstrap_servers = None                                                                                                       │
+│   135     value_serializer = str.encode                                                                                                  │
+│   136                                                                                                                                    │
+│   137     def __init__(self, environment):                                                                                               │
+│   138         super().__init__(environment)                                                                                              │
+│   139         self.client = KafkaClient(                                                                                                 │
+│   140             environment=environment, bootstrap_servers=self.bootstrap_servers, value_serializer=self.value_serializer              │
+│   141         )                                                                                                                          │
+│   142                                                                                                                                    │
+│   143     def teardown(self):                                                                                                            │
+│   144         # this should actually be run for every locust instead of just once, but it is better than nothing...                      │
+│   145         self.client.producer.flush(timeout=5)                                                                                      │
+│   146                                                                                                                                    │
+│   147                                                                                                                                    │
+│   148 class KafkaClient:                                                                                                                 │
+│   149     def __init__(self, *, environment, bootstrap_servers, value_serializer):                                                       │
+│   150         self.environment = environment                                                                                             │
+│   151         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)                      │
+│   152                                                                                                                                    │
+│   153     def send(self, *, topic: str, key=None, message=None, response_length=None):                                                   │
+│   154         start_time = time.time()                                                                                                   │
+│   155         future = self.producer.send(topic, key=key, value=message)                                                                 │
+│   156         future.add_callback(self.__handle_success, start_time, topic=topic, response_length=response_length)                       │
+│   157         future.add_errback(self.__handle_failure, start_time, topic=topic, response_length=response_length)                        │
+│   158                                                                                                                                    │
+│   159     def __handle_success(self, start_time, record_metadata, *, topic, response_length=None):                                       │
+│   160         self.environment.events.request_success.fire(                                                                              │
+│   161             request_type="ENQUEUE",                                                                                                │
+│   162             name=topic,                                                                                                            │
+│   163             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   164             response_length=response_length if response_length else record_metadata.serialized_value_size,                         │
+│   165         )                                                                                                                          │
+│   166                                                                                                                                    │
+│   167     def __handle_failure(self, exception, start_time, *, topic, response_length=None):                                             │
+│   168         self.environment.events.request_failure.fire(                                                                              │
+│   169             request_type="ENQUEUE",                                                                                                │
+│   170             name=topic,                                                                                                            │
+│   171             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   172             response_length=response_length,                                                                                       │
+│   173             exception=exception,                                                                                                   │
+│   174         )                                                                                                                          │
+│   175                                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                          Stage 1 — Static Analysis                           
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail                                        ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                                               │
+│ Pylint (errors)   │   0    │                                               │
+│ Bandit (med/high) │   0    │                                               │
+│ Mypy              │   0    │                                               │
+│ Import smoke test │  FAIL  │ Traceback (most recent call last):            │
+│                   │        │   File "/tmp/tmpyfl6spea.py", line 5, in <mod │
+└───────────────────┴────────┴───────────────────────────────────────────────┘
+Stage 2 — LLM review of combined evidence...
+  Verifier LLM tokens — in:3,234 out:240 latency:10491ms
+                                                     Stage 2 — LLM Verdicts                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                  ┃ Verdict         ┃ Confidence ┃ Reasoning                                                              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Kafka producer client │ WRAPPER_FIXABLE │ HIGH       │ The smoke test fails because the patched source imports `from locust.w │
+└───────────────────────┴─────────────────┴────────────┴────────────────────────────────────────────────────────────────────────┘
+↩ Routing back to connector_agent — wrapper bug(s) (retry 1/2): Kafka producer client: ImportError: cannot import name 'constant' from 
+'locust.wait_time' (most likely Locust version >= 2.0 where `constant` lives in `locust` or `locust.wait_time` is not a module). Fix the 
+import to `from locust import constant` or `from locust.wait_time import constant` only if that submodule exists in the pinned Locust 
+version.
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+↩ Retrying with verifier feedback: Kafka producer client: ImportError: cannot import name 'constant' from 'locust.wait_time' (most likely 
+Locust version >= 2.0 where `constant` lives in `locust` or `locust.wait_time` is not a module). 
+
+Analyzing: kafka → confluent-kafka
+  Found 1 call site(s):
+    L29: self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)
+  Tokens — in:2,607 out:200 latency:3772ms
+
+  Compatibility analysis:
+    ✗ L29: KafkaProducer(bootstrap_servers=bootstrap_servers, value_ser  — kafka-python's KafkaProducer accepts bootstrap_servers 
+(string/list) and value_s
+
+  1 call site(s) need a wrapper:
+    _create_confluent_producer  L29: Map bootstrap_servers to config['bootstrap.servers'], instantiate conf
+  Opening ACI edit session for kafka → confluent-kafka...
+  ACI session: 1 edit(s) applied over 9 tool call(s)  |  tokens in:42,742 out:836
+    · open(line_number=...)
+    · scroll_down()
+    · scroll_down()
+    · scroll_down()
+    · edit(end_line=..., start_line=..., replacement_text=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · scroll_down(start_line=...)
+    · open(line_number=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+╭───────────────────────────────────────────────── Patched Source (with inline adapters) ──────────────────────────────────────────────────╮
+│     1 # inspired by https://medium.com/locust-io-experiments/locust-experiments-locust-meets-kafka-b9d9e6e49537                          │
+│     2 import time                                                                                                                        │
+│     3 from confluent_kafka import Producer                                                                                               │
+│     4 from locust import Locust, constant                                                                                                │
+│     5                                                                                                                                    │
+│     6                                                                                                                                    │
+│     7 def _create_confluent_producer(bootstrap_servers, value_serializer):                                                               │
+│     8     """                                                                                                                            │
+│     9     Create a confluent_kafka.Producer with config mapping bootstrap_servers -> bootstrap.servers,                                  │
+│    10     and return a wrapper object that provides a send() method accepting value_serializer                                           │
+│    11     to serialize messages before calling produce().                                                                                │
+│    12                                                                                                                                    │
+│    13     kafka-python's KafkaProducer accepts bootstrap_servers and value_serializer as parameters.                                     │
+│    14     confluent-kafka's Producer expects a config dict with 'bootstrap.servers' key.                                                 │
+│    15     This wrapper maps the parameters and stores the serializer for use in send().                                                  │
+│    16     """                                                                                                                            │
+│    17     config = {"bootstrap.servers": bootstrap_servers}                                                                              │
+│    18     producer = Producer(config)                                                                                                    │
+│    19                                                                                                                                    │
+│    20     class ProducerWrapper:                                                                                                         │
+│    21         def __init__(self, producer, value_serializer):                                                                            │
+│    22             self._producer = producer                                                                                              │
+│    23             self._value_serializer = value_serializer                                                                              │
+│    24                                                                                                                                    │
+│    25         def send(self, topic, key=None, value=None):                                                                               │
+│    26             """                                                                                                                    │
+│    27             Serialize value using stored serializer and call produce() with on_delivery callback.                                  │
+│    28             Returns a future-like object compatible with kafka-python's Future interface.                                          │
+│    29             """                                                                                                                    │
+│    30             # Serialize the value if a serializer is provided                                                                      │
+│    31             if self._value_serializer and value is not None:                                                                       │
+│    32                 serialized_value = self._value_serializer(value)                                                                   │
+│    33             else:                                                                                                                  │
+│    34                 serialized_value = value                                                                                           │
+│    35                                                                                                                                    │
+│    36             # Serialize key if provided                                                                                            │
+│    37             if key is not None and isinstance(key, str):                                                                           │
+│    38                 key = key.encode("utf-8")                                                                                          │
+│    39                                                                                                                                    │
+│    40             # Create a future-like object to match kafka-python's interface                                                        │
+│    41             from concurrent.futures import Future                                                                                  │
+│    42                                                                                                                                    │
+│    43             future = Future()                                                                                                      │
+│    44                                                                                                                                    │
+│    45             def on_delivery(err, msg):                                                                                             │
+│    46                 if err is not None:                                                                                                │
+│    47                     future.set_exception(err)                                                                                      │
+│    48                 else:                                                                                                              │
+│    49                     future.set_result(msg)                                                                                         │
+│    50                                                                                                                                    │
+│    51             self._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                │
+│    52             return future                                                                                                          │
+│    53                                                                                                                                    │
+│    54         def flush(self, timeout=None):                                                                                             │
+│    55             """Flush the producer, polling for delivery reports."""                                                                │
+│    56             return self._producer.flush(timeout=timeout)                                                                           │
+│    57                                                                                                                                    │
+│    58     return ProducerWrapper(producer, value_serializer)                                                                             │
+│    59                                                                                                                                    │
+│    60                                                                                                                                    │
+│    61 def _confluent_send_wrapper(producer, topic, key, value, value_serializer, on_success, on_failure, start_time, response_length=Non │
+│    62     """                                                                                                                            │
+│    63     Wrap produce() to accept key, value, topic; serialize value using stored serializer;                                           │
+│    64     call produce() with on_delivery callback that translates (err, msg) to success/failure                                         │
+│    65     events matching the original Future callback interface.                                                                        │
+│    66                                                                                                                                    │
+│    67     kafka-python's Future.add_callback/add_errback pattern is replaced by confluent-kafka's                                        │
+│    68     on_delivery callback with signature (err, msg). This wrapper handles the translation:                                          │
+│    69     - On success (err is None): calls on_success with record_metadata (msg)                                                        │
+│    70     - On failure (err is not None): calls on_failure with exception (err)                                                          │
+│    71                                                                                                                                    │
+│    72     Also extracts message size from msg.len() or len(msg.value()) for response_length.                                             │
+│    73     """                                                                                                                            │
+│    74     # Serialize the value if a serializer is provided                                                                              │
+│    75     if value_serializer and value is not None:                                                                                     │
+│    76         serialized_value = value_serializer(value)                                                                                 │
+│    77     else:                                                                                                                          │
+│    78         serialized_value = value                                                                                                   │
+│    79                                                                                                                                    │
+│    80     # Serialize key if provided                                                                                                    │
+│    81     if key is not None and isinstance(key, str):                                                                                   │
+│    82         key = key.encode("utf-8")                                                                                                  │
+│    83                                                                                                                                    │
+│    84     def on_delivery(err, msg):                                                                                                     │
+│    85         if err is not None:                                                                                                        │
+│    86             on_failure(err, start_time, topic=topic, response_length=response_length)                                              │
+│    87         else:                                                                                                                      │
+│    88             # Extract message size from msg.len() or len(msg.value())                                                              │
+│    89             if response_length is None:                                                                                            │
+│    90                 try:                                                                                                               │
+│    91                     msg_size = msg.len()                                                                                           │
+│    92                 except Exception:                                                                                                  │
+│    93                     try:                                                                                                           │
+│    94                         msg_size = len(msg.value()) if msg.value() else 0                                                          │
+│    95                     except Exception:                                                                                              │
+│    96                         msg_size = 0                                                                                               │
+│    97             else:                                                                                                                  │
+│    98                 msg_size = response_length                                                                                         │
+│    99             on_success(start_time, msg, topic=topic, response_length=msg_size)                                                     │
+│   100                                                                                                                                    │
+│   101     producer._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                    │
+│   102                                                                                                                                    │
+│   103                                                                                                                                    │
+│   104 def _confluent_flush_wrapper(producer, timeout=5):                                                                                 │
+│   105     """                                                                                                                            │
+│   106     Wrap flush() to call poll(0) in a loop until all messages are delivered or timeout expires,                                    │
+│   107     then call the underlying flush(timeout).                                                                                       │
+│   108                                                                                                                                    │
+│   109     confluent-kafka's Producer.poll() must be called periodically for callbacks to fire.                                           │
+│   110     This wrapper ensures delivery reports are processed before flushing.                                                           │
+│   111     """                                                                                                                            │
+│   112     import time as _time                                                                                                           │
+│   113                                                                                                                                    │
+│   114     start = _time.time()                                                                                                           │
+│   115     # Poll for delivery reports until timeout or all messages delivered                                                            │
+│   116     while True:                                                                                                                    │
+│   117         # Poll with 0 timeout to process any pending callbacks                                                                     │
+│   118         producer._producer.poll(0)                                                                                                 │
+│   119         # Check if there are any messages still in flight                                                                          │
+│   120         if producer._producer.outq_len() == 0:                                                                                     │
+│   121             break                                                                                                                  │
+│   122         if timeout is not None and (_time.time() - start) >= timeout:                                                              │
+│   123             break                                                                                                                  │
+│   124     # Final flush with remaining timeout                                                                                           │
+│   125     remaining_timeout = timeout - (_time.time() - start) if timeout is not None else None                                          │
+│   126     if remaining_timeout is not None and remaining_timeout < 0:                                                                    │
+│   127         remaining_timeout = 0                                                                                                      │
+│   128     return producer._producer.flush(remaining_timeout if remaining_timeout is not None else timeout)                               │
+│   129 class KafkaLocust(Locust):                                                                                                         │
+│   130     abstract = True                                                                                                                │
+│   131     wait_time = constant(0)                                                                                                        │
+│   132     # overload these values in your subclass                                                                                       │
+│   133     bootstrap_servers = None                                                                                                       │
+│   134     value_serializer = str.encode                                                                                                  │
+│   135                                                                                                                                    │
+│   136     def __init__(self, environment):                                                                                               │
+│   137         super().__init__(environment)                                                                                              │
+│   138         self.client = KafkaClient(                                                                                                 │
+│   139             environment=environment, bootstrap_servers=self.bootstrap_servers, value_serializer=self.value_serializer              │
+│   140         )                                                                                                                          │
+│   141                                                                                                                                    │
+│   142     def teardown(self):                                                                                                            │
+│   143         # this should actually be run for every locust instead of just once, but it is better than nothing...                      │
+│   144         self.client.producer.flush(timeout=5)                                                                                      │
+│   145                                                                                                                                    │
+│   146                                                                                                                                    │
+│   147 class KafkaClient:                                                                                                                 │
+│   148     def __init__(self, *, environment, bootstrap_servers, value_serializer):                                                       │
+│   149         self.environment = environment                                                                                             │
+│   150         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)                      │
+│   151                                                                                                                                    │
+│   152     def send(self, *, topic: str, key=None, message=None, response_length=None):                                                   │
+│   153         start_time = time.time()                                                                                                   │
+│   154         future = self.producer.send(topic, key=key, value=message)                                                                 │
+│   155         future.add_callback(self.__handle_success, start_time, topic=topic, response_length=response_length)                       │
+│   156         future.add_errback(self.__handle_failure, start_time, topic=topic, response_length=response_length)                        │
+│   157                                                                                                                                    │
+│   158     def __handle_success(self, start_time, record_metadata, *, topic, response_length=None):                                       │
+│   159         self.environment.events.request_success.fire(                                                                              │
+│   160             request_type="ENQUEUE",                                                                                                │
+│   161             name=topic,                                                                                                            │
+│   162             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   163             response_length=response_length if response_length else record_metadata.serialized_value_size,                         │
+│   164         )                                                                                                                          │
+│   165                                                                                                                                    │
+│   166     def __handle_failure(self, exception, start_time, *, topic, response_length=None):                                             │
+│   167         self.environment.events.request_failure.fire(                                                                              │
+│   168             request_type="ENQUEUE",                                                                                                │
+│   169             name=topic,                                                                                                            │
+│   170             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   171             response_length=response_length,                                                                                       │
+│   172             exception=exception,                                                                                                   │
+│   173         )                                                                                                                          │
+│   174                                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+                          Stage 1 — Static Analysis                           
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail                                        ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                                               │
+│ Pylint (errors)   │   0    │                                               │
+│ Bandit (med/high) │   0    │                                               │
+│ Mypy              │   0    │                                               │
+│ Import smoke test │  FAIL  │ Traceback (most recent call last):            │
+│                   │        │   File "/tmp/tmpipnnahqm.py", line 129, in <m │
+└───────────────────┴────────┴───────────────────────────────────────────────┘
+Stage 2 — LLM review of combined evidence...
+  Verifier LLM tokens — in:3,242 out:194 latency:4610ms
+                                                     Stage 2 — LLM Verdicts                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Role                  ┃ Verdict         ┃ Confidence ┃ Reasoning                                                              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Kafka producer client │ WRAPPER_FIXABLE │ HIGH       │ The smoke test fails because the patched code imports `Locust` from `l │
+└───────────────────────┴─────────────────┴────────────┴────────────────────────────────────────────────────────────────────────┘
+↩ Routing back to connector_agent — wrapper bug(s) (retry 2/2): Kafka producer client: ImportError: The Locust class has been renamed to 
+User in version 1.0. Fix: change `from locust import Locust, constant` to `from locust import User as Locust, constant` (or update the class
+inheritance to `class KafkaLocust(User):`).
+─────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ────────────────────────────────────────────────
+↩ Retrying with verifier feedback: Kafka producer client: ImportError: The Locust class has been renamed to User in version 1.0. Fix: change
+`from locust import Locust, constant` to `from locust import User as Locust, constant` (or upd
+
+Analyzing: kafka → confluent-kafka
+  Found 1 call site(s):
+    L29: self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)
+  Tokens — in:2,578 out:202 latency:14384ms
+
+  Compatibility analysis:
+    ✗ L29: KafkaProducer(bootstrap_servers=bootstrap_servers, value_ser  — kafka-python's KafkaProducer is being used but the import is from
+confluent_kafk
+
+  1 call site(s) need a wrapper:
+    _create_confluent_producer  L29: Already implemented: maps bootstrap_servers to bootstrap.servers confi
+  Opening ACI edit session for kafka → confluent-kafka...
+  ACI session: 1 edit(s) applied over 9 tool call(s)  |  tokens in:42,714 out:723
+    · open(line_number=...)
+    · scroll_down()
+    · scroll_down()
+    · scroll_down()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · edit(end_line=..., start_line=..., replacement_text=...)
+    · scroll_down(start_line=...)
+    · scroll_down()
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+╭───────────────────────────────────────────────── Patched Source (with inline adapters) ──────────────────────────────────────────────────╮
+│     1 # inspired by https://medium.com/locust-io-experiments/locust-experiments-locust-meets-kafka-b9d9e6e49537                          │
+│     2 import time                                                                                                                        │
+│     3 from confluent_kafka import Producer                                                                                               │
+│     4 from locust import User as Locust, constant                                                                                        │
+│     5                                                                                                                                    │
+│     6                                                                                                                                    │
+│     7 def _create_confluent_producer(bootstrap_servers, value_serializer):                                                               │
+│     8     """                                                                                                                            │
+│     9     Create a confluent_kafka.Producer with config mapping bootstrap_servers -> bootstrap.servers,                                  │
+│    10     and return a wrapper object that provides a send() method accepting value_serializer                                           │
+│    11     to serialize messages before calling produce().                                                                                │
+│    12                                                                                                                                    │
+│    13     kafka-python's KafkaProducer accepts bootstrap_servers and value_serializer as parameters.                                     │
+│    14     confluent-kafka's Producer expects a config dict with 'bootstrap.servers' key.                                                 │
+│    15     This wrapper maps the parameters and stores the serializer for use in send().                                                  │
+│    16     """                                                                                                                            │
+│    17     config = {"bootstrap.servers": bootstrap_servers}                                                                              │
+│    18     producer = Producer(config)                                                                                                    │
+│    19                                                                                                                                    │
+│    20     class ProducerWrapper:                                                                                                         │
+│    21         def __init__(self, producer, value_serializer):                                                                            │
+│    22             self._producer = producer                                                                                              │
+│    23             self._value_serializer = value_serializer                                                                              │
+│    24                                                                                                                                    │
+│    25         def send(self, topic, key=None, value=None):                                                                               │
+│    26             """                                                                                                                    │
+│    27             Serialize value using stored serializer and call produce() with on_delivery callback.                                  │
+│    28             Returns a future-like object compatible with kafka-python's Future interface.                                          │
+│    29             """                                                                                                                    │
+│    30             # Serialize the value if a serializer is provided                                                                      │
+│    31             if self._value_serializer and value is not None:                                                                       │
+│    32                 serialized_value = self._value_serializer(value)                                                                   │
+│    33             else:                                                                                                                  │
+│    34                 serialized_value = value                                                                                           │
+│    35                                                                                                                                    │
+│    36             # Serialize key if provided                                                                                            │
+│    37             if key is not None and isinstance(key, str):                                                                           │
+│    38                 key = key.encode("utf-8")                                                                                          │
+│    39                                                                                                                                    │
+│    40             # Create a future-like object to match kafka-python's interface                                                        │
+│    41             from concurrent.futures import Future                                                                                  │
+│    42                                                                                                                                    │
+│    43             future = Future()                                                                                                      │
+│    44                                                                                                                                    │
+│    45             def on_delivery(err, msg):                                                                                             │
+│    46                 if err is not None:                                                                                                │
+│    47                     future.set_exception(err)                                                                                      │
+│    48                 else:                                                                                                              │
+│    49                     future.set_result(msg)                                                                                         │
+│    50                                                                                                                                    │
+│    51             self._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                │
+│    52             return future                                                                                                          │
+│    53                                                                                                                                    │
+│    54         def flush(self, timeout=None):                                                                                             │
+│    55             """Flush the producer, polling for delivery reports."""                                                                │
+│    56             return self._producer.flush(timeout=timeout)                                                                           │
+│    57                                                                                                                                    │
+│    58     return ProducerWrapper(producer, value_serializer)                                                                             │
+│    59                                                                                                                                    │
+│    60                                                                                                                                    │
+│    61 def _confluent_send_wrapper(producer, topic, key, value, value_serializer, on_success, on_failure, start_time, response_length=Non │
+│    62     """                                                                                                                            │
+│    63     Wrap produce() to accept key, value, topic; serialize value using stored serializer;                                           │
+│    64     call produce() with on_delivery callback that translates (err, msg) to success/failure                                         │
+│    65     events matching the original Future callback interface.                                                                        │
+│    66                                                                                                                                    │
+│    67     kafka-python's Future.add_callback/add_errback pattern is replaced by confluent-kafka's                                        │
+│    68     on_delivery callback with signature (err, msg). This wrapper handles the translation:                                          │
+│    69     - On success (err is None): calls on_success with record_metadata (msg)                                                        │
+│    70     - On failure (err is not None): calls on_failure with exception (err)                                                          │
+│    71                                                                                                                                    │
+│    72     Also extracts message size from msg.len() or len(msg.value()) for response_length.                                             │
+│    73     """                                                                                                                            │
+│    74     # Serialize the value if a serializer is provided                                                                              │
+│    75     if value_serializer and value is not None:                                                                                     │
+│    76         serialized_value = value_serializer(value)                                                                                 │
+│    77     else:                                                                                                                          │
+│    78         serialized_value = value                                                                                                   │
+│    79                                                                                                                                    │
+│    80     # Serialize key if provided                                                                                                    │
+│    81     if key is not None and isinstance(key, str):                                                                                   │
+│    82         key = key.encode("utf-8")                                                                                                  │
+│    83                                                                                                                                    │
+│    84     def on_delivery(err, msg):                                                                                                     │
+│    85         if err is not None:                                                                                                        │
+│    86             on_failure(err, start_time, topic=topic, response_length=response_length)                                              │
+│    87         else:                                                                                                                      │
+│    88             # Extract message size from msg.len() or len(msg.value())                                                              │
+│    89             if response_length is None:                                                                                            │
+│    90                 try:                                                                                                               │
+│    91                     msg_size = msg.len()                                                                                           │
+│    92                 except Exception:                                                                                                  │
+│    93                     try:                                                                                                           │
+│    94                         msg_size = len(msg.value()) if msg.value() else 0                                                          │
+│    95                     except Exception:                                                                                              │
+│    96                         msg_size = 0                                                                                               │
+│    97             else:                                                                                                                  │
+│    98                 msg_size = response_length                                                                                         │
+│    99             on_success(start_time, msg, topic=topic, response_length=msg_size)                                                     │
+│   100                                                                                                                                    │
+│   101     producer._producer.produce(topic, key=key, value=serialized_value, on_delivery=on_delivery)                                    │
+│   102                                                                                                                                    │
+│   103                                                                                                                                    │
+│   104 def _confluent_flush_wrapper(producer, timeout=5):                                                                                 │
+│   105     """                                                                                                                            │
+│   106     Wrap flush() to call poll(0) in a loop until all messages are delivered or timeout expires,                                    │
+│   107     then call the underlying flush(timeout).                                                                                       │
+│   108                                                                                                                                    │
+│   109     confluent-kafka's Producer.poll() must be called periodically for callbacks to fire.                                           │
+│   110     This wrapper ensures delivery reports are processed before flushing.                                                           │
+│   111     """                                                                                                                            │
+│   112     import time as _time                                                                                                           │
+│   113                                                                                                                                    │
+│   114     start = _time.time()                                                                                                           │
+│   115     # Poll for delivery reports until timeout or all messages delivered                                                            │
+│   116     while True:                                                                                                                    │
+│   117         # Poll with 0 timeout to process any pending callbacks                                                                     │
+│   118         producer._producer.poll(0)                                                                                                 │
+│   119         # Check if there are any messages still in flight                                                                          │
+│   120         if producer._producer.outq_len() == 0:                                                                                     │
+│   121             break                                                                                                                  │
+│   122         if timeout is not None and (_time.time() - start) >= timeout:                                                              │
+│   123             break                                                                                                                  │
+│   124     # Final flush with remaining timeout                                                                                           │
+│   125     remaining_timeout = timeout - (_time.time() - start) if timeout is not None else None                                          │
+│   126     if remaining_timeout is not None and remaining_timeout < 0:                                                                    │
+│   127         remaining_timeout = 0                                                                                                      │
+│   128     return producer._producer.flush(remaining_timeout if remaining_timeout is not None else timeout)                               │
+│   129 class KafkaLocust(Locust):                                                                                                         │
+│   130     abstract = True                                                                                                                │
+│   131     wait_time = constant(0)                                                                                                        │
+│   132     # overload these values in your subclass                                                                                       │
+│   133     bootstrap_servers = None                                                                                                       │
+│   134     value_serializer = str.encode                                                                                                  │
+│   135                                                                                                                                    │
+│   136     def __init__(self, environment):                                                                                               │
+│   137         super().__init__(environment)                                                                                              │
+│   138         self.client = KafkaClient(                                                                                                 │
+│   139             environment=environment, bootstrap_servers=self.bootstrap_servers, value_serializer=self.value_serializer              │
+│   140         )                                                                                                                          │
+│   141                                                                                                                                    │
+│   142     def teardown(self):                                                                                                            │
+│   143         # this should actually be run for every locust instead of just once, but it is better than nothing...                      │
+│   144         self.client.producer.flush(timeout=5)                                                                                      │
+│   145                                                                                                                                    │
+│   146                                                                                                                                    │
+│   147 class KafkaClient:                                                                                                                 │
+│   148     def __init__(self, *, environment, bootstrap_servers, value_serializer):                                                       │
+│   149         self.environment = environment                                                                                             │
+│   150         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers, value_serializer=value_serializer)                      │
+│   151                                                                                                                                    │
+│   152     def send(self, *, topic: str, key=None, message=None, response_length=None):                                                   │
+│   153         start_time = time.time()                                                                                                   │
+│   154         future = self.producer.send(topic, key=key, value=message)                                                                 │
+│   155         future.add_callback(self.__handle_success, start_time, topic=topic, response_length=response_length)                       │
+│   156         future.add_errback(self.__handle_failure, start_time, topic=topic, response_length=response_length)                        │
+│   157                                                                                                                                    │
+│   158     def __handle_success(self, start_time, record_metadata, *, topic, response_length=None):                                       │
+│   159         self.environment.events.request_success.fire(                                                                              │
+│   160             request_type="ENQUEUE",                                                                                                │
+│   161             name=topic,                                                                                                            │
+│   162             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   163             response_length=response_length if response_length else record_metadata.serialized_value_size,                         │
+│   164         )                                                                                                                          │
+│   165                                                                                                                                    │
+│   166     def __handle_failure(self, exception, start_time, *, topic, response_length=None):                                             │
+│   167         self.environment.events.request_failure.fire(                                                                              │
+│   168             request_type="ENQUEUE",                                                                                                │
+│   169             name=topic,                                                                                                            │
+│   170             response_time=int((time.time() - start_time) * 1000),                                                                  │
+│   171             response_length=response_length,                                                                                       │
+│   172             exception=exception,                                                                                                   │
+│   173         )                                                                                                                          │
+│   174                                                                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+──────────────────────────────────────────────────────────── 🛡️  Verifier Agent ────────────────────────────────────────────────────────────
+Stage 1 — static analysis (pylint / bandit / mypy) + import smoke test...
+           Stage 1 — Static Analysis            
+┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Check             ┃ Result ┃ Detail          ┃
+┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ Syntax            │   OK   │                 │
+│ Pylint (errors)   │   0    │                 │
+│ Bandit (med/high) │   0    │                 │
+│ Mypy              │   0    │                 │
+│ Import smoke test │  PASS  │ Exited cleanly. │
+└───────────────────┴────────┴─────────────────┘
+✓ Stage 1 clean and connector reports migration_feasible — skipping LLM review.
+Session saved: 9d47c9f4
+
+Evaluation took 794.0s for 1 case(s).
+
+═══ AXIOM vs PyMigBench — Evaluation Summary ═══
+Total cases:                1
+Errored (skipped):          0
+Resolver detection rate:     100.0%  (n=1)
+Full-pipeline accuracy:      100.0%  (n=1)
+Connector invoked on:        1 case(s)
+Verifier clean (no findings):  0.0%  (n=1)
+        Detection Rate by Domain         
+┏━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Domain       ┃ Cases ┃ Detection Rate ┃
+┡━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ HTTP Clients │     1 │         100.0% │
+└──────────────┴───────┴────────────────┘
+
+✓ Report written: pymigbench_connector_retry_test.json, pymigbench_connector_retry_test.csv

@@ -1,0 +1,41 @@
+# parsed 1 file(s): ['iso_ts_parser.py']
+# expected: ['iso_ts_parser.py']
+# reply length: 1443 chars
+======================================================================
+Looking at this program, it parses ISO-8601 timestamps into timezone-aware datetime objects and epoch seconds. The public API returns `datetime` objects (from the `parse` function's return type annotation), so I need a library that provides datetime-compatible objects while removing the `datetime` module dependency.
+
+`pendulum` is a good fit here - it provides a `DateTime` subclass of the standard library `datetime.datetime`, so it remains a valid return type while removing direct dependency on the `datetime` module itself in this file.
+
+### FILENAME: iso_ts_parser.py
+```python
+# CHOSEN-TARGET: pendulum
+"""iso_ts_parser -- ISO-8601 timestamp parsing for event/alarm logs.
+
+Parses ISO-8601 timestamps into timezone-aware datetimes and epoch seconds. Naive
+timestamps are assumed UTC (a common RTU convention). The parser backend is the
+
+tolerant of the trailing 'Z' zulu suffix).
+"""
+import pendulum
+from pendulum import DateTime
+
+
+def _normalize(text: str) -> str:
+
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def parse(ts: str) -> DateTime:
+    """Parse an ISO-8601 timestamp into a timezone-aware datetime (UTC if naive)."""
+    dt = pendulum.parse(_normalize(ts))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=pendulum.timezone("UTC"))
+    return dt
+
+
+def to_epoch(ts: str) -> float:
+    """Return POSIX epoch seconds for an ISO-8601 timestamp."""
+    return parse(ts).timestamp()
+```

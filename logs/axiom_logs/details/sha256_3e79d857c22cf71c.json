@@ -1,0 +1,35 @@
+{
+  "role": "HTTP client for calling external REST APIs (async alternative)",
+  "winner": "requests",
+  "original": "requests",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": 1.0,
+    "security_evidence": true,
+    "maintenance": 1.0,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 1.0,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'requests' wins 'HTTP client for calling external REST APIs (async alternative)'. Confidence: HIGH. Total: 1.0 (speed=1.0, mem=1.0, sec=1.0, api=1.0). Migration note: aiohttp requires creating and managing an aiohttp.ClientSession (typically via 'async with'), unlike the simple one-line requests.get call",
+  "confidence": "HIGH",
+  "used_apis": [
+    "requests.get(...).json()"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

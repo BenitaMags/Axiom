@@ -1,0 +1,35 @@
+--- v2_original.py
++++ v3_patched.py
+@@ -13,7 +13,7 @@
+ AXIOM should detect: json vs orjson, requests vs httpx
+
+ """
+
+ import json
+
+-import hashlib
+
++import xxhash
+
+ import datetime
+
+ import httpx
+
+ 
+
+@@ -23,7 +23,7 @@
+     Uses MD5 — not for security, just for change detection.
+
+     """
+
+     raw = json.dumps(record, sort_keys=True).encode()
+
+-    return hashlib.md5(raw).hexdigest()
+
++    return xxhash.md5(raw).hexdigest()
+
+ 
+
+ def deduplicate(records: list[dict]) -> list[dict]:
+
+     seen = set()

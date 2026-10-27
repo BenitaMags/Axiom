@@ -1,0 +1,41 @@
+"""supervisor -- boiler supervisory loop: read sensors, control, actuate.
+
+Combines all three transformations in one program:
+  * LSA + GSA: swap the Modbus library (`pymodbus` -> `minimalmodbus`) and write glue.
+  * LMA: rewrite the first-party PI-control + interlock logic in `control.py`.
+"""
+from control import BoilerControl
+from transport import ModbusIO
+
+from cycle_record import CycleRecord
+
+
+class BoilerSupervisor:
+    def __init__(self, io: ModbusIO, control: BoilerControl = None):
+        self.io = io
+        self.control = control if control is not None else BoilerControl()
+
+    def _read_sensors(self):
+        temperature = self.io.read_temperature()
+        pressure = self.io.read_pressure()
+        return temperature, pressure
+
+    def _compute_command(self, temperature, pressure, dt):
+        return self.control.step(temperature, pressure, dt=dt)
+
+    def _actuate(self, command):
+        return self.io.write_valve(command)
+
+    def cycle(self, dt: float = 1.0) -> dict:
+        """Run one supervisory cycle and return the resulting record."""
+        temperature, pressure = self._read_sensors()
+        command = self._compute_command(temperature, pressure, dt)
+        counts = self._actuate(command)
+        record = CycleRecord(
+            temperature=temperature,
+            pressure=pressure,
+            valve_pct=command,
+            valve_counts=counts,
+            tripped=self.control.tripped,
+        )
+        return record.as_dict()

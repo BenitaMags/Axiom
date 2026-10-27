@@ -1,0 +1,35 @@
+{
+  "role": "CRC-32 checksum computation",
+  "winner": "fastcrc",
+  "original": "zlib",
+  "score": {
+    "speed": 0.044,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.122,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.5,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.35,
+    "total": 0.262,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'fastcrc' wins 'CRC-32 checksum computation'. Confidence: HIGH. Total: 0.262 (speed=0.044, mem=0.122, sec=None, api=0.5). Migration note: zlib.crc32 returns a signed/unsigned value depending on Python version nuances; code masks with 0xFFFFFFFF to normalize - ensure fastcrc's output is treated the same way",
+  "confidence": "HIGH",
+  "used_apis": [
+    "crc32"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

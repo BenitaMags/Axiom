@@ -1,0 +1,211 @@
+{
+  "config": {
+    "llm": "nvidia",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "full_pipeline": true,
+    "seed_target": false,
+    "require_approval": false,
+    "auto_install": false,
+    "enable_security": true,
+    "isolated_profiling": true,
+    "verification_scope": "file-level component runtime slice: root metadata plus the migrated component's metadata; unrelated monorepo components are excluded",
+    "max_cases": 1,
+    "case_filter": ""
+  },
+  "metrics": {
+    "total_cases": 1,
+    "errored_cases": 0,
+    "detection_rate_pct": 100.0,
+    "detection_n": 1,
+    "target_selection_rate_pct": 100.0,
+    "target_selection_n": 1,
+    "verified_ground_truth_n": 0,
+    "verified_ground_truth_rate_pct": 0.0,
+    "execution_ready_n": 0,
+    "verified_ground_truth_rate_ready_pct": null,
+    "verified_alternative_n": 0,
+    "verified_incidental_migration_n": 0,
+    "outcomes": {
+      "environment_incomplete": 1
+    },
+    "connector_invoked_n": 1,
+    "verification_environment_incomplete_n": 1,
+    "verifier_clean_rate_pct": null,
+    "verifier_n": 0,
+    "repair_cases_n": 0,
+    "repair_cycle_total": 0,
+    "repair_cycles_per_case": 0.0,
+    "repair_cycles_per_repaired_case": null,
+    "verified_after_repair_n": 0,
+    "repair_budget_exhausted_n": 0,
+    "repair_routes": {},
+    "final_verifier_routes": {
+      "proceed": 1
+    },
+    "profiler_package_case_n": 3,
+    "runtime_measured_package_case_n": 0,
+    "runtime_measurement_coverage_pct": 0.0,
+    "runtime_measured_probe_n": 0,
+    "runtime_probe_status_counts": {
+      "unsupported": 2
+    },
+    "by_domain": {
+      "HTTP Clients": {
+        "n": 1,
+        "detection_rate_pct": 100.0,
+        "verified_ground_truth_rate_pct": 0.0
+      }
+    }
+  },
+  "collection": {
+    "built_cases": 1,
+    "skipped_cases": []
+  },
+  "outcome_definitions": {
+    "ground_truth_verified": "AXIOM selected PyMigBench's target and the final patch passed differential verification.",
+    "verified_alternative": "AXIOM selected a different target for the same source and the final patch passed verification; this is not automatically a better migration.",
+    "verified_incidental_migration": "A verified change affected a different source role in the same file and is not credited to this benchmark pair.",
+    "environment_incomplete": "The historical component-level base/target environment or required verifier tooling could not be reproduced; not accepted as success.",
+    "verification_rejected": "A selected migration failed a deterministic verifier guard or retry budget; not accepted as success."
+  },
+  "evidence_definitions": {
+    "repair_history": "Structured verifier feedback for each real repair cycle; route identifies the repair agent asked to act.",
+    "profiler_evidence": "Whitelisted import/memory values and runtime-probe result/provenance. Only runtime probes with status 'measured' count toward runtime coverage; unsupported, timeout, and failed probes are retained as explicit statuses."
+  },
+  "elapsed_seconds": 78.39400291442871,
+  "results": [
+    {
+      "migration_id": "kafka__confluent-kafka__svenskaspel/locust-plugins__fad53da5",
+      "repo": "svenskaspel/locust-plugins",
+      "domain": "HTTP Clients",
+      "source": "kafka",
+      "target": "confluent-kafka",
+      "file_path": "locust_plugins/kafka.py",
+      "verification_scope": "component_runtime",
+      "base_requirements": [
+        "locustio>=1.0",
+        "psycogreen",
+        "psycopg2-binary",
+        "websocket-client",
+        "python-dateutil",
+        "pymongo",
+        "kafka-python"
+      ],
+      "base_requirement_count": 7,
+      "base_requirement_recovery_errors": [],
+      "detected_group": true,
+      "recommended_target": true,
+      "scoreable_full_pipeline": true,
+      "axiom_winner": "confluent-kafka",
+      "attempted_axiom_winner": "confluent-kafka",
+      "attempted_selection_status": "exact_target",
+      "attempted_selection_count": 1,
+      "connector_ran": true,
+      "verifier_route": "proceed",
+      "repair_cycle_count": 0,
+      "repair_history": [],
+      "final_verifier_feedback": {},
+      "profiler_evidence": {
+        "confluent-kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 124.307,
+          "memory_kb": 295.0,
+          "profile_detail": "import module: confluent_kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "send",
+                "flush",
+                "add_callback",
+                "add_errback"
+              ]
+            }
+          }
+        },
+        "kafka": {
+          "available": true,
+          "profile_status": "measured",
+          "import_time_ms": 215.178,
+          "memory_kb": 8553.8,
+          "profile_detail": "import module: kafka",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {
+            "unsupported:kafkaproducer": {
+              "status": "unsupported",
+              "probe_id": "unsupported:kafkaproducer",
+              "kind": null,
+              "distribution": null,
+              "module": null,
+              "median_ms": null,
+              "p95_ms": null,
+              "runs": null,
+              "warmups": null,
+              "fixture_sha256": null,
+              "reason": "No registered side-effect-free runtime probe for KafkaProducer, send, flush, add_callback, add_errback; an integration fixture is required for network, broker, CLI, or global-state APIs.",
+              "used_apis": [
+                "KafkaProducer",
+                "send",
+                "flush",
+                "add_callback",
+                "add_errback"
+              ]
+            }
+          }
+        },
+        "locust": {
+          "available": false,
+          "profile_status": "hard_install_failure",
+          "import_time_ms": null,
+          "memory_kb": null,
+          "profile_detail": "ERROR: Cannot install locustio>=1.0 because these package versions have conflicting dependencies.\nERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts",
+          "runtime": {
+            "measured": false,
+            "selected_probe": null,
+            "probe_kind": null,
+            "median_ms": null,
+            "detail": null,
+            "measured_probe_ids": []
+          },
+          "runtime_probes": {}
+        }
+      },
+      "verifier_passed_clean": false,
+      "patch_changed": true,
+      "verification_status": "environment_incomplete",
+      "verification_environment_status": "blocked",
+      "selection_status": "exact_target",
+      "outcome": "environment_incomplete",
+      "verified_ground_truth": false,
+      "verified_alternative": false,
+      "error": "Verification environment incomplete: base-requirements: ERROR: Cannot install locustio>=1.0 because these package versions have conflicting dependencies.\nERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts\n; locust: ERROR: Cannot install locustio>=1.0 because these package versions have conflicting dependencies.\nERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts\n"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+designing 12 transformations with nvidia/openai/gpt-oss-120b, 3 implementation attempt(s) each
+direction: shrink
+corpus: /Users/benz.mags/Desktop/axiom_v2_fixed 3/ics_corpus
+
+catalogue already holds 4 transformation(s): call_argument_extraction, and_chain_nesting, demorgan_branch_swap, independent_assignment_swap
+
+[design 1/12] single_use_temp_inlining (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — crashed on pid_governor
+    impl 3/3: rejected — crashed on pid_governor
+[design 2/12] if_bool_return_simplify (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — crashed on pid_governor
+    impl 3/3: rejected — never applicable
+[design 3/12] identical_return_merge (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 4/12] identical_branch_merge (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 5/12] unreachable_code_prune (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 6/12] if_return_else_fuse (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 7/12] merge_adjacent_if_same_condition (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — crashed on pid_governor
+    impl 3/3: rejected — never applicable
+[design 8/12] else_after_return_prune (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+[design 9/12] single_iteration_for_unroll (shrink)
+    impl 1/3: rejected — never applicable
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 10/12] dead_store_eliminate (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 11/12] constant_if_eliminate (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — crashed on pid_governor
+[design 12/12] zero_iteration_loop_eliminate (shrink)
+    impl 1/3: rejected — crashed on pid_governor
+    impl 2/3: rejected — never applicable
+    impl 3/3: rejected — never applicable
+
+designed 12, accepted 0 this run; catalogue now holds 4 -> /Users/benz.mags/Desktop/axiom_v2_fixed 3/smart_loader/isomorph/generated_spts.json
+
+catalogue contents:
+  call_argument_extraction           grow     reward 0.548  Δlines +5.0  applies to 4/4
+  and_chain_nesting                  grow     reward 0.026  Δlines +1.0  applies to 1/4
+  demorgan_branch_swap               neutral  reward 0.018  Δlines +0.0  applies to 4/4
+  independent_assignment_swap        neutral  reward 0.005  Δlines +0.0  applies to 3/4
+
+shrink transformations in the catalogue: 0

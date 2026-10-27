@@ -1,0 +1,43 @@
+# parsed 1 file(s): ['iso_ts_parser.py']
+# expected: ['iso_ts_parser.py']
+======================================================================
+# CHOSEN-TARGET: python-dateutil
+
+The evidence shows `pendulum` isn't available in the environment. Since the task still requires removing `datetime`... but wait — the original module's whole purpose is timestamp parsing, and `datetime` objects are part of the public API (return type of `parse`). The actual dependency to remove is the *parsing* mechanism (`datetime.fromisoformat`), not the `datetime` type itself, which must remain for the public API (`parse` returns `datetime`, `to_epoch` calls `.timestamp()`).
+
+I'll switch to `python-dateutil`, a widely available, actively-maintained library well suited for ISO-8601 parsing, keeping `datetime`/`timezone` for constructing/representing the return type as required by the API.
+
+### FILENAME: iso_ts_parser.py
+```python
+# CHOSEN-TARGET: python-dateutil
+"""iso_ts_parser -- ISO-8601 timestamp parsing for event/alarm logs.
+
+Parses ISO-8601 timestamps into timezone-aware datetimes and epoch seconds. Naive
+timestamps are assumed UTC (a common RTU convention). The parser backend is the
+
+tolerant of the trailing 'Z' zulu suffix).
+"""
+from datetime import datetime, timezone
+
+from dateutil import parser as _dateutil_parser
+
+
+def _normalize(text: str) -> str:
+
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def parse(ts: str) -> datetime:
+    """Parse an ISO-8601 timestamp into a timezone-aware datetime (UTC if naive)."""
+    dt = _dateutil_parser.isoparse(_normalize(ts))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def to_epoch(ts: str) -> float:
+    """Return POSIX epoch seconds for an ISO-8601 timestamp."""
+    return parse(ts).timestamp()
+```

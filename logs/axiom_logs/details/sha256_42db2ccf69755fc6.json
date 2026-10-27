@@ -1,0 +1,38 @@
+{
+  "role": "finite-state machine engine (declarative state/transition modeling with guards and callbacks)",
+  "winner": "transitions",
+  "original": "transitions",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 1.0,
+    "api_evidence": true,
+    "security": null,
+    "security_evidence": false,
+    "maintenance": null,
+    "maintenance_evidence": false,
+    "evidence_weight": 0.15,
+    "total": 1.0,
+    "installed": false,
+    "profile_status": "neutral_unattempted",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'transitions' wins 'finite-state machine engine (declarative state/transition modeling with guards and callbacks)'. Confidence: LOW. Total: 1.0 (speed=None, mem=None, sec=None, api=1.0). Migration note: transitions' model-binding pattern (Machine(model=self, ...)) has no direct equivalent in python-statemachine, which requires states/transitions to be declared as class attributes on a StateMachine subclass -- would require restructuring TankController's class hierarchy",
+  "confidence": "LOW",
+  "used_apis": [
+    "Machine(model=..., states=..., initial=...)",
+    "add_transition(trigger, source, dest, conditions=, after=)",
+    "model.state attribute",
+    "trigger methods (start_fill, level_reached, start_drain, empty, trip)"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

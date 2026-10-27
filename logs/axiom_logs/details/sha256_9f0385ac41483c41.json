@@ -1,0 +1,37 @@
+{
+  "role": "MQTT client for publishing telemetry to a broker",
+  "winner": "gmqtt",
+  "original": "paho-mqtt",
+  "score": {
+    "speed": 0.004,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 0.022,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.3,
+    "api_evidence": true,
+    "security": 0.895,
+    "security_evidence": true,
+    "maintenance": 0.65,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.7,
+    "total": 0.463,
+    "installed": true,
+    "profile_status": "measured",
+    "import_measured": true,
+    "selection_basis": "free_choice_substitution_required",
+    "feasibility_selected": false
+  },
+  "rationale": "'gmqtt' wins 'MQTT client for publishing telemetry to a broker'. Confidence: HIGH. Total: 0.463 (speed=0.004, mem=0.022, sec=0.895, api=0.3). Migration note: aiomqtt/gmqtt/amqtt are async-first; connect() and publish() are coroutines requiring 'await' and an event loop, whereas paho-mqtt's publish_reading/publish_batch methods here are fully synchronous. Verifier feedback considered: MQTT client for publishing telemetry to a broker: Connector's own detailed analysis correctly identifies that aiomqtt is fundamentally async-only (context-manager based connection, coroutine-only publish with no status return), whereas Tele",
+  "confidence": "HIGH",
+  "used_apis": [
+    "mqtt.Client",
+    "client.connect",
+    "client.publish"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

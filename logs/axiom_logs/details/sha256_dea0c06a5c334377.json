@@ -1,0 +1,38 @@
+{
+  "role": "embedded key-value store backend",
+  "winner": "leveldb",
+  "original": "leveldb",
+  "score": {
+    "speed": null,
+    "speed_evidence": null,
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": null,
+    "memory_evidence": false,
+    "availability": null,
+    "api_match": 0.9,
+    "api_evidence": true,
+    "security": 0.76,
+    "security_evidence": true,
+    "maintenance": 0.2,
+    "maintenance_evidence": true,
+    "evidence_weight": 0.5,
+    "total": 0.634,
+    "installed": false,
+    "profile_status": "hard_install_failure",
+    "import_measured": false,
+    "selection_basis": "weighted_comparative_evidence",
+    "feasibility_selected": false
+  },
+  "rationale": "'leveldb' wins 'embedded key-value store backend'. Confidence: LOW. Total: 0.634 (speed=None, mem=None, sec=0.76, api=0.9). Profiler veto: plyvel (hard_install_failure), rocksdict (hard_install_failure), lmdb (hard_install_failure). Migration note: API naming differs: leveldb uses Get/Put/Delete (capitalized), plyvel uses lowercase get/put/delete, rocksdict is more dict-like (__getitem__/__setitem__), lmdb requires explicit transaction objects (env.begin())",
+  "confidence": "LOW",
+  "used_apis": [
+    "LevelDB()",
+    "Get",
+    "Put",
+    "Delete"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}

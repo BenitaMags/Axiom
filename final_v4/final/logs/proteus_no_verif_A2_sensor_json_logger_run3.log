@@ -1,0 +1,275 @@
+$ run_axiom_arms.py --config proteus_no_verif --program A2_sensor_json_logger --runs 1 --start-run 3
+
+config   : proteus_no_verif (claude/claude-sonnet-5)
+programs : 1   runs each: 1
+csv      : results_final.csv
+targets  : 1/1 importable
+
+program                        run     tests  succ  orc  iters  calls  diverg    time
+----------------------------------------------------------------------------------------
+─────────────────────────────────────────────────────────────────────── 🔍 Parser Agent ───────────────────────────────────────────────────────────────────────
+Resolved path: /private/var/folders/_4/t4jxnllx1fsf__wwq8kx22h00000gn/T/proteus-A2_sensor_json_logger-kjmrvqvc/sensor_json_logger.py
+                      Discovered Imports                      
+┏━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ Line ┃ Module ┃ Alias ┃ Names             ┃ API Calls Used ┃
+┡━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│    8 │ json   │ —     │ —                 │ dumps          │
+│    9 │ typing │ —     │ Iterable, Mapping │ —              │
+└──────┴────────┴───────┴───────────────────┴────────────────┘
+
+✓ Found 2 imports
+
+────────────────────────────────────────────────────────────────────── 🔒 Security Agent ──────────────────────────────────────────────────────────────────────
+Scanning 2 package(s) via OSV + PyPI...
+
+                                                           Security Scan Results                                                           
+┏━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Package ┃ Version ┃ CVEs ┃ Risk ┃ Evidence ┃ Vuln Score ┃ Freshness ┃ Overall ┃ Notes                                                   ┃
+┡━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ json    │ stdlib  │    — │ N/A  │   N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+│ typing  │ stdlib  │    — │ N/A  │   N/A    │          — │         — │       — │ Python standard-library module; no PyPI/OSV package sca │
+└─────────┴─────────┴──────┴──────┴──────────┴────────────┴───────────┴─────────┴─────────────────────────────────────────────────────────┘
+
+✓ No critical vulnerabilities found
+────────────────────────────────────────────────────────────────────── 🔗 Resolver Agent ──────────────────────────────────────────────────────────────────────
+Discovering alternative libraries for: (none — all stdlib)
+Querying CLAUDE / claude-sonnet-5...
+Tokens — input: 2,276  output: 1,114  latency: 12606ms
+Equivalence Groups Found
+└── JSON serialization backend for deterministic audit records
+    ├── Candidates : json, ujson, simplejson
+    ├── Used APIs  : dumps(record, sort_keys=True, separators=(',', ':'))
+    ├── Pitfalls   : ujson historically has inconsistent support for the `separators` argument across versions — verify compact separators still produce ',' 
+    │   and ':' exactly, or output will not be byte-identical; ujson float/large-int formatting can differ slightly from stdlib json, risking non-determinism 
+    │   in numeric serialization; simplejson is closest to full API compatibility but is a separate dependency to add/pin; Any change to separator or 
+    │   key-ordering behavior breaks the stated 'byte-reproducible' audit log guarantee, so exact output must be verified with tests before switching
+    └── The file's own docstring identifies `json` as a substitution target for a faster drop-in JSON encoder. `simplejson` is a near-exact drop-in for stdlib 
+        `json`, supporting the same `sort_keys` and `separators` keyword arguments needed for deterministic, byte-reproducible output. `ujson` is also commonly
+        used as a faster substitute and supports `sort_keys`, though its handling of custom `separators` is more limited/version-dependent than 
+        `json`/`simplejson`.
+
+✓ 1 equivalence group(s) found
+
+─────────────────────────────────────────────────────────────── 🔒 Security Agent — Candidates ────────────────────────────────────────────────────────────────
+Selecting and scanning compatible migration target 2 package(s) via OSV + PyPI...
+
+               Candidate Security Scan               
+┏━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Package    ┃ Version ┃ Risk ┃ Evidence  ┃ Overall ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━┩
+│ simplejson │ 4.1.2   │ LOW  │ AVAILABLE │    1.00 │
+│ ujson      │ 6.0.0   │ LOW  │ AVAILABLE │    1.00 │
+└────────────┴─────────┴──────┴───────────┴─────────┘
+
+✓ Scanned 2 candidate package(s)
+
+────────────────────────────────────────────────────────────────────── ⚡ Profiler Agent ──────────────────────────────────────────────────────────────────────
+Probing 3 package(s) across 1 group(s)...
+
+Using the current Python environment (pass --isolated-profiling in eval mode for disposable probes).
+⠙ ✓ json      
+⠙ ✓ simplejson
+⠙ ✓ ujson     
+                                                                       Benchmark Results                                                                       
+┏━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Package    ┃ Available ┃ Import (3 runs) ┃                                                                   Runtime API (real probe) ┃ Memory (KB) ┃ Notes ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━┩
+│ ujson      │     ✓     │          1.8 ms │                UNMEASURED — No registered side-effect-free runtime probe for dumps(record, │           3 │       │
+│            │           │                 │                                            sort_keys=True, separators=(',', ':')); an inte │             │       │
+│ json       │     ✓     │          3.4 ms │                UNMEASURED — No registered side-effect-free runtime probe for dumps(record, │          94 │       │
+│            │           │                 │                                            sort_keys=True, separators=(',', ':')); an inte │             │       │
+│ simplejson │     ✓     │          7.5 ms │                UNMEASURED — No registered side-effect-free runtime probe for dumps(record, │         161 │       │
+│            │           │                 │                                            sort_keys=True, separators=(',', ':')); an inte │             │       │
+└────────────┴───────────┴─────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┴─────────────┴───────┘
+
+✓ Profiled 3 package(s), 3 available, 0 with measured runtime probes, 3 explicitly unmeasured
+
+───────────────────────────────────────────────── 🎯 AXIOM — Adaptive eXecution & Import Optimization Module ──────────────────────────────────────────────────
+Provider: CLAUDE / claude-sonnet-5  |  Session: 3db8eb89
+  API compat tokens — input: 269  output: 270  latency: 3556ms
+  Security evidence is incomplete for this group; omitting the security weight rather than treating missing data as a score.
+                                                           AXIOM Optimization Decisions                                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━━━━━━━━┓
+┃ Role                                                       ┃ Original ┃ Winner ┃ Conf.  ┃ Speed ┃ Memory ┃ Security ┃ API ┃ Total ┃ Installed? ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━━━━━━━━┩
+│ JSON serialization backend for deterministic audit records │ json     │ ujson  │ MEDIUM │ 1.0   │ 1.0    │ —        │ 0.2 │ 0.657 │ ✓          │
+└────────────────────────────────────────────────────────────┴──────────┴────────┴────────┴───────┴────────┴──────────┴─────┴───────┴────────────┘
+
+Replacements deferred to connector agent (preserving original call sites for analysis).
+  json  →  ujson  (pending)
+
+Session save deferred to verifier agent.
+
+✓ AXIOM complete — 1 decision(s)
+
+───────────────────────────────────────────────────────── 🔌 Connector Agent — Inline I/O Transformer ─────────────────────────────────────────────────────────
+
+Analyzing: json → ujson
+  Found 1 call site(s):
+    L17: return json.dumps(record, sort_keys=True, separators=_SEPARATORS)
+  Tokens — in:2,022 out:1,196 latency:13058ms
+
+  Compatibility analysis:
+    ✗ L17: json.dumps(record, sort_keys=True, separators=_SEPARATORS)  — ujson.dumps exists and supports sort_keys, but its handling of the `separators` 
+
+  1 call site(s) need a wrapper:
+    _axiom_json_dumps_wrapper  L17: Call ujson.dumps with sort_keys=True (dropping/ignoring an unsupported
+  Opening ACI edit session for json → ujson...
+  ACI session: 3 edit(s) applied over 7 tool call(s)  |  tokens in:80,196 out:4,893
+    · open()
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · goto(line_number=...)
+    · edit(start_line=..., end_line=..., replacement_text=...)
+    · open()
+    · submit(note=...)
+  ✓ ACI edit session complete — 1 wrapper(s) injected.
+  · connector scope repair — _axiom_json_dumps_wrapper: added 'import ujson'
+
+Applying migration import rewrites: {'json': 'ujson'}
+╭─────────────────────────────────────────────────────────── Patched Source (with inline adapters) ───────────────────────────────────────────────────────────╮
+│     1 """sensor_json_logger -- deterministic JSON audit logging of sensor samples.                                                                          │
+│     2                                                                                                                                                       │
+│     3 Serializes tag/value sensor readings to canonical one-line JSON records. The JSON                                                                     │
+│     4 backend is the substitution target: `json` (stdlib) -> `ujson` (drop-in, faster).                                                                     │
+│     5 Determinism (sorted keys, compact separators) is a hard requirement so that audit                                                                     │
+│     6 logs are byte-reproducible.                                                                                                                           │
+│     7 """                                                                                                                                                   │
+│     8 import ujson                                                                                                                                          │
+│     9 from typing import Iterable, Mapping                                                                                                                  │
+│    10                                                                                                                                                       │
+│    11 _SEPARATORS = (",", ":")                                                                                                                              │
+│    12                                                                                                                                                       │
+│    13                                                                                                                                                       │
+│    14 def _axiom_json_dumps_wrapper(record, sort_keys=True, separators=_SEPARATORS):                                                                        │
+│    15     """Serialize ``record`` to a JSON string with the same guarantees stdlib                                                                          │
+│    16     ``json.dumps(record, sort_keys=True, separators=(",", ":"))`` gave us.                                                                            │
+│    17                                                                                                                                                       │
+│    18     stdlib ``json.dumps`` accepts a ``separators`` keyword and controls                                                                               │
+│    19     numeric formatting via Python's ``float.__repr__``, producing a fixed,                                                                            │
+│    20     compact, byte-reproducible string (no stray whitespace, deterministic                                                                             │
+│    21     float text like ``1.0`` / ``1e+100``).                                                                                                            │
+│    22                                                                                                                                                       │
+│    23     ``ujson.dumps`` supports ``sort_keys`` but its handling of ``separators``                                                                         │
+│    24     is inconsistent across versions (it may ignore the kwarg entirely), and                                                                           │
+│    25     its numeric formatting for floats/large ints can diverge slightly from                                                                            │
+│    26     stdlib json (different trailing zeros, exponent casing, etc.). Passing                                                                            │
+│    27     ``separators`` straight through is therefore unreliable.                                                                                          │
+│    28                                                                                                                                                       │
+│    29     This wrapper calls ``ujson.dumps`` with only ``sort_keys`` (letting                                                                               │
+│    30     ujson pick whatever separator style it wants), then walks the resulting                                                                           │
+│    31     text -- skipping over string literals so we never touch user data --                                                                              │
+│    32     and: (1) rewrites every structural ',' and ':' to use the requested                                                                               │
+│    33     compact separators with no trailing whitespace, and (2) re-renders every                                                                          │
+│    34     numeric literal that looks like a float (contains '.', 'e' or 'E')                                                                                │
+│    35     through Python's own ``repr(float(...))`` so the digits match exactly                                                                             │
+│    36     what stdlib ``json.dumps`` would have emitted. Integers are left as-is                                                                            │
+│    37     since their textual form can't diverge. This keeps the audit log                                                                                  │
+│    38     byte-reproducible regardless of the ujson version's quirks.                                                                                       │
+│    39     """                                                                                                                                               │
+│    40     encoded = ujson.dumps(record, sort_keys=sort_keys)                                                                                                │
+│    41     return _axiom_normalize_json_text(encoded, separators)                                                                                            │
+│    42                                                                                                                                                       │
+│    43                                                                                                                                                       │
+│    44 def _axiom_normalize_json_text(text, separators):                                                                                                     │
+│    45     """Rewrite ``text`` (a compact-ish JSON document with no embedded                                                                                 │
+│    46     newlines) so structural separators exactly match ``separators`` and all                                                                           │
+│    47     whitespace outside of string literals is removed, and so every float                                                                              │
+│    48     literal is reformatted via ``repr(float(...))`` to match stdlib json's                                                                            │
+│    49     deterministic float formatting. Used to make ``ujson.dumps`` output                                                                               │
+│    50     byte-identical to stdlib ``json.dumps`` output.                                                                                                   │
+│    51     """                                                                                                                                               │
+│    52     comma_sep, colon_sep = separators                                                                                                                 │
+│    53     result = []                                                                                                                                       │
+│    54     i = 0                                                                                                                                             │
+│    55     n = len(text)                                                                                                                                     │
+│    56     in_string = False                                                                                                                                 │
+│    57     escape = False                                                                                                                                    │
+│    58     while i < n:                                                                                                                                      │
+│    59         ch = text[i]                                                                                                                                  │
+│    60         if in_string:                                                                                                                                 │
+│    61             result.append(ch)                                                                                                                         │
+│    62             if escape:                                                                                                                                │
+│    63                 escape = False                                                                                                                        │
+│    64             elif ch == "\\":                                                                                                                          │
+│    65                 escape = True                                                                                                                         │
+│    66             elif ch == '"':                                                                                                                           │
+│    67                 in_string = False                                                                                                                     │
+│    68             i += 1                                                                                                                                    │
+│    69             continue                                                                                                                                  │
+│    70         if ch == '"':                                                                                                                                 │
+│    71             in_string = True                                                                                                                          │
+│    72             result.append(ch)                                                                                                                         │
+│    73             i += 1                                                                                                                                    │
+│    74             continue                                                                                                                                  │
+│    75         if ch == ",":                                                                                                                                 │
+│    76             result.append(comma_sep)                                                                                                                  │
+│    77             i += 1                                                                                                                                    │
+│    78             while i < n and text[i] in " \t\n\r":                                                                                                     │
+│    79                 i += 1                                                                                                                                │
+│    80             continue                                                                                                                                  │
+│    81         if ch == ":":                                                                                                                                 │
+│    82             result.append(colon_sep)                                                                                                                  │
+│    83             i += 1                                                                                                                                    │
+│    84             while i < n and text[i] in " \t\n\r":                                                                                                     │
+│    85                 i += 1                                                                                                                                │
+│    86             continue                                                                                                                                  │
+│    87         if ch in " \t\n\r":                                                                                                                           │
+│    88             i += 1                                                                                                                                    │
+│    89             continue                                                                                                                                  │
+│    90         if ch in "-0123456789":                                                                                                                       │
+│    91             j = i                                                                                                                                     │
+│    92             while j < n and text[j] in "-+.0123456789eE":                                                                                             │
+│    93                 j += 1                                                                                                                                │
+│    94             token = text[i:j]                                                                                                                         │
+│    95             if any(c in token for c in ".eE"):                                                                                                        │
+│    96                 result.append(repr(float(token)))                                                                                                     │
+│    97             else:                                                                                                                                     │
+│    98                 result.append(token)                                                                                                                  │
+│    99             i = j                                                                                                                                     │
+│   100             continue                                                                                                                                  │
+│   101         result.append(ch)                                                                                                                             │
+│   102         i += 1                                                                                                                                        │
+│   103     return "".join(result)                                                                                                                            │
+│   104                                                                                                                                                       │
+│   105                                                                                                                                                       │
+│   106 def format_reading(tag: str, value, ts: str, quality: str = "GOOD") -> str:                                                                           │
+│   107     """Return a canonical one-line JSON record for a single reading."""                                                                               │
+│   108     record = {"tag": tag, "value": value, "ts": ts, "quality": quality}                                                                               │
+│   109     return _axiom_json_dumps_wrapper(record, sort_keys=True, separators=_SEPARATORS)                                                                  │
+│   110                                                                                                                                                       │
+│   111                                                                                                                                                       │
+│   112 def format_batch(readings: Iterable[Mapping]) -> str:                                                                                                 │
+│   113     """Serialize an iterable of reading mappings to newline-delimited JSON."""                                                                        │
+│   114     return "\n".join(format_reading(**dict(r)) for r in readings)                                                                                     │
+│   115                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+✓ Connector Agent complete — 1 package(s) needed adapters
+
+───────────────────────────────────────────────────────────────── 🧬 Logic Substitution Agent ─────────────────────────────────────────────────────────────────
+⚠ EQUIVALENCE ORACLE DISABLED — this variant is NOT verified and must not be used outside the no-verification ablation.
+13 transformations available; no size requested (currently 114 lines) — ranking on diversity alone.
+                    Logic Substitution — isomorphic variant                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Property                    ┃ Value                                          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Module                      │ sensor_json_logger                             │
+│ Lines (original → variant)  │ 114 → 66                                       │
+│ Requested lines             │ 66                                             │
+│ Achieved lines              │ 66                                             │
+│ Miss (achieved − requested) │ +0   [ON TARGET]                               │
+│ Transformations             │ llm_restructure, added:json_text_normalizer.py │
+│ Equivalence oracle          │ PASS                                           │
+│ diversity: ncd              │ 0.3623                                         │
+│ diversity: ast_structural   │ 0.7644  (rename-insensitive)  ← ranking signal │
+│ diversity: du_chain         │ 0.7191                                         │
+│ diversity: cfg_shape        │ 0.5789  (rename-insensitive)                   │
+│ diversity: composite        │ 0.6717  (rename-insensitive)                   │
+│ Search                      │ 1/1 candidates equivalent, 1 iterations, 17.4s │
+└─────────────────────────────┴────────────────────────────────────────────────┘
+  wrote extracted module json_text_normalizer.py
+A2_sensor_json_logger            3       3/3     N    N      2     14  0.7811  121.1s
+
+migration_success 0/1 (0%)
+rows appended to results_final.csv

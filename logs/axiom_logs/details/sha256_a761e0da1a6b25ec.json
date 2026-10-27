@@ -1,0 +1,29 @@
+{
+  "role": "file locking",
+  "winner": "lockfile",
+  "original": "lockfile",
+  "score": {
+    "speed": 1.0,
+    "speed_evidence": "import-only",
+    "runtime_probe": null,
+    "runtime_evidence": false,
+    "memory": 1.0,
+    "memory_evidence": true,
+    "availability": 1.0,
+    "api_match": 0.0,
+    "api_evidence": true,
+    "security": 0.76,
+    "security_evidence": true,
+    "evidence_weight": 0.8,
+    "total": 0.752,
+    "installed": true
+  },
+  "rationale": "'lockfile' wins 'file locking'. Confidence: HIGH. Total: 0.752 (speed=1.0, mem=1.0, sec=0.76, api=0.0). Migration note: lockfile.LockFile uses a different constructor signature than filelock.FileLock (lockfile takes path, filelock takes path and optional timeout)",
+  "confidence": "HIGH",
+  "used_apis": [
+    "LockFile"
+  ],
+  "requires_connector": true,
+  "crypto_vetoed": [],
+  "needs_install": false
+}
