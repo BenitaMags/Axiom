@@ -1,154 +1,192 @@
-# AXIOM v2 — Adaptive eXecution & Import Optimization Module
+# Proteus: Constructing Semantically Equivalent Program Clones using LLMs and Execution Traces
 
-> Multi-agent OS-loader simulation for Python library migration · LangGraph + Claude/Ollama/NVIDIA
-> Evaluated against [PyMigBench](https://github.com/hyesunf/PyMigBench), the MSR 2023 ground-truth benchmark of real-world Python library migrations.
+**Best Student Paper and Presentation Award, DESSERT 2026** (16th Dependable Systems, Services and Technologies, Corfu, Greece, October 2-4, 2026)
 
----
+Benita Magdalene Kingsley Prince and Ioannis Agadakos, School of Computing, Montclair State University
 
-## 1. What AXIOM is
+Proteus is a multi-agent system that rewrites a program so it behaves exactly as before while using a different library, and then checks that claim by running code instead of trusting the model. It targets industrial measurement-and-control software, where "it looks right" is not good enough.
 
-AXIOM is a multi-agent system that simulates the behavior of an **OS-level dynamic loader** — but for Python source files instead of binary executables. When an OS loader runs a binary, it reads the dependency manifest, resolves which shared library serves the same purpose, measures load cost, and patches the binary to use the optimal one. AXIOM does the same thing for Python source: read the imports, resolve which package serves the same functional role, measure real cost (speed, memory, security posture), and rewrite the source to use the better one — with an explicit, replayable audit trail at every step.
+> **Naming.** Proteus is the name of the system in the paper. This repository is the AXIOM codebase it was built in: the Python package is `smart_loader/`, the CLI is `axiom`, and the evaluated configurations are called `proteus_full` and `proteus_no_verif` in the code and the results.
 
-The underlying intellectual claim, inspired by **CodeAugur** (binary semantic-equivalence analysis across compiler optimization levels): two Python packages can be "the same" for migration purposes based on *functional/capability equivalence*, not syntactic API compatibility. Two libraries that do the same job with different call shapes are still candidates — that's precisely the case connector_agent exists to handle (§3).
+## Results at a glance
 
-| OS loader phase                | AXIOM agent                        | Method                              |
-|---------------------------------|-------------------------------------|--------------------------------------|
-| Read ELF header / `.dynamic`   | `parser_agent`                      | Python `ast` module, no LLM          |
-| Security validation             | `security_agent`                    | OSV API + PyPI, no LLM               |
-| Symbol resolution                | `resolver_agent`                    | LLM call #1                          |
-| Library load-cost profiling     | `profiler_agent`                    | Disposable venvs, real subprocess timing |
-| GOT patching / relocation       | `axiom_agent`                       | Deterministic scoring + AST rewrite  |
-| Human review gate (optional)    | `approval_gate`                     | LangGraph `interrupt()` + diff       |
-| Compatibility shim generation   | `connector_agent`                   | LLM call #3, agent-computer-interface edit session |
-| Execution correctness gate      | `verifier_agent`                    | Disposable historical baseline/target sandboxes |
+![Blind review outcomes by configuration, with migration success under each bar](paper/figs/blind_review_by_arm.png)
 
-**Correction versus earlier documentation:** `rules_agent`/`rules_engine.py` (deterministic `is_installed`/license/API-surface checks) still exist as a standalone module but are **not wired into the compiled graph** (`core/graph.py:357-360` says so explicitly in-code). Availability and reproducibility checks now happen implicitly inside `profiler_agent`'s disposable installs and `verifier_agent`'s environment-completeness gate, which is a strictly stronger check than a host-machine `is_installed` call ever was — it doesn't just ask "is this here," it actually builds the environment and runs the code in it.
+*All 144 generated clones, classified by an independent blind LLM reviewer. The percentage under each bar is that configuration's deterministic migration success.*
 
----
+| Configuration | Migration success | Judged clean | Judged major or broken | Pipeline cost (36 runs) |
+|---|---|---|---|---|
+| Single-shot LLM | 18/36 (50.0%) | 5 | 22 | $0.92 |
+| Single-shot + one repair call | 20/36 (55.6%) | 6 | 19 | $1.49 |
+| Proteus, verification off | 27/36 (75.0%) | 7 | 16 | $7.00 |
+| **Proteus (full)** | **32/36 (88.9%)** | **10** | **14** | $15.65 |
 
-## 2. Pipeline
+- **Verification separates success from a plausible-looking failure.** Adding agents and then verification raises migration success from 50.0% to 75.0% to 88.9%.
+- **Failures are safe.** All 4 non-successes in the full system are untouched originals that the verifier reverted to; none shipped a clone that failed the oracle.
+- **Automated acceptance is necessary, not sufficient.** The blind reviewer still finds real defects in clones that pass every deterministic check, full Proteus included.
+- **It is not free.** About 33 times the tokens and 17 times the dollar cost of the plain baseline across the study (a median run makes 11 LLM calls against 1).
 
+With 12 programs and 3 seeds, migration success is the one comparison with a gap wide enough to trust; the other comparisons are directional.
+
+## The problem
+
+Industrial control software estimates physical measurements and drives pumps, boilers and telemetry gateways. Stuxnet showed that malware can physically damage plants by hijacking the controllers that run them (BBC News, 2010; CBS News/CNET, 2012), so when a dependency in that code is vulnerable or unmaintained, replacing it has to preserve behavior exactly. A tiny example:
+
+```python
+# Before: standard library
+import zlib
+
+def crc32(payload):
+    return zlib.crc32(payload) & 0xFFFFFFFF
 ```
-parser → security → resolver → candidate_security → profiler → axiom
-                                                                   │
-                                              ┌────────────────────┴───────────────────┐
-                                       needs connector?                          drop-in / no-op
-                                              │                                          │
-                                          connector                                  verifier
-                                              │                                          │
-                                          verifier ◄──────────────────────────────────────┘
-                                              │
-                              route: retry axiom | retry connector | done
+
+```python
+# After: fastcrc
+import fastcrc
+
+def crc32(payload):
+    return fastcrc.crc32.iso_hdlc(payload) & 0xFFFFFFFF
 ```
 
-- **parser_agent** — AST walk, no LLM. Extracts every import and call site.
-- **security_agent** — queries OSV + PyPI for the file's *existing* imports; a second pass (`candidate_security_agent`) later re-runs this against only the specific replacement packages the resolver proposed, and is what selects an exact, historically-compatible release version.
-- **resolver_agent** — LLM call #1. Clusters candidate packages into equivalence groups (same functional role), flags `crypto_required` and `requires_connector` from structured keyword rules over the LLM's free-text pitfalls (`core/constraints.py`), not from the LLM's own judgment of those flags directly.
-- **profiler_agent** — builds a disposable venv per candidate and *measures* real import time, memory, and (where a fixed, hand-written probe exists) a real runtime-API benchmark. An unmeasurable candidate is omitted from scoring, never estimated.
-- **axiom_agent** — LLM call #2, plus deterministic scoring (`speed 0.35 / memory 0.10 / API-match 0.15 / security 0.20`; availability is a hard filter applied before scoring, not a soft weight). A clean drop-in rewrites its own imports immediately; anything needing an adapter defers the rewrite to connector_agent so the original call sites are still visible for wrapper generation.
-- **approval_gate** *(optional, `--require-approval`)* — a genuine LangGraph `interrupt()`, backed by a `MemorySaver` checkpointer. The graph actually suspends; a human sees the full diff and types accept/reject before any file is touched.
-- **connector_agent** — LLM call #3. Runs a multi-turn agent-computer-interface edit session (`open`/`edit` tool calls, modeled on SWE-agent's ACI pattern — see §5) to inject a thin wrapper function and rewrite the incompatible call site to use it. Two independent AST-diff guards catch, respectively, an edit that touched an import it doesn't own, and a wrapper that got defined but never actually called.
-- **verifier_agent** — deterministic gate (plus an LLM review only for genuinely ambiguous smoke-test output). Builds *separate* disposable baseline and target sandboxes reconstructing the historical pre-migration environment, runs the real code in both, and only then accepts a migration. This is the step that actually decides `verified` vs. `environment_incomplete` vs. `rejected`.
+Trivial here, but the standard is the same everywhere: identical output on every input we tested, verified against both libraries rather than assumed.
 
----
+## How Proteus works
 
-## 3. Why a multi-agent pipeline instead of one LLM call
+![Proteus architecture: LSA, GSA and LMA gated by the VCA, with the FRA as an alternate path](paper/figs/architecture_overview.png)
 
-A single "migrate this file" prompt to an LLM is the baseline every paper below tested first, and every one of them found the same shape of failure: correct API substitution most of the time, but silent partial output, unrewritten call sites, and no way to know the result actually *runs* without separately executing it. AXIOM's architecture is a direct, deliberate response to those specific, published failure modes rather than a generic "more agents is better" design:
+Not one prompt, but a pipeline of agents, each owning one kind of change and its own execute-and-repair loop:
 
-- **The LLM's own migration output is treated as a proposal, not a verdict.** Every rewrite passes through `connector_agent`'s AST-diff guards and then `verifier_agent`'s real execution gate before being accepted. A wrapper that's defined but never called, or an import edit that silently drifted outside its scope, is caught structurally — not by asking the LLM to check its own work.
-- **Environment reproduction is a first-class pipeline stage, not an afterthought.** `verifier_agent` doesn't run the patched file in whatever environment happens to be lying around; it reconstructs the *historical* pre-migration dependency set (exact versions, as of the commit date) in a disposable sandbox, separately for baseline and target, specifically because dependency-version mismatches between a project and whatever the migration tool assumes is a documented, recurring failure mode (§5, MigrateLib).
-- **Scoring uses measured evidence, not LLM self-report.** Speed and memory come from real subprocess timing in a disposable venv; security comes from OSV/PyPI queries; only API-compatibility judgment comes from the LLM, and even that is cross-checked against real call-site analysis before a rewrite is attempted.
-
----
-
-## 4. Evaluation methodology
-
-AXIOM is evaluated against **PyMigBench** (Islam et al., MSR 2023), the ground-truth benchmark of real, human-confirmed Python library migrations mined from open-source commit history — 59 confirmed analogous library pairs, real migration commits with the exact before/after file content, across dozens of client repositories. `smart_loader/eval/pymigbench_eval.py` clones each client repo, materializes a **detached historical worktree at the pre-migration commit**, recovers the file content and dependency set exactly as they existed immediately before the real developer migration, and runs AXIOM's full pipeline against that snapshot — never against today's checkout.
-
-Two evaluation questions are tracked separately, deliberately mirroring the RQ split used in the LLM-migration literature (§5):
-
-1. **Detection** — does `resolver_agent` independently recognize the source and the human's chosen target library as belonging to the same equivalence group, without being told the answer?
-2. **Verification** — does the patch AXIOM produces actually execute correctly against a reconstructed historical environment (`verifier_agent`'s baseline/target sandboxes), and does it match the human's chosen target?
-
-A result is never reported as "verified" on static/textual similarity to the ground truth alone — it has to pass real execution in a disposable, historically-accurate environment first. This is the same standard SWE-bench and MigrateLib use (execution-based, before/after test evaluation) rather than the diff-similarity standard used in the earliest LLM-migration study.
-
----
-
-## 5. Research foundations — what came from where
-
-| Paper | What it establishes | What AXIOM does with it |
+| Agent | Role | Where in the code |
 |---|---|---|
-| **PyMigBench** (Islam, Jha, Nadi, Akhmetov — MSR 2023) | The ground-truth dataset itself: 59 confirmed analogous library pairs, real migration commits mined from open-source history, with exact before/after file content. Built because prior migration research was almost entirely Java-focused and had no standard Python benchmark. | This *is* AXIOM's evaluation harness (§4). Every number in a progress report traces back to this dataset — not a synthetic or self-selected test set. |
-| **PyMigTax** (taxonomy referenced in Islam et al., "Using LLMs for Library Migration," 2025) | A taxonomy of migration code changes along three axes: program-element type, cardinality (one-to-one through many-to-many), and properties like renamed elements or added/changed arguments. | Directly informed why `connector_agent` can't just do a 1:1 import rename: many real migrations are higher-cardinality (one API call becomes several, or several become one) and change argument shape, not just the symbol name — exactly the case that needs a generated wrapper function instead of a text substitution. |
-| **"Using LLMs for Library Migration"** (Islam, Jha, Mahmoud, Akhmetov, Nadi — arXiv 2504.13272, 2025) | Empirically measures three off-the-shelf LLMs migrating PyMigBench cases directly. Best model (GPT-4o) fully migrates 57% of cases correctly, 94% at least partially; all three models specifically struggle with **argument-value/type transformations** more than simple renames. | Directly motivates *not* trusting a single LLM pass. AXIOM's `axiom_agent` (selection) and `connector_agent` (transformation) are separate LLM calls with a deterministic verification gate after, specifically because this paper shows a single migration pass has a known, non-trivial failure rate concentrated in exactly the kind of call-site/argument transformation connector_agent exists to handle. |
-| **MigrateLib** (Islam, Jha, Mahmoud, Nadi — arXiv 2510.08810, 2026) | The direct predecessor system: an end-to-end CLI tool combining LLMs with static and dynamic analysis for whole-project Python migration, evaluated on PyMigBench (Phase 1) and on 717 newly-simulated migrations across 175 real projects (Phase 3). Identifies four concrete failure modes of LLM-based migration in practice: (1) the full set of files needing migration isn't known upfront, (2) LLMs return partial/truncated output that silently skips code, (3) migrating one function can require propagating changes (e.g. sync→async) to every caller, and (4) **version mismatches between what the project actually uses and what the LLM assumes** cause incorrect migrations. | AXIOM's architecture is a direct answer to all four: `parser_agent`+`resolver_agent` scope the migration from real AST/import data rather than an LLM's guess at what needs changing; `connector_agent`'s unused-wrapper-name guard structurally catches silently-skipped call sites (failure mode 2); and the entire environment-reproduction subsystem (`core/environment_plan.py`, disposable historical venvs, exact-commit-date dependency pinning) exists specifically to eliminate failure mode 4 — going a step further than MigrateLib, which verifies against the *current* project environment rather than reconstructing the historical one. |
-| **SWE-agent** (Yang, Jimenez, Wettig, Lieret, Yao, Narasimhan, Press — NeurIPS 2024) | Introduces the Agent-Computer Interface (ACI): LLM agents perform significantly better through a small, purpose-built set of actions with concise, structured feedback than through raw shell/file access. Guardrails that catch and surface mistakes measurably improve recovery. | `connector_agent`'s wrapper-injection session (`_run_aci_wrapper_injection`) is explicitly built as an ACI-style constrained edit loop (`open`/`edit` tool calls, not free-form file access), and its two independent AST-diff guards — catching an import edit outside scope, and a wrapper defined but never called — are exactly the "guardrails mitigate error propagation" principle this paper demonstrates empirically. |
-| **SWE-bench** (Jimenez, Yang, Wettig, Yao, Pei, Press, Narasimhan — ICLR 2024) | Establishes execution-based evaluation for code-editing agents: a task only counts as solved if real tests pass *after* the patch when they didn't *before* — not diff similarity to a reference patch. | `verifier_agent`'s core design principle. A migration is never scored "verified" on how closely it textually matches the ground truth; it has to actually execute correctly in a reconstructed environment. AXIOM's baseline-vs-target differential check is the same before/after execution philosophy applied to library migration instead of issue-resolution. |
+| **LSA**, Library-Substitution Agent | Picks the replacement library from benchmark and vulnerability evidence | `resolver_agent.py`, `security_agent.py`, `profiler_agent.py`, `axiom_agent.py` |
+| **GSA**, Glue-Synthesis Agent | Writes the adapter so call sites do not have to change | `connector_agent.py` |
+| **LMA**, Logic-Mutation Agent | Rewrites first-party logic into structurally different, behaviorally equivalent code | `logic_substitution_agent.py`, `smart_loader/isomorph/` |
+| **FRA**, First-Party Agent | When there is no library to substitute, reimplements the removed dependency as first-party code | `first_party_agent.py` |
+| **VCA**, Verification and Consistency Agent | Deterministic acceptance gate, then an independent LLM review; routes failures back | `verifier_agent.py`, `migration_completeness.py` |
 
----
+All agent code lives in `smart_loader/agents/`; the exact wiring is in `smart_loader/core/graph.py`.
 
-## 6. What changed this session — diagnosis and fixes
+- **Local verification.** Each agent checks its own attempt, and the LMA and FRA also check candidates against recorded golden vectors in that loop.
+- **Global verification.** The VCA gate asks whether the clone compiles, its tests pass, the dependency is really swapped, and a real API call works. An independent LLM review follows.
+- **Routing.** A decision-level failure goes back to the LSA and a wrapper-level bug back to the GSA, with the failure evidence attached, all from one shared budget of five repair cycles. The LMA has no external retry path, and the FRA restarts blind.
+- **Audit trail.** Every substitution and mutation is recorded and attributable to the agent that made it (`axiom_logs/`), because diversification is dual-use.
 
-Starting point: a 20-case PyMigBench run reporting **0% verified migrations**. Root-caused and fixed ten distinct issues, each confirmed either by a real re-run or by a standalone unit test reproducing the exact failure signature from the log (full file/line detail in `AXIOM_ARCHITECTURE.md` §9):
+## How success is measured
 
-1. **Connector/AXIOM ownership conflict on the import line** — `axiom_agent` deliberately defers the import rewrite to `connector_agent` for anything needing an adapter, but connector's own guard treated that handoff as a violation and permanently blacklisted a *correct* target candidate. Fixed by having the guard distinguish a repairable "generation" issue from a genuine "candidate identity" veto.
-2. **No historical-interpreter provisioning** — when a PyMigBench project declared a Python version not already installed on the evaluation machine, AXIOM's environment planner correctly detected this but had a Docker fallback that was only ever a *label*, never wired to anything. Added real, opt-in auto-provisioning via `uv python install`.
-3. **Wrapper defined but call site never rewritten** — the connector's edit session correctly generated a compatibility wrapper but nothing verified the original call site was actually redirected to use it. Added an AST-based "is this wrapper name ever referenced" check that reverts and retries when it isn't.
-4. **Unbounded historical dependency floors resolving against today's PyPI** — a 2019-era project's `library>=1.0` was resolving to a 2025 release with a different module layout. Added commit-date-aware pinning that selects the newest release that both predates the migration commit and satisfies the project's own declared bound.
-5–6. **Unrelated declared dependencies blocking verification** — a project's full dependency list (including packages the migrated file never imports) was installed as one all-or-nothing transaction; one broken unrelated package failed the whole case. Added a narrowing retry that installs only what the file under test actually needs — and then found and fixed a second copy of the same install logic in the verifier's *authoritative* environment builder that the first fix had missed.
-7. **Migration source/target package's own pin has no installable release for this platform** — found directly in a 50-case run (e.g. an exact historical `PyQt5` patch with no wheel for the verifier's platform, while neighboring patches have one). Added a same-major-version fallback instead of failing the case outright.
-8. **A missing import-alias mapping** (`bs4` → `beautifulsoup4`) was added on the theory it was silently blocking an install — a real re-run later disproved this diagnosis for the one case it was meant to fix (that project never declares `beautifulsoup4`/`bs4` at all, so the alias has nothing to correct); left in since it's still correct for any case where the alias genuinely is the gap, but the talkpython case itself remains open.
-9. **No real Docker backend for Python 2.x/3.5** — `uv` (fix 2) can never provide these, by construction; the Docker fallback was a label with no executor. Built a real one: an executable wrapper script that transparently routes every existing `subprocess`-based install/execution call through `docker run` against a pulled historical image, with zero changes needed to the callers themselves.
-10. **Base install failing on the interpreter itself, not the package version** — found in a real re-run after fixes 5–8 landed: several cases (numpy-dependent projects with no declared Python constraint) kept failing even after same-major widening (fix 7), because the actual problem is that Python 3.12 removed the stdlib `distutils` module (PEP 632), which `numpy.distutils`/old Cython-setuptools builds require — no numpy 1.x release installs cleanly under 3.12, so widening the version just finds a different release with the same underlying incompatibility. Added a fourth fallback tier: when the failure text matches a legacy-build-system signature and the current interpreter is 3.12+, retry the entire base layer under an already-installed older local interpreter (3.11 down to 3.8).
-11. **Fix 10 itself corrupted an unrelated file on machines with no older interpreter installed** — found immediately in the next re-run: `_create_disposable_venv` runs `python -m venv --clear env_dir`, and the venv lives directly in `env_dir`, so `--clear` deletes everything already there — including the base-requirements constraints file written before fix 10's tier ever ran. That tier calls this function to restore the original interpreter whenever it doesn't find a working older one (which is every case on a machine with only Python 3.12 installed, silently — the loop that would log an attempt never even runs), wiping the constraints file as a side effect and causing a *later, unrelated* install (the migration source package itself) to fail with a generic "could not open requirements file" error that the profiler misreported as a real install failure. Concretely: 3 cases (petisco ×2, throat) that previously reached `environment_incomplete` flipped to AXIOM declining to migrate at all. Fixed by regenerating the constraints file immediately after every venv rebuild inside that tier.
-12. **Fix 10 had nothing to fall back to at all on this machine** — found running the filtered (no-Python-2) dataset: `nwb-conversion-tools` (declares no Python version) still failed on the exact numpy/`distutils` signature fix 10 targets, because `_older_local_interpreters` only ever checks already-installed local Pythons via `shutil.which` and never downloads anything — and this machine apparently only has 3.12 installed, so the tier had zero candidates and never even started. Fixed by wrapping it in a new lazy generator, `_older_interpreter_candidates`: tries local interpreters first exactly as before (free, instant), and only if those are exhausted, falls back to `provision_interpreter` (the same `uv python install` mechanism already used elsewhere for a project's *declared* historical Python version) to download 3.11 → 3.10 → 3.9 → 3.8 in turn. Laziness is load-bearing here — a case that succeeds on a local interpreter must never pay for a download it didn't need.
-13a. **The deepest case yet reached real static verification, and failed on a genuine, fixable import-rewrite bug** — traced `svenskaspel/locust-plugins` (kafka → confluent-kafka) through the entire pipeline: real Stage 1 differential static analysis, not blocked by environment or resolver logic at all. It failed because `ImportRewriter` (`core/ast_rewrite.py`) only ever rewrote a `from X import Y` statement's *module path*, never the imported name `Y`. The original file imported `KafkaProducer`; Connector's own generated wrapper correctly imports the real new class name (`Producer`) itself and routes every call site through the wrapper, leaving the top-level `KafkaProducer` import unused — and the blind rewrite turned it into `from confluent_kafka import KafkaProducer`, a class that doesn't exist under the new module. The verifier's import smoke test correctly caught this; the bug was upstream of the guard. Fixed by computing which imported names are still actually referenced anywhere in the file and dropping the ones that aren't, instead of rewriting them to a symbol that may no longer apply — the same "still referenced?" technique already used elsewhere for wrapper functions.
-13. **Fix 12's own repeated venv rebuilds corrupted the venv directory** — confirmed working (real `uv`-downloaded interpreters showed up in the very next re-run), but cycling through up to five rebuilds of the *same* `env_dir` in a row (one per fallback interpreter, plus a final restore) left `env_dir/bin/python` as a broken/circular symlink by the last attempt — every candidate then failed identically with the *original* distutils signature (not because the older interpreter genuinely couldn't build the package, but because the venv was already corrupted), and a later, unrelated install then failed with pip's generic "too many levels of symbolic links." Fixed by making `_create_disposable_venv` explicitly wipe `env_dir` before every creation instead of relying on `venv --clear` alone — every disposable venv in the codebase goes through this one function, so the fix isn't tier-4-specific.
-28. **Resolver responses were silently truncated at 2000 output tokens, producing fake "resolver_miss" results** — the highest-impact finding of the claude-12 run: 5 of 12 cases logged *exactly* `output: 2,000` (the cap) with raw JSON cut off mid-token (`"reasonin`...). The model produced correct, well-formed equivalence groups; AXIOM's own budget truncated them, `extract_json` couldn't parse the fragment, and each was recorded as a resolver miss — an **evaluation artifact masquerading as a model capability result**, and a materially misleading number to publish. `DEFAULT_MAX_TOKENS` 2000 → 8192 (nemotron was never affected: it matched a "reasoning model" marker and already got 16384, which is why the two models' detection rates looked so different). Truncation is now also reported distinctly from a genuine parse failure, so this class of artifact can never again hide inside a `resolver_miss` count.
-29. **Referenced-target-API probe checked the root package instead of the importing submodule** — flagged "slack_sdk does not expose SlackApiError" against a *correct* patch (`from slack_sdk.errors import SlackApiError`); submodule-scoped exports are the norm in modern SDKs, so this misfired on a whole class of valid migrations. Now probes the module the symbol is actually imported from.
-30. **Transitive project imports were never installed in the verifier environment** — a file can import nothing from the project's declared deps (so narrowing correctly skips the base layer) while the project's own `__init__.py` chain still pulls one in; petisco ×2 died on `No module named 'pydantic'`. The smoke traceback names the module exactly, so it is now installed at its historical pin and the smoke retried — but *only* when the project genuinely declares it, never guessed against PyPI.
-27. **Claude 4.5/5 return `message.content` as a list of blocks, crashing every JSON parse** — after fix 26 unblocked the API calls, every substantive resolver response died with `'list' object has no attribute 'strip'`, while trivial 4-token responses parsed fine — the signature of Anthropic returning content as a LIST of typed blocks whenever a response has more than one block, versus a plain string for short ones and for all OpenAI-compatible providers. Added `coerce_llm_text()` in `core/llm_json.py` (concatenates `text` blocks, deliberately skipping `thinking`/`tool_use` — mixing those in would resurrect the stray-JSON problem that module exists to prevent), wired defensively into `extract_json` so every parse path is protected at once, plus all six direct `.content` call sites across resolver/axiom/connector/aci_tools. Verified with 6 tests including the exact live crash shape and thinking-block contamination.
-26. **Claude 4.5/5 models rejected every call over a deprecated `temperature` parameter** — `llm_factory` hardcoded one model exception; every newer family 400'd instantly ("`temperature` is deprecated for this model"), killing all 12 cases as `pipeline_error` in 37s. Gate inverted: temperature is now passed only to families known to accept it (Claude 3.x, 4.0/4.1) and omitted otherwise — the API default applies and omission is never an error. Verified against all relevant model strings including the factory's own fallback.
-25. **Security agent now does one-level transitive dependency scanning (SCA)** — prompted by an IEEE SCA paper; honest scoping found the agent already had strong direct-package analysis (CVSS-v3 parsing, severity weighting, freshness, yanked detection, fail-closed evidence rules) but scored only the package itself — a candidate scoring 1.00 while shipping a vulnerable direct dependency was invisible. Now reads `requires_dist` from the already-cached PyPI JSON (skipping optional extras), checks each direct dep at latest release through the same cached OSV path, capped at 12 deps and one level deep. Evidence-gated scoring: complete scan finding CRITICAL/HIGH transitive advisories caps the parent's vuln_score (0.5/0.7); partial scans report but never score — unknown is not evidence. Real-time monitoring deliberately not adopted (a deployed-systems feature; batch eval queries OSV live already). Verified with 5 unit tests + a live PyPI/OSV end-to-end check.
-24. **Support packages were never installed in the verifier's own environment** — Fix 17 classified undeclared imports (`bs4`) as installable, and the profiler's venv installed them — but `create_verification_environment`, the sandbox that actually decides `environment_incomplete`, never did (it used `needed_modules` only for narrowing). Live consequence (talkpython): correct target selected, patch produced, baseline smoke dead on `No module named 'bs4'`. The verifier env now installs support packages with the same policy as the profiler (historical pin when declared, alias-mapped bare name when not, same-major fallback), failures still recorded fail-closed. Verified with 3 tests including the exact talkpython shape.
-23. **The restore rebuilt under the wrong interpreter; narrowing refused to narrow to zero** — two bugs from the same live run. (a) Fix 20's restore resolved `env_dir/bin/python` at restore time — but that symlink's target changes with every tier-4 rebuild, so it resolved to the *last failed candidate* (3.8), not the original 3.12. Proof in the log: pip silently hid every PyQt6/PySide6 release requiring ≥3.9 (`pyqt6==6.11.0` invisible, only 6.7.1 offered) and the probe died on `importlib.metadata.packages_distributions` (a 3.10+ API) — every candidate falsely marked `hard_install_failure` from pure version skew. Fixed by capturing the real base interpreter at function entry, before tier 4 touches the symlink. (b) Files importing only the migration source + project-local modules need *nothing* from the declared base requirements — the correct narrowed set is empty — but the `if narrowed_specs and ...` guard treated empty as "unavailable" and installed the entire historical requirements instead, burning the full 4-interpreter ladder on `pyalsaaudio` (Linux-only ALSA headers, unbuildable on macOS ever). An empty narrowed set now skips the base layer and succeeds. Also confirmed for the user: no Docker containers appearing is the cheapest-first ladder working as designed — local interpreters exist for every fallback version, so uv and Docker are never reached.
-22. **A transitive dependency's historical pin strangled every install retry; Cython build failures never triggered tier 4** — found in the first run after fixes 20/21 (which was structurally the best yet: correct winners selected, first-ever complete Connector patch produced). Two shapes: (a) cloud-custodian's ruamel cases failed not on `ruamel.yaml` but on `ruamel.yaml.clib` — a compiled transitive dep whose 2020 pin the constraints file forces into every install; old clib has no arm64/py3.12 wheel, the C build dies, and every retry tier widened the package being installed while re-running against the same strangling constraint. Fixed with `_widen_failing_transitive_constraint`: parse the actually-failing distribution from pip's own error text, widen *its* constraint pin to same-major (only when it's not the requested package itself), retry the exact historical pin first — the ruamel case then installs at its exact 0.16.10 with modern wheel-shipping clib. (b) gevent 1.0.1's `Cython.Compiler.Errors.CompileError: ...corecext.pyx` matched none of tier 4's trigger signatures (`distutils`/`ccompiler`/`cython_sources`), so the older-interpreter retry built for exactly this failure class never fired; added `.pyx` and `cython.compiler` to the signature list. Verified with 5 tests including both live error texts end-to-end.
-20. **The restore step deleted its own base interpreter — the real cause of the live `[Errno 2]` wall** — the run after fix 19 showed the identical symptom, with the error status proving fix 19's retry never engaged (packages marked `hard_environment_failure`, the blanket-exception path, not the retry's status). Three-part interaction: tier 4's restore passes the venv's *own* `bin/python` as the base interpreter for the rebuild; fix 13's explicit wipe deletes it before the `venv` subprocess launches (before fix 13, `--clear` deleted contents only after the binary was already loaded — the old pattern worked by accident); and the resulting `FileNotFoundError` is an `OSError`, which fix 19's `RuntimeError`-only catch let escape to the profiler's blanket handler as a fake per-package failure. Fixed at both layers: `_create_disposable_venv` now resolves a base living inside the to-be-wiped directory to its real interpreter first (realpath → pyvenv.cfg `home` → default), and the restore retry now catches `OSError` too. Verified with a zero-mock reproduction: a real venv rebuilt using its own `bin/python` as base — crashes before, works after.
-21. **Winner selection: infra failures masqueraded as decisions, and import time outvoted everything** — two systematic biases visible in the live log. (a) The profiler veto's `startswith("hard_")` check treated environment-wide failures as candidate evidence; since originals are exempt from the veto, every environment crash became a confident "keep the original" (`no_migration_selected`). Now only candidate-specific statuses (`hard_install_failure` etc.) veto; environment-wide ones leave candidates eligible with performance honestly omitted. (b) Import-time-only evidence carried the full 0.35 speed weight, letting a 146ms one-time startup difference outvote clean security + perfect API fit (the kafka→confluent-kafka case). Import-only evidence now weighs 0.10 (real runtime probes keep 0.35), and a new 0.15 maintenance dimension uses the security agent's existing per-candidate PyPI freshness signal — grounded in He et al.'s SANER 2021 multi-metric migration-ranking work and PyMigBench's own obsolete/unmaintained framing of why real migrations happen. Verified by replaying both exact log cases through the real scoring function: both flip to the correct migration target; genuine install failures still veto; runtime-probe scoring untouched.
-19. **Tier 4's restore step could hand back a dead interpreter path** — found live on the user's own machine, the first real-world run where the older-interpreter fallback (fix 12/15) had real local candidates to cycle through (`~/.local/bin/python3.11/3.10/3.9/3.8`). Multiple cases in a row failed every candidate package with `[Errno 2] No such file or directory` right after all four fallback interpreters were tried. Root cause: after cycling through up to four candidates, tier 4 restores the original interpreter with one more venv rebuild in the same directory — if *that* one rebuild failed (five rapid wipe-and-rebuild cycles on one directory is exactly the fragile pattern fix 13 already flagged), the code caught the error but returned the original python path anyway, which no longer pointed to anything real since the directory had just been wiped. Every later install/probe call against that path then failed with a generic filesystem error that looked like a probe problem instead of "this case's environment doesn't exist anymore." Fixed by retrying the restore up to 3 times with verification that it actually produced a real interpreter before trusting it, and returning an explicit `""` (not a dangling path) if it still fails after retries — both callers now check for this and stop cleanly with one clear reason instead of a wall of confusing per-package errors.
-17. **Undeclared external imports were silently assumed to be project-local files** — prompted by a design question about whether AXIOM should adopt `johnnydep` (MigrateLib's package-metadata tool). `johnnydep` resolves distribution→import-names; the actual bug (`output30.log`'s talkpython case failing on a plain `ModuleNotFoundError: No module named 'bs4'`) needed the reverse direction, and pointed at a deeper problem: `_declared_support_packages` treated "not found in the project's declared requirements text" as sufficient proof a module must be a local sibling file, with no check of whether a file by that name actually existed in the checkout. Old/informal PyMigBench repos routinely import third-party packages (`bs4`, `colorama`, `websocket`, all hit in one run) without declaring them anywhere. Fixed by adding a real filesystem check (`_module_exists_in_project`, walking the actual historical checkout, skipping vendored/venv noise) as the tiebreaker: undeclared and no real file → now attempted as an external install instead of assumed local. Also expanded `IMPORT_TO_DISTRIBUTION` from 10 to 33 well-established, unambiguous entries — cheap, deterministic, no new dependency, deliberately conservative about anything uncertain.
-18. **Import rewriting silently reformatted entire files — ported to LibCST** — the same design question raised MigrateLib's use of LibCST over regex/AST rewriting specifically to avoid touching more than the intended lines. AXIOM's own `core/ast_rewrite.py` ended every rewrite in `ast.unparse()`, which regenerates the whole file from the AST and discards comments/docstrings/exact formatting file-wide, not just on changed lines. Rewrote `ImportRewriter`/`apply_import_replacements` on LibCST (format-preserving CST), keeping every one of fix 13a's behaviors (dead-import dropping, submodule-prefix rewriting, wildcard exemption, usage rewriting, dedup) with the same function signature, so none of its five call sites needed to change. Caught and fixed a real bug during the port that wasn't in the original: LibCST represents a dotted import path with the same node types as an ordinary attribute-access expression, so the usage-rewriter was firing on the import statement's own module path *before* the statement-level dedup/filter logic ran, silently bypassing the dead-name check it depends on — found by a real failing test, not by inspection, fixed by having the rewriter refuse to descend into import subtrees at all. Verified with 8 tests: all 4 of fix 13a's original scenarios re-confirmed plus 4 new tests proving comments/formatting/odd comma-spacing now survive byte-for-byte.
-15. **A declared dependency's own install had no fallback at all, and threw away a working install Layer 1 had already made** — found in a real 30-case re-run (`output30.log`): the furthest-progressing case in the log (`nwbn_conversion-tools`, PyQt5→PyQt6) has its own log line proving Layer 1's base-requirement install (`_install_base_layer`, narrowing + same-major widening, fixes 5–8/10/12/15's home) *already* succeeded at installing a working `numpy` — "✓ Same-major-version base install succeeded." Moments later, a second, separate install step (`_profile_in_temporary_venv`'s support-package loop) re-installs `numpy` again at its *exact* historical pin (`numpy==1.17.3`) through a plain, un-retried `_pip_install` call — no narrowing, no widening, no interpreter-swap tier, nothing — hits the identical CCompiler/distutils failure Layer 1 had just solved, and records it as a hard failure that blocks the whole case, discarding the working install the venv already had. The migration source's own exact pin has had this same-major-version fallback since fix 7 (`_pip_install_source_pin`); declared support packages this file directly imports were never given the same treatment. Fixed by having that branch retry with the same `_same_major_version_fallback` widening function the source-pin path already uses, instead of leaving support packages as the one install path in the codebase with no recovery from an unavailable exact release.
-14. **Docker never actually got tried in tier 4, even with the daemon running** — with Docker Desktop confirmed live on this machine, `provision_docker_interpreter` (already written, already used for a project's *declared* Python version) still had no caller anywhere in the older-interpreter retry path; a version `uv` can't fetch a standalone build for (not every old minor has one, and some networks block the download) had nowhere further to go. Extended `_older_interpreter_candidates` with a third, last-resort layer: for each version, if local interpreters are exhausted and `uv` fails specifically for that version, try `provision_docker_interpreter` before moving to the next version, yielding its `docker://<image>` sentinel directly — `_create_disposable_venv`/`_get_python` already knew how to route that sentinel through `docker run`, so the tier-4 loop itself needed no changes. Docker is deliberately tried last per version, never in parallel with or before `uv`, since a container pull is slower than either a local binary or a `uv` download.
+Exactly two checks decide whether a clone is valid.
 
-**Current honest status:** a 50-case run after fixes 1–4 (but before 5–10) showed 70% `environment_incomplete`. Categorizing all 35 of those cases individually against the full error text found the failures split cleanly into two categories: **12 are Python 2.x/3.5 projects** — a genuine, permanent local/uv tooling limit, targeted by fix 9; and **23 were actual bugs**, of which fixes 5–8 target roughly 19–21. A subsequent real re-run confirmed fixes 5–8 genuinely firing in production (narrowing and same-major widening each independently resolved a case outright) and surfaced the distutils/3.12 failure class that fix 10 targets. A third re-run — accidentally scoped to `--max-cases 30` instead of 50 — never reached the cases fix 10 actually fixes (they're all past case 30 in dataset order), so it couldn't test fix 10 at all; 27 of its 30 case outcomes were identical to the same slice of the prior run, which is the expected result, not evidence the fixes don't work. That same run did catch a real bug in fix 10 itself (now fix 11) before it could do further damage. Fixes 9–11 are all unit-verified against exact failure signatures/reproductions but **not yet confirmed on a fresh full re-run** — fix 9 in particular has never touched a real Docker daemon (none was available in the dev sandbox this was built in), and no uploaded log yet shows any Docker provisioning trace at all, which is itself still undiagnosed (could be no daemon on the eval machine, no network access, or a code path issue — the provisioning code is silent-on-failure by design). A full 50-case re-run is the immediate next step before reporting a new headline verification rate.
+**Check 1: migration success (deterministic).**
 
----
+![The five layers of the migration-success oracle](paper/figs/migration_success_layers.jpg)
 
-## 7. Running an evaluation
+A clone must clear all three parts:
+
+1. It compiles and its full existing test suite passes. That alone proves little, because every subject's tests pass before migration too.
+2. A five-layer oracle: imports, recorded golden vectors, program invariants, the program's own tests, and a live smoke check that exercises its API against the real library with nothing faked.
+3. It is a real migration: the source genuinely changed and the old dependency is verifiably gone, so an untouched file cannot pass.
+
+The implementation numbers these layers differently; see [`equivalence/README.md`](equivalence/README.md) for the checkers and `migration_ok()` in [`smart_loader/eval/proteus_harness.py`](smart_loader/eval/proteus_harness.py) for the verdict itself.
+
+**Check 2: the blind LLM judge.** Every subject injects a fake client for testing, so the code that actually calls the new library often never runs under test. A second model, `claude-opus-5` at temperature 0 (stronger than, and different from, the `claude-sonnet-5` that wrote the clone), reads the real source and judges behavior only. Every system-identifying marker is stripped and the batch aborts if one survives, so the reviewer never learns which configuration produced a clone. The worst finding wins:
+
+| Verdict | Meaning |
+|---|---|
+| `BROKEN` | fails on ordinary input |
+| `MAJOR` | wrong on a case the original handled |
+| `MINOR` | a real difference, edge case only |
+| `CLEAN` | no findings at all |
+| `NO-OP` | never migrated: byte-identical, or still importing the removed dependency |
+
+## The evaluation corpus
+
+![The 12 evaluation programs across categories A to D](docs/images/corpus_table.png)
+
+Twelve industrial programs, three in each of four categories, times 3 seeds times 4 configurations is 144 runs. Each program ships its own pytest suite; external I/O is dependency-injected. The programs are in [`corpus/`](corpus/).
+
+| Category | Demand | Programs (library swap) |
+|---|---|---|
+| **A** | swap | `crc_telemetry` (zlib to fastcrc), `sensor_json_logger` (json to ujson), `iso_ts_parser` (datetime to ciso8601) |
+| **B** | swap + glue | `scada_poller` (requests to httpx), `modbus_meter_reader` (pymodbus to minimalmodbus), `mqtt_telemetry_bridge` (paho-mqtt to aiomqtt) |
+| **C** | swap + logic mutation | `pid_pump_controller` (simple-pid to in-house), `tank_level_fsm` (transitions to hand-rolled FSM), `anomaly_threshold_engine` (smtplib notifier to apprise) |
+| **D** | all three | `boiler_control_loop` (pymodbus to minimalmodbus), `pump_station_scheduler` (requests to httpx), `telemetry_gateway` (paho-mqtt to aiomqtt) |
+
+The replacement library is never named to any configuration; each must choose its own. Two programs (B2 and D1) declare a target that cannot be satisfied as stated (a serial-only library for a TCP client) and are kept as negative controls.
+
+## The four configurations
+
+![Single-shot and single-shot-with-repair baselines](docs/images/baselines_flow.png)
+
+| `--config` | What it is |
+|---|---|
+| `single_shot` | One prompt; whatever comes back is the clone. No agents, no checking, no repair. |
+| `single_shot_repair` | The same call, then verification; on failure, exactly one more call with the failure evidence fed back. |
+| `proteus_no_verif` | The agents run with the VCA and the equivalence-oracle gates switched off (the ablation). |
+| `proteus_full` | The full system. |
+
+All four are scored by the same code (`smart_loader/eval/proteus_harness.py`), so a difference between arms cannot come from the scoring.
+
+## Limitations
+
+- **Small sample.** 12 programs and 3 seeds are enough for the migration-success comparison, not for most others.
+- **One generator and one judge model.** Everything uses `claude-sonnet-5` (generation) and `claude-opus-5` (judging).
+- **Python stands in for PLC languages.** Real controllers are programmed in IEC 61131-3 languages.
+- **Source-level equivalence.** The oracle checks recorded behavior, not timing or plant dynamics.
+- **Residual defects.** The blind judge finds real defects in clones that pass every deterministic check.
+- **One blind retry path.** The FRA restarts from scratch on rejection, without the failure evidence the other agents receive.
+
+Future work: real PLC languages, an industrial-control-system simulator, attack-surface studies in both directions (does an exploit still land on a diversified clone, and is the agent pipeline itself a new target), and a larger corpus.
+
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `smart_loader/` | The pipeline: `agents/`, `core/graph.py` (wiring), `eval/proteus_harness.py` (scoring), `isomorph/` (logic-mutation search) |
+| `equivalence/` | The deterministic checkers and recorded golden vectors; see its README |
+| `corpus/` | The 12 evaluation programs, with their tests |
+| `run_single_shot.py`, `run_single_shot_repair.py`, `run_axiom_arms.py` | Runners for the four configurations |
+| `judge_clones.py` | The blind LLM judge (`judge_cache.jsonl` is its cache) |
+| `results_fin_final.csv` | The 144-run results table behind every number in the paper |
+| `make_final_figures.py` | Regenerates the figures in `paper/figs/` from the CSV |
+| `ablation_study.xlsx` | Drop-one ablation of each success condition, why each failing run failed, and per-stage retry counts |
+| `paper/` | LaTeX sources (`REVISED/`), figures, and the slides |
+| `final_v4/`, `final_v5/`, `clones_*` | Generated clones from the experiment runs; the exact 144 are identified by `clone_sha` in the CSV |
+| `ics_corpus/` | An earlier demo corpus used while developing the LMA; not part of the 144 runs |
+| `tests/` | Unit tests |
+| `docs/` | Design notes, and the previous README as `README_AXIOM_v2.md` |
+
+`results_fin_final.csv` is the merged table used in the paper; the other `results_*.csv` files are intermediate runs.
+
+## Reproducing the results
+
+Tested with Python 3.12. Run everything from the repository root.
 
 ```bash
-axiom eval-pymigbench <pymigbench_dataset_dir> \
-    --repo-cache ./pymigbench_repos \
-    --llm <provider> --model <model> \
-    --full-pipeline \
-    --max-cases 50 \
-    --out pymigbench_verified_50_v2
+pip install -e .
+pip install pytest
 ```
 
-`--full-pipeline` runs the complete resolver → profiler → axiom → connector → verifier chain against disposable historical environments (the slow, expensive, and only meaningful path for a verification claim). Drop it to run detection-only (`resolver_agent` recognition rate, much cheaper, no environment reproduction). See `smart_loader/eval/pymigbench_eval.py` module docstring for the full flag reference, and `AXIOM_ARCHITECTURE.md` §6/§8 for what each stage of a run actually does under the hood.
+Put `ANTHROPIC_API_KEY=...` in a `.env` file at the repository root (it is gitignored; never commit it). Each runner appends rows to a results CSV (`--csv`) and saves clones (`--clone-dir`):
 
----
+```bash
+python3 run_single_shot.py        --corpus corpus --llm claude --model claude-sonnet-5 --runs 3
+python3 run_single_shot_repair.py --corpus corpus --llm claude --model claude-sonnet-5 --runs 3
+python3 run_axiom_arms.py         --corpus corpus --config proteus_no_verif --llm claude --model claude-sonnet-5 --runs 3
+python3 run_axiom_arms.py         --corpus corpus --config proteus_full     --llm claude --model claude-sonnet-5 --runs 3
+python3 judge_clones.py           --csv <your results csv> --corpus corpus --llm claude --model claude-opus-5
+```
 
-## 8. Known open limitations
+Run any script with `--help` for the full options (`--program` to run one program, `--dry-run` to preview). In our study the pipeline API cost was about $25 for all 144 runs, excluding the judge.
 
-- A real Docker backend now exists (`environment_backend: "docker"`, opt-in via `--auto-provision-python` / the eval harness's existing auto-provisioning) for the Python 2.x/3.5 projects `uv` can never reach — see `AXIOM_ARCHITECTURE.md` §9.8. It's unit-tested but not yet proven against a real Docker daemon: two real re-runs since it was built show zero provisioning trace, and the root cause (daemon availability, network access, or a code-path issue) hasn't been isolated yet — confirm on one known case before trusting it against the full slice.
-- Fix 10 (older-local-interpreter fallback for the Python-3.12/`distutils` build-incompatibility class, §9.9b) is unit-verified but not yet confirmed against a real re-run.
-- The talkpython/bs4 case is a genuinely undeclared dependency (never listed in that project's requirements at all) — fix 8's alias mapping does not and cannot fix it; it would need an explicit per-project override to resolve.
-- `rules_agent`/`rules_engine.py` are implemented but disconnected from the compiled graph.
-- A handful of low-frequency cases — missing system libraries (`cairo`, `mysql_config`) needed by a small number of projects — remain individually un-triaged rather than systemically fixed.
-- `resolver_miss` / `no_migration_selected` outcomes (AXIOM correctly declining to migrate, or failing to detect an equivalence) have not been individually audited this session.
-- The two most recent eval runs also included 8 `pipeline_error` cases from a provider-side `429 Too Many Requests` rate limit — unrelated to any fix in this document, but worth throttling request rate for on the next run.
+To regenerate the figures from the shipped results, with no API calls:
 
-Full technical detail, file/line references, and the complete fix-by-fix rationale are in `AXIOM_ARCHITECTURE.md`.
+```bash
+python3 make_final_figures.py
+```
+
+## Citation
+
+Benita Magdalene Kingsley Prince and Ioannis Agadakos. "Proteus: Constructing Semantically Equivalent Program Clones using LLMs and Execution Traces." 16th Dependable Systems, Services and Technologies Conference (DESSERT 2026), Corfu, Greece, October 2-4, 2026.
+
+## Earlier work
+
+This codebase began as AXIOM v2, a multi-agent loader for Python library migration evaluated against PyMigBench. That README is preserved in [`docs/README_AXIOM_v2.md`](docs/README_AXIOM_v2.md).
